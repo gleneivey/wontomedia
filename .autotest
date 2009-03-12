@@ -17,11 +17,13 @@
 
 
 Autotest.add_hook :initialize do |at|
-  # Ignore files in tmp/
-  at.add_exception %r%^\./tmp%
+  at.add_exception %r%^\./(?:doc|log|public|tmp|\.git|\.hg|\.svn|framework|gems|schema|\.DS_Store|autotest|bin|.*\.sqlite3)% 
 end
 
-require 'autotest/fixtures'
 require 'autotest/redgreen'
-require 'autotest/screen'
 require 'autotest/timestamp'
+
+
+### for later:
+# require 'autotest/fixtures'
+# require 'autotest/screen'
