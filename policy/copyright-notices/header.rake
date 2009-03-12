@@ -14,14 +14,3 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
-
-
-def path_to(page_name)
-  case page_name
-  
-  when /the homepage/i
-    root_path
-  else
-    raise "Can't find mapping from \"#{page_name}\" to a path."
-  end
-end

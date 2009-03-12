@@ -2,6 +2,8 @@
 
 
     # auto-generated files that must be (c)'d if modified
+features/steps/webrat_steps.rb
+features/support/env.rb
 config/environment.rb
 config/environments/development.rb
 config/environments/production.rb
@@ -9,23 +11,27 @@ config/environments/test.rb
 config/initializers/inflections.rb
 config/initializers/mime_types.rb
 config/initializers/new_rails_defaults.rb
-
-    # unmodified (and never to be modified) third-party components we include
-public/javascripts/controls.js
-public/javascripts/dragdrop.js
-public/javascripts/effects.js
-public/javascripts/prototype.js
-vendor/*
+lib/tasks/cucumber.rake
 
     # repeatedly auto-generated from other files
 db/schema.rb
 
     # one-time auto-generated files, never to be modified
     #  "lock" directive contains git commit # of acceptable version
-!lock            03b4b134f40e354dc20983219fcf116be516c145
+!lock            6ac5825b85a2fd5a2cf9ae8bf4f24586e4a0b7e3
 script/*
 config/boot.rb
 config/database-sample-mysql.yml
+!unlock
+
+    # unmodified (and never to be modified) third-party components we include
+    #  "lock" directive contains git commit # of acceptable version
+!lock            03b4b134f40e354dc20983219fcf116be516c145
+public/javascripts/controls.js
+public/javascripts/dragdrop.js
+public/javascripts/effects.js
+public/javascripts/prototype.js
+vendor/*
 !unlock
 
     # can't embed license notice in binary files--our originals still
