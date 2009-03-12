@@ -14,8 +14,3 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program in the file COPYING and/or LICENSE.  If not,
 // see <http://www.gnu.org/licenses/>.
-
-
-
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults

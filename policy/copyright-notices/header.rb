@@ -14,10 +14,3 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
-
-
-# Methods added to this helper are available to all templates in
-# the application.
-
-module ApplicationHelper
-end
