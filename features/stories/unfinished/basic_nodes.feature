@@ -1,3 +1,20 @@
+Feature:  Basic node-related operations
+  In order to create a wontology,
+  as a contributor, I want
+  to be able to create and view nodes.
+
+  Scenario: Create new node
+    Given I am on the new nodes page
+    When I fill in "node_name" with "Category"
+    And I fill in "node_title" with "Subcategory"
+    And I fill in "node_description" with "The root category in the C topic"
+    And I press "node_submit"
+    Then I should see "Category"
+    And I should see "Subcategory"
+    And I should see "The root category in the C topic"
+
+
+
 # WontoMedia -- a wontology web application
 # Copyright (C) 2009 -- Glen E. Ivey
 #    www.wontology.com
@@ -14,14 +31,3 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
-
-
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
-
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
-end

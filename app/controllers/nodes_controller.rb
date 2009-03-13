@@ -16,12 +16,36 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
+class NodesController < ApplicationController
+  # GET /nodes/new
+  def new
+    @node = Node.new
 
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+    respond_to do |format|
+      format.html # new.html.erb
+    end
+  end
+
+  # POST /nodes
+  def create
+    @node = Node.new(params[:node])
+
+    respond_to do |format|
+      if @node.save
+        flash[:notice] = 'Node was successfully created.'
+        format.html { redirect_to(@node) }
+      else
+        format.html { render :action => "new" }
+      end
+    end
+  end
+
+  # GET /nodes/1
+  def show
+    @node = Node.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+    end
+  end
 end

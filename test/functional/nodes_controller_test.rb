@@ -16,12 +16,24 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
+require 'test_helper'
 
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+class NodesControllerTest < ActionController::TestCase
+  test "should get new" do
+    get :new
+    assert_response :success
+  end
+
+  test "should create node" do
+    assert_difference('Node.count') do
+      post :create, :node => { }
+    end
+
+    assert_redirected_to node_path(assigns(:node))
+  end
+
+  test "should show node" do
+    get :show, :id => nodes(:one).id
+    assert_response :success
+  end
 end

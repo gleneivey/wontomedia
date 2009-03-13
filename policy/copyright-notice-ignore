@@ -12,6 +12,7 @@ config/initializers/inflections.rb
 config/initializers/mime_types.rb
 config/initializers/new_rails_defaults.rb
 lib/tasks/cucumber.rake
+public/stylesheets/scaffold.css
 
     # repeatedly auto-generated from other files
 db/schema.rb

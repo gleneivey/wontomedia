@@ -16,12 +16,16 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
+class CreateNodes < ActiveRecord::Migration
+  def self.up
+    create_table :nodes do |t|
+      t.string :name
+      t.string :title
+      t.text :description
+    end
+  end
 
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing the them or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
+  def self.down
+    drop_table :nodes
+  end
 end
