@@ -16,10 +16,15 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
+require 'test_helper'
 
-  # Install the default routes as the lowest priority.
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
+class RoutesTest < ActionController::TestCase
+  test "new node form" do
+    assert_routing '/nodes/new', { :controller => "nodes", :action => "new" }
+  end
+
+  test "show node page" do
+    assert_routing '/nodes/42', { :controller => "nodes",
+      :action => "show", :id => "42" }
+  end
 end

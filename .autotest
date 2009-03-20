@@ -17,13 +17,14 @@
 
 
 Autotest.add_hook :initialize do |at|
-  at.add_exception %r%^\./(?:doc|log|public|tmp|\.git|\.hg|\.svn|framework|gems|schema|\.DS_Store|autotest|bin|.*\.sqlite3)% 
+  at.add_exception %r%^\./(?:\.git|\.hg|\.svn|framework|gems|schema|\.DS_Store|autotest|bin|.*\.sqlite3)% 
+  at.add_mapping %r%^config/routes.rb$% do
+    files_matching %r%^test/functional/.*routes_test\.rb$%
+  end
 end
 
+require 'autotest/restart'
 require 'autotest/redgreen'
 require 'autotest/timestamp'
+require 'autotest/emacs'
 
-
-### for later:
-# require 'autotest/fixtures'
-# require 'autotest/screen'
