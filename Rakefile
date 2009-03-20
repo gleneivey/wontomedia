@@ -46,14 +46,20 @@ ENDOSTRING
     s.has_rdoc = true
     s.extra_rdoc_files = ["README"]
 
-    s.files =  FileList["[A-Z]*", 'cucumber.yml',
-                        "{app,config,bin,db,features,generators,lib,policy,public,script,test,vendor}/**/*"]
-    s.add_dependency 'rails', '~>2.2'
+    s.files =  FileList["[A-Z]*",
+      "{app,config,bin,db,generators,lib,public,script,test,vendor}/**/*"].
+        exclude("database.yml")
+    # Note:
+    #       .autotest cucumber.yml .gitignore
+    # and the testing directories
+    #       deploy features policy
+    # aren't included because developers are expected to pull from Git
+
+    s.add_dependency 'rails', '2.2.2'
   end
+
+  task :build => :gemspec    # don't build a gem from a stale spec
 rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "WARNING: Missing development dependency.  'Jeweler' not available. Install it with: 'sudo gem install technicalpickles-jeweler -s http://gems.github.com'"
 end
 
-
-task :build => :gemspec    # don't build a gem from a stale spec
-task :test => :features    # testing includes Cucumber acceptance tests

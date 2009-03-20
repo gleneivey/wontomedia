@@ -1,0 +1,10 @@
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+
+production:
+  adapter: mysql
+  encoding: utf8
+  database: wontomedia_production
+  pool: 5
+  username: wontomedia-user
+  password: replace-bad-passwd
+  socket: /var/run/mysqld/mysqld.sock

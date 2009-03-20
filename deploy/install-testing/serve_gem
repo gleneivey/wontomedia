@@ -1,0 +1,4 @@
+
+gem   install wontomedia --install-dir ~/gem-testing --bindir ~/gem-testing/bin --local
+gem server                       --dir ~/gem-testing
+gem uninstall wontomedia --install-dir ~/gem-testing --bindir ~/gem-testing/bin -x 
