@@ -98,7 +98,7 @@ DoASystemCommand(
     "   $gemInstallDir/config/database.yml "          );
     # initialize the database
 DoASystemCommand( "cd $gemInstallDir; " .
-                  "RAILS_ENV=production rake db:migrate" );
+                  "RAILS_ENV=production rake db:schema:load" );
     # and launch WontoMedia
 DoASystemCommand( "cd $gemInstallDir; " .
                   "script/server -e production" );
