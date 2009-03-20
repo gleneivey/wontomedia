@@ -28,7 +28,6 @@ class NodesControllerTest < ActionController::TestCase
     assert_difference('Node.count') do
       post :create, :node => { }
     end
-
     assert_redirected_to node_path(assigns(:node))
   end
 
