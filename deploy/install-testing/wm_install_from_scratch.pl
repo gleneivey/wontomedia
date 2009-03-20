@@ -2,7 +2,7 @@
 
 #$testGemSource= "http://10.201.2.101:8808/";
 #$aptLoadOptions= "--no-download";
-$railsVersion= "-v=2.2.2";
+#$railsVersion= "-v=2.3.2";
 
     # Note, when this changes, DUPLICATE in wm_purge_to_scratch.pl
     #  AND the rubygems download URL probably has to, too
