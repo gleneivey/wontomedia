@@ -19,7 +19,14 @@
 Autotest.add_hook :initialize do |at|
   at.add_exception %r%^\./(?:\.git|\.hg|\.svn|framework|gems|schema|\.DS_Store|autotest|bin|.*\.sqlite3)% 
   at.add_mapping %r%^config/routes.rb$% do
-    files_matching %r%^test/functional/.*routes_test\.rb$%
+    files_matching %r%^test/integration/.*routes_test\.rb$%
+  end
+  at.add_mapping %r%^app/views/(.*)/% do |_, m|
+    ["test/unit/#{m[1]}_view_test.rb",
+     "test/functional/#{m[1]}_view_test.rb"]
+  end
+  at.add_mapping %r%^test/.+/.*rb$% do |filename, _|
+    filename
   end
 end
 

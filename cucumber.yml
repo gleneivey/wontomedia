@@ -1,4 +1,4 @@
 default: --format pretty
 html: --format html --out features.html
-autotest: --require features --require lib features  
+autotest:     --require features --require lib                   features  
 autotest-all: --require features --require lib --format progress features

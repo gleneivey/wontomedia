@@ -18,9 +18,12 @@
 
 require 'test_helper'
 
-class RoutesTest < ActionController::TestCase
+class RoutesTest < ActionController::IntegrationTest
   test "new node form" do
-    assert_routing '/nodes/new', { :controller => "nodes", :action => "new" }
+    assert_routing '/nodes/new', {     :controller => "nodes",
+                                       :action => "new" }
+    assert_equal '/nodes/new', url_for(:controller => "nodes",
+                                       :action => "new", :only_path => true)
   end
 
   test "show node page" do
