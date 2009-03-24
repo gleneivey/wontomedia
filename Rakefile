@@ -63,3 +63,23 @@ rescue LoadError
   puts "WARNING: Missing development dependency.  'Jeweler' not available. Install it with: 'sudo gem install technicalpickles-jeweler -s http://gems.github.com'"
 end
 
+
+namespace :test do
+  Rake::TestTask.new(:views => "db:test:prepare") do |t|
+    t.libs << "test"
+    t.pattern = 'test/views/**/*_test.rb'
+    t.verbose = true
+  end
+  Rake::Task['test:views'].comment =
+    "Run the view tests (test/views/**/*_test.rb)"
+
+  Rake::TestTask.new(:helpers => "db:test:prepare") do |t|
+    t.libs << "test"
+    t.pattern = 'test/helpers/**/*_test.rb'
+    t.verbose = true
+  end
+  Rake::Task['test:helpers'].comment =
+    "Run the view-helper tests (test/helpers/**/*_test.rb)"
+end
+
+task :test => [ "test:views", "test:helpers" ]

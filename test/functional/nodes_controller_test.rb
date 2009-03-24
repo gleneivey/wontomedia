@@ -24,6 +24,15 @@ class NodesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "new form should have fresh node object" do
+    get :new
+    node = assigns(:node)
+    assert_not_nil node
+    assert_nil node.name
+    assert_nil node.title
+    assert_nil node.description
+  end
+
   test "should create node" do
     assert_difference('Node.count') do
       post :create, :node => { }
@@ -32,7 +41,11 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should show node" do
-    get :show, :id => nodes(:one).id
+    id = nodes(:one).id
+    get :show, :id => id
     assert_response :success
+    node = assigns(:node)
+    assert_not_nil node
+    assert_equal id, node.id
   end
 end

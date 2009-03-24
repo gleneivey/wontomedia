@@ -16,18 +16,29 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-begin    # don't force Cucumber dependency on non-developers
-  $:.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
-  require 'cucumber/rake/task'
 
-  Cucumber::Rake::Task.new(:features) do |t|
-    t.cucumber_opts = "--format pretty"
+require 'test_helper'
+
+class NodesShowViewTest < ActionController::TestCase
+  tests NodesController
+
+  test "should have show page for nodes" do
+    get :show, :id => nodes(:one).id
+    assert_template "nodes/show"
   end
 
-  task :features => 'db:test:prepare'
-  task :test => :features    # generic Rails testing now includes Cucumber
-                             # acceptance tests
-rescue LoadError
-  puts "WARNING: Missing development dependency.  'Cucumber' not available. To install, see 'http://wiki.github.com/aslakhellesoy/cucumber/ruby-on-rails'"
-end
+  test "node-show page should contain node name" do
+    get :show, :id => nodes(:one).id
+    assert_select "body", /#{nodes(:one).name}/
+  end
 
+  test "node-show page should contain node title" do
+    get :show, :id => nodes(:one).id
+    assert_select "body", /#{nodes(:one).title}/
+  end
+
+  test "node-show page should contain node description" do
+    get :show, :id => nodes(:one).id
+    assert_select "body", /#{nodes(:one).description}/
+  end
+end
