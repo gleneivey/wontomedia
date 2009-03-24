@@ -16,11 +16,9 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
-  map.root :controller => "nodes", :action => "home"
+require "#{File.dirname(__FILE__)}/../test_helper"
 
-  # Install the default routes as the lowest priority.
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
+require "webrat"
+Webrat.configure do |config|
+  config.mode = :rails
 end

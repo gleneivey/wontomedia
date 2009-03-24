@@ -16,8 +16,13 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
 
   Scenario: Homepage shows list of existing nodes
     Given there are 5 existing nodes like "kirgagh"
-    When I go to "the homepage"
+    When I go to the homepage
     Then I should see 5 matches of "kirgagh[0-9]+"
+
+  Scenario: View index of existing nodes
+    Given there are 12 existing nodes like "fufubarfu"
+    When I go to /nodes
+    Then I should see 36 matches of "fufubarfu"
 
 
 # WontoMedia -- a wontology web application

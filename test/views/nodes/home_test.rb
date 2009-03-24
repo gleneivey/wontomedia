@@ -16,11 +16,29 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
-  map.root :controller => "nodes", :action => "home"
 
-  # Install the default routes as the lowest priority.
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
+require 'test_helper'
+
+class NodesHomeViewTest < ActionController::TestCase
+  tests NodesController
+
+  test "should have index page for nodes" do
+    get :home
+    assert_template "nodes/home"
+  end
+
+  test "should show Name of known node" do
+    get :home
+    assert_select "body", /#{nodes(:one).name}/
+  end
+
+  test "should show Title of known node" do
+    get :home
+    assert_select "body", /#{nodes(:one).title}/
+  end
+
+  test "should show Description of known node" do
+    get :home
+    assert_select "body", /#{nodes(:one).description}/
+  end
 end

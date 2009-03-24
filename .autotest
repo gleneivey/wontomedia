@@ -25,7 +25,7 @@ Autotest.add_hook :initialize do |at|
       # if a test file changes, run that test.  This should be provided
       # automatically by autotest's rails.rb, but doesn't appear to work.
       # (Perhaps broken by Cucumber integration?)
-  at.add_mapping %r%^test/.+/.+\.rb$% do |filename, _|
+  at.add_mapping %r%^test/.+/.+_test\.rb$% do |filename, _|
     filename
   end
 

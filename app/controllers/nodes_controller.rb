@@ -17,6 +17,11 @@
 
 
 class NodesController < ApplicationController
+  # GET /
+  def home
+    index        # not DRY, but eventually will have different template
+  end
+
   # GET /nodes
   def index
     @nodes = Node.find(:all)

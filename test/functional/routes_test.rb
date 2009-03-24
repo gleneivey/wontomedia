@@ -19,7 +19,17 @@
 require 'test_helper'
 
 class RoutesTest < ActionController::IntegrationTest
-  test "new node form" do
+  test "home page is nodes-index" do
+    assert_routing '/', { :controller => "nodes", :action => "home" }
+  end
+
+  test "index node page" do
+    assert_routing '/nodes', { :controller => "nodes", :action => "index" }
+    assert_equal   '/nodes', url_for( :controller => "nodes",
+                                      :action => "index", :only_path => true )
+  end
+
+test "new node form" do
     assert_routing '/nodes/new', {     :controller => "nodes",
                                        :action => "new" }
     assert_equal '/nodes/new', url_for(:controller => "nodes",

@@ -19,6 +19,12 @@
 require 'test_helper'
 
 class NodesControllerTest < ActionController::TestCase
+  test "should get homepage" do
+    get :home
+    assert_response :success
+    assert_not_nil assigns(:nodes)
+  end
+
   test "should get index" do
     get :index
     assert_response :success
