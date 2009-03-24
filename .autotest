@@ -72,4 +72,3 @@ end
 require 'autotest/restart'
 require 'autotest/redgreen'
 require 'autotest/timestamp'
-require 'autotest/emacs'
