@@ -14,10 +14,10 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
     And I should see "The root category in the C topic"
 
 
-  Scenario: View a list of existing nodes
+  Scenario: Homepage shows list of existing nodes
     Given there are 5 existing nodes like "kirgagh"
     When I go to "the homepage"
-    Then I should see 5 of "kirgagh"
+    Then I should see 5 matches of "kirgagh[0-9]+"
 
 
 # WontoMedia -- a wontology web application

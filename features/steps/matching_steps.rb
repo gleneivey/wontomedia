@@ -20,7 +20,7 @@
 # result page content checks
 
 
-Then /^I should see ([0-9]+) of "(.*)"$/ do |number, text|
-  assert_select "body", text, number.to_i
+Then /^I should see ([0-9]+) matches of "(.*)"$/ do |number, text|
+  assert_select "body", /#{text}/, number.to_i
 end
 
