@@ -27,6 +27,7 @@ Autotest.add_hook :initialize do |at|
       # ZenTest*/lib/autotest/rails.rb
   at.clear_mappings  # get rid of defaults
 
+      # *on*top*of* defaults provided by autotest/rails.rb
       # primarily because we use git, but got this RE from the net, and most
       # of the other exclusions seem sensible, too
   at.add_exception %r%^\./(?:\.git|\.hg|\.svn|framework|gems|schema|\.DS_Store|autotest|bin|.*\.sqlite3)% 
@@ -39,9 +40,12 @@ Autotest.add_hook :initialize do |at|
 
   at.add_mapping %r%^app/controllers/(.*)\.rb$% do |_, m|
     if m[1] == "application" then
-      at.files_matching %r%^test/(views|functional)/.*_test\.rb$%
+      at.files_matching %r%^test/(views|functional|integration)/.*_test\.rb$%
     else
-      at.files_matching %r%^test/functional/#{m[1]}_test.rb$%
+      a = [ "test/functional/#{m[1]}_test.rb" ]
+      m[1] =~ /^(.+)_controller/
+      c = Regexp.last_match[1]
+      a.concat at.files_matching %r%^test/integration/.*#{c}.*_test\.rb$%
     end
   end
 
@@ -56,7 +60,7 @@ Autotest.add_hook :initialize do |at|
   end
 
   # we do route testing, with test files in the test/functional directory
-  at.add_mapping %r%^config/routes.rb$% do
+  at.add_mapping %r%^config/routes\.rb$% do
     at.files_matching %r%^test/functional/.*routes?_test\.rb$%
   end
 
@@ -66,14 +70,14 @@ Autotest.add_hook :initialize do |at|
       # now other bits you might find in a Rails app.....
   at.add_mapping(/^lib\/.*\.rb$/) do |filename, _|
     base = File.basename(filename, '.rb')
-    at.files_matching %r%^test/unit/#{base}_test.rb$%
+    at.files_matching %r%^test/unit/#{base}_test\.rb$%
   end
 
 
 
       # and some structural stuff
   # if files with global effects change, rerun everything
-  at.add_mapping %r%^config/((boot|environment(s/test)?).rb|database.yml)% do
+  at.add_mapping %r%^config/((boot|environment(s/test)?)\.rb|database\.yml)% do
     at.files_matching %r%^test/.+_test\.rb$%
   end
 
@@ -84,25 +88,15 @@ Autotest.add_hook :initialize do |at|
 
   # if a test *helper.rb file changes, run all tests parallel-to and below it
   at.add_mapping %r%^test(.*)/[^/]*helper\.rb$% do |_, m|
-    at.files_matching %r%^test#{m[1]}/.*_test.rb$%
+    at.files_matching %r%^test#{m[1]}/.*_test\.rb$%
   end
 
   # tests that might be dependent on a fixture
   #   Note: may have multiple view tests dependent on a single fixture
-  at.add_mapping %r%^test/fixtures/(.+).yml$% do |_, m|
+  at.add_mapping %r%^test/fixtures/(.+)s\.yml$% do |_, m|
     ["test/unit/#{m[1]}_test.rb",
-     "test/functional/#{m[1]}_controller_test.rb" ].
-      concat at.files_matching %r%^test/views/#{m[1]}/.*_test.rb$%
-  end
-
-
-  # some integration test names will contain names of their controller
-  # dependencies, so grab them:
-  at.add_mapping %r%^app/controllers/.+_controller\.rb$% do |filename, _|
-    base = File.basename(filename, '.rb')
-    base =~ /^(.+)_controller$/
-    controller = Regexp.lastmatch[1]
-    at.files_matching %r%^test/integration/.*#{controller}.*_test.rb$%
+     "test/functional/#{m[1]}s_controller_test.rb" ].
+      concat at.files_matching(%r%^test/views/#{m[1]}s/.*_test\.rb$%)
   end
 end
 
