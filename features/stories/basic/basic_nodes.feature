@@ -3,13 +3,26 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
   as a contributor, I want
   to be able to create and view nodes.
 
-#Test case: modify all three fields of an existing node.
-#Test cases: modify each node field in an independent operation.
-#Test case: node.name may only be a Wiki name
-#Test case: node.name must be unique across all nodes
-#Test case: node.title may only be one line
-#Test case: no field allows an injection attack
-#  (verify escaping of input HTML and JS, and of input SQL)
+  Scenario: Create new node
+    Given I am on the new nodes page
+    When I fill in "node_name" with "Category"
+    And I fill in "node_title" with "Subcategory"
+    And I fill in "node_description" with "The root category in the C topic"
+    And I press "node_submit"
+    Then I should see "Category"
+    And I should see "Subcategory"
+    And I should see "The root category in the C topic"
+
+
+  Scenario: Homepage shows list of existing nodes
+    Given there are 5 existing nodes like "kirgagh"
+    When I go to the homepage
+    Then I should see 5 matches of "kirgagh[0-9]+"
+
+  Scenario: View index of existing nodes
+    Given there are 12 existing nodes like "fufubarfu"
+    When I go to /nodes
+    Then I should see 36 matches of "fufubarfu"
 
 
 # WontoMedia -- a wontology web application
