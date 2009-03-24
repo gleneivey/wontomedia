@@ -16,56 +16,93 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require "autotest"
+
 Autotest.add_hook :initialize do |at|
+
+      # the default patterns provided by autotest for the Rails
+      # directory structure don't work for us as-is.  The following
+      # block completely replaces the contents of been unable to get
+      # autotest's remove_mapping method to work,
+      # ZenTest*/lib/autotest/rails.rb
+  at.clear_mappings  # get rid of defaults
 
       # primarily because we use git, but got this RE from the net, and most
       # of the other exclusions seem sensible, too
   at.add_exception %r%^\./(?:\.git|\.hg|\.svn|framework|gems|schema|\.DS_Store|autotest|bin|.*\.sqlite3)% 
 
-      # if a test file changes, run that test.  This should be provided
-      # automatically by autotest's rails.rb, but doesn't appear to work.
-      # (Perhaps broken by Cucumber integration?)
-  at.add_mapping %r%^test/.+/.+_test\.rb$% do |filename, _|
-    filename
+
+      # for the basic Rails directory structure
+  at.add_mapping %r%^app/models/(.*)\.rb$% do |_, m|
+    "test/unit/#{m[1]}_test.rb"
   end
 
-      # add support for our test/helpers directory to cases provided
-  at.add_mapping %r%^test/test_helper.rb|config/((boot|environment(s/test)?).rb|database.yml)% do
-    files_matching %r%^test/helpers/.+_test\.rb$%
+  at.add_mapping %r%^app/controllers/(.*)\.rb$% do |_, m|
+    if m[1] == "application" then
+      at.files_matching %r%^test/(views|functional)/.*_test\.rb$%
+    else
+      at.files_matching %r%^test/functional/#{m[1]}_test.rb$%
+    end
   end
 
-      # we do route testing, with test files in "functional"
-  # autotest/rails.rb built-in route file "dependency" is way too broad
-#  at.remove_mapping %r%^config/routes.rb$%   # don't need, identical regexp
-  at.add_mapping %r%^config/routes.rb$% do
-    files_matching %r%^test/functional/.*routes?_test\.rb$%
-  end
-
-      # we do view testing, with tests located in a separate directory
-      # (but don't use the naming scheme assumed by autotest, alas....)
+  # we do view testing, with tests located in their own test directory
   at.add_mapping %r%^app/views/(.+)\.html\.rb$% do |_, m|
     "test/views/#{m[1]}_test.rb"
   end
 
-      # we do helper testing, with tests located in a separate directory
+  # we do view-helper testing, with tests located in their own directory
   at.add_mapping %r%^app/helpers/(.+)\.rb$% do |_, m|
     "test/helpers/#{m[1]}_test.rb"
   end
 
-      # may have multiple view tests dependent on a single fixture
-      # (not autotest's default assumption)
-  at.add_mapping %r%^test/fixtures/(.+).yml$% do |_, m|
-    [ "test/functional/#{m[1]}_controller_test.rb" ].concat
-      files_matching %r%^test/views/#{m[1]}/.*_test.rb$%
+  # we do route testing, with test files in the test/functional directory
+  at.add_mapping %r%^config/routes.rb$% do
+    at.files_matching %r%^test/functional/.*routes?_test\.rb$%
   end
 
-      # at least some integration test names will contain names of
-      # their controller dependencies:
+
+
+
+      # now other bits you might find in a Rails app.....
+  at.add_mapping(/^lib\/.*\.rb$/) do |filename, _|
+    base = File.basename(filename, '.rb')
+    at.files_matching %r%^test/unit/#{base}_test.rb$%
+  end
+
+
+
+      # and some structural stuff
+  # if files with global effects change, rerun everything
+  at.add_mapping %r%^config/((boot|environment(s/test)?).rb|database.yml)% do
+    at.files_matching %r%^test/.+_test\.rb$%
+  end
+
+  # if a test changes, run just that test
+  at.add_mapping %r%^test/.*_test\.rb$% do |filename, _|
+    filename
+  end
+
+  # if a test *helper.rb file changes, run all tests parallel-to and below it
+  at.add_mapping %r%^test(.*)/[^/]*helper\.rb$% do |_, m|
+    at.files_matching %r%^test#{m[1]}/.*_test.rb$%
+  end
+
+  # tests that might be dependent on a fixture
+  #   Note: may have multiple view tests dependent on a single fixture
+  at.add_mapping %r%^test/fixtures/(.+).yml$% do |_, m|
+    ["test/unit/#{m[1]}_test.rb",
+     "test/functional/#{m[1]}_controller_test.rb" ].
+      concat at.files_matching %r%^test/views/#{m[1]}/.*_test.rb$%
+  end
+
+
+  # some integration test names will contain names of their controller
+  # dependencies, so grab them:
   at.add_mapping %r%^app/controllers/.+_controller\.rb$% do |filename, _|
     base = File.basename(filename, '.rb')
     base =~ /^(.+)_controller$/
     controller = Regexp.lastmatch[1]
-    files_matching %r%^test/integration/.*#{controller}.*_test.rb$%
+    at.files_matching %r%^test/integration/.*#{controller}.*_test.rb$%
   end
 end
 
