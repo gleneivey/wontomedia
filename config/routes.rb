@@ -18,6 +18,7 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.resources :nodes
+  map.root :controller => "nodes", :action => "index"
 
   # Install the default routes as the lowest priority.
 #  map.connect ':controller/:action/:id'

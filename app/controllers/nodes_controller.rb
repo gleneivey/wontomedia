@@ -17,6 +17,15 @@
 
 
 class NodesController < ApplicationController
+  # GET /nodes
+  def index
+    @nodes = Node.find(:all)
+
+    respond_to do |format|
+      format.html # index.html.erb
+    end
+  end
+
   # GET /nodes/new
   def new
     @node = Node.new

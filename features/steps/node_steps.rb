@@ -1,25 +1,3 @@
-Feature:  Create, view and edit individual nodes through non-Ajax pages
-  In order to create a wontology,
-  as a contributor, I want
-  to be able to create and view nodes.
-
-  Scenario: Create new node
-    Given I am on the new nodes page
-    When I fill in "node_name" with "Category"
-    And I fill in "node_title" with "Subcategory"
-    And I fill in "node_description" with "The root category in the C topic"
-    And I press "node_submit"
-    Then I should see "Category"
-    And I should see "Subcategory"
-    And I should see "The root category in the C topic"
-
-
-  Scenario: View a list of existing nodes
-    Given there are 5 existing nodes like "kirgagh"
-    When I go to "the homepage"
-    Then I should see 5 of "kirgagh"
-
-
 # WontoMedia -- a wontology web application
 # Copyright (C) 2009 -- Glen E. Ivey
 #    www.wontology.com
@@ -36,3 +14,17 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
 # You should have received a copy of the GNU Affero General Public License
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
+
+
+# Cucumber steps, particular to WontoMedia's "node" model
+
+
+Given /^there are ([0-9]+) existing nodes like "(.*)"$/ do |number, text|
+  number.to_i.times do |c|
+    n = Node.new(:name        => "#{text}#{c}",
+                 :title       => "This is #{text} node number #{c}",
+                 :description => "Lorem ipsum dolor sit #{text} amet, consectetur adipiscing elit. Suspendisse #{c} tincidunt mauris vitae lorem.")
+    n.save
+  end
+end
+
