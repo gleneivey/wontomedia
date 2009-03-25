@@ -19,7 +19,9 @@
 # Cucumber steps, particular to WontoMedia's "node" model
 
 
-Given /^there are ([0-9]+) existing nodes like "(.*)"$/ do |number, text|
+Given /^there (are|is) ([0-9]+) existing nodes? like "(.*)"$/ do |foo,
+  number, text|
+
   number.to_i.times do |c|
     n = Node.new(:name        => "#{text}#{c}",
                  :title       => "This is #{text} node number #{c}",

@@ -3,6 +3,19 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
   as a contributor, I want
   to be able to create and view nodes.
 
+  Scenario: Change all fields of an existing node
+    Given there is 1 existing node like "fred"
+    And I am on the edit nodes page for "fred0"
+    And I fill in "node_name" with "nodeD"
+    And I fill in "node_title" with "Node D"
+    And I fill in "node_description" with "Description for node D ought to be here"
+    And I press "node_submit"
+    Then I should see "nodeD"
+    And I should see "Node D"
+    And I should see "Description for node D ought to be here"
+
+
+
 #Test case: modify all three fields of an existing node.
 #Test cases: modify each node field in an independent operation.
 #Test case: node.name may only be a Wiki name

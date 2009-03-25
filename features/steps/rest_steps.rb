@@ -16,6 +16,13 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-Given /I am on the (\S+) (\S+) page/ do |action, controller|
+Given /^I am on the (\S+) (\S+) page$/ do |action, controller|
   visit "/#{controller}/#{action}"
 end
+
+Given /^I am on the (\S+) (\S+) page for "(.+)"$/ do |action, controller, item|
+  id = Node.first(:conditions => "name = '#{item}'").id
+  visit "/#{controller}/#{action}/#{id}"
+end
+
+
