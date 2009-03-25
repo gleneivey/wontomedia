@@ -24,3 +24,9 @@ Then /^I should see ([0-9]+) matches of "(.*)"$/ do |number, text|
   assert_select "body", /#{text}/, number.to_i
 end
 
+Then /^I should see all of "(.+)"$/ do |patterns|
+  patterns.split(/"\s*,?\s*"/).each do |text|
+    assert_select "body", /#{text}/
+  end
+end
+

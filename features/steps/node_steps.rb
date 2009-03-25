@@ -19,7 +19,7 @@
 # Cucumber steps, particular to WontoMedia's "node" model
 
 
-Given /^there (are|is) ([0-9]+) existing nodes? like "(.*)"$/ do |foo,
+When /^there (are|is) ([0-9]+) existing nodes? like "(.*)"$/ do |foo,
   number, text|
 
   number.to_i.times do |c|

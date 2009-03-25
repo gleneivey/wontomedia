@@ -8,7 +8,7 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
     When I fill in "node_name" with "Category"
     And I fill in "node_title" with "Subcategory"
     And I fill in "node_description" with "The root category in the C topic"
-    And I press "node_submit"
+    When I press "node_submit"
     Then I should see "Category"
     And I should see "Subcategory"
     And I should see "The root category in the C topic"
