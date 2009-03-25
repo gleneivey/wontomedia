@@ -45,7 +45,7 @@ Autotest.add_hook :initialize do |at|
       a = [ "test/functional/#{m[1]}_test.rb" ]
       m[1] =~ /^(.+)_controller/
       c = Regexp.last_match[1]
-      a.concat at.files_matching %r%^test/integration/.*#{c}.*_test\.rb$%
+      a.concat at.files_matching( %r%^test/integration/.*#{c}.*_test\.rb$% )
     end
   end
 
