@@ -29,7 +29,7 @@ class RoutesTest < ActionController::IntegrationTest
                                       :action => "index", :only_path => true )
   end
 
-test "new node form" do
+  test "new node form" do
     assert_routing '/nodes/new', {     :controller => "nodes",
                                        :action => "new" }
     assert_equal '/nodes/new', url_for(:controller => "nodes",
@@ -39,5 +39,24 @@ test "new node form" do
   test "show node page" do
     assert_routing '/nodes/42', { :controller => "nodes",
       :action => "show", :id => "42" }
+    assert_equal '/nodes/42', url_for(:controller => "nodes", :action => "show",
+                                      :id => "42", :only_path => true)
+  end
+
+  test "edit node page" do
+    assert_routing '/nodes/42/edit', { :controller => "nodes",
+      :action => "edit", :id => "42" }
+    assert_equal '/nodes/42/edit', url_for(:controller => "nodes",
+                                           :action => "edit", :id => "42",
+                                           :only_path => true)
+  end
+
+  test "update node action" do
+    assert_routing(
+      { :method => 'put', :path => '/nodes/42' },
+      { :controller => "nodes", :action => "update", :id => "42" } )
+    assert_equal '/nodes/42', url_for(:controller => "nodes",
+                                      :action => "update", :id => "42",
+                                      :only_path => true)
   end
 end

@@ -18,11 +18,11 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
 
 #Test case: modify all three fields of an existing node.
 #Test cases: modify each node field in an independent operation.
-#Test case: node.name may only be a Wiki name
+#Test case: node.name may only be an XML ID
 #Test case: node.name must be unique across all nodes
-#Test case: node.title may only be one line
+#Test case: node.title may only be one line, no whitespace except %20
 #Test case: no field allows an injection attack
-#  (verify escaping of input HTML and JS, and of input SQL)
+#  (verify escaping of input HTML, JS, and SQL)
 
 
 # WontoMedia -- a wontology web application

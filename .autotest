@@ -50,7 +50,7 @@ Autotest.add_hook :initialize do |at|
   end
 
   # we do view testing, with tests located in their own test directory
-  at.add_mapping %r%^app/views/(.+)\.html\.rb$% do |_, m|
+  at.add_mapping %r%^app/views/(.+)\.html\.erb$% do |_, m|
     "test/views/#{m[1]}_test.rb"
   end
 
@@ -96,7 +96,7 @@ Autotest.add_hook :initialize do |at|
   at.add_mapping %r%^test/fixtures/(.+)s\.yml$% do |_, m|
     ["test/unit/#{m[1]}_test.rb",
      "test/functional/#{m[1]}s_controller_test.rb" ].
-      concat at.files_matching(%r%^test/views/#{m[1]}s/.*_test\.rb$%)
+        concat at.files_matching(%r%^test/views/#{m[1]}s/.*_test\.rb$%)
   end
 end
 

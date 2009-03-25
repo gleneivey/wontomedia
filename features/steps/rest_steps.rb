@@ -22,7 +22,7 @@ end
 
 Given /^I am on the (\S+) (\S+) page for "(.+)"$/ do |action, controller, item|
   id = Node.first(:conditions => "name = '#{item}'").id
-  visit "/#{controller}/#{action}/#{id}"
+  visit "/#{controller}/#{id}/#{action}"
 end
 
 

@@ -23,12 +23,12 @@ class NodesNewViewTest < ActionController::TestCase
   tests NodesController
 
   test "should have new form for nodes" do
-    get "new"
+    get :new
     assert_template "nodes/new"
   end
     
   test "nodes new form should invoke create" do
-    get "new"
+    get :new
     assert_select   "form[action=?]", @controller.url_for(:action => :create, :only_path => true) do
       assert_select "form[method=post]", true,
         "new-node form uses POST"

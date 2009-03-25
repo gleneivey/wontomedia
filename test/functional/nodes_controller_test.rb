@@ -53,8 +53,31 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should show node" do
+    assert_controller_behavior_with_id :show
+  end
+
+  test "should get edit node page" do
+    assert_controller_behavior_with_id :edit
+  end
+
+  test "should update node" do
+    put :update, :id => nodes(:one).id, :node => { :name => "two" }
+    assert_redirected_to node_path(assigns(:node))
+  end
+
+  test "should delete node" do
+    assert_difference('Node.count', -1) do
+      delete :destroy, :id => nodes(:one).id
+    end
+    assert_redirected_to nodes_path
+  end
+
+
+private
+
+  def assert_controller_behavior_with_id(action)
     id = nodes(:one).id
-    get :show, :id => id
+    get action, :id => id
     assert_response :success
     node = assigns(:node)
     assert_not_nil node
