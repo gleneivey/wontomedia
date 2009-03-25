@@ -1,0 +1,24 @@
+<h1>Editing '<%= @node.title -%>' Node</h1>
+
+<% form_for(@node) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Cancel, show node', @node %> |
+<%= link_to 'Cancel, show node list', nodes_path %>
