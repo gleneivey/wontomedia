@@ -1,7 +1,7 @@
 Feature:  Create, view and edit individual nodes through non-Ajax pages
   In order to create a wontology,
   as a contributor, I want
-  to be able to create and view nodes.
+  to be able to change the information for existing nodes.
 
   Scenario: Change all fields of an existing node
     Given there is 1 existing node like "fred"
@@ -31,41 +31,13 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
     Then I should see all of "reallyBetty", "Betty Rubble disguised as Wilma", "Fred is cheating"
 
 
-  Scenario: System should prevent entry of invalid node names
-    Given I am on the new nodes page
-    And I fill in "node_name" with "0bad"
-    And I fill in "node_title" with "A good title /\?"
-    And I fill in "node_description" with "0 And a (good) description, too."
-    When I press "node_submit"
-    Then I should see "error"
-    And I fill in "node_name" with "bad too"
-    When I press "node_submit"
-    Then I should see "error"
-    And I fill in "node_name" with "BAD>bad"
-    When I press "node_submit"
-    Then I should see "error"
-
-
-  Scenario: I can't enter two nodes with same name
+  Scenario: I can't enter change one node name to match another
     Given there are 2 existing nodes like "someNode"
     And I am on the edit nodes page for "someNode0"
     And I fill in "node_name" with "someNode1"
     When I press "node_submit"
     Then I should see "error"
 
-
-  Scenario: System should prevent entry of invalid node titles
-    Given I am on the new nodes page
-    And I fill in "node_name" with "goodName"
-    And I fill in "node_title" with "Bad title\012has two lines"
-    And I fill in "node_description" with "good"
-    When I press "node_submit"
-    Then I should see "error"
-
-
-#Test case: node.title may only be one line, no whitespace except %20
-#Test case: no field allows an injection attack
-#  (verify escaping of input HTML, JS, and SQL)
 
 
 # WontoMedia -- a wontology web application

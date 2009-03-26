@@ -1,5 +1,5 @@
-# WontoMedia -- a wontology web application
-# Copyright (C) 2009 -- Glen E. Ivey
+# WontoMedia - a wontology web application
+# Copyright (C) 2009 - Glen E. Ivey
 #    www.wontology.com
 #
 # This program is free software: you can redistribute it and/or modify
@@ -40,4 +40,14 @@ class NodesEditViewTest < ActionController::TestCase
         "new-node form contains 'textarea' field for :description attribute"
     end
   end
+
+  test "empty nodes edit form shouldnt contain status" do
+    get :edit, :id => nodes(:one).id
+    assert_select "body", { :text => /error/i, :count => 0 },
+      "Page cannot say 'error'"
+    assert_select "body", { :text => /successfully created/i, :count => 0 },
+      "Page cannot say 'successfully created'"
+#    assert_select "body", { :text => /warranty/i, :count => 0 },
+#      "Page cannot say 'warranty'"
+  end    
 end

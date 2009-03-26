@@ -14,10 +14,51 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
     And I should see "The root category in the C topic"
 
 
+  Scenario: System should prevent entry of invalid node names
+    Given I am on the new nodes page
+    And I fill in "node_name" with "0bad"
+    And I fill in "node_title" with "A good title /\?"
+    And I fill in "node_description" with "0 And a (good) description, too."
+    When I press "node_submit"
+    Then I should see "error"
+    And I fill in "node_name" with "bad too"
+    When I press "node_submit"
+    Then I should see "error"
+    And I fill in "node_name" with "BAD>bad"
+    When I press "node_submit"
+    Then I should see "error"
+
+
+  Scenario: I can't enter two nodes with same name
+    Given I am on the new nodes page
+    And I fill in "node_name" with "original"
+    And I fill in "node_title" with "Original Node"
+    And I fill in "node_description" with "description"
+    When I press "node_submit"
+    Then I should see "successfully created"
+    Given I am on the new nodes page
+    And I fill in "node_name" with "original"
+    And I fill in "node_title" with "Second Node"
+    And I fill in "node_description" with "Actually second node, but bad name"
+    When I press "node_submit"
+    Then I should see "error"
+
+
+  Scenario: System should prevent entry of invalid node titles
+    Given I am on the new nodes page
+    And I fill in "node_name" with "goodName"
+    And I fill in "node_title" with "Bad title\012has two lines"
+    And I fill in "node_description" with "good"
+    When I press "node_submit"
+    Then I should see "error"
+
+
+        # will move to a different "feature" when index pages get smarter
   Scenario: Homepage shows list of existing nodes
     Given there are 5 existing nodes like "kirgagh"
     When I go to the homepage
     Then I should see 5 matches of "kirgagh[0-9]+"
+
 
   Scenario: View index of existing nodes
     Given there are 12 existing nodes like "fufubarfu"
