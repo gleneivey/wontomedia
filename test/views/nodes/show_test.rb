@@ -43,7 +43,7 @@ class NodesShowViewTest < ActionController::TestCase
   end
 
   test "nodes show page shouldnt contain status" do
-    get :edit, :id => nodes(:one).id
+    get :show, :id => nodes(:one).id
     assert_negative_view_contents
   end    
 end

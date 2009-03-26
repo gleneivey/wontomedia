@@ -43,7 +43,7 @@ class NodesIndexViewTest < ActionController::TestCase
   end
 
   test "nodes index page shouldnt contain status" do
-    get :edit, :id => nodes(:one).id
+    get :index
     assert_negative_view_contents
   end    
 end

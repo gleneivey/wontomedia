@@ -43,7 +43,7 @@ class NodesHomeViewTest < ActionController::TestCase
   end
 
   test "home page shouldnt contain status" do
-    get :edit, :id => nodes(:one).id
+    get :home
     assert_negative_view_contents
   end    
 end

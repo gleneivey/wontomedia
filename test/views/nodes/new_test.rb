@@ -42,7 +42,7 @@ class NodesNewViewTest < ActionController::TestCase
   end
 
   test "nodes new form shouldnt contain status" do
-    get :edit, :id => nodes(:one).id
+    get :new
     assert_negative_view_contents
   end    
 end
