@@ -5,7 +5,7 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
 
   Scenario: Create new node
     Given I am on the new nodes page
-    When I fill in "node_name" with "Category"
+    And I fill in "node_name" with "Category"
     And I fill in "node_title" with "Subcategory"
     And I fill in "node_description" with "The root category in the C topic"
     When I press "node_submit"

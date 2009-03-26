@@ -17,4 +17,9 @@
 
 
 class Node < ActiveRecord::Base
+  validates_presence_of :name, :message => "Node's name cannot be blank."
+  validates_format_of   :name, :with => /^[a-zA-Z][a-zA-Z0-9._:-]*$/m,
+    :message => "Node's name must start with a letter, and can "\
+                "contain only letters, numbers, and/or the period, "\
+                "colon, dash, and underscore."
 end

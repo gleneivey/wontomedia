@@ -31,9 +31,21 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
     Then I should see all of "reallyBetty", "Betty Rubble disguised as Wilma", "Fred is cheating"
 
 
+  Scenario: System should prevent entry of invalid node names
+    Given I am on the new nodes page
+    And I fill in "node_name" with "0bad"
+    And I fill in "node_title" with "A good title /\?"
+    And I fill in "node_description" with "0 And a (good) description, too."
+    When I press "node_submit"
+    Then I should see "Error"
+    And I fill in "node_name" with "bad too"
+    When I press "node_submit"
+    Then I should see "Error"
+    And I fill in "node_name" with "BAD>bad"
+    When I press "node_submit"
+    Then I should see "Error"
 
-#Test case: modify all three fields of an existing node.
-#Test cases: modify each node field in an independent operation.
+
 #Test case: node.name may only be an XML ID
 #Test case: node.name must be unique across all nodes
 #Test case: node.title may only be one line, no whitespace except %20

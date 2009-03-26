@@ -23,15 +23,52 @@ class NodeTest < ActiveSupport::TestCase
     assert Node.new
   end
 
-  test "node has name property" do
-    assert Node.new(:name => "name")
-  end
-
-  test "node has title property" do
-    assert Node.new(:title => "title")
+  test "node has name and title properties" do
+    n = Node.new(:name => "nAME.-_:", :title => "Node's title" )
+    assert n
+    assert_equal "nAME.-_:", n.name
+    assert_equal "Node's title", n.title
+    assert n.save
   end
 
   test "node has description property" do
-    assert Node.new(:description => "description")
+    n = Node.new(:name => "name", :title => "Node's title",
+                 :description => "description")
+    assert n
+    assert_equal "description", n.description
+    assert n.save
+  end
+
+  
+          # verify existence/correctness of :name validations
+  test "node name is required" do
+    n = Node.new(:name => "", :title => "Node's title",
+                 :description => "description")
+    assert !n.save
+  end
+
+  test "node name cant begin with a number" do
+    n = Node.new(:name => "42node", :title => "Node's title",
+                 :description => "description")
+    assert !n.save
+  end
+
+  test "node name cant include white space" do
+    # FIXME: tried "\n" but validates_format_of didn't reject, even with //m
+    ["\t", " "].each do |bad|
+      n = Node.new(:name => "bad#{bad}Bad", :title => "Node's title",
+                   :description => "description")
+      assert !n.save, "Failed on :#{bad}: character"
+    end
+  end
+
+  test "node name cant include most punctuation" do
+    ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")",
+     "+", "=", "{", "}", "[", "]", "|", "\\", ";", "\"", "'",
+     ",", "<", ">", "?", "/"].each do |bad|
+      n = Node.new(:name => "bad#{bad}Bad", :title => "Node's title",
+                   :description => "description")
+      assert !n.save, "Failed on punctuation #{bad}"
+    end
   end
 end
