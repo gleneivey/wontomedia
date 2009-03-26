@@ -40,4 +40,9 @@ class NodesNewViewTest < ActionController::TestCase
         "new-node form contains 'textarea' field for :description attribute"
     end
   end
+
+  test "nodes new form shouldnt contain status" do
+    get :edit, :id => nodes(:one).id
+    assert_negative_view_contents
+  end    
 end

@@ -43,11 +43,6 @@ class NodesEditViewTest < ActionController::TestCase
 
   test "empty nodes edit form shouldnt contain status" do
     get :edit, :id => nodes(:one).id
-    assert_select "body", { :text => /error/i, :count => 0 },
-      "Page cannot say 'error'"
-    assert_select "body", { :text => /successfully created/i, :count => 0 },
-      "Page cannot say 'successfully created'"
-#    assert_select "body", { :text => /warranty/i, :count => 0 },
-#      "Page cannot say 'warranty'"
+    assert_negative_view_contents
   end    
 end

@@ -41,4 +41,9 @@ class NodesHomeViewTest < ActionController::TestCase
     get :home
     assert_select "body", /#{nodes(:one).description}/
   end
+
+  test "home page shouldnt contain status" do
+    get :edit, :id => nodes(:one).id
+    assert_negative_view_contents
+  end    
 end

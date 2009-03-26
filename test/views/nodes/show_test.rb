@@ -41,4 +41,9 @@ class NodesShowViewTest < ActionController::TestCase
     get :show, :id => nodes(:one).id
     assert_select "body", /#{nodes(:one).description}/
   end
+
+  test "nodes show page shouldnt contain status" do
+    get :edit, :id => nodes(:one).id
+    assert_negative_view_contents
+  end    
 end
