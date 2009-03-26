@@ -54,7 +54,15 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
     Then I should see "error"
 
 
-#Test case: node.name must be unique across all nodes
+  Scenario: System should prevent entry of invalid node titles
+    Given I am on the new nodes page
+    And I fill in "node_name" with "goodName"
+    And I fill in "node_title" with "Bad title\012has two lines"
+    And I fill in "node_description" with "good"
+    When I press "node_submit"
+    Then I should see "error"
+
+
 #Test case: node.title may only be one line, no whitespace except %20
 #Test case: no field allows an injection attack
 #  (verify escaping of input HTML, JS, and SQL)

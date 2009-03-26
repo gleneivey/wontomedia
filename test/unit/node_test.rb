@@ -54,8 +54,7 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test "node name cant include white space" do
-    # FIXME: tried "\n" but validates_format_of didn't reject, even with //m
-    ["\t", " "].each do |bad|
+    ["\t", "\n", " "].each do |bad|
       n = Node.new(:name => "bad#{bad}Bad", :title => "Node's title",
                    :description => "description")
       assert !n.save, "Failed on :#{bad}: character"
@@ -76,5 +75,20 @@ class NodeTest < ActiveSupport::TestCase
     name = nodes(:one).name
     n = Node.new(:name => name, :title => "title", :description => "desc")
     assert !n.save
+  end
+
+
+          # verify existence/correctness of :title validations
+  test "node title is required" do
+    n = Node.new(:name => "node", :title => "", :description => "description")
+    assert !n.save
+  end
+
+  test "node title cant include non-space white space" do
+    ["\t", "\n"].each do |bad|
+      n = Node.new(:name => "goodName", :title => "But bad#{bad}title",
+                   :description => "description")
+      assert !n.save, "Failed on :#{bad}: character"
+    end
   end
 end

@@ -25,6 +25,13 @@ When /^I follow "(.*)"$/ do |link|
 end
 
 When /^I fill in "(.*)" with "(.*)"$/ do |field, value|
+  while value =~ /\\([0-7]{3})/ do
+    octal = Regexp.last_match[1]
+    str = " "
+    str[0]= octal.oct                 # Ruby 1.8
+#    str.setbyte(0, octal.oct)        # Ruby 1.9
+    value.sub!(/\\#{octal}/, str)
+  end
   fill_in(field, :with => value) 
 end
 
