@@ -37,16 +37,23 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
     And I fill in "node_title" with "A good title /\?"
     And I fill in "node_description" with "0 And a (good) description, too."
     When I press "node_submit"
-    Then I should see "Error"
+    Then I should see "error"
     And I fill in "node_name" with "bad too"
     When I press "node_submit"
-    Then I should see "Error"
+    Then I should see "error"
     And I fill in "node_name" with "BAD>bad"
     When I press "node_submit"
-    Then I should see "Error"
+    Then I should see "error"
 
 
-#Test case: node.name may only be an XML ID
+  Scenario: I can't enter two nodes with same name
+    Given there are 2 existing nodes like "someNode"
+    And I am on the edit nodes page for "someNode0"
+    And I fill in "node_name" with "someNode1"
+    When I press "node_submit"
+    Then I should see "error"
+
+
 #Test case: node.name must be unique across all nodes
 #Test case: node.title may only be one line, no whitespace except %20
 #Test case: no field allows an injection attack

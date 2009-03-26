@@ -71,4 +71,10 @@ class NodeTest < ActiveSupport::TestCase
       assert !n.save, "Failed on punctuation #{bad}"
     end
   end
+
+  test "node names must be unique" do
+    name = nodes(:one).name
+    n = Node.new(:name => name, :title => "title", :description => "desc")
+    assert !n.save
+  end
 end
