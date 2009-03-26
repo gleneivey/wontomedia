@@ -40,8 +40,8 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
 
 
 
-# WontoMedia -- a wontology web application
-# Copyright (C) 2009 -- Glen E. Ivey
+# WontoMedia - a wontology web application
+# Copyright (C) 2009 - Glen E. Ivey
 #    www.wontology.com
 #
 # This program is free software: you can redistribute it and/or modify
