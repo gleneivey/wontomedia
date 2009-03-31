@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-#$testGemSource= "http://10.201.2.101:8808/";
+#$testGemSource= "http://10.201.2.100:8808/";
 #$aptLoadOptions= "--no-download";
 #$railsVersion= "-v=2.3.2";
 
@@ -31,11 +31,14 @@ DoASystemCommand( "cd $RUBY_GEMS_WITH_VERSION;" .
         # and Rails depends on openssl
 DoASystemCommand( "apt-get -y $aptLoadOptions install libopenssl-ruby" );
 
-        # let's stay on the locall network if we can....
+        # let's stay on the local network if we can....
 if (defined $testGemSource &&
     $testGemSource ne ""){
     DoASystemCommand( "gem1.8 sources --add $testGemSource" );
     DoASystemCommand( "gem1.8 sources --remove http://gems.rubyforge.org/" );
+}
+else {
+    DoASystemCommand( "gem1.8 sources --add http://gems.github.com/" );
 }
         # install Rails gem
 DoASystemCommand( "gem1.8 install $railsVersion rails" );
@@ -79,6 +82,7 @@ print MYSQL "CREATE DATABASE wm_test_db;\n";
 print MYSQL "GRANT ALL PRIVILEGES ON wm_test_db.* TO 'wm'\@'localhost' IDENTIFIED BY 'wm-pass';\n";
 close MYSQL;
 
+
         # the Ruby interface library to MySQL that Rails uses
 DoASystemCommand( "gem1.8 install      mysql" );
         # and, FINALLY, WontoMedia
@@ -99,7 +103,12 @@ DoASystemCommand(
     # initialize the database
 DoASystemCommand( "cd $gemInstallDir; " .
                   "RAILS_ENV=production rake db:schema:load" );
+
+
+print "\n\nInstallation appears to have completed successfully,\n";
+print "starting WontoMedia\n\n\n";
+
     # and launch WontoMedia
-DoASystemCommand( "cd $gemInstallDir; " .
-                  "script/server -e production" );
+system( "cd $gemInstallDir; " .
+        "script/server -e production" );
 

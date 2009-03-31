@@ -55,12 +55,12 @@ ENDOSTRING
     #       deploy features policy
     # aren't included because developers are expected to pull from Git
 
-    s.add_dependency 'rails', '2.2.2'
+    s.add_dependency 'rails', '~>2.2'
   end
 
   task :build => :gemspec    # don't build a gem from a stale spec
 rescue LoadError
-  puts "WARNING: Missing development dependency.  'Jeweler' not available. Install it with: 'sudo gem install technicalpickles-jeweler -s http://gems.github.com'"
+  puts "WARNING: Missing development dependency.  'Jeweler' and/or 'rubyforge' not available. Install them with:\n    'sudo gem install rubyforge'\n    'sudo gem install technicalpickles-jeweler -s http://gems.github.com'"
 end
 
 

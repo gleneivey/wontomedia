@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-03-28}
+  s.date = %q{2009-03-31}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.extra_rdoc_files = ["README"]
@@ -24,11 +24,11 @@ Gem::Specification.new do |s|
     s.specification_version = 2
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rails>, ["= 2.2.2"])
+      s.add_runtime_dependency(%q<rails>, ["~> 2.2"])
     else
-      s.add_dependency(%q<rails>, ["= 2.2.2"])
+      s.add_dependency(%q<rails>, ["~> 2.2"])
     end
   else
-    s.add_dependency(%q<rails>, ["= 2.2.2"])
+    s.add_dependency(%q<rails>, ["~> 2.2"])
   end
 end

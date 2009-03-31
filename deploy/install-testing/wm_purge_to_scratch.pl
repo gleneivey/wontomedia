@@ -1,13 +1,31 @@
 #!/usr/bin/perl
 
+            #### from here, uninstall developer stuff and Git version
+system "gem1.8 uninstall technicalpickles-jeweler ZenTest --all --executables -I";
+system "gem1.8 uninstall rspec rspec-rails webrat cucumber --all --executables -I";
+system "gem1.8 uninstall builder diff-lcs peterwald-git polyglot treetop term-ansicolor --all --executables -I";
+system "gem1.8 uninstall nokogiri --all --executables -I";
+
+system "rm -rf wontomedia";
+system "apt-get -y purge git-core liberror-perl libdigest-sha1-perl ";
+
+
+            #### from here, uninstall Gem version and runtime dependencies
+
     # Note, when this changes, DUPLICATE in wm_install_from_scratch.pl
 $RUBY_GEMS_WITH_VERSION= "rubygems-1.3.1";
 
 
 system "gem1.8 uninstall wontomedia";
 system "gem1.8 uninstall mysql";
-system "apt-get -y purge libopenssl-ruby libopenssl-ruby1.8 ";
+system "apt-get -y purge libopenssl-ruby libopenssl-ruby1.8 " .
+                       " openssl-blacklist ssl-cert ";
 
+
+system "rm -rf /root/.mysql_history /home/gei/.mysql_history " .
+             " /usr/share/app-install/icons/*mysql* " .
+             " /usr/share/app-install/desktop/*mysql* " .
+             " /usr/share/app-install/desktop/*MySQL* ";
 
         # pre-answer config question:
         #  "are you sure you want to remove existing databases?" -- yes
@@ -30,11 +48,12 @@ $lines+= 0; # cast to integer
 system "head -$lines /var/cache/debconf/passwords.dat > temp";
 system "mv temp /var/cache/debconf/passwords.dat";
 
-system "gem1.8 uninstall rake rails actionpack actionmailer " .
+system "gem1.8 uninstall rake rails rack actionpack actionmailer " .
                        " activesupport activerecord activeresource" .
                        " --all --executables -I";
 
-system "rm -rf /root/.gem /usr/bin/gem .gem " .
+system "rm -rf /root/.gem /root/.gemrc /usr/bin/gem .gem " .
+             " /home/gei/.gem /home/gei/.gemrc " .
              " /usr/local/lib/site_ruby/1.8/rubygems* " .
 	     " /usr/local/lib/site_ruby/1.8/ubygems.rb " .
              " /usr/lib/ruby/gems ";
