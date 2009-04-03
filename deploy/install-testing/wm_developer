@@ -17,5 +17,5 @@ exc "gem1.8 install rubyforge technicalpickles-jeweler ZenTest"
 
 
 puts "If you want autotest to execute Cucumber tests, remember to add 'export AUTOFEATURE=\"true autospec\"' to the bottom of your .bashrc file (or the equivalent for your shell)."
-puts "Don't forget to run 'rake db:migrate' prior to starting development."
+puts "Don't forget to run 'rake db:schema:load' prior to starting development."
 
