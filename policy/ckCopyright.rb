@@ -18,42 +18,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# The EXCEPTIONS file may contain blank lines, comments (starting with
-# "#"), strings that are file or path names or that are file name
-# globs, and directives.  Directives must be the first non-whitespace
-# on a line, and all begin with "!".  The four supported directives
-# are as follows:
-#
-#   !source <file name>
-#
-#
-#   !lock <git commit number>
-#      This directive instructs ckCopyright that the files specified
-#      by the following lines are NOT to be compared to any of the
-#      reference files, but instead are to be diff'ed against the Git
-#      repository.  A file that is "locked" to a particular Git commit
-#      number matches policy if and only if it is identical to the
-#      version of that file present as of the specified Git commit.
-#      The intention of this mechanism is to handle code importend
-#      from third parties or auto-generated, which does not need to
-#      have "local" copyright notices unless it is modified as part of
-#      our project.
-#
-#   !unlock
-#      This directive ends a group of lines that are associated with
-#      the preceeding !lock.  Note that !lock/!unlock do not nest or
-#      pair.  Each !lock directive effects the lines that follow it,
-#      and each !unlock effects the lines following *it* (causing
-#      header-file comparison), regardless of what has come before.
-#
-#   !treat <file> !as <extension>
-#      This directive causes ckCopyright to ignore the named file's
-#      actual extension, and to match it against header(s) that
-#      correspond to the specified extension (if any).
-
-
-
-
 # All of the files in 'policy/copyright-notices/' define content that
 # should be present in the other files in the directory tree.  *All*
 # files in the directory tree, _except_ for those listed in
@@ -89,6 +53,42 @@ REF_TYPES = [ HEADER, FOOTER, NOTICE]
 # start with the *first* period in a file name, and can contain
 # periods.)  "No extension" (e.g., no periods in the file name) is
 # also considered to be a file extension for matching purposes.
+
+
+# The EXCEPTIONS file may contain blank lines, comments (starting with
+# "#"), strings that are file or path names or that are file name
+# globs, and directives.  Directives must be the first non-whitespace
+# on a line, and all begin with "!".  The four supported directives
+# are as follows:
+#
+#   !source <file name>
+#
+#
+#   !lock <git commit number>
+#      This directive instructs ckCopyright that the files specified
+#      by the following lines are NOT to be compared to any of the
+#      reference files, but instead are to be diff'ed against the Git
+#      repository.  A file that is "locked" to a particular Git commit
+#      number matches policy if and only if it is identical to the
+#      version of that file present as of the specified Git commit.
+#      The intention of this mechanism is to handle code importend
+#      from third parties or auto-generated, which does not need to
+#      have "local" copyright notices unless it is modified as part of
+#      our project.
+#
+#   !unlock
+#      This directive ends a group of lines that are associated with
+#      the preceeding !lock.  Note that !lock/!unlock do not nest or
+#      pair.  Each !lock directive effects the lines that follow it,
+#      and each !unlock effects the lines following *it* (causing
+#      header-file comparison), regardless of what has come before.
+#
+#   !treat <file> !as <extension>
+#      This directive causes ckCopyright to ignore the named file's
+#      actual extension, and to match it against header(s) that
+#      correspond to the specified extension (if any).
+
+
 
 
 
