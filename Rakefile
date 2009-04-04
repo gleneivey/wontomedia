@@ -80,6 +80,12 @@ namespace :test do
   end
   Rake::Task['test:helpers'].comment =
     "Run the view-helper tests (test/helpers/**/*_test.rb)"
+
+  desc "Execute all project-policy audit tests."
+  task :policies do
+    ruby File.join( "policy", "ckCopyright.rb" )
+  end
 end
 
 task :test => [ "test:views", "test:helpers" ]
+task :default => "test:policies"

@@ -238,13 +238,6 @@ def do_matching_for_file(path, extension)
           exit 1
         end
 
-puts "    Matching for #{path}"
-puts "  file_str:"
-puts file_str
-puts "  matcher.string"
-puts matcher.string
-puts "  compare: #{file_str.index(matcher.string)}"
-
       unless file_str.index(matcher.string)
         STDERR.puts "Copyright Policy FAILURE.  File '#{path}' should contain a block matching the header template #{matcher.path}, but doesn't."
         @failCount += 1
@@ -262,3 +255,7 @@ end
 @special_files.each do |h|
   do_matching_for_file(h[:path], h[:extension])
 end
+
+
+exit @failCount
+
