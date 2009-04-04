@@ -3,7 +3,7 @@ config/database.yml
 db/*.db
 log/*.log
 pkg
-tmp/*
+tmp
 .DS_Store
 .svn
 TAGS

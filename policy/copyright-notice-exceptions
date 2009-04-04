@@ -1,7 +1,17 @@
-## this file uses same glob conventions as .gitignore
+## this file uses same glob conventions as Dir.glob
+
+  # NOTE: file name target of '!source' directive cannot contain spaces
+!source .gitignore
+.git
+.gitignore
 
 
-    # auto-generated files that must be (c)'d if modified
+    # files that don't match our extension-determines-header-format conventions
+!treat Rakefile   !as .rb
+!treat .autotest  !as .rb
+
+
+    # auto-generated files currently as-created; must be (c)'d if modified
 features/steps/webrat_steps.rb
 features/support/env.rb
 config/environment.rb
@@ -13,26 +23,32 @@ config/initializers/mime_types.rb
 config/initializers/new_rails_defaults.rb
 lib/tasks/cucumber.rake
 public/stylesheets/scaffold.css
+public/dispatch.rb
 
     # repeatedly auto-generated from other files
 db/schema.rb
+VERSION.yml
 
     # one-time auto-generated files, never to be modified
     #  "lock" directive contains git commit # of acceptable version
 !lock            6ac5825b85a2fd5a2cf9ae8bf4f24586e4a0b7e3
-script/*
-config/boot.rb
+script
 config/database-sample-mysql.yml
+!lock            d6865e2d0348cf0bcd928eec0c8aac98dbc6fbbd
+config/boot.rb
 !unlock
 
     # unmodified (and never to be modified) third-party components we include
     #  "lock" directive contains git commit # of acceptable version
-!lock            03b4b134f40e354dc20983219fcf116be516c145
+!lock            c28928993247871a46e19c538dac6093d327f225
 public/javascripts/controls.js
 public/javascripts/dragdrop.js
 public/javascripts/effects.js
 public/javascripts/prototype.js
-vendor/*
+vendor
+COPYING
+COPYING.DOCUMENTATION
+LICENSE
 !unlock
 
     # can't embed license notice in binary files--our originals still
