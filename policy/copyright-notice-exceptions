@@ -3,7 +3,6 @@
   # NOTE: file name target of '!source' directive cannot contain spaces
 !source .gitignore
 .git
-.gitignore
 
 
     # files that don't match our extension-determines-header-format conventions
@@ -12,19 +11,9 @@
 !treat .autotest                                     !as .rb
 
 
-    # auto-generated files currently as-created; must be (c)'d if modified
-features/steps/webrat_steps.rb
+    # auto-generated files essentially as-created
+    # must be (c)'d if substantively modified
 features/support/env.rb
-config/environment.rb
-config/environments/development.rb
-config/environments/production.rb
-config/environments/test.rb
-config/initializers/inflections.rb
-config/initializers/mime_types.rb
-config/initializers/new_rails_defaults.rb
-lib/tasks/cucumber.rake
-public/stylesheets/scaffold.css
-public/dispatch.rb
 
     # repeatedly auto-generated from other files
 db/schema.rb
@@ -35,6 +24,15 @@ VERSION.yml
 !lock            6ac5825b85a2fd5a2cf9ae8bf4f24586e4a0b7e3
 script
 config/database-sample-mysql.yml
+config/environments/development.rb
+config/environments/production.rb
+config/environments/test.rb
+config/initializers/inflections.rb
+config/initializers/mime_types.rb
+config/initializers/new_rails_defaults.rb
+public/dispatch.rb
+!lock            5ba265e898097d9c0c44c6b9ed4812292597d4b6
+public/stylesheets/scaffold.css
 !lock            d6865e2d0348cf0bcd928eec0c8aac98dbc6fbbd
 config/boot.rb
 !unlock
