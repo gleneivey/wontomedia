@@ -52,7 +52,7 @@ files_for_header_check.each do |file|
 end
 
 exceptions.files_included_in_git_checks.each do |file|
-  unless file.meets_git?(@policies) then failure(file) end
+  unless file.meets_git?(@policies) then failure(@policies.git_file(file)) end
 end
 
 exit @failCount

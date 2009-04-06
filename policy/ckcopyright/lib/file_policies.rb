@@ -54,9 +54,15 @@ class FilePolicies
     end
   end
 
+  GIT_FILESTRING_DECODER = /^([0-9a-fA-F]+) (.+)$/
+  def git_file(file_string)
+    file_string =~ GIT_FILESTRING_DECODER
+    return $2
+  end
   def evaluate_git_policy_on_file_path_in(file_string)
-    file_string =~ /^([0-9a-fA-F]+) (.+)$/
-    `git diff --quiet #{$1} #{$2}`
+    file_string =~ GIT_FILESTRING_DECODER
+    commit, path = $1, $2
+    `git diff --quiet #{commit} #{path}`
     unless $?.exitstatus == 0
       @last_failure =
         "has changed since git commit number #{commit}, but should not have."
