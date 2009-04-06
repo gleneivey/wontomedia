@@ -16,10 +16,16 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ENV["RAILS_ENV"] = "test"
-require File.join( File.dirname(__FILE__), "..", "..", "config", "environment" )
-require 'rubygems'
-require 'test/unit'
-require 'migration_test_helper'
+class CreateEdges < ActiveRecord::Migration
+  def self.up
+    create_table :edges do |t|
+      t.integer :subject_id
+      t.integer :predicate_id
+      t.integer :object_id
+    end
+  end
 
-puts "Hello from test/db/test_helper"
+  def self.down
+    drop_table :edges
+  end
+end
