@@ -29,8 +29,7 @@ class ActiveSupport::TestCase
       "Page cannot say 'error'"
     assert_select "body", { :text => /successfully created/i, :count => 0 },
       "Page cannot say 'successfully created'"
-#FIXME assert_select matches content of HTML comments, ack!
-#    assert_select "body", { :text => /warranty/i, :count => 0 },
-#      "Page cannot say 'warranty'"
+    assert_select "body", { :text => /warranty/i, :count => 0 },
+      "Page cannot say 'warranty'"
   end
 end
