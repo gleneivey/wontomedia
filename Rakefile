@@ -83,7 +83,7 @@ namespace :test do
 
   desc "Execute all project-policy audit tests."
   task :policies do
-    ruby File.join( "policy", "ckCopyright.rb" )
+    ruby File.join( "policy", "ckcopyright", "ckcopyright.rb" )
   end
 end
 
