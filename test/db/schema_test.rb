@@ -43,6 +43,7 @@ class CreateEdgesTest < Test::Unit::TestCase
         t.column    :subject_id,      :integer
         t.column    :predicate_id,    :integer
         t.column    :object_id,       :integer
+        t.column    :self_id,         :integer
       end
 
       # expect this won't be needed for future upgrade to m_t_h

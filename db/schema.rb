@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(:version => 20090406221320) do
     t.integer "subject_id"
     t.integer "predicate_id"
     t.integer "object_id"
+    t.integer "self_id"
   end
 
   create_table "nodes", :force => true do |t|

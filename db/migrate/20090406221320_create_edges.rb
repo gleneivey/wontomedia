@@ -22,6 +22,7 @@ class CreateEdges < ActiveRecord::Migration
       t.integer :subject_id
       t.integer :predicate_id
       t.integer :object_id
+      t.integer :self_id
     end
   end
 
