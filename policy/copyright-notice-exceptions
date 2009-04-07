@@ -30,6 +30,7 @@ config/environments/test.rb
 config/initializers/inflections.rb
 config/initializers/mime_types.rb
 config/initializers/new_rails_defaults.rb
+config/locales/en.yml
 public/dispatch.rb
 !lock            5ba265e898097d9c0c44c6b9ed4812292597d4b6
 public/stylesheets/scaffold.css
