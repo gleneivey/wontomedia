@@ -1,0 +1,224 @@
+# WontoMedia - a wontology web application
+# Copyright (C) 2009 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see <http://www.gnu.org/licenses/>.
+
+
+# "node" schema: name, title, description
+
+
+#### Minimal set of types (predicates) for edges
+#### this is WontoMedia's native "schema", and represents the minimal
+#### typing information used by the UI
+
+
+        # relationships we expect ontology-contributors to use
+peer_of:
+  name: peer_of
+  title: wm built-in 'Peer Of' relationship
+  description: >-
+    A relationship of this type between two nodes indicates a
+    relationship between equals.  This would be appropriate, for
+    example, as a description of the "synonym" relationship that might
+    occur between the entries for two words in a thesaurus.
+    WontoMedia makes two assumptions about items that have a Peer-Of
+    relationship to each other.  First, the relationship is assumed to
+    be bidirectional.  Saying that "A is a Peer-Of B" implies that "B
+    is a Peer-Of A", and it doesn't matter which of the two
+    "directions" is used when the relationship is first created.
+    Second, when showing the graph of relationships between items,
+    WontoMedia will attempt to indicate Peer-Of relationships as
+    primarily horizontal.
+
+
+one_of:
+  name: one_of
+  title: wm built-in 'One Of' relationship
+  description: >-
+    A relationship of this type between two nodes is hierarchical.
+    This relationship states that the subject (left-hand side) of the
+    relationship ("A" in the relationship "A is One-Of B", and like
+    "macintosh" in "macintosh is One-Of computer") is assumed to be more
+    specific or more narrow than the object of the relationship ("B"
+    and "computer").  When showing a graph of relationships between
+    items, WontoMedia will attempt to indicate 'One-Of' relationships as
+    primarily vertical, with the object-item drawn nearer "the root"
+    of the graph and the subject-item toward "the leaves".
+
+    'One Of' is most appropriate for showing relationships between an
+    item and a category.  Relationships between two categories are
+    better indicated with 'Child Of', as in "computer is Child-Of
+    electronics" (assuming, of course, that they're both categories).
+
+    'One Of' is itself a child of 'Child Of'.  And 'Child Of' is the
+    opposite of 'Parent Of', and finally 'Contains' is a child of
+    'Parent Of'.  So, it might be possible to infer that 'One Of' and
+    'Contains' are approximate opposites of each other.  However,
+    making a 'One Of' relationship between two nodes will not
+    automatically cause the symmetric 'Contains' relationship to be
+    created.
+
+
+contains:
+  name: contains
+  title: wm built-in 'Contains' relationship
+  description: >-
+
+    A relationship of this type between two nodes is hierarchical.
+    This relationship states that the subject (left-hand side) of the
+    relationship ("A" in the relationship "A Contains B", and like
+    "spacecraft" in "spacecraft Contains apollo") is more general or
+    broad than the object of the relationship ("B" and "apollo").
+    When showing a graph of relationships between items, WontoMedia
+    will attempt to indicate 'Contains' relationships as primarily
+    vertical, with the subject-item drawn nearer "the root" of the
+    graph and the object-item toward "the leaves".
+
+    'Contains' is most appropriate for showing relationships between a
+    category and an item.  Relationships between two categories are
+    better indicated with 'Parent Of', as in "vehicle Contains
+    spacecraft" (assuming, of course, that both are categories).
+
+    'Contains' is actually Child-Of 'Parent Of'.  'Parent Of' and
+    'Child Of' are opposites of each other, and 'One Of' is a child of
+    'Child Of'.  But this does not make 'Contains' and 'Child Of'
+    opposites of each other, though a approsimation of opposite-ness
+    could be inferred.  WontoMedia will not automatically cause a
+    'Child Of' relationship to be created when a 'Contains'
+    relationship is.
+
+
+parent_of:
+  name: parent_of
+  title: wm built-in 'Parent Of' relationship
+  description: >-
+    
+    This is the fundamental type of hierarchical relationship.  This
+    relationship states that the subject (left-hand side) of the
+    relationship ("A" in the relationship "A is the Parent-Of B", and
+    like "vehicle" in "vehicle is Parent-Of spacecraft") is a
+    super-set of the object of the relationship ("B" and
+    "spacecraft").  When showing a graph of relationships between
+    items, WontoMedia will attempt to indicate 'Parent Of'
+    relationships as primarily vertical, with the subject-item drawn
+    nearer "the root" of the graph and the object-item toward "the
+    leaves".
+
+    'Parent Of' is typically appropriate for relationships between two
+    categories or between two items.  To indicate that a category
+    contains an item, the more specific 'Contains' can be used.
+
+    'Parent Of' is the opposite of 'Child Of'.  Creating a
+    relationship that states one category is 'Parent Of' another is
+    exactly the same as creating a 'Child Of' relationship with the
+    subject and object reversed, and WontoMedia will list the
+    relationship between then using both relationship names (which
+    name is given priority depends on which node is more central to
+    the display).
+
+
+child_of:
+  name: child_of
+  title: wm built-in 'Child Of' relationship
+  description: >-
+
+    This is the fundamental type of hierarchical relationship.  This
+    relationship states that the subject (left-hand side) of the
+    relationship ("A" in the relationship "A is a Child-Of B", and
+    like "spacecraft" in "spacecraft is Child-Of vehicle") is a subset
+    of the object of the relationship ("B" and "vehicle").  When
+    showing a graph of relationships between items, WontoMedia will
+    attempt to indicate 'Child Of' relationships as primarily
+    vertical, with the object-item drawn nearer "the root" of the
+    graph and the subject-item toward "the leaves".
+
+    'Child Of' is typically appropriate for relationships between two
+    categories or between two items.  To indicate that an item is
+    contained by a category, the more specific 'One Of' can be used.
+
+    'Child Of' is the opposite of 'Parent Of'.  Creating a
+    relationship that states one category is 'Child Of' another is
+    exactly the same as creating a 'Parent Of' relationship with the
+    subject and object reversed, and WontoMedia will list the
+    relationship between then using both relationship names (which
+    name is given priority depends on which node is more central to
+    the display).
+
+
+        # relationships grounding those above
+inverse_relationship:
+  name: inverse_relationship
+  title: wm built-in 'Inverse Relationship' type of relationship
+  description: >-
+
+    This relationship is used to characterize how two other
+    relationships relate to each other.  This relationship is used to
+    denote that two other relationships are symmetric and inseparable
+    opposites of each other.  For example, "Child-Of has
+    Inverse-Relationship to Parent-Of".  WontoMedia will interpret any
+    two relationships linked by 'Inverse Relationship' (or by a
+    non-built in relationship that is marked as a 'SubProperty Of'
+    'Inverse Relationship') as being indentical antonyms of each
+    other.  Any time one relationship is created, WontoMedia will
+    automatically infer, create, and show the matching opposite
+    (inverse) relationship's name.
+
+
+sub_property_of:
+  name: sub_property_of
+  title: wm built-in 'SubProperty Of' type of relationship
+  description: >-
+
+    This relationship is used to relate two other relationships to
+    each other.  The statement "A is a SubProperty-Of B" says that the
+    relationship A makes a more specific, narrow claim about nodes it
+    relates than the relationship B does.  However, if WontoMedia has
+    special behavior or handling for relationship B, the 'SubProperty
+    Of' statement allows it to determine it should apply that special
+    behavior to A as well.
+
+    For example, when drawing relationship graphs, WontoMedia attempts
+    to draw all instances of 'Symmetric Relationship" in a primarily
+    horizontal way.  There is a built-in statement that "Peer-Of is a
+    SubProperty-Of Symmetric-Relationship", which causes 'Peer Of'
+    relationships to be (preferentially) drawn horizontally, as will
+    be any other types of relationships that are added to an ontology
+    with WontoMedia.
+
+
+        # fundamental property classes; the root of the property universe
+symmetric_relationship:
+  name: symmetric_relationship
+  title:
+  description: >-
+    This is a root element in WontoMedia's internal schema.  All
+    relationship (property) classes are children of one of three root
+    relationship types, including this one.
+
+value_relationship:
+  name: value_relationship
+  title:
+  description: >-
+    This is a root element in WontoMedia's internal schema.  All
+    relationship (property) classes are children of one of three root
+    relationship types, including this one.
+
+hierarchical_relationship:
+  name: hierarchical_relationship
+  title:
+  description: >-
+    This is a root element in WontoMedia's internal schema.  All
+    relationship (property) classes are children of one of three root
+    relationship types, including this one.

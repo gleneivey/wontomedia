@@ -1,0 +1,68 @@
+# WontoMedia - a wontology web application
+# Copyright (C) 2009 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see <http://www.gnu.org/licenses/>.
+
+
+# "edge" schema: subject[_id], predicate[_id], object[_id], self[_id]
+
+
+define_sub_property_of:
+  subject: sub_property_of
+  predicate: sub_property_of
+  object: hierarchical_relationship
+
+define_inverse_relationship:
+  subject: inverse_relationship
+  predicate: sub_property_of
+  object: symmetric_relationship
+
+define_parent_of:
+  subject: parent_of
+  predicate: sub_property_of
+  object: hierarchical_relationship
+
+defind_child_of:
+  subject: child_of
+  predicate: sub_property_of
+  object: hierarchical_relationship
+
+    # need to explicitly define symmetry of fundamental relationships
+define_parent_to_child_symmetry:
+  subject: parent_of
+  predicate: inverse_relationship
+  object: child_of
+
+define_child_to_parent_symmetry:
+  subject: child_of
+  predicate: inverse_relationship
+  object: parent_of
+
+define_peer_of:
+  subject: peer_of
+  predicate: sub_property_of
+  object: symmetric_relationship
+
+    # parent/child are symmetric; one_of/contains are not (directly)
+define_one_of:
+  subject: one_of
+  predicate: sub_property_of
+  object: child_of
+
+define_contains:
+  subject: contains
+  predicate: sub_property_of
+  object: parent_of
+
