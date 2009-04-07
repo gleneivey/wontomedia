@@ -21,7 +21,7 @@ begin    # don't force Cucumber dependency on non-developers
   require 'cucumber/rake/task'
 
   Cucumber::Rake::Task.new(:features) do |t|
-    t.cucumber_opts = "--format pretty"
+    t.cucumber_opts = "--format progress"
   end
 
   task :features => 'db:test:prepare'
