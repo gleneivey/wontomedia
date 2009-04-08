@@ -24,18 +24,23 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test "node has name and title properties" do
-    n = Node.new(:name => "nAME.-_:", :title => "Node's title" )
+    name = "nAME.-_:"
+    title = "Node's title"
+    n = Node.new(:name => name, :title =>  title)
     assert n
-    assert_equal "nAME.-_:", n.name
-    assert_equal "Node's title", n.title
+    assert_equal name, n.name
+    assert_equal title, n.title
     assert n.save
   end
 
   test "node has description property" do
-    n = Node.new(:name => "name", :title => "Node's title",
-                 :description => "description")
+    name = "name"
+    title = "Node's title"
+    description = "description"
+    n = Node.new(:name => name, :title => title,
+                 :description => description)
     assert n
-    assert_equal "description", n.description
+    assert_equal description, n.description
     assert n.save
   end
 
