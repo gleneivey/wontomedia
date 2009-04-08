@@ -40,6 +40,8 @@ class HomeThroughCreateTest < ActionController::IntegrationTest
       "nodes-create POST failed"
     assert_match %r%/nodes/[0-9]+%, path,
       "New node creation didn't end up at nodes-show page"
+    assert_select "body", /successfully created/
+
 
     # check node-show page contents:
     assert_contain "nodeB"

@@ -45,11 +45,42 @@ class NodesControllerTest < ActionController::TestCase
     assert_nil node.description
   end
 
-  test "should create node" do
+  test "should create node with valid data" do
+    name = "nodeName"
     assert_difference('Node.count') do
-      post :create, :node => { :name => "name", :title => "title" }
+      post :create, :node => { :name => name, :title => "title" }
     end
     assert_redirected_to node_path(assigns(:node))
+    assert_not_nil Node.find_by_name(name)
+  end
+
+  test "should not create node with invalid data" do
+    assert_no_difference('Node.count') do
+      post :create, :node => { :name => "name", :title => "ti\ttle" }
+    end
+    assert_response :success
+    assert_template "nodes/new"
+    assert_select "body", /error/
+  end
+
+  # specific validation tests here because these restrictions are
+  # enforced by the controller -- "." and ":" are allowed by the model
+  # because they're used in internally-generated node names
+  test "should not create a node with a name including a period" do
+    assert_no_difference('Node.count') do
+      post :create, :node => { :name => "na.me", :title => "title" }
+    end
+    assert_response :success
+    assert_template "nodes/new"
+    assert_select "body", /error/
+  end
+  test "should not create a node with a name including a colon" do
+    assert_no_difference('Node.count') do
+      post :create, :node => { :name => "na:me", :title => "title" }
+    end
+    assert_response :success
+    assert_template "nodes/new"
+    assert_select "body", /error/
   end
 
   test "should show node" do
@@ -61,15 +92,41 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should update node" do
-    put :update, :id => nodes(:one).id, :node => { :name => "two" }
+    new_name = "two"
+    assert_no_difference('Node.count') do
+      put :update, :id => nodes(:one).id, :node => { :name => new_name }
+    end
     assert_redirected_to node_path(assigns(:node))
+    assert_not_nil Node.find_by_name(new_name)
+  end
+
+  # validation tests here because these restrictions are enforced by
+  # the controller -- "." and ":" are allowed by the model because
+  # they're used in internally-generated node names
+  test "should not update node if name changed to include a period" do
+    assert_no_difference('Node.count') do
+      put :update, :id => nodes(:one).id, :node => { :name => "na.me" }
+    end
+    assert_response :success
+    assert_template "nodes/edit"
+    assert_select "body", /error/
+  end
+  test "should not update node if name changed to include a colon" do
+    assert_no_difference('Node.count') do
+      put :update, :id => nodes(:one).id, :node => { :name => "na:me" }
+    end
+    assert_response :success
+    assert_template "nodes/edit"
+    assert_select "body", /error/
   end
 
   test "should delete node" do
+    name = nodes(:one).name
     assert_difference('Node.count', -1) do
       delete :destroy, :id => nodes(:one).id
     end
     assert_redirected_to nodes_path
+    assert_nil Node.find_by_name(name)
   end
 
 

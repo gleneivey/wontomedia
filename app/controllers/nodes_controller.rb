@@ -37,11 +37,13 @@ class NodesController < ApplicationController
     @node = Node.new(params[:node])
 
     respond_to do |format|
-      if @node.save
+      if @node.name =~ /[:.]/                     ||
+          !@node.save
+        @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
+        format.html { render :action => "new" }
+      else
         flash[:notice] = 'Node was successfully created.'
         format.html { redirect_to(@node) }
-      else
-        format.html { render :action => "new" }
       end
     end
   end
@@ -61,11 +63,14 @@ class NodesController < ApplicationController
     @node = Node.find(params[:id])
 
     respond_to do |format|
-      if @node.update_attributes(params[:node])
+      if (!params[:node].nil? && !params[:node][:name].nil? &&
+            params[:node][:name] =~ /[:.]/                     )  ||
+          !@node.update_attributes(params[:node])
+        @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
+        format.html { render :action => "edit" }
+      else
         flash[:notice] = 'Node was successfully updated.'
         format.html { redirect_to(@node) }
-      else
-        format.html { render :action => "edit" }
       end
     end
   end
