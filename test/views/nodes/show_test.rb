@@ -21,29 +21,30 @@ require 'test_helper'
 
 class NodesShowViewTest < ActionController::TestCase
   tests NodesController
+  def get_nodes_show(name) get :show, :id => nodes(name).id; end
 
   test "should have show page for nodes" do
-    get :show, :id => nodes(:one).id
+    get_nodes_show(:one)
     assert_template "nodes/show"
   end
 
   test "node-show page should contain node name" do
-    get :show, :id => nodes(:one).id
+    get_nodes_show(:one)
     assert_select "body", /#{nodes(:one).name}/
   end
 
   test "node-show page should contain node title" do
-    get :show, :id => nodes(:one).id
+    get_nodes_show(:one)
     assert_select "body", /#{nodes(:one).title}/
   end
 
   test "node-show page should contain node description" do
-    get :show, :id => nodes(:one).id
+    get_nodes_show(:one)
     assert_select "body", /#{nodes(:one).description}/
   end
 
   test "nodes show page shouldnt contain status" do
-    get :show, :id => nodes(:one).id
+    get_nodes_show(:one)
     assert_negative_view_contents
   end    
 end
