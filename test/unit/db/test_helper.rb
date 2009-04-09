@@ -16,9 +16,5 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ENV["RAILS_ENV"] = "test"
-require File.join( File.dirname(__FILE__), "..", "..", "..",
-                   "config", "environment" )
-require 'rubygems'
-require 'test/unit'
+require 'test_helper'
 require 'migration_test_helper'
