@@ -33,57 +33,54 @@ Autotest.add_hook :initialize do |at|
   at.add_exception %r%^\./(?:\.git|\.hg|\.svn|framework|gems|schema|\.DS_Store|autotest|bin|.*\.sqlite3)% 
 
 
-      # for the basic Rails directory structure
+      # "unit" tests (not just Rails "unit tests are model tests", but
+      # tests of individual classes/files that don't require a
+      # controller to be executed during testing) are all stored under
+      # test/unit, in a directory structure that mirrors the top-level
+      # Rails directory structure (app, config, db, lib).  So the test
+      # for the model "mod" are found in
+      # test/unit/app/models/mod_test.rb, rather than
+      # test/unit/mod_test.rb
   at.add_mapping %r%^app/models/(.*)\.rb$% do |_, m|
-    "test/unit/#{m[1]}_test.rb"
+    "test/unit/app/models/#{m[1]}_test.rb"
+  end
+  at.add_mapping %r%^app/views/(.+)\.html\.erb$% do |_, m|
+    "test/unit/app/views/#{m[1]}_test.rb"
+  end
+  at.add_mapping %r%^app/helpers/(.+)\.rb$% do |_, m|
+    "test/unit/app/helpers/#{m[1]}_test.rb"
+  end
+  at.add_mapping %r%^config/routes\.rb$% do
+    at.files_matching %r%^test/unit/config/.*routes?_test\.rb$%
+  end
+  at.add_mapping(/^lib\/(.*\/)?([^\/]*)\.rb$/) do |_, m|
+    at.files_matching %r%^test/unit/lib/#{m[1]+m[2]}_test\.rb$%
   end
 
+
+      # controller "development" (unit) tests in normal Rails directory
   at.add_mapping %r%^app/controllers/(.*)\.rb$% do |_, m|
     if m[1] == "application" then
-      at.files_matching %r%^test/(views|functional|integration)/.*_test\.rb$%
+      at.files_matching
+        %r%^test/(unit/app/views|functional|integration)/.*_test\.rb$%
     else
       a = [ "test/functional/#{m[1]}_test.rb" ]
       m[1] =~ /^(.+)_controller/
-      c = Regexp.last_match[1]
-      a.concat at.files_matching( %r%^test/integration/.*#{c}.*_test\.rb$% )
+      a.concat at.files_matching( %r%^test/integration/.*#{$1}.*_test\.rb$% )
     end
-  end
-
-  # we do view testing, with tests located in their own test directory
-  at.add_mapping %r%^app/views/(.+)\.html\.erb$% do |_, m|
-    "test/views/#{m[1]}_test.rb"
-  end
-
-  # we do view-helper testing, with tests located in their own directory
-  at.add_mapping %r%^app/helpers/(.+)\.rb$% do |_, m|
-    "test/helpers/#{m[1]}_test.rb"
-  end
-
-  # we do route testing, with test files in the test/functional directory
-  at.add_mapping %r%^config/routes\.rb$% do
-    at.files_matching %r%^test/functional/.*routes?_test\.rb$%
-  end
-
-
-
-
-      # now other bits you might find in a Rails app.....
-  at.add_mapping(/^lib\/.*\.rb$/) do |filename, _|
-    base = File.basename(filename, '.rb')
-    at.files_matching %r%^test/unit/#{base}_test\.rb$%
   end
 
 
 
       # and some structural stuff
-  # if files with global effects change, rerun everything
-  at.add_mapping %r%^config/((boot|environment(s/test)?)\.rb|database\.yml)% do
-    at.files_matching %r%^test/.+_test\.rb$%
-  end
-
   # if a test changes, run just that test
   at.add_mapping %r%^test/.*_test\.rb$% do |filename, _|
     filename
+  end
+
+  # if files with global effects change, rerun everything
+  at.add_mapping %r%^config/((boot|environment(s/test)?)\.rb|database\.yml)% do
+    at.files_matching %r%^test/.+_test\.rb$%
   end
 
   # if a test *helper.rb file changes, run all tests parallel-to and below it
@@ -91,12 +88,13 @@ Autotest.add_hook :initialize do |at|
     at.files_matching %r%^test#{m[1]}/.*_test\.rb$%
   end
 
-  # tests that might be dependent on a fixture
+  # if a fixture changes, run all the tests likely to be dependent on it
   #   Note: may have multiple view tests dependent on a single fixture
   at.add_mapping %r%^test/fixtures/(.+)s\.yml$% do |_, m|
-    ["test/unit/#{m[1]}_test.rb",
-     "test/functional/#{m[1]}s_controller_test.rb" ].
-        concat at.files_matching(%r%^test/views/#{m[1]}s/.*_test\.rb$%)
+    ["test/unit/app/model/#{m[1]}_test.rb",
+       "test/functional/#{m[1]}s_controller_test.rb" ]                    +
+      at.files_matching(%r%^test/unit/app/views/#{m[1]}s/.*_test\.rb$%)   +
+      at.files_matching(%r%^test/integration/.*#{m[1]}.*_test\.rb$%)
   end
 end
 

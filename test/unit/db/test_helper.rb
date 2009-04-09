@@ -17,9 +17,8 @@
 
 
 ENV["RAILS_ENV"] = "test"
-require File.join( File.dirname(__FILE__), "..", "..", "config", "environment" )
+require File.join( File.dirname(__FILE__), "..", "..", "..",
+                   "config", "environment" )
 require 'rubygems'
 require 'test/unit'
 require 'migration_test_helper'
-
-puts "Hello from test/db/test_helper"
