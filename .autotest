@@ -41,35 +41,50 @@ Autotest.add_hook :initialize do |at|
       # for the model "mod" are found in
       # test/unit/app/models/mod_test.rb, rather than
       # test/unit/mod_test.rb
-  at.add_mapping %r%^app/models/(.*)\.rb$% do |_, m|
-    "test/unit/app/models/#{m[1]}_test.rb"
-  end
-  at.add_mapping %r%^app/views/(.+)\.html\.erb$% do |_, m|
-    "test/unit/app/views/#{m[1]}_test.rb"
-  end
-  at.add_mapping %r%^app/helpers/(.+)\.rb$% do |_, m|
-    "test/unit/app/helpers/#{m[1]}_test.rb"
-  end
-  at.add_mapping %r%^config/routes\.rb$% do
-    at.files_matching %r%^test/unit/config/.*routes?_test\.rb$%
-  end
-  at.add_mapping(/^lib\/(.*\/)?([^\/]*)\.rb$/) do |_, m|
-    at.files_matching %r%^test/unit/lib/#{m[1]+m[2]}_test\.rb$%
-  end
 
-
-      # controller "development" (unit) tests in normal Rails directory
+    # controller "development" (unit) tests in normal Rails directory
   at.add_mapping %r%^app/controllers/(.*)\.rb$% do |_, m|
-    if m[1] == "application" then
-      at.files_matching
-        %r%^test/(unit/app/views|functional|integration)/.*_test\.rb$%
+    if m[1].index('application') then
+      at.files_matching(
+        %r%^test/(unit/app/views|functional|integration)/.*_test\.rb$% )
     else
       a = [ "test/functional/#{m[1]}_test.rb" ]
       m[1] =~ /^(.+)_controller/
+
+      # local convention: int. test names include all used controller names
       a.concat at.files_matching( %r%^test/integration/.*#{$1}.*_test\.rb$% )
     end
   end
 
+    # relocation of standard rails components/tests
+  # m[1] => models, helpers (maybe "views" if any .rb files
+  at.add_mapping %r%^app/(.+)/(.*)\.rb$% do |_, m|
+    "test/unit/app/#{m[1]}/#{m[2]}_test.rb"
+  end
+  # m[1] => views, views/layouts (probably not any others)
+  at.add_mapping %r%^app/(.+)/(.*)\.html\.erb$% do |_, m|
+    "test/unit/app/#{m[1]}/#{m[2]}_test.rb"
+  end
+
+    # some tests that I like but don't seem common
+  at.add_mapping %r%^config/routes\.rb$% do
+    at.files_matching %r%^test/unit/config/.*routes?_test\.rb$%
+  end
+  at.add_mapping(%r%^lib/(.*/)?([^/]*)\.rb$%) do |_, m|
+    at.files_matching %r%^test/unit/lib/#{m[1]+m[2]}_test\.rb$%
+  end
+
+    # tests on database (schema, seed content, anything app depends on)
+  at.add_mapping(%r%^db/(.*)schema\.rb$%) do |_, m|
+    "test/unit/db/#{m[1]}schema_test.rb"
+  end
+  at.add_mapping %r%^db/fixtures/(.*)\.yml$% do |_, m|
+    "test/unit/db/fixtures/#{m[1]}_data_test.rb"
+  end
+  # haven't decided yet whether to insist all migrations work forever, but...
+  at.add_mapping(%r%^db/migrate/[0-9]+_(.+)\.rb$%) do |_, m|
+    at.files_matching %r%^test/unit/db/migrate/.*#{m[1]}.*_test.rb%
+  end
 
 
       # and some structural stuff
@@ -89,7 +104,7 @@ Autotest.add_hook :initialize do |at|
   end
 
   # if a fixture changes, run all the tests likely to be dependent on it
-  #   Note: may have multiple view tests dependent on a single fixture
+  #   Note: likely have multiple view tests dependent on a single fixture
   at.add_mapping %r%^test/fixtures/(.+)s\.yml$% do |_, m|
     ["test/unit/app/model/#{m[1]}_test.rb",
        "test/functional/#{m[1]}s_controller_test.rb" ]                    +
