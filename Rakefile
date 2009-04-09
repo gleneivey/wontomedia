@@ -25,7 +25,8 @@ require 'rake/rdoctask'
 require 'tasks/rails'
 
 
-
+        ############################################################
+        # block to use Jeweler to generate our gemspec, gem, etc.
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
@@ -64,26 +65,66 @@ rescue LoadError
 end
 
 
+
+        ############################################################
+        # update default rake tasks for our test directory structure
+
+# utility method.  Thanks to Jay Fields:
+#   http://blog.jayfields.com/2008/02/rake-task-overwriting.html
+class Rake::Task
+  def abandon
+    @actions.clear
+  end
+end
+
+namespace :test do
+  # make test:units mean what it normally means
+  Rake::Task[:units].abandon
+  Rake::TestTask.new(:units => "db:test:prepare") do |t|
+    t.libs << "test"
+    t.pattern = 'test/unit/app/models/**/*_test.rb'
+    t.verbose = true
+  end
+  Rake::Task['test:units'].comment =
+    "Run the model tests in test/unit/app/models"
+end
+
+
+        ############################################################
+        # new rake tasks for our unit-like tests
+
 namespace :test do
   Rake::TestTask.new(:views => "db:test:prepare") do |t|
     t.libs << "test"
-    t.pattern = 'test/views/**/*_test.rb'
+    t.pattern = 'test/unit/app/views/**/*_test.rb'
     t.verbose = true
   end
   Rake::Task['test:views'].comment =
-    "Run the view tests (test/views/**/*_test.rb)"
+    "Run the view unit tests (test/unit/app/views/**/*_test.rb)"
 
   Rake::TestTask.new(:helpers => "db:test:prepare") do |t|
     t.libs << "test"
-    t.pattern = 'test/helpers/**/*_test.rb'
+    t.pattern = 'test/unit/app/helpers/**/*_test.rb'
     t.verbose = true
   end
   Rake::Task['test:helpers'].comment =
-    "Run the view-helper tests (test/helpers/**/*_test.rb)"
+    "Run the view-helper unit tests (test/unit/app/helpers/**/*_test.rb)"
 
   Rake::TestTask.new(:db => "db:test:prepare") do |t|
     t.libs << "test"
-    t.pattern = 'test/db/**/*_test.rb'
+    t.pattern = 'test/unit/db/**/*_test.rb'
+    t.verbose = true
+  end
+    "Run the database unit tests (test/unit/db/**/*_test.rb)"
+
+
+        ############################################################
+        # now some new "umbrella" test tasks
+
+  desc "Execute all development tests in test/unit."
+  Rake::TestTask.new(:dev => "db:test:prepare") do |t|
+    t.libs << "test"
+    t.pattern = 'test/unit/**/*_test.rb'
     t.verbose = true
   end
 
@@ -91,8 +132,13 @@ namespace :test do
   task :policies do
     ruby File.join( "policy", "ckcopyright", "ckcopyright.rb" )
   end
-end
+end # namespace :test
 
-task "db:test:prepare" => "db:seed"
+
+
+
 task :test => [ "test:views", "test:helpers" ]
+
+  # don't include these in "rake test" because they're slower....
+  # note: inclusion of "features" in default happens in Cucumber pkg.
 task :default => [ "test:db", "test:policies" ]
