@@ -201,7 +201,7 @@ sub_property_of:
         # fundamental property classes; the root of the property universe
 symmetric_relationship:
   name: symmetric_relationship
-  title:
+  title: wm built-in root for all symmetric relationships/properties
   description: >-
     This is a root element in WontoMedia's internal schema.  All
     relationship (property) classes are children of one of three root
@@ -209,7 +209,7 @@ symmetric_relationship:
 
 value_relationship:
   name: value_relationship
-  title:
+  title: wm built-in root for all relationships/properties with scalar values
   description: >-
     This is a root element in WontoMedia's internal schema.  All
     relationship (property) classes are children of one of three root
@@ -217,7 +217,7 @@ value_relationship:
 
 hierarchical_relationship:
   name: hierarchical_relationship
-  title:
+  title: wm built-in root for all parent/child relationships/properties
   description: >-
     This is a root element in WontoMedia's internal schema.  All
     relationship (property) classes are children of one of three root
