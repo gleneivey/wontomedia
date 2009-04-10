@@ -24,6 +24,22 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures  = false
   fixtures :all
 
+  setup :load_wontomedia_app_seed_data
+  def load_wontomedia_app_seed_data
+    ActiveRecord::Base.establish_connection(
+      ActiveRecord::Base.configurations['test'])
+    Dir.glob(
+      File.join( File.dirname(__FILE__), "..", "db", "fixtures",
+                 "**", "*.yml" )).each do |path|
+        path =~ %r%([^/_]+)\.yml$%
+        table = $1
+        path.sub!(/\.yml$/, "")
+
+        f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
+        f.insert_fixtures
+      end
+  end
+
   def assert_negative_view_contents
     assert_select "body", { :text => /error/i, :count => 0 },
       "Page cannot say 'error'"
@@ -33,15 +49,3 @@ class ActiveSupport::TestCase
       "Page cannot say 'warranty'"
   end
 end
-
-    # load the "seed" data
-ActiveRecord::Base.establish_connection(
-  ActiveRecord::Base.configurations['test'])
-Dir.glob(
-  File.join( File.dirname(__FILE__), "..", "db", "fixtures", "**", "*.yml" )).
-  each do |path|
-    path =~ %r%([^/]+)\.yml$%
-    table = $1
-    f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
-    f.insert_fixtures
-  end
