@@ -16,21 +16,15 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# Sets up the Rails environment for Cucumber
-ENV["RAILS_ENV"] = "test"
-$KCODE = "u"
-require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
-require 'cucumber/rails/world'
-require 'cucumber/formatters/unicode'
-Cucumber::Rails.use_transactional_fixtures
+require 'test_helper'
+require File.join( File.dirname(__FILE__), '..', 'test_helper' )
 
-require 'webrat'
-Webrat.configure do |config|
-  config.mode = :rails
+class NodesDataTest < ActiveSupport::TestCase
+  test "nodes seed data present" do
+    [ 'peer_of', 'one_of', 'contains', 'parent_of', 'child_of',
+      'inverse_relationship', 'sub_property_of', 'symmetric_relationship',
+      'value_relationship', 'hierarchical_relationship'].each do |name|
+      assert Node.find_by_name(name)
+    end
+  end
 end
-
-require 'cucumber/rails/rspec'
-
-
-require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
-load_wontomedia_app_seed_data

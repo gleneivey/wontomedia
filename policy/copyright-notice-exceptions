@@ -11,10 +11,6 @@
 !treat .autotest                                     !as .rb
 
 
-    # auto-generated files essentially as-created
-    # must be (c)'d if substantively modified
-features/support/env.rb
-
     # repeatedly auto-generated from other files
 db/schema.rb
 VERSION.yml

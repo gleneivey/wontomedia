@@ -15,22 +15,25 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
 
+# define method in any context where 'require'ed; no fixed namespace/class
+def load_wontomedia_app_seed_data
+  unless ActiveRecord::Base.connected?
+    ActiveRecord::Base.establish_connection(
+      ActiveRecord::Base.configurations['test'])
+  end
+  Dir.glob(
+    File.join( File.dirname(__FILE__), "..", "db", "fixtures",
+               "**", "*.yml" )).each do |path|
+      path =~ %r%([^/_]+)\.yml$%
+      table = $1
+      path.sub!(/\.yml$/, "")
 
-# Sets up the Rails environment for Cucumber
-ENV["RAILS_ENV"] = "test"
-$KCODE = "u"
-require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
-require 'cucumber/rails/world'
-require 'cucumber/formatters/unicode'
-Cucumber::Rails.use_transactional_fixtures
-
-require 'webrat'
-Webrat.configure do |config|
-  config.mode = :rails
+      begin
+        f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
+        f.insert_fixtures
+      rescue ActiveRecord::StatementInvalid
+        # must have already loaded this data
+      end
+    end
 end
 
-require 'cucumber/rails/rspec'
-
-
-require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
-load_wontomedia_app_seed_data

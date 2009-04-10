@@ -24,21 +24,8 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures  = false
   fixtures :all
 
+  require File.join( File.dirname(__FILE__), 'seed_helper' )
   setup :load_wontomedia_app_seed_data
-  def load_wontomedia_app_seed_data
-    ActiveRecord::Base.establish_connection(
-      ActiveRecord::Base.configurations['test'])
-    Dir.glob(
-      File.join( File.dirname(__FILE__), "..", "db", "fixtures",
-                 "**", "*.yml" )).each do |path|
-        path =~ %r%([^/_]+)\.yml$%
-        table = $1
-        path.sub!(/\.yml$/, "")
-
-        f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
-        f.insert_fixtures
-      end
-  end
 
   def assert_negative_view_contents
     assert_select "body", { :text => /error/i, :count => 0 },
