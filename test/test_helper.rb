@@ -33,3 +33,15 @@ class ActiveSupport::TestCase
       "Page cannot say 'warranty'"
   end
 end
+
+    # load the "seed" data
+ActiveRecord::Base.establish_connection(
+  ActiveRecord::Base.configurations['test'])
+Dir.glob(
+  File.join( File.dirname(__FILE__), "..", "db", "fixtures", "**", "*.yml" )).
+  each do |path|
+    path =~ %r%([^/]+)\.yml$%
+    table = $1
+    f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
+    f.insert_fixtures
+  end
