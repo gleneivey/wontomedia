@@ -17,11 +17,24 @@
 
 
 namespace :db do
-  desc "This loads the development data."
+  desc "Load YAML seed data from db/fixtures"
   task :seed => :environment do
+    require 'active_record'
     require 'active_record/fixtures'
-    Dir.glob(RAILS_ROOT + '/db/fixtures/**/*.yml').each do |file|
-      Fixtures.create_fixtures(File.dirname(file), File.basename(file, '.*'))
+
+    unless ActiveRecord::Base.connected?
+      ActiveRecord::Base.establish_connection(
+        ActiveRecord::Base.configurations[RAILS_ENV] )
+    end
+
+    pattern = File.join( RAILS_ROOT, 'db', 'fixtures', '**', '*.yml' )
+    Dir.glob(pattern).each do |path|
+      path =~ %r%([^/_]+)\.yml$%
+      table = $1
+      path.sub!(/\.yml$/, "")
+
+      f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
+      f.insert_fixtures
     end
   end
 
