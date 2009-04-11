@@ -34,11 +34,9 @@ class NodeTest < ActiveSupport::TestCase
   end
 
   test "node has description property" do
-    name = "name"
-    title = "Node's title"
     description = "description"
-    n = Node.new(:name => name, :title => title,
-                 :description => description)
+    n = Node.new( :name => "name", :title => "Node's title",
+                  :description => description)
     assert n
     assert_equal description, n.description
     assert n.save
