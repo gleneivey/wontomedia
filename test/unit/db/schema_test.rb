@@ -36,6 +36,7 @@ class CreateEdgesTest < Test::Unit::TestCase
         t.column    :name,            :string
         t.column    :title,           :string
         t.column    :description,     :text
+        t.column    :type,            :string
       end
 
       s.table "edges" do |t|
