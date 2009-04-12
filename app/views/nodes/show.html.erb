@@ -35,6 +35,6 @@
 
 
 <%= link_to 'Edit this node', edit_node_path(@node) %> |
-<%= link_to 'Delete this node', @node, :confirm => 'Are you sure?',
+<%= link_to 'Delete this node', node_path(@node), :confirm => 'Are you sure?',
                                        :method => :delete %> |
 <%= link_to 'Show node list', nodes_path %>

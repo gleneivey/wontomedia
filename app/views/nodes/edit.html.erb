@@ -20,7 +20,7 @@
 
 <h1>Editing '<%= @node.title -%>' Node</h1>
 
-<% form_for(@node) do |f| %>
+<% form_for(@node, :url => node_path(@node)) do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -40,5 +40,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Cancel, show node', @node %> |
+<%= link_to 'Cancel, show node', node_path(@node) %> |
 <%= link_to 'Cancel, show node list', nodes_path %>

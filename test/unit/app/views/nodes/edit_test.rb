@@ -18,6 +18,7 @@
 
 
 require 'test_helper'
+require Rails.root.join( 'lib', 'helpers', 'node_helper' )
 
 class NodesEditViewTest < ActionController::TestCase
   tests NodesController
@@ -27,17 +28,19 @@ class NodesEditViewTest < ActionController::TestCase
     assert_template "nodes/edit"
   end
     
-  test "nodes edit form should invoke create" do
-    get :edit, :id => nodes(:one).id
+  test "nodes edit form should invoke update" do
+    n= nodes(:one)
+    class_string = NodeHelper::NODE_SUBTYPES_TO_CLASSNAME[n.class]
+    get :edit, :id => n.id
     assert_select   "form[action=?]", @controller.url_for(:action => :update, :only_path => true) do
       assert_select "form[method=post]", true,
-        "new-node form uses POST"
-      assert_select "input#node_name[type=text]", true,
-        "new-node form contains 'text' field for :name attribute"
-      assert_select "input#node_title[type=text]", true,
-        "new-node form contains 'text' field for :title attribute"
-      assert_select "textarea#node_description", true,
-        "new-node form contains 'textarea' field for :description attribute"
+        "edit-node form uses POST"
+      assert_select "input##{class_string}_node_name[type=text]", true,
+        "edit-node form contains 'text' field for :name attribute"
+      assert_select "input##{class_string}_node_title[type=text]", true,
+        "edit-node form contains 'text' field for :title attribute"
+      assert_select "textarea##{class_string}_node_description", true,
+        "edit-node form contains 'textarea' field for :description attribute"
     end
   end
 

@@ -19,7 +19,7 @@
 class NodesController < ApplicationController
   # GET /
   def home
-    index        # not DRY, but eventually will have different template
+    @nouns = (ClassNode.find(:all) + ItemNode.find(:all))
   end
 
   # GET /nodes
@@ -60,6 +60,14 @@ class NodesController < ApplicationController
 
   # PUT /nodes/1
   def update
+      # we want to be agnostic WRT processing node subclasses, so remap
+      # name of incoming parameters if we're actually handling a child
+    params.keys.each do |k|
+      if k =~ /_node/
+        params["node"] = params[k]
+      end
+    end
+
     @node = Node.find(params[:id])
 
     respond_to do |format|
@@ -70,7 +78,7 @@ class NodesController < ApplicationController
         format.html { render :action => "edit" }
       else
         flash[:notice] = 'Node was successfully updated.'
-        format.html { redirect_to(@node) }
+        format.html { redirect_to node_path(@node) }
       end
     end
   end

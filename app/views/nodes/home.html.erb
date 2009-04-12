@@ -27,12 +27,12 @@
     <th>Description</th>
   </tr>
 
-<% for node in @nodes %>
+<% for node in @nouns %>
   <tr>
     <td><%=h node.name %></td>
     <td><%=h node.title %></td>
     <td><%=h node.description %></td>
-    <td><%= link_to 'Show', node %></td>
+    <td><%= link_to 'Show', node_path(node) %></td>
   </tr>
 <% end %>
 </table>

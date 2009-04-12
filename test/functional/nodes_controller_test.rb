@@ -22,7 +22,7 @@ class NodesControllerTest < ActionController::TestCase
   test "should get homepage" do
     get :home
     assert_response :success
-    assert_not_nil assigns(:nodes)
+    assert_not_nil assigns(:nouns)
   end
 
   test "should get index" do

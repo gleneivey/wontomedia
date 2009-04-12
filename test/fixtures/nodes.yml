@@ -20,3 +20,4 @@ one:
   name: aNode
   title: My first node
   description: This node could be anything
+  type: ClassNode
