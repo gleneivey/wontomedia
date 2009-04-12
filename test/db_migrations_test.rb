@@ -16,14 +16,24 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require File.join( File.dirname(__FILE__), 'test_helper' )
-require File.join( File.dirname(__FILE__), 'assert_current_schema' )
+path_to_db_tests = File.join( File.dirname(__FILE__), 'unit', 'db' )
+require File.join( File.join( path_to_db_tests, 'test_helper' ) )
+require File.join( File.join( path_to_db_tests, 'assert_current_schema' ) )
 
 class CreateEdgesTest < Test::Unit::TestCase
   include MigrationTestHelper
   include AssertCurrentSchema
 
   def test_the_current_schema
+    drop_all_tables
+
+    # we shouldn't have any tables
+    assert_schema do |s|
+    end
+
+    migrate
+
     assert_current_schema
   end
 end
+

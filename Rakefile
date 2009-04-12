@@ -110,12 +110,31 @@ namespace :test do
   Rake::Task['test:helpers'].comment =
     "Run the view-helper unit tests (test/unit/app/helpers/**/*_test.rb)"
 
-  Rake::TestTask.new(:db => "db:test:prepare") do |t|
+  Rake::TestTask.new(:dbunits => "db:test:prepare") do |t|
     t.libs << "test"
     t.pattern = 'test/unit/db/**/*_test.rb'
     t.verbose = true
   end
+  Rake::Task['test:dbunits'].comment =
     "Run the database unit tests (test/unit/db/**/*_test.rb)"
+
+    # Note: migration tests using migration_test_helper disrupts
+    # loaded fixtures, so can't run in same Ruby process as other unit
+    # tests, which breaking into separate rake task accomplishes
+  Rake::TestTask.new(:dbmigrations => "db:test:prepare") do |t|
+    t.libs << "test"
+    t.pattern = 'test/db_migrations_test.rb'
+    t.verbose = true
+  end
+  Rake::Task['test:dbmigrations'].comment =
+    "Run the database migration unit test (test/db_migrations_test.rb)"
+
+  task :db do
+    # nothing
+  end
+  task :db => [ "test:dbunits", "test:dbmigrations" ]
+  Rake::Task['test:db'].comment =
+    "Run database tests (test:dbunits, test:dbmigrations)"
 
 
         ############################################################
@@ -137,8 +156,8 @@ end # namespace :test
 
 
 
-task :test => [ "test:views", "test:helpers" ]
+task :test => [ "test:views", "test:helpers", "test:db" ]
 
   # don't include these in "rake test" because they're slower....
   # note: inclusion of "features" in default happens in Cucumber pkg.
-task :default => [ "test:db", "test:policies" ]
+task :default => [ "test:policies" ]
