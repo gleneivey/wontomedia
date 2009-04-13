@@ -34,7 +34,7 @@ define_parent_of:
   predicate: sub_property_of
   object: hierarchical_relationship
 
-defind_child_of:
+define_child_of:
   subject: child_of
   predicate: sub_property_of
   object: hierarchical_relationship
