@@ -21,7 +21,7 @@ require File.join( File.dirname(__FILE__), "..", "config", "environment" )
 require 'test_help'
 
 class ActiveSupport::TestCase
-  self.use_instantiated_fixtures  = false
+  self.use_instantiated_fixtures = true
   fixtures :all
 
   require File.join( File.dirname(__FILE__), 'seed_helper' )

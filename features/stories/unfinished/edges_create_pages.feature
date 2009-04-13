@@ -1,3 +1,20 @@
+Feature:  Create and view new individual edges through non-Ajax pages
+  In order to create a wontology,
+  as a contributor, I want
+  to be able to create and view edges.
+
+  Scenario: Create new edge 
+    Given there are 2 existing nodes like "itemFamily"
+    And I am on the new edges page
+    And I select "itemFamily0" from "Subject"
+    And I select "parent_of" from "Relates to"
+    And I select "itemFamily1" from "Object"
+    When I press "Create"
+    Then I should see "itemFamily0"
+    And I should see "parent_of"
+    And I should see "itemFamily1"
+
+
 # WontoMedia - a wontology web application
 # Copyright (C) 2009 - Glen E. Ivey
 #    www.wontology.com
@@ -14,12 +31,3 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
-
-
-class Edge < ActiveRecord::Base
-  belongs_to :subject,   :class_name => "Node"
-  belongs_to :predicate, :class_name => "Node"
-  belongs_to :object,    :class_name => "Node"
-  belongs_to :self,      :class_name => "Node"
-  validates_presence_of :subject, :predicate, :object
-end
