@@ -16,12 +16,9 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
-  map.resources :edges
-  map.root :controller => "nodes", :action => "home"
-
-  # Install the default routes as the lowest priority.
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
+class EdgesController < ApplicationController
+  # GET /edges
+  def index
+    @edges = Edge.all
+  end
 end

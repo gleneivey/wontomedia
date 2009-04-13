@@ -16,9 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# "edge" schema: subject[_id], predicate[_id], object[_id], self[_id]
-
-
 define_sub_property_of:
   subject: sub_property_of
   predicate: sub_property_of
@@ -39,7 +36,6 @@ define_child_of:
   predicate: sub_property_of
   object: hierarchical_relationship
 
-    # need to explicitly define symmetry of fundamental relationships
 define_parent_to_child_symmetry:
   subject: parent_of
   predicate: inverse_relationship
@@ -55,7 +51,6 @@ define_peer_of:
   predicate: sub_property_of
   object: symmetric_relationship
 
-    # parent/child are symmetric; one_of/contains are not (directly)
 define_one_of:
   subject: one_of
   predicate: sub_property_of

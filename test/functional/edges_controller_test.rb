@@ -16,12 +16,12 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.resources :nodes
-  map.resources :edges
-  map.root :controller => "nodes", :action => "home"
+require 'test_helper'
 
-  # Install the default routes as the lowest priority.
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
+class EdgesControllerTest < ActionController::TestCase
+  test "should get index" do
+    get :index
+    assert_response :success
+    assert_not_nil assigns(:edges)
+  end
 end
