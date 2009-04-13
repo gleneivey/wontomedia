@@ -18,7 +18,7 @@
 
 class NodeHelper
   NODE_SUBTYPES_FROM_TEXT = { 
-    "class" => ClassNode, "item" => ItemNode,
+    "node" => Node, "class" => ClassNode, "item" => ItemNode,
     "property" => PropertyNode, "reiffied-property" => ReiffiedNode
   }
   NODE_SUBTYPES_TO_CLASSNAME = { 
