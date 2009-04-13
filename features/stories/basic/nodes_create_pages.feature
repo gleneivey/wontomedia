@@ -1,4 +1,4 @@
-Feature:  Create, view and edit individual nodes through non-Ajax pages
+Feature:  Create and view new individual nodes through non-Ajax pages
   In order to create a wontology,
   as a contributor, I want
   to be able to create and view nodes.
@@ -51,23 +51,6 @@ Feature:  Create, view and edit individual nodes through non-Ajax pages
     And I fill in "node_description" with "good"
     When I press "node_submit"
     Then I should see "error"
-
-
-        # will move to a different "feature" when index pages get smarter
-  Scenario: Homepage shows list of existing nodes
-    Given there are 2 existing classes like "kirgagh0"
-    Given there are 3 existing items like "kirgagh1"
-    When I go to the homepage
-    Then I should see 10 matches of "kirgagh[0-9]+"
-
-
-  Scenario: View index of existing nodes
-    Given there are 5 existing classes like "fufubarfu0"
-    Given there are 3 existing items like "fufubarfu1"
-    Given there are 4 existing properties like "fufubarfu2"
-    Given there are 1 existing reiffied-properties like "fufubarfu3"
-    When I go to /nodes
-    Then I should see 78 matches of "fufubarfu"
 
 
 # WontoMedia - a wontology web application

@@ -1,4 +1,4 @@
-Feature:  Create, view and edit individual nodes through non-Ajax pages
+Feature:  Edit individual nodes through non-Ajax pages
   In order to create a wontology,
   as a contributor, I want
   to be able to change the information for existing nodes.
