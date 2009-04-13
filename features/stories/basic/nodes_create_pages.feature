@@ -5,10 +5,10 @@ Feature:  Create and view new individual nodes through non-Ajax pages
 
   Scenario: Create new node
     Given I am on the new nodes page
-    And I fill in "node_name" with "Category"
-    And I fill in "node_title" with "Subcategory"
-    And I fill in "node_description" with "The root category in the C topic"
-    When I press "node_submit"
+    And I fill in "Name" with "Category"
+    And I fill in "Title" with "Subcategory"
+    And I fill in "Description" with "The root category in the C topic"
+    When I press "Create"
     Then I should see "Category"
     And I should see "Subcategory"
     And I should see "The root category in the C topic"
@@ -16,40 +16,40 @@ Feature:  Create and view new individual nodes through non-Ajax pages
 
   Scenario: System should prevent entry of invalid node names
     Given I am on the new nodes page
-    And I fill in "node_name" with "0bad"
-    And I fill in "node_title" with "A good title /\?"
-    And I fill in "node_description" with "0 And a (good) description, too."
-    When I press "node_submit"
+    And I fill in "Name" with "0bad"
+    And I fill in "Title" with "A good title /\?"
+    And I fill in "Description" with "0 And a (good) description, too."
+    When I press "Create"
     Then I should see "error"
-    And I fill in "node_name" with "bad too"
-    When I press "node_submit"
+    And I fill in "Name" with "bad too"
+    When I press "Create"
     Then I should see "error"
-    And I fill in "node_name" with "BAD>bad"
-    When I press "node_submit"
+    And I fill in "Name" with "BAD>bad"
+    When I press "Create"
     Then I should see "error"
 
 
   Scenario: I can't enter two nodes with same name
     Given I am on the new nodes page
-    And I fill in "node_name" with "original"
-    And I fill in "node_title" with "Original Node"
-    And I fill in "node_description" with "description"
-    When I press "node_submit"
+    And I fill in "Name" with "original"
+    And I fill in "Title" with "Original Node"
+    And I fill in "Description" with "description"
+    When I press "Create"
     Then I should see "successfully created"
     Given I am on the new nodes page
-    And I fill in "node_name" with "original"
-    And I fill in "node_title" with "Second Node"
-    And I fill in "node_description" with "Actually second node, but bad name"
-    When I press "node_submit"
+    And I fill in "Name" with "original"
+    And I fill in "Title" with "Second Node"
+    And I fill in "Description" with "Actually second node, but bad name"
+    When I press "Create"
     Then I should see "error"
 
 
   Scenario: System should prevent entry of invalid node titles
     Given I am on the new nodes page
-    And I fill in "node_name" with "goodName"
-    And I fill in "node_title" with "Bad title\012has two lines"
-    And I fill in "node_description" with "good"
-    When I press "node_submit"
+    And I fill in "Name" with "goodName"
+    And I fill in "Title" with "Bad title\012has two lines"
+    And I fill in "Description" with "good"
+    When I press "Create"
     Then I should see "error"
 
 
