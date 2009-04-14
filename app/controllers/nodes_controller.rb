@@ -16,10 +16,12 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require Rails.root.join( 'lib', 'helpers', 'node_helper')
+
 class NodesController < ApplicationController
   # GET /
   def home
-    @nouns = (ClassNode.find(:all) + ItemNode.find(:all))
+    @nouns = NodeHelper.nouns
   end
 
   # GET /nodes

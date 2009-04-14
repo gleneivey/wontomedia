@@ -25,7 +25,8 @@ class NodeHelper
     ClassNode => 'class', ItemNode => 'item',
     PropertyNode => 'property', ReiffiedNode => 'reiffied'
   }
-  def self.MakeTypedNode(source_node, type_string)
+
+  def self.make_typed_node(source_node, type_string)
     new_node = NODE_SUBTYPES[type_string].new
       # FIXME: OK, the following sucks.  I'm sure there's a way to
       # get the list of attributes from an ActiveRecord type, and then
@@ -35,5 +36,9 @@ class NodeHelper
     new_node.name        = source_node.name
     new_node.title       = source_node.title
     new_node.description = source_node.description
+  end
+
+  def self.nouns
+    ClassNode.all + ItemNode.all
   end
 end
