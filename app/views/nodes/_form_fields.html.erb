@@ -18,13 +18,15 @@
 %>
 
 
-require 'node_helper.rb'
-
-<h1>New node</h1>
-
-<% form_for(@node) do |f| %>
-  <%= f.error_messages %>
-  <%= render :partial => "form_fields", :locals => { :f => f } %>
-  <p><%= f.submit "Create" %></p>
-<% end %>
-
+<p>
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</p>
+<p>
+  <%= f.label :title %><br />
+  <%= f.text_field :title %>
+</p>
+<p>
+  <%= f.label :description %><br />
+  <%= f.text_area :description %>
+</p>
