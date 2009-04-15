@@ -25,11 +25,8 @@ require Rails.root.join( 'lib', 'helpers', 'node_helper' )
 When /^there (are|is) ([0-9]+) existing (\S+) like "(.*)"$/ do |foo,
   number, user_type, text|
 
-  if NodeHelper::NODE_SUBTYPES_FROM_TEXT[user_type].nil?
-    user_type = user_type.singularize
-  end
   number.to_i.times do |c|
-    n = NodeHelper::NODE_SUBTYPES_FROM_TEXT[user_type].new(
+    n = NodeHelper.new_typed_node(user_type,
       :name        => "#{text}#{c}",
       :title       => "This is #{text} node number #{c}",
       :description => "Lorem ipsum dolor sit #{text} amet, consectetur adipiscing elit. Suspendisse #{c} tincidunt mauris vitae lorem." )

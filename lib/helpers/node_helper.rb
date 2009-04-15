@@ -43,6 +43,12 @@ class NodeHelper
   end
 
   def self.new_typed_node(type_string, a_hash)
+    if type_string.nil?
+      return nil
+    end
+    if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
+      type_string = type_string.singularize
+    end
     if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
       return nil
     end
@@ -53,7 +59,7 @@ class NodeHelper
     when 'PropertyNode' then PropertyNode.new(a_hash)
     when 'ReiffiedNode' then ReiffiedNode.new(a_hash)
     end
-#    NODE_SUBTYPES_FROM_TEXT[type_string].send :new, a_hash
+#    NODE_SUBTYPES_FROM_TEXT[type_string].new(a_hash)
   end
 
   def self.make_typed_node(source_node, type_string)
