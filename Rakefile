@@ -65,21 +65,21 @@ rescue LoadError
 end
 
 
+  # documented rake_task.clear method missing?
+class Rake::Task
+  def clear!
+    @actions.clear
+    @prerequisites.clear
+  end
+end
+
 
         ############################################################
         # update default rake tasks for our test directory structure
 
-# utility method.  Thanks to Jay Fields:
-#   http://blog.jayfields.com/2008/02/rake-task-overwriting.html
-class Rake::Task
-  def abandon
-    @actions.clear
-  end
-end
-
 namespace :test do
   # make test:units mean what it normally means
-  Rake::Task[:units].abandon
+  Rake::Task[:units].clear!
   Rake::TestTask.new(:units => "db:test:prepare") do |t|
     t.libs << "test"
     t.pattern = 'test/unit/app/models/**/*_test.rb'
@@ -155,9 +155,24 @@ end # namespace :test
 
 
 
+# redefine Rail's basic test task so that we get a reasonable execution order
+Rake::Task[:test].clear!
+desc 'Run all unit, functional and integration tests'
+task :test do
+  errors = %w(test:dev test:dbmigrations test:functionals test:integration
+              features).collect do |task|
+    begin
+      Rake::Task[task].invoke
+      nil
+    rescue => e
+      task
+    end
+  end.compact
+  abort "Errors running #{errors.to_sentence(:locale => :en)}!" if errors.any?
+end
 
-task :test => [ "test:views", "test:helpers", "test:db" ]
 
-  # don't include these in "rake test" because they're slower....
-  # note: inclusion of "features" in default happens in Cucumber pkg.
-task :default => [ "test:policies" ]
+
+# not really done unless we conform to source policies, and check any
+# unfinished (build break expected) Cucumber tests very last
+task :default => [ "build", "test:policies", "features:unfinished" ]

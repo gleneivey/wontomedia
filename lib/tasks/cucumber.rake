@@ -20,13 +20,19 @@ begin    # don't force Cucumber dependency on non-developers
   $:.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
   require 'cucumber/rake/task'
 
-  Cucumber::Rake::Task.new(:features) do |t|
+  Cucumber::Rake::Task.new(:features => 'db:test:prepare') do |t|
     t.cucumber_opts = "--format progress"
+    t.feature_list = Dir.glob("features/**/*.feature").reject do |path|
+        path =~ %r%/unfinished/%
+      end
   end
 
-  task :features => 'db:test:prepare'
-  task :test => :features    # generic Rails testing now includes Cucumber
-                             # acceptance tests
+  namespace :features do
+    Cucumber::Rake::Task.new(:unfinished => 'db:test:prepare') do |t|
+      t.cucumber_opts = "--format progress"
+      t.feature_list = Dir.glob("features/**/unfinished/**/*.feature")
+    end
+  end
 rescue LoadError
   puts "WARNING: Missing development dependency.  'Cucumber' not available. To install, see 'http://wiki.github.com/aslakhellesoy/cucumber/ruby-on-rails'"
 end
