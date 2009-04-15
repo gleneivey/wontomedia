@@ -32,7 +32,7 @@
 
 <% for node in @nodes %>
   <tr>
-    <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.type] %>:</td>
+    <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
     <td><%= link_to "#{h node.name}", node_path(node) %></td>
     <td><%=h node.title %></td>
     <td><%=h node.description %></td>

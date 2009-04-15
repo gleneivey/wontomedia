@@ -22,19 +22,22 @@
 
 <h1>New node</h1>
 
-<% form_for(@node) do |f| %>
+<% options = @node.sti_type.nil? ? {} : { :url => nodes_path() }
+   form_for(@node, options) do |f|
+ %>
   <%= f.error_messages %>
   <div style="width: 30%; float: left;">
     <%= render :partial => "form_fields", :locals => { :f => f } %>
   </div>
 
   <div style="width: 65%; float: right;">
-    <%= f.label :type %>
-    <%= select_tag "node[type]",
+    <%= f.label :sti_type, "Type" %>
+    <%= select_tag "node[sti_type]",
 	  options_for_select( [
 	    [ "- type of node -",          "" ],
 	    [ "Category",         "ClassNode" ],
-	    [ "Item",              "ItemNode" ] ] )
+	    [ "Item",              "ItemNode" ] ],
+            @node.sti_type.nil? ? "" : @node.sti_type )
      %>
     <dl><dt>Category</dt><dd>
 

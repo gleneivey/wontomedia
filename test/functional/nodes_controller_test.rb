@@ -49,7 +49,7 @@ class NodesControllerTest < ActionController::TestCase
     name = "nodeName"
     assert_difference('Node.count') do
       post :create, :node => { :name => name, :title => "title",
-                               :type => "ClassNode" }
+                               :sti_type => "ClassNode" }
     end
     assert_redirected_to node_path(assigns(:node))
     assert_not_nil Node.find_by_name(name)
@@ -68,7 +68,7 @@ class NodesControllerTest < ActionController::TestCase
   test "should not create node with invalid data" do
     assert_no_difference('Node.count') do
       post :create, :node => { :name => "name", :title => "ti\ttle",
-                               :type => "ItemNode" }
+                               :sti_type => "ItemNode" }
     end
     assert_response :success
     assert_template "nodes/new"
@@ -81,7 +81,7 @@ class NodesControllerTest < ActionController::TestCase
   test "should not create a node with a name including a period" do
     assert_no_difference('Node.count') do
       post :create, :node => { :name => "na.me", :title => "title",
-                               :type => "ClassNode" }
+                               :sti_type => "ClassNode" }
     end
     assert_response :success
     assert_template "nodes/new"
@@ -90,7 +90,7 @@ class NodesControllerTest < ActionController::TestCase
   test "should not create a node with a name including a colon" do
     assert_no_difference('Node.count') do
       post :create, :node => { :name => "na:me", :title => "title",
-                               :type => "ItemNode" }
+                               :sti_type => "ItemNode" }
     end
     assert_response :success
     assert_template "nodes/new"

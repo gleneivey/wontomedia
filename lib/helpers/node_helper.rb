@@ -35,11 +35,14 @@ class NodeHelper
     'ReiffiedNode' => 'Reiffied Property', ReiffiedNode => 'Reiffied Property'
   }
 
-  def self.find_typed_node(type_string, *args)
-    if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
+  def self.find_typed_node(*args)
+    n = Node.find(*args)
+    if n.nil?                                  ||
+       n.sti_type.nil?                         ||
+       NODE_SUBTYPES_FROM_TEXT[n.sti_type].nil?
       return nil
     end
-    NODE_SUBTYPES_FROM_TEXT[type_string].find(*args)
+    NODE_SUBTYPES_FROM_TEXT[n.sti_type].find(*args)
   end
 
   def self.new_typed_node(type_string, a_hash)
@@ -52,14 +55,7 @@ class NodeHelper
     if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
       return nil
     end
-
-    case type_string
-    when 'ClassNode' then ClassNode.new(a_hash)
-    when 'ItemNode'  then ItemNode.new(a_hash)
-    when 'PropertyNode' then PropertyNode.new(a_hash)
-    when 'ReiffiedNode' then ReiffiedNode.new(a_hash)
-    end
-#    NODE_SUBTYPES_FROM_TEXT[type_string].new(a_hash)
+    NODE_SUBTYPES_FROM_TEXT[type_string].new(a_hash)
   end
 
   def self.make_typed_node(source_node, type_string)
@@ -82,7 +78,7 @@ class NodeHelper
   def self.node_to_hash(n)
       # again, I ought to be able to make the list programatically....
     { :id => n.id, :name => n.name, :title => n.title,
-      :description => n.description, :type => n.type }
+      :description => n.description, :sti_type => n.sti_type }
   end
 
   def self.nouns

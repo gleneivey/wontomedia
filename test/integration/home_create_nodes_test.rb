@@ -35,6 +35,7 @@ class HomeThroughCreateTest < ActionController::IntegrationTest
     fill_in "title",       :with => "Test node"
     fill_in "description", :with =>
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    select  "Category",    :from => "Type"
     click_button "Create"
     assert_response :success,
       "nodes-create POST failed"

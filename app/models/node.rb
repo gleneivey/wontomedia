@@ -17,6 +17,7 @@
 
 
 class Node < ActiveRecord::Base
+  self.inheritance_column = "sti_type"
 
     # name
   validates_presence_of   :name, :message => "Node's name cannot be blank."

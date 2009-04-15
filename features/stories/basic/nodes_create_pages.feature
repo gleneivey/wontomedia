@@ -5,12 +5,13 @@ Feature:  Create and view new individual nodes through non-Ajax pages
 
   Scenario: Create new node
     Given I am on the new nodes page
-    And I fill in "Name" with "Category"
-    And I fill in "Title" with "Subcategory"
+    And I fill in "Name" with "MyCategory"
+    And I fill in "Title" with "A subcategory"
     And I fill in "Description" with "The root category in the C topic"
+    And I select "Category" from "Type"
     When I press "Create"
-    Then I should see "Category"
-    And I should see "Subcategory"
+    Then I should see "MyCategory"
+    And I should see "A subcategory"
     And I should see "The root category in the C topic"
 
 
@@ -19,6 +20,7 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     And I fill in "Name" with "0bad"
     And I fill in "Title" with "A good title /\?"
     And I fill in "Description" with "0 And a (good) description, too."
+    And I select "Item" from "Type"
     When I press "Create"
     Then I should see "error"
     And I fill in "Name" with "bad too"
@@ -34,12 +36,14 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     And I fill in "Name" with "original"
     And I fill in "Title" with "Original Node"
     And I fill in "Description" with "description"
+    And I select "Category" from "Type"
     When I press "Create"
     Then I should see "successfully created"
     Given I am on the new nodes page
     And I fill in "Name" with "original"
     And I fill in "Title" with "Second Node"
     And I fill in "Description" with "Actually second node, but bad name"
+    And I select "Item" from "Type"
     When I press "Create"
     Then I should see "error"
 
@@ -49,6 +53,7 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     And I fill in "Name" with "goodName"
     And I fill in "Title" with "Bad title\012has two lines"
     And I fill in "Description" with "good"
+    And I select "Item" from "Type"
     When I press "Create"
     Then I should see "error"
 

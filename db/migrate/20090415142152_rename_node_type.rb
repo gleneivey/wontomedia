@@ -16,32 +16,16 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# most basic item, used by node model unit tests
-one:
-  name: aNode
-  title: My first node
-  description: This node could be anything
-  sti_type: ClassNode
+class RenameNodeType < ActiveRecord::Migration
+  def self.up
+    change_table :nodes do |t|
+      t.rename :type, :sti_type
+    end
+  end
 
-
-# group of nodes used by edge model unit tests
-testContainer:
-  name: testContainer
-  title: testContainer
-
-testItem:
-  name: testItem
-  title: testItem
-
-testCategory:
-  name: testCategory
-  title: testCategory
-
-edge_one:
-  name: testItem.one_of.testCategory
-  title: a title
-
-testSubcategory:
-  name: testSubcategory
-  title: testSubcategory
-
+  def self.down
+    change_table :nodes do |t|
+      t.rename :sti_type, :type
+    end
+  end
+end

@@ -24,7 +24,7 @@ module AssertCurrentSchema
         t.column    :name,            :string
         t.column    :title,           :string
         t.column    :description,     :text
-        t.column    :type,            :string
+        t.column    :sti_type,        :string
       end
 
       s.table "edges" do |t|

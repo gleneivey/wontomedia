@@ -37,7 +37,7 @@ class NodesController < ApplicationController
   # POST /nodes
   def create
     n = Node.new(params[:node])
-    @node = NodeHelper.new_typed_node(params[:node][:type], params[:node])
+    @node = NodeHelper.new_typed_node(params[:node][:sti_type], params[:node])
 
     if @node.nil?
       flash[:error] = 'Could not create. Node must have a type of either "Category" or "Item".'
@@ -45,7 +45,6 @@ class NodesController < ApplicationController
       render :action => "new"
     elsif @node.name =~ /[:.]/                     ||
           !@node.save
-      @node = n # keep info, discard type
       @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
       render :action => "new"
     else
@@ -74,12 +73,9 @@ class NodesController < ApplicationController
       end
     end
 
-    @node = NodeHelper.find_typed_node(params[:node][:type], params[:id])
+    @node = NodeHelper.find_typed_node(params[:id])
 
-    if @node.nil?
-      flash[:error] = 'Could not store changes. Node must have a type of either "Category" or "Item".'
-      render :action => "edit"
-    elsif (!params[:node].nil? && !params[:node][:name].nil? &&
+    if (!params[:node].nil? && !params[:node][:name].nil? &&
           params[:node][:name] =~ /[:.]/                     )  ||
         !@node.update_attributes(params[:node])
       @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
