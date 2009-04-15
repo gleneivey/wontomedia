@@ -36,17 +36,21 @@ class NodesController < ApplicationController
 
   # POST /nodes
   def create
-    @node = Node.new(params[:node])
+    n = Node.new(params[:node])
+    @node = NodeHelper.new_typed_node(params[:node][:type], params[:node])
 
-    respond_to do |format|
-      if @node.name =~ /[:.]/                     ||
+    if @node.nil?
+      flash[:error] = 'Could not create. Node must have a type of either "Category" or "Item".'
+      @node = n # don't lose info already entered
+      render :action => "new"
+    elsif @node.name =~ /[:.]/                     ||
           !@node.save
-        @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
-        format.html { render :action => "new" }
-      else
-        flash[:notice] = 'Node was successfully created.'
-        format.html { redirect_to(@node) }
-      end
+      @node = n # keep info, discard type
+      @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      render :action => "new"
+    else
+      flash[:notice] = 'Node was successfully created.'
+      redirect_to node_path(@node)
     end
   end
 
@@ -70,18 +74,19 @@ class NodesController < ApplicationController
       end
     end
 
-    @node = Node.find(params[:id])
+    @node = NodeHelper.find_typed_node(params[:node][:type], params[:id])
 
-    respond_to do |format|
-      if (!params[:node].nil? && !params[:node][:name].nil? &&
-            params[:node][:name] =~ /[:.]/                     )  ||
-          !@node.update_attributes(params[:node])
-        @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
-        format.html { render :action => "edit" }
-      else
-        flash[:notice] = 'Node was successfully updated.'
-        format.html { redirect_to node_path(@node) }
-      end
+    if @node.nil?
+      flash[:error] = 'Could not store changes. Node must have a type of either "Category" or "Item".'
+      render :action => "edit"
+    elsif (!params[:node].nil? && !params[:node][:name].nil? &&
+          params[:node][:name] =~ /[:.]/                     )  ||
+        !@node.update_attributes(params[:node])
+      @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      render :action => "edit"
+    else
+      flash[:notice] = 'Node was successfully updated.'
+      redirect_to node_path(@node)
     end
   end
 
@@ -89,9 +94,6 @@ class NodesController < ApplicationController
   def destroy
     @node = Node.find(params[:id])
     @node.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(nodes_url) }
-    end
+    redirect_to nodes_url
   end
 end

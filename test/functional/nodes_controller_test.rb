@@ -48,15 +48,27 @@ class NodesControllerTest < ActionController::TestCase
   test "should create node with valid data" do
     name = "nodeName"
     assert_difference('Node.count') do
-      post :create, :node => { :name => name, :title => "title" }
+      post :create, :node => { :name => name, :title => "title",
+                               :type => "ClassNode" }
     end
     assert_redirected_to node_path(assigns(:node))
     assert_not_nil Node.find_by_name(name)
   end
 
+  test "should not create node without a type" do
+    name = "nodeName"
+    assert_no_difference('Node.count') do
+      post :create, :node => { :name => name, :title => "title" }
+    end
+    assert_response :success
+    assert_template "nodes/new"
+    assert_select "body", /Could not/
+  end
+
   test "should not create node with invalid data" do
     assert_no_difference('Node.count') do
-      post :create, :node => { :name => "name", :title => "ti\ttle" }
+      post :create, :node => { :name => "name", :title => "ti\ttle",
+                               :type => "ItemNode" }
     end
     assert_response :success
     assert_template "nodes/new"
@@ -68,7 +80,8 @@ class NodesControllerTest < ActionController::TestCase
   # because they're used in internally-generated node names
   test "should not create a node with a name including a period" do
     assert_no_difference('Node.count') do
-      post :create, :node => { :name => "na.me", :title => "title" }
+      post :create, :node => { :name => "na.me", :title => "title",
+                               :type => "ClassNode" }
     end
     assert_response :success
     assert_template "nodes/new"
@@ -76,7 +89,8 @@ class NodesControllerTest < ActionController::TestCase
   end
   test "should not create a node with a name including a colon" do
     assert_no_difference('Node.count') do
-      post :create, :node => { :name => "na:me", :title => "title" }
+      post :create, :node => { :name => "na:me", :title => "title",
+                               :type => "ItemNode" }
     end
     assert_response :success
     assert_template "nodes/new"
@@ -92,9 +106,10 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should update node" do
-    new_name = "two"
+    n, h = prep_for_update(:one)
+    h[:name] = new_name = "two"
     assert_no_difference('Node.count') do
-      put :update, :id => nodes(:one).id, :node => { :name => new_name }
+      put :update, :id => n.id, :node => h
     end
     assert_redirected_to node_path(assigns(:node))
     assert_not_nil Node.find_by_name(new_name)
@@ -104,16 +119,20 @@ class NodesControllerTest < ActionController::TestCase
   # the controller -- "." and ":" are allowed by the model because
   # they're used in internally-generated node names
   test "should not update node if name changed to include a period" do
+    n, h = prep_for_update(:one)
+    h[:name] = "na.me"
     assert_no_difference('Node.count') do
-      put :update, :id => nodes(:one).id, :node => { :name => "na.me" }
+      put :update, :id => n.id, :node => h
     end
     assert_response :success
     assert_template "nodes/edit"
     assert_select "body", /error/
   end
   test "should not update node if name changed to include a colon" do
+    n, h = prep_for_update(:one)
+    h[:name] = "na:me"
     assert_no_difference('Node.count') do
-      put :update, :id => nodes(:one).id, :node => { :name => "na:me" }
+      put :update, :id => n.id, :node => h
     end
     assert_response :success
     assert_template "nodes/edit"
@@ -131,6 +150,10 @@ class NodesControllerTest < ActionController::TestCase
 
 
 private
+  def prep_for_update(fixture_name)
+    n = nodes(fixture_name)
+    return n, NodeHelper.node_to_hash(n)
+  end
 
   def assert_controller_behavior_with_id(action)
     id = nodes(:one).id

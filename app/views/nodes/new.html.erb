@@ -18,13 +18,41 @@
 %>
 
 
-require 'node_helper.rb'
+<% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
 
 <h1>New node</h1>
 
 <% form_for(@node) do |f| %>
   <%= f.error_messages %>
-  <%= render :partial => "form_fields", :locals => { :f => f } %>
+  <div style="width: 30%; float: left;">
+    <%= render :partial => "form_fields", :locals => { :f => f } %>
+  </div>
+
+  <div style="width: 65%; float: right;">
+    <%= f.label :type %>
+    <%= select_tag "node[type]",
+	  options_for_select( [
+	    [ "- type of node -",          "" ],
+	    [ "Category",         "ClassNode" ],
+	    [ "Item",              "ItemNode" ] ] )
+     %>
+    <dl><dt>Category</dt><dd>
+
+      "Category" is for groups of things, for concepts, and for the
+      upper levels of hierarchies.  (Though a hierarchy made up entirely
+      of concepts could be all Categories.)  Categories can "contain"
+      other categories or items.
+
+    </dd><dt>Item</dt><dd>
+
+      "Item" is for individual, concrete things.  Items can "contain"
+      other items, but cannot contain categories.  ("Ford Model-T" might
+      be an item, but could still contain parts that are also items,
+      like "Windshield" and "Tire".)
+
+    </dd></dl>
+  </div>
+
   <p><%= f.submit "Create" %></p>
 <% end %>
 

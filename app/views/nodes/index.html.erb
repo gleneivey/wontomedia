@@ -18,10 +18,13 @@
 %>
 
 
+<% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
+
 <h1>Listing nodes</h1>
 
 <table>
   <tr>
+    <th></th>
     <th>Name</th>
     <th>Title</th>
     <th>Description</th>
@@ -29,10 +32,10 @@
 
 <% for node in @nodes %>
   <tr>
-    <td><%=h node.name %></td>
+    <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.type] %>:</td>
+    <td><%= link_to "#{h node.name}", node_path(node) %></td>
     <td><%=h node.title %></td>
     <td><%=h node.description %></td>
-    <td><%= link_to 'Show', node_path(node) %></td>
     <td><%= link_to 'Edit', edit_node_path(node) %></td>
     <td><%= link_to 'Destroy', node_path(node),
                     :confirm => 'Are you sure?',
