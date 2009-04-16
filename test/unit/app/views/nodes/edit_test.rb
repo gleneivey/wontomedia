@@ -32,7 +32,9 @@ class NodesEditViewTest < ActionController::TestCase
     n= nodes(:one)
     class_string = NodeHelper::NODE_SUBTYPES_TO_CLASSNAME[n.class]
     get :edit, :id => n.id
-    assert_select   "form[action=?]", @controller.url_for(:action => :update, :only_path => true) do
+    assert_select   "form[action=?]", @controller.
+        url_for(:action => :update, :only_path => true) do
+
       assert_select "form[method=post]", true,
         "edit-node form uses POST"
       assert_select "input##{class_string}_node_name[type=text]", true,

@@ -20,7 +20,7 @@ Feature:  Edit individual nodes through non-Ajax pages
     And I am on the edit nodes page for "wilma0"
     And I fill in "Name" with "reallyBetty"
     When I press "Update"
-    Then I should see all of "reallyBetty", "This is wilma node number 0", "Lorem ipsum dolor sit wilma amet, consectetur adipiscing elit. Suspendisse 0 tincidunt mauris vitae lorem."
+    Then I should see all of "reallyBetty", "wilma node number 0", "Lorem ipsum dolor sit wilma amet, consectetur adipiscing elit. Suspendisse 0 tincidunt mauris vitae lorem."
     And I follow "Edit this node"
     And I fill in "Title" with "Betty Rubble disguised as Wilma"
     When I press "Update"

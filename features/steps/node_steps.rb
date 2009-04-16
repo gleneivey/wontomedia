@@ -28,7 +28,7 @@ When /^there (are|is) ([0-9]+) existing (\S+) like "(.*)"$/ do |foo,
   number.to_i.times do |c|
     n = NodeHelper.new_typed_node(user_type,
       :name        => "#{text}#{c}",
-      :title       => "This is #{text} node number #{c}",
+      :title       => "#{text} node number #{c}",
       :description => "Lorem ipsum dolor sit #{text} amet, consectetur adipiscing elit. Suspendisse #{c} tincidunt mauris vitae lorem." )
     n.save
   end
