@@ -4,11 +4,11 @@ Feature:  Create and view new individual edges through non-Ajax pages
   to be able to create and view edges.
 
   Scenario: Create new edge 
-    Given there are 2 existing nodes like "itemFamily"
+    Given there are 2 existing classes like "itemFamily"
     And I am on the new edges page
-    And I select "itemFamily0" from "Subject"
-    And I select "parent_of" from "Relates to"
-    And I select "itemFamily1" from "Object"
+    And I select "itemFamily node number 0" from "Subject"
+    And I select "Parent Of (wm built-in relationship)" from "Relates to"
+    And I select "itemFamily node number 1" from "Object"
     When I press "Create"
     Then I should see "itemFamily0"
     And I should see "parent_of"

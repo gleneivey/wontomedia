@@ -23,6 +23,7 @@
 <table>
   <tr>
     <th>Subject</th>
+    <th></th>
     <th>Predicate</th>
     <th>Object</th>
   </tr>
@@ -30,14 +31,15 @@
 <% @edges.each do |edge| %>
   <tr>
     <td><%=  h Node.find(edge.subject_id).name %></td>
-    <td>(is [a|an|the])</td>
+    <td style="font-size: 80%">(is [a|an|the])</td>
     <td><%=  h Node.find(edge.predicate_id).name %></td>
     <td><%=  h Node.find(edge.object_id).name %></td>
     <td><%=if edge.self_id
              h Node.find(edge.self_id).name end %></td>
     <td><%=   link_to 'Show', edge %></td>
     <td><%=   link_to 'Edit', edit_edge_path(edge) %></td>
-    <td><%=   link_to 'Destroy', edge, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%=   link_to 'Destroy', edge, :confirm => 'Are you sure?',
+	                               :method => :delete %></td>
   </tr>
 <% end %>
 </table>

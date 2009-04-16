@@ -19,37 +19,32 @@
 
 require 'test_helper'
 
-class EdgesIndexViewTest < ActionController::TestCase
+class EdgesShowViewTest < ActionController::TestCase
   tests EdgesController
+  def get_edges_show() get :show, :id => edges(:aReiffiedEdge).id; end
 
-  test "should have index page for edges" do
-    get :index
-    assert_template "edges/index"
+  test "should have show page for edges" do
+    get_edges_show
+    assert_template "edges/show"
   end
 
-  test "should show Name of subject node for known edge" do
-    get :index
-    assert_select "body", /#{Edge.first.subject.name}/
+  test "edge-show page should contain edge's subject Node's title" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).subject.title}/
   end
 
-  test "should show Name of predicate node for known edge" do
-    get :index
-    assert_select "body", /#{Edge.last.predicate.name}/
+  test "edge-show page should contain edge's predicate Node's title" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).predicate.title}/
   end
 
-  test "should show Name of object node for known edge" do
-    get :index
-    assert_select "body", /#{Edge.all[1].object.name}/
+  test "edge-show page should contain edge's object Node's title" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).object.title}/
   end
 
-  test "should show Name of self node for known edge" do
-    get :index
-    e = Edge.first(:conditions => "self_id IS NOT NULL")
-    assert_select "body", /#{e.self.name}/
-  end
-
-  test "nodes index page shouldnt contain status" do
-    get :index
+  test "edges show page shouldnt contain status" do
+    get_edges_show
     assert_negative_view_contents
   end    
 end

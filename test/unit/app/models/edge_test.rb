@@ -57,14 +57,11 @@ class EgdeTest < ActiveSupport::TestCase
     n3 = Node.new( :name => "", :title => "testSubcategory" )
     n2 = Node.find_by_name( "parent_of" )
 
-    assert e = Edge.new( :predicate => Node.find_by_name("parent_of"),
-                         :object => nodes(:testSubcategory) )
-    assert !e.save
-    assert e = Edge.new( :subject => nodes(:testCategory),
-                         :object => nodes(:testSubcategory) )
-    assert !e.save
-    assert e = Edge.new( :subject => nodes(:testCategory),
-                         :predicate => Node.find_by_name("parent_of") )
-    assert !e.save
+    assert e1 = Edge.new( :subject => n1, :predicate => n2,
+                          :object => n3 )
+    assert e1.save
+    assert_raise ActiveRecord::AssociationTypeMismatch do
+      e2 = Edge.new( :subject => n1, :predicate => n2, :object => e1 )
+    end
   end
 end
