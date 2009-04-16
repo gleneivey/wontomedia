@@ -36,12 +36,14 @@ class NodesController < ApplicationController
 
   # POST /nodes
   def create
-    n = Node.new(params[:node])
-    @node = NodeHelper.new_typed_node(params[:node][:sti_type], params[:node])
+    type_string = params[:node][:sti_type]
+    params[:node].delete :sti_type # don't mass-assign protected blah, blah
+    @node = NodeHelper.new_typed_node(type_string, params[:node])
 
     if @node.nil?
       flash[:error] = 'Could not create. Node must have a type of either "Category" or "Item".'
-      @node = n # don't lose info already entered
+      @node = Node.new(params[:node]) # keep info already entered
+      @node.sti_type = type_string
       render :action => "new"
     elsif @node.name =~ /[:.]/                     ||
           !@node.save
