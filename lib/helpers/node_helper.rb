@@ -24,15 +24,15 @@ class NodeHelper
     "property"          => PropertyNode, "PropertyNode" => PropertyNode,
     "reiffied-property" => ReiffiedNode, "ReiffiedNode" => ReiffiedNode
   }
-  NODE_SUBTYPES_TO_CLASSNAME = { 
-    ClassNode => 'class', ItemNode => 'item',
-    PropertyNode => 'property', ReiffiedNode => 'reiffied'
+  NODE_CLASSNAME_TO_SUBTYPE_SHORT = { 
+    "ClassNode" => 'class', "ItemNode" => 'item',
+    "PropertyNode" => 'property', "ReiffiedNode" => 'reiffied'
   }
   NODE_SUBTYPES_TO_HUMAN = {
-    'ClassNode' => 'Category',             ClassNode => 'Category',
-    'ItemNode' => 'Item',                  ItemNode => 'Item',
-    'PropertyNode' => 'Property Type',     PropertyNode => 'Property Type',
-    'ReiffiedNode' => 'Reiffied Property', ReiffiedNode => 'Reiffied Property'
+    'ClassNode' => 'Category',
+    'ItemNode' => 'Item',
+    'PropertyNode' => 'Property Type',
+    'ReiffiedNode' => 'Reiffied Property'
   }
 
   def self.find_typed_node(*args)
@@ -45,17 +45,27 @@ class NodeHelper
     NODE_SUBTYPES_FROM_TEXT[n.sti_type].find(*args)
   end
 
-  def self.new_typed_node(type_string, a_hash)
+  def self.new_typed_node(type_string, *args)
     if type_string.nil?
       return nil
     end
     if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
       type_string = type_string.singularize
+      if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
+        return nil
+      end
     end
-    if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
-      return nil
-    end
-    NODE_SUBTYPES_FROM_TEXT[type_string].new(a_hash)
+
+# absolutely no idea why this ugly thing works, but simply hash lookup
+# below causes failure deep in Rails' guts during new()
+    klass = case type_string
+            when "ClassNode" then ClassNode
+            when "ItemNode"  then ItemNode
+            when "PropertyNode" then PropertyNode
+            when "ReiffiedNode" then ReiffiedNode
+            end
+#    klass = NODE_SUBTYPES_FROM_TEXT[type_string]
+    klass.new(*args)
   end
 
   def self.make_typed_node(source_node, type_string)
