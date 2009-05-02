@@ -59,10 +59,16 @@ class NodeHelper
 # absolutely no idea why this ugly thing works, but simply hash lookup
 # below causes failure deep in Rails' guts during new()
     klass = case type_string
-            when "ClassNode" then ClassNode
-            when "ItemNode"  then ItemNode
-            when "PropertyNode" then PropertyNode
-            when "ReiffiedNode" then ReiffiedNode
+            when "Node"              then Node
+            when "node"              then Node
+            when "ClassNode"         then ClassNode
+            when "class"             then ClassNode
+            when "ItemNode"          then ItemNode
+            when "item"              then ItemNode
+            when "PropertyNode"      then PropertyNode
+            when "property"          then PropertyNode
+            when "ReiffiedNode"      then ReiffiedNode
+            when "reiffied-property" then ReiffiedNode
             end
 #    klass = NODE_SUBTYPES_FROM_TEXT[type_string]
     klass.new(*args)

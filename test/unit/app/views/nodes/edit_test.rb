@@ -30,7 +30,7 @@ class NodesEditViewTest < ActionController::TestCase
     
   test "nodes edit form should invoke update" do
     n= nodes(:one)
-    class_string = NodeHelper::NODE_SUBTYPES_TO_CLASSNAME[n.class]
+    class_string = NodeHelper::NODE_CLASSNAME_TO_SUBTYPE_SHORT[n.class.to_s]
     get :edit, :id => n.id
     assert_select   "form[action=?]", @controller.
         url_for(:action => :update, :only_path => true) do

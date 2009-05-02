@@ -162,6 +162,21 @@ child_of:
     the display).
 
 
+predecessor_of:
+  name: predecessor_of
+  sti_type: PropertyNode
+  title: Predecessor Of (wm built-in relationship)
+  description: >-
+
+
+successor_of:
+  name: successor_of
+  sti_type: PropertyNode
+  title: Successor Of (wm built-in relationship)
+  description: >-
+
+
+
         # relationships grounding those above
 inverse_relationship:
   name: inverse_relationship
