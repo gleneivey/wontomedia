@@ -42,7 +42,21 @@ class NodeHelper
        NODE_SUBTYPES_FROM_TEXT[n.sti_type].nil?
       return nil
     end
-    NODE_SUBTYPES_FROM_TEXT[n.sti_type].find(*args)
+
+    klass = case n.sti_type
+            when "Node"              then Node
+            when "node"              then Node
+            when "ClassNode"         then ClassNode
+            when "class"             then ClassNode
+            when "ItemNode"          then ItemNode
+            when "item"              then ItemNode
+            when "PropertyNode"      then PropertyNode
+            when "property"          then PropertyNode
+            when "ReiffiedNode"      then ReiffiedNode
+            when "reiffied-property" then ReiffiedNode
+            end
+#    NODE_SUBTYPES_FROM_TEXT[n.sti_type].find(*args)
+    klass.find(*args)
   end
 
   def self.new_typed_node(type_string, *args)
@@ -72,23 +86,6 @@ class NodeHelper
             end
 #    klass = NODE_SUBTYPES_FROM_TEXT[type_string]
     klass.new(*args)
-  end
-
-  def self.make_typed_node(source_node, type_string)
-    if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
-      return nil
-    end
-
-    new_node = NODE_SUBTYPES_FROM_TEXT[type_string].new
-      # FIXME: OK, the following sucks.  I'm sure there's a way to
-      # get the list of attributes from an ActiveRecord type, and then
-      # iterate over them and use .send or something....  But, too
-      # lazy to find it right now
-    new_node.id          = source_node.id
-    new_node.name        = source_node.name
-    new_node.title       = source_node.title
-    new_node.description = source_node.description
-    new_node
   end
 
   def self.node_to_hash(n)
