@@ -16,7 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# "node" schema: name, title, description
+# "node" schema: name, sti_type, title, description
 
 
 #### Minimal set of types (predicates) for edges
@@ -168,6 +168,11 @@ predecessor_of:
   title: Predecessor Of (wm built-in relationship)
   description: >-
 
+    This relationship states that the subject (left-hand side) of the
+    relationship ("A" in the relationship "A is a Predecessor-Of B")
+    preceeds the object in some type of ordered sequence or
+    collection.
+
 
 successor_of:
   name: successor_of
@@ -175,6 +180,10 @@ successor_of:
   title: Successor Of (wm built-in relationship)
   description: >-
 
+    This relationship states that the subject (left-hand side) of the
+    relationship ("N" in the relationship "N is a Successor-Of M")
+    follows the object in some type of ordered sequence or
+    collection.
 
 
         # relationships grounding those above
@@ -247,3 +256,13 @@ hierarchical_relationship:
     This is a root element in WontoMedia's internal schema.  All
     relationship (property) classes are children of one of three root
     relationship types, including this one.
+
+ordered_relationship:
+  name: ordered_relationship
+  sti_type: PropertyNode
+  title: generic Ordered Relationship (wm built-in root type)
+  description: >-
+    This is a root element in WontoMedia's internal schema.
+    Properties should be made sub_property_of  this property if they
+    imply an order between their subject and object.  Among other
+    things, this property allows WontoMedia to make UI decisions.

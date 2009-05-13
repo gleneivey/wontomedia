@@ -61,3 +61,23 @@ define_contains:
   predicate: sub_property_of
   object: parent_of
 
+define_predecessor_to_successor_symmetry:
+  subject: predecessor_of
+  predicate: inverse_relationship
+  object: successor_of
+
+define_successor_to_predecessor_symmetry:
+  subject: successor_of
+  predicate: inverse_relationship
+  object: predecessor_of
+
+define_predecessor_of:
+  subject: predecessor_of
+  predicate: sub_property_of
+  object: ordered_relationship
+
+define_successor_of:
+  subject: successor_of
+  predicate: sub_property_of
+  object: ordered_relationship
+
