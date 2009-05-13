@@ -16,13 +16,13 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# Cucumber steps, particular to WontoMedia's "node" model
+# Cucumber steps, particular to WontoMedia's "node", "edge" models
 
 
 require Rails.root.join( 'lib', 'helpers', 'node_helper' )
 
 
-When /^there (are|is) ([0-9]+) existing (\S+) like "(.*)"$/ do |foo,
+Given /^there (are|is) ([0-9]+) existing (\S+) like "(.*)"$/ do |foo,
   number, user_type, text|
 
   number.to_i.times do |c|
@@ -34,3 +34,11 @@ When /^there (are|is) ([0-9]+) existing (\S+) like "(.*)"$/ do |foo,
   end
 end
 
+Given /^there is an existing edge "([^\"]*)" "([^\"]*)" "([^\"]*)"$/ do |
+  subject, predicate, object|
+
+  e = Edge.new(:subject   => Node.find_by_name(subject),
+               :predicate => Node.find_by_name(predicate),
+               :object    => Node.find_by_name(object)     )
+  e.save
+end
