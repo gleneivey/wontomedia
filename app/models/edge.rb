@@ -22,4 +22,5 @@ class Edge < ActiveRecord::Base
   belongs_to :object,    :class_name => "Node"
   belongs_to :self,      :class_name => "Node"
   validates_presence_of :subject, :predicate, :object
+  validates_uniqueness_of :subject_id, :scope => [:predicate_id, :object_id]
 end

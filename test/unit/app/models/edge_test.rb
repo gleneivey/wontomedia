@@ -54,8 +54,8 @@ class EgdeTest < ActiveSupport::TestCase
 
   test "edge properties must be nodes" do
     n1 = Node.new( :name => "testCategory", :title => "testCategory" )
-    n3 = Node.new( :name => "", :title => "testSubcategory" )
     n2 = Node.find_by_name( "parent_of" )
+    n3 = Node.new( :name => "", :title => "testSubcategory" )
 
     assert e1 = Edge.new( :subject => n1, :predicate => n2,
                           :object => n3 )
@@ -63,5 +63,12 @@ class EgdeTest < ActiveSupport::TestCase
     assert_raise ActiveRecord::AssociationTypeMismatch do
       e2 = Edge.new( :subject => n1, :predicate => n2, :object => e1 )
     end
+  end
+
+  test "new edge cant duplicate existing" do
+    e = Edge.new( :subject   => nodes(:testItem),
+                  :predicate => nodes(:one),
+                  :object    => nodes(:testCategory)  )
+    assert !e.save
   end
 end
