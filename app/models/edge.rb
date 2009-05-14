@@ -16,11 +16,56 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
+
 class Edge < ActiveRecord::Base
+  before_validation :complex_validations
+  validates_uniqueness_of :subject_id, :scope => [:predicate_id, :object_id]
+#  validates_presence_of :subject, :predicate, :object
+#explicitly do the equivalent of the above in complex_validations because
+#c_v has to be a "before" callback (so it's return value is checked), which
+#means other validations aren't run yet, so can't count on these IDs to
+#be present/valid.  Ugh.
+
   belongs_to :subject,   :class_name => "Node"
   belongs_to :predicate, :class_name => "Node"
   belongs_to :object,    :class_name => "Node"
   belongs_to :self,      :class_name => "Node"
-  validates_presence_of :subject, :predicate, :object
-  validates_uniqueness_of :subject_id, :scope => [:predicate_id, :object_id]
+
+private
+  def complex_validations
+    [ [subject_id, :subject], [predicate_id, :predicate],
+      [object_id, :object] ].each do |tocheck|
+      field, symbol = *tocheck
+      if field.nil?
+        errors.add symbol, "can't be blank."
+        return false
+      end
+    end
+
+        # is there an existing implied opposing edge?
+    # find all edges back-connecting our subject and object, determine
+    # if any of their predicates has an (inherited)
+    # inverse_relationship to current predicate
+    if (edges = Edge.all( :conditions => [
+        "subject_id = ? AND object_id = ?", object_id, subject_id ] ))
+
+      inverse_id = Node.find_by_name("inverse_relationship").id
+
+      edges.each do |e|
+        relation_and_all_superproperties(predicate_id) do |proposed_rel|
+          relation_and_all_superproperties(e.predicate_id) do |existing_rel|
+            if (Edge.all( :conditions => [
+              "subject_id = ? AND predicate_id = ? AND object_id = ?",
+                proposed_rel, inverse_id, existing_rel ] ))
+              errors.add :subject, 'already has this relationship implied.'
+              return false
+            end
+          end
+        end
+      end
+    end
+
+    true
+  end
 end

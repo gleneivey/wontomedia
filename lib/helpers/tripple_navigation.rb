@@ -16,14 +16,14 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# most basic item, used by edge controller tests
-aReiffiedEdge:
-  subject: testItem
-  predicate: one
-  object: testCategory
-  self: edge_one
+def relation_and_all_superproperties(predicate_id, &block)
+  yield predicate_id
 
-aParentEdge:
-  subject: testCategory
-  predicate: parent_of
-  object: testSubcategory
+  subproperty_id = Node.find_by_name("sub_property_of").id
+puts "spo= #{subproperty_id}"
+  edges = Edge.all( :conditions => [
+    "subject_id = ? AND predicate_id = ?", predicate_id, subproperty_id ])
+  edges.each do |e|
+    relation_and_all_superproperties(e.object_id) &block
+  end
+end

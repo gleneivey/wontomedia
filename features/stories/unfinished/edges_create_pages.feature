@@ -15,6 +15,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I should see "parent_of"
     And I should see "itemFamily1"
 
+
   Scenario: I can't create an edge duplicating an existing one
     Given there are 2 existing items like "thing"
     And there is an existing edge "thing0" "contains" "thing1"
@@ -27,6 +28,15 @@ Feature:  Create and view new individual edges through non-Ajax pages
 
 
   Scenario: I can't create an explicit edge duplicating an existing implicit one
+    Given there are 2 existing items like "thing"
+    And there is an existing edge "thing0" "contains" "thing1"
+    And I am on the new edges page
+    And I select "thing node number 1" from "Subject"
+    And I select "One Of (wm built-in relationship)" from "Relates to"
+    And I select "thing node number 0" from "Object"
+    When I press "Create"
+    Then I should see "error"
+
 
   Scenario: I can't create an item-contains-category edge
 
