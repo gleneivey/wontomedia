@@ -17,12 +17,13 @@
 
 
 begin    # don't force Cucumber dependency on non-developers
-  $:.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
+  $LOAD_PATH.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib') if
+    File.directory?(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
   require 'cucumber/rake/task'
 
   Cucumber::Rake::Task.new(:features => 'db:test:prepare') do |t|
     t.fork = true
-    t.cucumber_opts = "--format progress"
+    t.cucumber_opts = "--format progress features"
     t.feature_list = Dir.glob("features/**/*.feature").reject do |path|
         path =~ %r%/unfinished/%
       end
@@ -31,7 +32,7 @@ begin    # don't force Cucumber dependency on non-developers
   namespace :features do
     Cucumber::Rake::Task.new(:unfinished => 'db:test:prepare') do |t|
     t.fork = true
-      t.cucumber_opts = "--format progress"
+      t.cucumber_opts = "--format progress features"
       t.feature_list = Dir.glob("features/**/unfinished/**/*.feature")
     end
   end
