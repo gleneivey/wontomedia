@@ -23,7 +23,7 @@ begin    # don't force Cucumber dependency on non-developers
 
   Cucumber::Rake::Task.new(:features => 'db:test:prepare') do |t|
     t.fork = true
-    t.cucumber_opts = "--format progress features"
+    t.cucumber_opts = "--format progress -r features"
     t.feature_list = Dir.glob("features/**/*.feature").reject do |path|
         path =~ %r%/unfinished/%
       end
@@ -32,7 +32,7 @@ begin    # don't force Cucumber dependency on non-developers
   namespace :features do
     Cucumber::Rake::Task.new(:unfinished => 'db:test:prepare') do |t|
     t.fork = true
-      t.cucumber_opts = "--format progress features"
+      t.cucumber_opts = "--format progress -r features"
       t.feature_list = Dir.glob("features/**/unfinished/**/*.feature")
     end
   end
