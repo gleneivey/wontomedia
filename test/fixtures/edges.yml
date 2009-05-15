@@ -27,3 +27,56 @@ aParentEdge:
   subject: testCategory
   predicate: parent_of
   object: testSubcategory
+
+
+# group of nodes used for testing sub_property_of relationship traversal
+# desired structure is:
+#   A spo B spo C spo D spo E
+#         |    spo M spo (same "Y" as below)
+#        spo Z spo Y spo Z
+
+aSpoB:
+  subject: A
+  predicate: sub_property_of
+  object: B
+
+bSpoC:
+  subject: B
+  predicate: sub_property_of
+  object: C
+
+cSpoD:
+  subject: C
+  predicate: sub_property_of
+  object: D
+
+dSpoE:
+  subject: D
+  predicate: sub_property_of
+  object: E
+
+cSpoM:
+  subject: C
+  predicate: sub_property_of
+  object: M
+
+mSpoY:
+  subject: M
+  predicate: sub_property_of
+  object: Y
+
+bSpoZ:
+  subject: B
+  predicate: sub_property_of
+  object: Z
+
+zSpoY:
+  subject: Z
+  predicate: sub_property_of
+  object: Y
+
+ySpoX:
+  subject: Y
+  predicate: sub_property_of
+  object: X
+

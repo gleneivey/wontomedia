@@ -23,6 +23,6 @@ def relation_and_all_superproperties(predicate_id, &block)
   edges = Edge.all( :conditions => [
     "subject_id = ? AND predicate_id = ?", predicate_id, subproperty_id ])
   edges.each do |e|
-    relation_and_all_superproperties(e.object_id) &block
+    relation_and_all_superproperties(e.object_id, &block)
   end
 end

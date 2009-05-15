@@ -45,3 +45,45 @@ testSubcategory:
   name: testSubcategory
   title: testSubcategory
 
+
+# group of nodes used for testing sub_property_of relationship traversal
+# desired structure is:
+#   A spo B spo C spo D spo E
+#         |    spo M spo (same "Y" as below)
+#        spo Z spo Y spo Z
+A:
+  name: A
+  title: A
+
+B:
+  name: B
+  title: B
+
+C:
+  name: C
+  title: C
+
+D:
+  name: D
+  title: D
+
+E:
+  name: E
+  title: E
+
+M:
+  name: M
+  title: M
+
+X:
+  name: X
+  title: X
+
+Y:
+  name: Y
+  title: Y
+
+Z:
+  name: Z
+  title: Z
+

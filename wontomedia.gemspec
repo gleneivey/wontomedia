@@ -121,7 +121,8 @@ Gem::Specification.new do |s|
     "test/unit/db/assert_current_schema.rb",
     "test/unit/db/fixtures/nodes_test.rb",
     "test/unit/db/schema_test.rb",
-    "test/unit/db/test_helper.rb"
+    "test/unit/db/test_helper.rb",
+    "test/unit/lib/helpers/tripple_navigation_test.rb"
   ]
   s.has_rdoc = true
   s.homepage = %q{http://wontomedia.rubyforge.org}
@@ -150,6 +151,7 @@ Gem::Specification.new do |s|
     "test/unit/app/models/property_node_test.rb",
     "test/unit/app/models/class_node_test.rb",
     "test/unit/app/models/edge_test.rb",
+    "test/unit/lib/helpers/tripple_navigation_test.rb",
     "test/unit/config/routes_test.rb",
     "test/db_migrations_test.rb",
     "test/integration/home_create_nodes_test.rb",
