@@ -67,6 +67,68 @@ class EgdeTest < ActiveSupport::TestCase
     assert !e.save
   end
 
+  test "new edge cant duplicate existing with a sub-property" do
+    # fixtures contain: fu inverse_relationship bar
+    e = Edge.new( :subject   => nodes(:fu),
+                  :predicate => Node.find_by_name("symmetric_relationship"),
+                  :object    => nodes(:bar)  )
+    assert !e.save
+  end
+
+  test "new edge cant duplicate existing with a super-property" do
+    # fixtures contain: sn symmetric_relationship afu
+    e = Edge.new( :subject   => nodes(:sn),
+                  :predicate => Node.find_by_name("inverse_relationship"),
+                  :object    => nodes(:afu)  )
+    assert !e.save
+  end
+
+# group of nodes used for testing sub_property_of relationship traversal
+# structure in fixtures is:
+#   A spo B spo C spo D spo E
+#         |    spo M spo (same "Y" as below)
+#        spo Z spo Y spo Z
+  test "distantly-related duplicate predicate A implied-spo E" do
+    Edge.new(     :subject   => nodes(:fu),
+                  :predicate => nodes(:E),
+                  :object    => nodes(:bar)).save
+    e = Edge.new( :subject   => nodes(:fu),
+                  :predicate => nodes(:A),
+                  :object    => nodes(:bar))
+    assert !e.save
+  end
+
+  test "distantly-related duplicate predicate A implied-spo Z" do
+    Edge.new(     :subject   => nodes(:fu),
+                  :predicate => nodes(:Z),
+                  :object    => nodes(:bar)).save
+    e = Edge.new( :subject   => nodes(:fu),
+                  :predicate => nodes(:A),
+                  :object    => nodes(:bar))
+    assert !e.save
+  end
+
+  test "distantly-related duplicate predicate E implied-super-po A" do
+    Edge.new(     :subject   => nodes(:fu),
+                  :predicate => nodes(:A),
+                  :object    => nodes(:bar)).save
+    e = Edge.new( :subject   => nodes(:fu),
+                  :predicate => nodes(:E),
+                  :object    => nodes(:bar))
+    assert !e.save
+  end
+
+  test "distantly-related duplicate predicate Z implied-super-po A" do
+    Edge.new(     :subject   => nodes(:fu),
+                  :predicate => nodes(:A),
+                  :object    => nodes(:bar)).save
+    e = Edge.new( :subject   => nodes(:fu),
+                  :predicate => nodes(:Z),
+                  :object    => nodes(:bar))
+    assert !e.save
+  end
+
+
   test "new edge cant duplicate implied" do
     # fixtures contain: testCategory parent_of testSubcategory
     e = Edge.new( :subject   => nodes(:testSubcategory),

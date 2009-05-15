@@ -80,3 +80,13 @@ ySpoX:
   predicate: sub_property_of
   object: X
 
+fuIRbar:
+  subject: fu
+  predicate: inverse_relationship
+  object: bar
+
+snIRafu:
+  subject: sn
+  predicate: symmetric_relationship
+  object: afu
+

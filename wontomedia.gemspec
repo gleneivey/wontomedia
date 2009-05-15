@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-05-14}
+  s.date = %q{2009-05-15}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.extra_rdoc_files = [
@@ -122,7 +122,8 @@ Gem::Specification.new do |s|
     "test/unit/db/fixtures/nodes_test.rb",
     "test/unit/db/schema_test.rb",
     "test/unit/db/test_helper.rb",
-    "test/unit/lib/helpers/tripple_navigation_test.rb"
+    "test/unit/lib/helpers/tripple_navigation_raaSub_test.rb",
+    "test/unit/lib/helpers/tripple_navigation_raaSuper_test.rb"
   ]
   s.has_rdoc = true
   s.homepage = %q{http://wontomedia.rubyforge.org}
@@ -151,7 +152,8 @@ Gem::Specification.new do |s|
     "test/unit/app/models/property_node_test.rb",
     "test/unit/app/models/class_node_test.rb",
     "test/unit/app/models/edge_test.rb",
-    "test/unit/lib/helpers/tripple_navigation_test.rb",
+    "test/unit/lib/helpers/tripple_navigation_raaSuper_test.rb",
+    "test/unit/lib/helpers/tripple_navigation_raaSub_test.rb",
     "test/unit/config/routes_test.rb",
     "test/db_migrations_test.rb",
     "test/integration/home_create_nodes_test.rb",

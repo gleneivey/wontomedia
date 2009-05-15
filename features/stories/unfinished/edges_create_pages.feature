@@ -27,6 +27,17 @@ Feature:  Create and view new individual edges through non-Ajax pages
     Then I should see "error"
 
 
+  Scenario: I can't create an edge using a sub/super property of an existing one
+    Given there are 2 existing items like "thing"
+    And there is an existing edge "thing0" "contains" "thing1"
+    And I am on the new edges page
+    And I select "thing node number 0" from "Subject"
+    And I select "Parent Of (wm built-in relationship)" from "Relates to"
+    And I select "thing node number 1" from "Object"
+    When I press "Create"
+    Then I should see "error"
+
+
   Scenario: I can't create an explicit edge duplicating an existing implicit one
     Given there are 2 existing items like "thing"
     And there is an existing edge "thing0" "contains" "thing1"

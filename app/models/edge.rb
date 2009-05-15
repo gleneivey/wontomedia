@@ -20,12 +20,13 @@ require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 
 class Edge < ActiveRecord::Base
   before_validation :complex_validations
-  validates_uniqueness_of :subject_id, :scope => [:predicate_id, :object_id]
 #  validates_presence_of :subject, :predicate, :object
 #explicitly do the equivalent of the above in complex_validations because
 #c_v has to be a "before" callback (so it's return value is checked), which
 #means other validations aren't run yet, so can't count on these IDs to
 #be present/valid.  Ugh.
+#  validates_uniqueness_of :subject_id, :scope => [:predicate_id, :object_id]
+#this works, but is subsumed by checks in c_v, so eliminated duplication
 
   belongs_to :subject,   :class_name => "Node"
   belongs_to :predicate, :class_name => "Node"
@@ -42,6 +43,29 @@ private
         return false
       end
     end
+
+        # is there an existing edge with a predicate that is a sub-property
+        # or super-property of the current predicate?
+    # check for duplicate edge and all super-properties
+    relation_and_all_superproperties(predicate_id) do |super_prop|
+      unless (Edge.all( :conditions => [
+          "subject_id = ? AND predicate_id = ? AND object_id = ?",
+          subject_id, super_prop, object_id ] ).empty? )
+        errors.add :subject, 'relationship (or equivalent) already exists.'
+        return false
+      end
+    end
+
+    # check for sub-properties
+    relation_and_all_subproperties(predicate_id) do |sub_prop|
+      unless (Edge.all( :conditions => [
+          "subject_id = ? AND predicate_id = ? AND object_id = ?",
+          subject_id, sub_prop, object_id ] ).empty? )
+        errors.add :subject, 'equivalent relationship already exists.'
+        return false
+      end
+    end
+
 
         # is there an existing implied opposing edge?
     # find all edges back-connecting our subject and object, determine
