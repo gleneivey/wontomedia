@@ -20,7 +20,6 @@ def relation_and_all_superproperties(predicate_id, &block)
   yield predicate_id
 
   subproperty_id = Node.find_by_name("sub_property_of").id
-puts "spo= #{subproperty_id}"
   edges = Edge.all( :conditions => [
     "subject_id = ? AND predicate_id = ?", predicate_id, subproperty_id ])
   edges.each do |e|
