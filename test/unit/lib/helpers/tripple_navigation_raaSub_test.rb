@@ -61,7 +61,7 @@ class RelationAndAllSubpropertiesTest < ActiveSupport::TestCase
 
   test "finds subproperties with multiple inheritance" do
     props = [ nodes(:X).id, nodes(:Y).id, nodes(:Z).id, nodes(:M).id,
-              nodes(:B).id, nodes(:A).id ]
+              nodes(:C).id, nodes(:B).id, nodes(:A).id ]
     make_relation_and_all_subproperties_call(props)
   end
 end

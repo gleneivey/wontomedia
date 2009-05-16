@@ -17,6 +17,12 @@
 
 
 class NodeHelper
+  NODE_KLASS_NAME          = "Node"
+  NODE_CLASS_KLASS_NAME    = "ClassNode"
+  NODE_ITEM_KLASS_NAME     = "ItemNode"
+  NODE_PROPERTY_KLASS_NAME = "PropertyNode"
+  NODE_REIFFIED_KLASS_NAME = "ReiffiedNode"
+  
   NODE_SUBTYPES_FROM_TEXT = { 
     "node"              => Node,         "Node"         => Node,
     "class"             => ClassNode,    "ClassNode"    => ClassNode,

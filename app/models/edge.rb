@@ -16,6 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require Rails.root.join( 'lib', 'helpers', 'node_helper')
 require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 
 class Edge < ActiveRecord::Base
@@ -71,22 +72,50 @@ private
     # find all edges back-connecting our subject and object, determine
     # if any of their predicates has an (inherited)
     # inverse_relationship to current predicate
-    if (edges = Edge.all( :conditions => [
-        "subject_id = ? AND object_id = ?", object_id, subject_id ] ))
+    if edges = Edge.all( :conditions => [
+        "subject_id = ? AND object_id = ?", object_id, subject_id ] )
 
       inverse_id = Node.find_by_name("inverse_relationship").id
 
       edges.each do |e|
         relation_and_all_superproperties(predicate_id) do |proposed_rel|
           relation_and_all_superproperties(e.predicate_id) do |existing_rel|
-            if (Edge.all( :conditions => [
+            if Edge.all( :conditions => [
               "subject_id = ? AND predicate_id = ? AND object_id = ?",
-                proposed_rel, inverse_id, existing_rel ] ))
+                proposed_rel, inverse_id, existing_rel ] )
               errors.add :subject, 'already has this relationship implied.'
               return false
             end
           end
         end
+      end
+    end
+
+
+        # would this create an "item parent_of category" relationship?
+    subNode = Node.find(subject_id)
+    objNode = Node.find(object_id)
+    # check for "item parent_of category"
+    if subNode.sti_type == NodeHelper::NODE_ITEM_KLASS_NAME  &&
+       objNode.sti_type == NodeHelper::NODE_CLASS_KLASS_NAME
+      if check_properties(
+          :does => predicate_id,
+          :inherit_from => Node.find_by_name("parent_of").id,
+          :via => Node.find_by_name("sub_property_of").id)
+        errors.add :subject, 'an item cannot be the parent of a category'
+        return false
+      end
+    end
+
+    # check for "category child_of item"
+    if subNode.sti_type == NodeHelper::NODE_CLASS_KLASS_NAME  &&
+       objNode.sti_type == NodeHelper::NODE_ITEM_KLASS_NAME
+      if check_properties(
+          :does => predicate_id,
+          :inherit_from => Node.find_by_name("child_of").id,
+          :via => Node.find_by_name("sub_property_of").id)
+        errors.add :subject, 'a category cannot be the child of an item'
+        return false
       end
     end
 

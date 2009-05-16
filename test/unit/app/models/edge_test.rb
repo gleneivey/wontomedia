@@ -137,4 +137,18 @@ class EgdeTest < ActiveSupport::TestCase
                   :object    => nodes(:testCategory)  )
     assert !e.save
   end
+
+  test "new edge cant be hierarchical parent-to-child from item to category" do
+    e = Edge.new( :subject   => nodes(:one),  # ItemNode
+                  :predicate => Node.find_by_name( "contains" ),
+                  :object    => nodes(:two)  )
+    assert !e.save
+  end
+
+  test "new edge cant be hierarchical child-to-parent from category to item" do
+    e = Edge.new( :subject   => nodes(:two),  # ClassNode
+                  :predicate => Node.find_by_name( "child_of" ),
+                  :object    => nodes(:one)  )
+    assert !e.save
+  end
 end

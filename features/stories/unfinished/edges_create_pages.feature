@@ -50,6 +50,25 @@ Feature:  Create and view new individual edges through non-Ajax pages
 
 
   Scenario: I can't create an item-contains-category edge
+    Given there is 1 existing class like "myClass"
+    And there is 1 existing item like "myItem"
+    And I am on the new edges page
+    And I select "myItem node number 0" from "Subject"
+    And I select "Contains (wm built-in relationship)" from "Relates to"
+    And I select "myClass node number 0" from "Object"
+    When I press "Create"
+    Then I should see "error"
+
+
+  Scenario: I can't create an category-containedBy-item edge
+    Given there is 1 existing class like "myClass"
+    And there is 1 existing item like "myItem"
+    And I am on the new edges page
+    And I select "myClass node number 0" from "Subject"
+    And I select "Child Of (wm built-in relationship)" from "Relates to"
+    And I select "myItem node number 0" from "Object"
+    When I press "Create"
+    Then I should see "error"
 
 
     # Check various prohibited edge-to-self cases.  Verify each
