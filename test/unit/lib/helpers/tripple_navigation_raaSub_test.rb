@@ -35,40 +35,33 @@ class RelationAndAllSubpropertiesTest < ActiveSupport::TestCase
 # structure in fixtures is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
-#        spo Z spo Y spo Z
+#        spo Z spo Y spo X
 
-  def make_relation_and_all_superproperties_call(props, min_count)
+  def make_relation_and_all_subproperties_call(props)
     count = 0
     checklist = props
-    relation_and_all_superproperties( props[0] ) do |sp_id|
+    relation_and_all_subproperties( props[0] ) do |sp_id|
       assert props.include?(sp_id)
       checklist -= [ sp_id ]
       count += 1
+      count < 1000 # no infinite loops
     end
     assert checklist == []
-    assert count >= min_count
   end
 
-  test "one superproperty causes two iterations" do
-    props = [ nodes(:D).id, nodes(:E).id ]
-    make_relation_and_all_superproperties_call(props, 2)
+  test "one subproperty causes two iterations" do
+    props = [ nodes(:B).id, nodes(:A).id ]
+    make_relation_and_all_subproperties_call(props)
   end
 
-  test "two superproperty causes three iterations" do
-    props = [ nodes(:Z).id, nodes(:Y).id, nodes(:X).id ]
-    make_relation_and_all_superproperties_call(props, 3)
+  test "two subproperty causes three iterations" do
+    props = [ nodes(:C).id, nodes(:B).id, nodes(:A).id ]
+    make_relation_and_all_subproperties_call(props)
   end
 
-  test "finds superproperties with multiple inheritance" do
-    props = [ nodes(:C).id, nodes(:D).id, nodes(:E).id, nodes(:M).id,
-              nodes(:Y).id, nodes(:X).id ]
-    make_relation_and_all_superproperties_call(props, 6)
-  end
-
-  test "navigate superproperties with a loop" do
-    props = [ nodes(:A).id, nodes(:B).id, nodes(:C).id, nodes(:D).id,
-              nodes(:E).id, nodes(:M).id,
-              nodes(:Z).id, nodes(:Y).id, nodes(:X).id ]
-    make_relation_and_all_superproperties_call(props, 9)
+  test "finds subproperties with multiple inheritance" do
+    props = [ nodes(:X).id, nodes(:Y).id, nodes(:Z).id, nodes(:M).id,
+              nodes(:B).id, nodes(:A).id ]
+    make_relation_and_all_subproperties_call(props)
   end
 end

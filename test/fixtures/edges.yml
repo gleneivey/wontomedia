@@ -33,7 +33,7 @@ aParentEdge:
 # desired structure is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
-#        spo Z spo Y spo Z
+#        spo Z spo Y spo X
 
 aSpoB:
   subject: A

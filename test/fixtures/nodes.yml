@@ -21,6 +21,12 @@ one:
   name: aNode
   title: My first node
   description: This node could be anything
+  sti_type: ItemNode
+
+two:
+  name: bNode
+  title: A second node
+  description: This category could contain anything
   sti_type: ClassNode
 
 
@@ -50,7 +56,7 @@ testSubcategory:
 # desired structure is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
-#        spo Z spo Y spo Z
+#        spo Z spo Y spo X
 A:
   name: A
   title: A

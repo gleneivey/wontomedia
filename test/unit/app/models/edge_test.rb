@@ -87,7 +87,7 @@ class EgdeTest < ActiveSupport::TestCase
 # structure in fixtures is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
-#        spo Z spo Y spo Z
+#        spo Z spo Y spo X
   test "distantly-related duplicate predicate A implied-spo E" do
     Edge.new(     :subject   => nodes(:fu),
                   :predicate => nodes(:E),
@@ -127,6 +127,7 @@ class EgdeTest < ActiveSupport::TestCase
                   :object    => nodes(:bar))
     assert !e.save
   end
+  # done with multi-spo inheritance tests
 
 
   test "new edge cant duplicate implied" do
