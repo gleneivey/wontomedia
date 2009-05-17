@@ -42,32 +42,63 @@ def check_properties(hash_of_params)
   unless hash_of_params.has_key?(:does)
     raise ArgumentError, "Expected :does in input hash"
   end
-  unless hash_of_params.has_key?(:inherit_from)
-    raise ArgumentError, "Expected :inherit_from in input hash"
-  end
-  unless hash_of_params.has_key?(:via)
-    raise ArgumentError, "Expected :via in input hash"
-  end
 
-  child_id = hash_of_params[:does]
-  parent_id = hash_of_params[:inherit_from]
-  via_property_id = hash_of_params[:via]
+  if hash_of_params.has_key?(:inherit_from)
+    unless hash_of_params.has_key?(:via)
+      raise ArgumentError, "Expected :via in input hash"
+    end
 
-  # treat "self" as a form of inheritence
-  if child_id == parent_id
-    return true
-  end
+    child_id = hash_of_params[:does]
+    parent_id = hash_of_params[:inherit_from]
+    via_property_id = hash_of_params[:via]
 
-  edges = Edge.all( :conditions => [
-    "subject_id = ? AND predicate_id = ?", child_id, via_property_id ])
-  edges.each do |e|
-    if check_properties(
-                         :does         => e.object_id,
-                         :inherit_from => parent_id,
-                         :via          => via_property_id )
+    # treat "self" as a form of inheritence
+    if child_id == parent_id
       return true
     end
-  end
 
+    edges = Edge.all( :conditions => [
+      "subject_id = ? AND predicate_id = ?", child_id, via_property_id ])
+    edges.each do |e|
+
+# this is a work around to the fact that I chose very poorly when
+# naming one of the associations "object".  Will fix/remove soon....
+e.subject_id
+
+      if check_properties( :does         => e.object_id,
+                           :inherit_from => parent_id,
+                           :via          => via_property_id )
+        return true
+      end
+    end
+  elsif hash_of_params.has_key?(:link_to)
+    unless hash_of_params.has_key?(:through_children_of)
+      raise ArgumentError, "Expected :through_children_of in input hash"
+    end
+
+    from_node_id = hash_of_params[:does]
+    to_node_id   = hash_of_params[:link_to]
+    kind_of_path = hash_of_params[:through_children_of]
+    spo_id       = Node.find_by_name("sub_property_of").id
+
+    edges = Edge.all( :conditions => [ "subject_id = ?", from_node_id ])
+    edges.each do |e|
+      if check_properties( :does         => e.predicate_id,
+                           :inherit_from => kind_of_path,
+                           :via          => spo_id )
+        if e.object_id == to_node_id
+          return true
+        else
+          if check_properties( :does                => e.object_id,
+                               :link_to             => to_node_id,
+                               :through_children_of => kind_of_path )
+            return true
+          end
+        end
+      end
+    end
+  else
+    raise ArgumentError, "Expected :inherit_from or :link_to in input hash"
+  end
   return false
 end

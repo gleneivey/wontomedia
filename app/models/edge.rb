@@ -95,14 +95,15 @@ private
         # would this create an "item parent_of category" relationship?
     subNode = Node.find(subject_id)
     objNode = Node.find(object_id)
+    spo_id  = Node.find_by_name("sub_property_of").id
     # check for "item parent_of category"
     if subNode.sti_type == NodeHelper::NODE_ITEM_KLASS_NAME  &&
        objNode.sti_type == NodeHelper::NODE_CLASS_KLASS_NAME
       if check_properties(
           :does => predicate_id,
           :inherit_from => Node.find_by_name("parent_of").id,
-          :via => Node.find_by_name("sub_property_of").id)
-        errors.add :subject, 'an item cannot be the parent of a category'
+          :via => spo_id)
+        errors.add :predicate, 'an item cannot be the parent of a category'
         return false
       end
     end
@@ -113,9 +114,31 @@ private
       if check_properties(
           :does => predicate_id,
           :inherit_from => Node.find_by_name("child_of").id,
-          :via => Node.find_by_name("sub_property_of").id)
-        errors.add :subject, 'a category cannot be the child of an item'
+          :via => spo_id)
+        errors.add :predicate, 'a category cannot be the child of an item'
         return false
+      end
+    end
+
+
+        # would this create a loop (including edge-to-self) of
+        # hierarchical or ordered relationships?
+    # if this is the kind of property we have to worry about?
+    [
+      Node.find_by_name("parent_of").id,
+      Node.find_by_name("child_of").id,
+      Node.find_by_name("sub_property_of").id,
+      Node.find_by_name("predecessor_of").id,
+      Node.find_by_name("successor_of").id
+    ].each do |prop_id|
+      if check_properties(
+          :does => predicate_id, :inherit_from => prop_id, :via => spo_id)
+        if check_properties(
+            :does => object_id, :link_to => subject_id,
+            :through_children_of => prop_id )
+          errors.add :subject, 'this relationship would create a loop'
+          return false
+        end
       end
     end
 

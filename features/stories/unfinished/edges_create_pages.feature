@@ -71,6 +71,19 @@ Feature:  Create and view new individual edges through non-Ajax pages
     Then I should see "error"
 
 
+  Scenario: I can't create an edge which would close a prohibited loop
+    Given there are 3 existing items like "item"
+    And there is an existing edge "item0" "predecessor_of" "item1"
+    And there is an existing edge "item1" "predecessor_of" "item2"
+    And I am on the new edges page
+    And I select "item node number 2" from "Subject"
+    And I select "Predecessor Of (wm built-in relationship)" from "Relates to"
+    And I select "item node number 0" from "Object"
+    When I press "Create"
+    Then I should see "error"
+
+
+
     # Check various prohibited edge-to-self cases.  Verify each
     # fundamental prohibition, plus one property type that is
     # prohibited by inheritence
