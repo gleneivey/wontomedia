@@ -39,13 +39,13 @@ class EdgesIndexViewTest < ActionController::TestCase
 
   test "should show Name of object node for known edge" do
     get :index
-    assert_select "body", /#{Edge.all[1].object.name}/
+    assert_select "body", /#{Edge.all[1].obj.name}/
   end
 
   test "should show Name of self node for known edge" do
     get :index
-    e = Edge.first(:conditions => "self_id IS NOT NULL")
-    assert_select "body", /#{e.self.name}/
+    e = Edge.first(:conditions => "edge_desc_id IS NOT NULL")
+    assert_select "body", /#{e.edge_desc.name}/
   end
 
   test "nodes index page shouldnt contain status" do

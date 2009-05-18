@@ -36,8 +36,8 @@ class EdgesNewViewTest < ActionController::TestCase
         "edge-new form contains 'select' input control for :subject attribute"
       assert_select "select#edge_predicate_id", true,
         "edge-new form contains 'select' input control for :predicate attribute"
-      assert_select "select#edge_object_id", true,
-        "edge-new form contains 'select' input control for :object attribute"
+      assert_select "select#edge_obj_id", true,
+        "edge-new form contains 'select' input control for :obj attribute"
     end
   end
 

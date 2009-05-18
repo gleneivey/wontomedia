@@ -31,8 +31,8 @@ module AssertCurrentSchema
         t.column    :id,              :integer
         t.column    :subject_id,      :integer
         t.column    :predicate_id,    :integer
-        t.column    :object_id,       :integer
-        t.column    :self_id,         :integer
+        t.column    :obj_id,          :integer
+        t.column    :edge_desc_id,    :integer
       end
 
       # expect this won't be needed for future upgrade to m_t_h

@@ -54,7 +54,7 @@ class EdgesController < ApplicationController
       # populate these here because I didn't want view causing db queries
     @subject = @edge.subject
     @predicate = @edge.predicate
-    @object = @edge.object
-    @self = @edge.self
+    @obj = @edge.obj
+    @edge_desc = @edge.edge_desc
   end
 end

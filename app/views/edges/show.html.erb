@@ -21,7 +21,7 @@
 
 <p><b>Subject:</b>   <%= h "#{@subject.title}   (#{@subject.name})"   %></p>
 <p><b>Predicate:</b> <%= h "#{@predicate.title} (#{@predicate.name})" %></p>
-<p><b>Object:</b>    <%= h "#{@object.title}    (#{@object.name})"    %></p>
+<p><b>Object:</b>    <%= h "#{@obj.title}       (#{@obj.name})"       %></p>
 
 <%= link_to 'Edit this edge', edit_edge_path(@edge) %> |
 <%= link_to 'Delete this edge', edge_path(@edge), :confirm => 'Are you sure?',

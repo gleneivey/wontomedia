@@ -19,65 +19,65 @@
 define_sub_property_of:
   subject: sub_property_of
   predicate: sub_property_of
-  object: hierarchical_relationship
+  obj: hierarchical_relationship
 
 define_inverse_relationship:
   subject: inverse_relationship
   predicate: sub_property_of
-  object: symmetric_relationship
+  obj: symmetric_relationship
 
 define_parent_of:
   subject: parent_of
   predicate: sub_property_of
-  object: hierarchical_relationship
+  obj: hierarchical_relationship
 
 define_child_of:
   subject: child_of
   predicate: sub_property_of
-  object: hierarchical_relationship
+  obj: hierarchical_relationship
 
 define_parent_to_child_symmetry:
   subject: parent_of
   predicate: inverse_relationship
-  object: child_of
+  obj: child_of
 
 define_child_to_parent_symmetry:
   subject: child_of
   predicate: inverse_relationship
-  object: parent_of
+  obj: parent_of
 
 define_peer_of:
   subject: peer_of
   predicate: sub_property_of
-  object: symmetric_relationship
+  obj: symmetric_relationship
 
 define_one_of:
   subject: one_of
   predicate: sub_property_of
-  object: child_of
+  obj: child_of
 
 define_contains:
   subject: contains
   predicate: sub_property_of
-  object: parent_of
+  obj: parent_of
 
 define_predecessor_to_successor_symmetry:
   subject: predecessor_of
   predicate: inverse_relationship
-  object: successor_of
+  obj: successor_of
 
 define_successor_to_predecessor_symmetry:
   subject: successor_of
   predicate: inverse_relationship
-  object: predecessor_of
+  obj: predecessor_of
 
 define_predecessor_of:
   subject: predecessor_of
   predicate: sub_property_of
-  object: ordered_relationship
+  obj: ordered_relationship
 
 define_successor_of:
   subject: successor_of
   predicate: sub_property_of
-  object: ordered_relationship
+  obj: ordered_relationship
 

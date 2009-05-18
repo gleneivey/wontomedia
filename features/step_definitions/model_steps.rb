@@ -35,10 +35,10 @@ Given /^there (are|is) ([0-9]+) existing (\S+) like "(.*)"$/ do |foo,
 end
 
 Given /^there is an existing edge "([^\"]*)" "([^\"]*)" "([^\"]*)"$/ do |
-  subject, predicate, object|
+  subject, predicate, obj|
 
   e = Edge.new(:subject   => Node.find_by_name(subject),
                :predicate => Node.find_by_name(predicate),
-               :object    => Node.find_by_name(object)     )
+               :obj       => Node.find_by_name(obj)         )
   e.save
 end

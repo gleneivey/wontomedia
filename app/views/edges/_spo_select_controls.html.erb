@@ -43,14 +43,14 @@
    %>
 </p>
 <p>
-  <%= f.label :object_id %>
-  <%= select_tag "edge[object_id]",
+  <%= f.label :obj_id %>
+  <%= select_tag "edge[obj_id]",
         options_for_select(
           [[ "- to this category or item -", "" ]] +
 	    nouns.map do |n|
 	      [ h(n.title), n.id ]
 	    end,
-          edge.object.nil? ? "" : edge.object.id
+          edge.obj.nil? ? "" : edge.obj.id
         )
    %>
 </p>

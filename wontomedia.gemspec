@@ -59,6 +59,7 @@ Gem::Specification.new do |s|
     "db/migrate/20090406221320_create_edges.rb",
     "db/migrate/20090411014503_add_type_for_node_subclasses.rb",
     "db/migrate/20090415142152_rename_node_type.rb",
+    "db/migrate/20090518022918_rename_object_and_self.rb",
     "db/schema.rb",
     "lib/helpers/node_helper.rb",
     "lib/helpers/tripple_navigation.rb",

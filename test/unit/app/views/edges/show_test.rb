@@ -40,7 +40,7 @@ class EdgesShowViewTest < ActionController::TestCase
 
   test "edge-show page should contain edge's object Node's title" do
     get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).object.title}/
+    assert_select "body", /#{edges(:aReiffiedEdge).obj.title}/
   end
 
   test "edges show page shouldnt contain status" do

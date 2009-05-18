@@ -9,13 +9,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090415142152) do
+ActiveRecord::Schema.define(:version => 20090518022918) do
 
   create_table "edges", :force => true do |t|
     t.integer "subject_id"
     t.integer "predicate_id"
-    t.integer "object_id"
-    t.integer "self_id"
+    t.integer "obj_id"
+    t.integer "edge_desc_id"
   end
 
   create_table "nodes", :force => true do |t|

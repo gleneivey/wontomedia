@@ -20,13 +20,13 @@
 aReiffiedEdge:
   subject: testItem
   predicate: one
-  object: testCategory
-  self: edge_one
+  obj: testCategory
+  edge_desc: edge_one
 
 aParentEdge:
   subject: testCategory
   predicate: parent_of
-  object: testSubcategory
+  obj: testSubcategory
 
 
 # group of nodes used for testing sub_property_of relationship traversal
@@ -38,55 +38,55 @@ aParentEdge:
 aSpoB:
   subject: A
   predicate: sub_property_of
-  object: B
+  obj: B
 
 bSpoC:
   subject: B
   predicate: sub_property_of
-  object: C
+  obj: C
 
 cSpoD:
   subject: C
   predicate: sub_property_of
-  object: D
+  obj: D
 
 dSpoE:
   subject: D
   predicate: sub_property_of
-  object: E
+  obj: E
 
 cSpoM:
   subject: C
   predicate: sub_property_of
-  object: M
+  obj: M
 
 mSpoY:
   subject: M
   predicate: sub_property_of
-  object: Y
+  obj: Y
 
 bSpoZ:
   subject: B
   predicate: sub_property_of
-  object: Z
+  obj: Z
 
 zSpoY:
   subject: Z
   predicate: sub_property_of
-  object: Y
+  obj: Y
 
 ySpoX:
   subject: Y
   predicate: sub_property_of
-  object: X
+  obj: X
 
 fuIRbar:
   subject: fu
   predicate: inverse_relationship
-  object: bar
+  obj: bar
 
 snIRafu:
   subject: sn
   predicate: symmetric_relationship
-  object: afu
+  obj: afu
 

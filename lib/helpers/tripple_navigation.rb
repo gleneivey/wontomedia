@@ -23,7 +23,7 @@ def relation_and_all_superproperties(predicate_id, &block)
   edges = Edge.all( :conditions => [
     "subject_id = ? AND predicate_id = ?", predicate_id, subproperty_id ])
   edges.each do |e|
-    relation_and_all_superproperties(e.object_id, &block)
+    relation_and_all_superproperties(e.obj_id, &block)
   end
 end
 
@@ -32,7 +32,7 @@ def relation_and_all_subproperties(predicate_id, &block)
 
   subproperty_id = Node.find_by_name("sub_property_of").id
   edges = Edge.all( :conditions => [
-    "predicate_id = ? AND object_id = ?", subproperty_id, predicate_id ])
+    "predicate_id = ? AND obj_id = ?", subproperty_id, predicate_id ])
   edges.each do |e|
     relation_and_all_subproperties(e.subject_id, &block)
   end
@@ -60,12 +60,7 @@ def check_properties(hash_of_params)
     edges = Edge.all( :conditions => [
       "subject_id = ? AND predicate_id = ?", child_id, via_property_id ])
     edges.each do |e|
-
-# this is a work around to the fact that I chose very poorly when
-# naming one of the associations "object".  Will fix/remove soon....
-e.subject_id
-
-      if check_properties( :does         => e.object_id,
+      if check_properties( :does         => e.obj_id,
                            :inherit_from => parent_id,
                            :via          => via_property_id )
         return true
@@ -86,10 +81,10 @@ e.subject_id
       if check_properties( :does         => e.predicate_id,
                            :inherit_from => kind_of_path,
                            :via          => spo_id )
-        if e.object_id == to_node_id
+        if e.obj_id == to_node_id
           return true
         else
-          if check_properties( :does                => e.object_id,
+          if check_properties( :does                => e.obj_id,
                                :link_to             => to_node_id,
                                :through_children_of => kind_of_path )
             return true

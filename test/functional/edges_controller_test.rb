@@ -38,8 +38,8 @@ class EdgesControllerTest < ActionController::TestCase
     assert_not_nil edge
     assert_nil edge.subject_id
     assert_nil edge.predicate_id
-    assert_nil edge.object_id
-    assert_nil edge.self_id
+    assert_nil edge.obj_id
+    assert_nil edge.edge_desc_id
   end
 
   test "should create edge with valid data" do
@@ -49,7 +49,7 @@ class EdgesControllerTest < ActionController::TestCase
 
     assert_difference('Edge.count') do
       post :create, :edge => { :subject_id => s_id, :predicate_id => p_id,
-                               :object_id => o_id }
+                               :obj_id => o_id }
     end
     assert_redirected_to edge_path(assigns(:edge))
     assert_not_nil Edge.find(assigns(:edge).id)
@@ -60,7 +60,7 @@ class EdgesControllerTest < ActionController::TestCase
     o_id = nodes(:testItem).id
 
     assert_no_difference('Edge.count') do
-      post :create, :edge => { :subject_id => s_id, :object_id => o_id }
+      post :create, :edge => { :subject_id => s_id, :obj_id => o_id }
     end
     assert_response :success
     assert_template "edges/new"
@@ -76,12 +76,12 @@ class EdgesControllerTest < ActionController::TestCase
 
     assert s = assigns(:subject)
     assert p = assigns(:predicate)
-    assert o = assigns(:object)
-    assert slf = assigns(:self)
+    assert o = assigns(:obj)
+    assert slf = assigns(:edge_desc)
 
     assert s == edge.subject
     assert p == edge.predicate
-    assert o == edge.object
-    assert slf == edge.self
+    assert o == edge.obj
+    assert slf == edge.edge_desc
   end
 end
