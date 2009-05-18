@@ -92,10 +92,13 @@ private
     end
 
 
+    #used in many subsequent tests
+    spo_id  = Node.find_by_name("sub_property_of").id
+
+
         # would this create an "item parent_of category" relationship?
     subNode = Node.find(subject_id)
     objNode = Node.find(obj_id)
-    spo_id  = Node.find_by_name("sub_property_of").id
     # check for "item parent_of category"
     if subNode.sti_type == NodeHelper::NODE_ITEM_KLASS_NAME  &&
        objNode.sti_type == NodeHelper::NODE_CLASS_KLASS_NAME
@@ -103,7 +106,7 @@ private
           :does => predicate_id,
           :inherit_from => Node.find_by_name("parent_of").id,
           :via => spo_id)
-        errors.add :predicate, 'an item cannot be the parent of a category'
+        errors.add :predicate, 'an item cannot be the parent of a category.'
         return false
       end
     end
@@ -115,7 +118,7 @@ private
           :does => predicate_id,
           :inherit_from => Node.find_by_name("child_of").id,
           :via => spo_id)
-        errors.add :predicate, 'a category cannot be the child of an item'
+        errors.add :predicate, 'a category cannot be the child of an item.'
         return false
       end
     end
@@ -136,11 +139,26 @@ private
         if check_properties(
             :does => obj_id, :link_to => subject_id,
             :through_children_of => prop_id )
-          errors.add :subject, 'this relationship would create a loop'
+          errors.add :subject, 'this relationship would create a loop.'
           return false
         end
       end
     end
+
+        # is this a "bad" edge-to-self?
+    if subject_id == obj_id
+      [ "inverse_relationship", "hierarchical_relationship",
+        "ordered_relationship" ].each do |relation_name|
+        if check_properties(
+            :does         => predicate_id,
+            :inherit_from => Node.find_by_name(relation_name).id,
+            :via          => spo_id  )
+          errors.add :subject, 'cannot create an ordered/hierarchical relationship from a node to itself'
+          return false
+        end
+      end
+    end
+
 
     true
   end

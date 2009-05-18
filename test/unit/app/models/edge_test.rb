@@ -151,4 +151,29 @@ class EgdeTest < ActiveSupport::TestCase
                   :obj       => nodes(:one)  )
     assert !e.save
   end
+
+  test "can create acceptable built-in edge-to-self types" do
+    n = nodes(:one)
+    [ "peer_of", "value_relationship","symmetric_relationship" ].
+        each do |test_relation|
+      e = Edge.new( :subject   => n,
+                    :predicate => Node.find_by_name( test_relation ),
+                    :obj       => n )
+      assert e.save
+      e.destroy # clean up for next test pass
+    end
+  end
+
+  test "cant create unacceptable built-in edge-to-self types" do
+    n = nodes(:one)
+    [ "one_of", "contains", "parent_of", "child_of", "predecessor_of",
+      "successor_of", "inverse_relationship", "sub_property_of",
+      "hierarchical_relationship", "ordered_relationship" ].
+        each do |test_relation|
+      e = Edge.new( :subject   => n,
+                    :predicate => Node.find_by_name( test_relation ),
+                    :obj       => n )
+      assert !e.save
+    end
+  end
 end

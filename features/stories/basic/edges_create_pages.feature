@@ -83,15 +83,37 @@ Feature:  Create and view new individual edges through non-Ajax pages
     Then I should see "error"
 
 
-
     # Check various prohibited edge-to-self cases.  Verify each
     # fundamental prohibition, plus one property type that is
     # prohibited by inheritence
   Scenario: I can't create an hierarchical_relationship edge-to-self
+    And there is 1 existing item like "myItem"
+    And I am on the new edges page
+    And I select "myItem node number 0" from "Subject"
+    And I select "generic Hierarchical Relationship (wm built-in root type)" from "Relates to"
+    And I select "myItem node number 0" from "Obj"
+    When I press "Create"
+    Then I should see "error"
+
 
   Scenario: I can't create an ordered_relationship edge-to-self
+    And there is 1 existing item like "myItem"
+    And I am on the new edges page
+    And I select "myItem node number 0" from "Subject"
+    And I select "generic Ordered Relationship (wm built-in root type)" from "Relates to"
+    And I select "myItem node number 0" from "Obj"
+    When I press "Create"
+    Then I should see "error"
+
 
   Scenario: I can't create an one_of (implied hierarchical) edge-to-self
+    And there is 1 existing item like "myItem"
+    And I am on the new edges page
+    And I select "myItem node number 0" from "Subject"
+    And I select "One Of (wm built-in relationship)" from "Relates to"
+    And I select "myItem node number 0" from "Obj"
+    When I press "Create"
+    Then I should see "error"
 
 
 
