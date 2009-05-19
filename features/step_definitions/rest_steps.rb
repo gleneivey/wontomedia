@@ -20,7 +20,7 @@ When /^I am on the (\S+) (\S+) page$/ do |action, controller|
   visit "/#{controller}/#{action}"
 end
 
-When /^I am on the (\S+) edges page for "(.+)" "(.+)" "(.+)"$/ do |edge_action,
+When /^I am on the (\S+) edges page for "(.+)" "(.+)" "(.+)"$/ do |action,
     subj_name, pred_name, obj_name|
   subj_id = 
   id = Edge.first(:conditions => [
@@ -28,13 +28,21 @@ When /^I am on the (\S+) edges page for "(.+)" "(.+)" "(.+)"$/ do |edge_action,
     Node.first(:conditions => "name = '#{subj_name}'").id,
     Node.first(:conditions => "name = '#{pred_name}'").id,
     Node.first(:conditions => "name = '#{obj_name}'" ).id       ]).id
-  visit "/edges/#{id}/#{edge_action}"
+  if action == "show"
+    visit "/edges/#{id}"
+  else
+    visit "/edges/#{id}/#{action}"
+  end
 end
 
 # it would be cool to generate a model class from the controllere name, but...
-When /^I am on the (\S+) nodes page for "(.+)"$/ do |action, item|
+When /^I am on the (\S+) nodes page for "([^"]+)"$/ do |action, item|
   id = Node.first(:conditions => "name = '#{item}'").id
-  visit "/nodes/#{id}/#{action}"
+  if action == "show"
+    visit "/nodes/#{id}"
+  else
+    visit "/nodes/#{id}/#{action}"
+  end
 end
 
 

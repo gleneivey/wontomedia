@@ -21,7 +21,11 @@ require 'test_helper'
 
 class NodesShowViewTest < ActionController::TestCase
   tests NodesController
-  def get_nodes_show(name) get :show, :id => nodes(name).id; end
+  def get_nodes_show(name)
+    n = nodes(name)
+    get :show, :id => n.id
+    n
+  end
 
   test "should have show page for nodes" do
     get_nodes_show(:one)
@@ -46,5 +50,25 @@ class NodesShowViewTest < ActionController::TestCase
   test "nodes show page shouldnt contain status" do
     get_nodes_show(:one)
     assert_negative_view_contents
-  end    
+  end
+
+  test "node-show page should contain node-edit link" do
+    n = get_nodes_show(:two)
+    assert_select "a[href=?]", edit_node_path(n)
+  end
+
+  test "node-show page should contain node-delete link" do
+    n = get_nodes_show(:two)
+    assert_select "a[href=?]", node_path(n) #sloppy, should verify :method
+  end
+
+  test "node-show page should contain nodes-index link" do
+    n = get_nodes_show(:two)
+    assert_select "a[href=?]", nodes_path
+  end
+
+  test "node-show page should contain edges-new link" do
+    n = get_nodes_show(:two)
+    assert_select "a[href=?]", new_edge_path
+  end
 end
