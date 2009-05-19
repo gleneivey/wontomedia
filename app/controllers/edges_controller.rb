@@ -25,10 +25,6 @@ class EdgesController < ApplicationController
   end
 
   # GET /edges/new
-  def populate_for_new_update
-    @nouns = NodeHelper.nouns
-    @verbs = PropertyNode.all
-  end
   def new
     @edge = Edge.new
     populate_for_new_update
@@ -56,5 +52,37 @@ class EdgesController < ApplicationController
     @predicate = @edge.predicate
     @obj = @edge.obj
     @edge_desc = @edge.edge_desc
+  end
+
+  # GET /edges/1/edit
+  def edit
+    @edge = Edge.find(params[:id])
+    populate_for_new_update
+  end
+
+  # PUT /edges/1
+  def update
+    @edge = Edge.find(params[:id])
+    if !@edge.update_attributes(params[:edge])
+      populate_for_new_update
+      render :action => "edit"
+    else
+      flash[:notice] = 'Edge was successfully updated.'
+      redirect_to edge_path(@edge)
+    end
+  end
+
+  # DELETE /edges/1
+  def destroy
+    @edge = Edge.find(params[:id])
+    @edge.destroy
+    redirect_to edges_url
+  end
+
+private
+
+  def populate_for_new_update
+    @nouns = NodeHelper.nouns
+    @verbs = PropertyNode.all
   end
 end

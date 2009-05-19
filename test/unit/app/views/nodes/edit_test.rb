@@ -46,7 +46,7 @@ class NodesEditViewTest < ActionController::TestCase
     end
   end
 
-  test "empty nodes edit form shouldnt contain status" do
+  test "fresh nodes edit form shouldnt contain status" do
     get :edit, :id => nodes(:one).id
     assert_negative_view_contents
   end    

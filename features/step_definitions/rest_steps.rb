@@ -20,9 +20,21 @@ When /^I am on the (\S+) (\S+) page$/ do |action, controller|
   visit "/#{controller}/#{action}"
 end
 
-When /^I am on the (\S+) (\S+) page for "(.+)"$/ do |action, controller, item|
+When /^I am on the (\S+) edges page for "(.+)" "(.+)" "(.+)"$/ do |edge_action,
+    subj_name, pred_name, obj_name|
+  subj_id = 
+  id = Edge.first(:conditions => [
+    "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+    Node.first(:conditions => "name = '#{subj_name}'").id,
+    Node.first(:conditions => "name = '#{pred_name}'").id,
+    Node.first(:conditions => "name = '#{obj_name}'" ).id       ]).id
+  visit "/edges/#{id}/#{edge_action}"
+end
+
+# it would be cool to generate a model class from the controllere name, but...
+When /^I am on the (\S+) nodes page for "(.+)"$/ do |action, item|
   id = Node.first(:conditions => "name = '#{item}'").id
-  visit "/#{controller}/#{id}/#{action}"
+  visit "/nodes/#{id}/#{action}"
 end
 
 

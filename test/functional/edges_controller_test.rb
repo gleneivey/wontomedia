@@ -84,4 +84,39 @@ class EdgesControllerTest < ActionController::TestCase
     assert o == edge.obj
     assert slf == edge.edge_desc
   end
+
+  test "should get edit edge page" do
+    id = edges(:aReiffiedEdge).id
+    get :edit, :id => id
+    assert_response :success
+    edge = assigns(:edge)
+    assert_not_nil edge
+    assert_equal id, edge.id
+  end
+
+  test "should update edge" do
+    e = edges(:aParentEdge)
+    e.obj_id = nodes(:A).id
+    h = { :id => e.id, :subject_id => e.subject_id,
+      :predicate_id => e.predicate_id, :obj_id => e.obj_id }
+    assert_no_difference('Edge.count') do
+      put :update, :id => e.id, :edge => h
+    end
+    assert_redirected_to edge_path(assigns(:edge))
+    assert_not_nil Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      e.subject_id, e.predicate_id, e.obj_id   ])
+  end
+
+  test "should delete edge" do
+    e = edges(:aReiffiedEdge)
+    subj_id = e.subject_id; pred_id = e.predicate_id; obj_id = e.obj_id
+    assert_difference('Edge.count', -1) do
+      delete :destroy, :id => e.id
+    end
+    assert_redirected_to edges_path
+    assert_nil Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      subj_id, pred_id, obj_id   ])
+  end
 end
