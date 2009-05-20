@@ -36,6 +36,10 @@ Feature:  View edges related to a node on that node's "resource" page
 
 
   Scenario: View a node with no edges
+    Given there is 1 existing item like "lonelyNode"
+    When I am on the show nodes page for "lonelyNode0"
+    Then I should not see "Edges for this node:"
+
 
   Scenario: View a node with one edge
 
