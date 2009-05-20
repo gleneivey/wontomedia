@@ -30,10 +30,10 @@
 
 <% @edges.each do |edge| %>
   <tr>
-    <td><%=  h Node.find(edge.subject_id).name %></td>
+    <td><%=h Node.find(edge.subject_id).name %></td>
     <td style="font-size: 80%">(is [a|an|the])</td>
-    <td><%=  h Node.find(edge.predicate_id).name %></td>
-    <td><%=  h Node.find(edge.obj_id).name %></td>
+    <td><%=h Node.find(edge.predicate_id).name %></td>
+    <td><%=h Node.find(edge.obj_id).name %></td>
     <td><%=if edge.edge_desc_id
              h Node.find(edge.edge_desc_id).name end %></td>
     <td><%=   link_to 'Show', edge %></td>
