@@ -28,6 +28,16 @@ aParentEdge:
   predicate: parent_of
   obj: testSubcategory
 
+isAssignedIsAValueProperty:
+  subject: isAssigned
+  predicate: sub_property_of
+  obj: value_relationship
+
+subcategoryHasValue:
+  subject: testSubcategory
+  predicate: isAssigned
+  obj: testItem
+
 
 # group of nodes used for testing sub_property_of relationship traversal
 # desired structure is:
@@ -89,4 +99,82 @@ snIRafu:
   subject: sn
   predicate: symmetric_relationship
   obj: afu
+
+
+# group of nodes for testing display/sorting of edges on node pages
+nUFAS_value_A:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: value_relationship
+  obj: A
+
+nUFAS_isAssigned_B:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: isAssigned
+  obj: B
+
+nUFAS_peer_of_X:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: peer_of
+  obj: X
+
+nUFAS_peer_of_Y:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: peer_of
+  obj: Y
+
+nUFAS_peer_of_Z:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: peer_of
+  obj: Z
+
+nUFAS_successor_of_C:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: successor_of
+  obj: C
+
+nUFAS_successor_of_D:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: successor_of
+  obj: D
+
+nUFAS_predecessor_of_E:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: predecessor_of
+  obj: E
+
+nUFAS_child_of_M:
+  subject: nodeUsedFrequentlyAsSubject
+  predicate: child_of
+  obj: M
+
+
+a_isAssigned_nUFAO:
+  subject: A
+  predicate: isAssigned
+  obj: nodeUsedFrequentlyAsObject
+
+b_isAssigned_nUFAO:
+  subject: B
+  predicate: isAssigned
+  obj: nodeUsedFrequentlyAsObject
+
+c_isAssigned_nUFAO:
+  subject: C
+  predicate: isAssigned
+  obj: nodeUsedFrequentlyAsObject
+
+c_peer_of_nUFAO:
+  subject: C
+  predicate: peer_of
+  obj: nodeUsedFrequentlyAsObject
+
+d_isAssigned_nUFAO:
+  subject: D
+  predicate: isAssigned
+  obj: nodeUsedFrequentlyAsObject
+
+e_isAssigned_nUFAO:
+  subject: E
+  predicate: isAssigned
+  obj: nodeUsedFrequentlyAsObject
 

@@ -19,20 +19,50 @@
 
 
 <p>
-  <b>Name:</b>
-  <%=h @node.name %>
+  <b>Name:</b>  <%=h @node.name %>
 </p>
 
 <p>
-  <b>Title:</b>
-  <%=h @node.title %>
+  <b>Title:</b>  <%=h @node.title %>
 </p>
 
 <p>
-  <b>Description:</b>
-  <%=h @node.description %>
+  <b>Description:</b>  <%=h @node.description %>
 </p>
 
+<% unless @edge_list.empty? %>
+
+  <table>
+    <caption>Edges for this node:</caption>
+    <thead><tr>
+      <th>this</th>
+      <th><em>is</em> or <em>has</em></th>
+      <th><em>to</em> or <em>with</em></th>
+    </tr></thead>
+
+    <% @edge_list.each do |edge_array| %>
+      <tbody>
+        <% edge_array.each do |edge_id| %>
+          <tr>
+            <td>
+              <%= e = @edge_hash[edge_id]
+                  self_string_or_other_link(e.subject_id) %>
+            </td><td>
+              <%= self_string_or_other_link(e.predicate_id) %>
+            </td><td>
+              <%= self_string_or_other_link(e.obj_id) %>
+            </td><td>
+              <%= link_to 'Edit', edit_edge_path(e) %>
+            </td><td>
+              <%= link_to 'Destroy', edge_path(e),
+                          :confirm => 'Are you sure?', :method => :delete %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% end %>
+  </table>
+<% end %>
 
 <%= link_to 'Add new edge', new_edge_path %> |
 <%= link_to 'Edit this node', edit_node_path(@node) %> |

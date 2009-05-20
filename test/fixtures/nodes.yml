@@ -30,7 +30,6 @@ two:
   sti_type: ClassNode
 
 
-# group of nodes used by edge model unit tests
 testContainer:
   name: testContainer
   title: testContainer
@@ -50,6 +49,11 @@ edge_one:
 testSubcategory:
   name: testSubcategory
   title: testSubcategory
+
+isAssigned:
+  name: isAssigned
+  title: isAssigned
+
 
 
 # group of nodes used for testing sub_property_of relationship traversal
@@ -109,3 +113,13 @@ afu:
   name: afu
   title: afu
 
+
+
+# group of nodes for testing display/sorting of edges on node pages
+nodeUsedFrequentlyAsSubject:
+  name: nodeUsedFrequentlyAsSubject
+  title: nodeUsedFrequentlyAsSubject
+
+nodeUsedFrequentlyAsObject:
+  name: nodeUsedFrequentlyAsObject
+  title: nodeUsedFrequentlyAsObject

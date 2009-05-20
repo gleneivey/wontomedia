@@ -99,6 +99,111 @@ class NodesControllerTest < ActionController::TestCase
 
   test "should show node" do
     assert_controller_behavior_with_id :show
+    assert_not_nil assigns(:edge_list)
+    assert_not_nil assigns(:edge_hash)
+    assert_not_nil assigns(:node_hash)
+  end
+
+  test "should show first edge for node with value" do
+    n = nodes(:testSubcategory)
+    get :show, :id => n.id
+
+    e = edges(:subcategoryHasValue)
+    assert assigns(:node_hash)[e.predicate_id]
+    assert assigns(:node_hash)[e.obj_id]
+
+    array_of_arrays = assigns(:edge_list)
+    assert array_of_arrays.length >= 1
+    array_of_value_edges = array_of_arrays.delete_at(0)
+    assert array_of_value_edges.length >= 1
+    assert array_of_value_edges.include? e.id
+  end
+
+  test "should correctly group/sort is-subject edges" do
+    n = nodes(:nodeUsedFrequentlyAsSubject)
+    get :show, :id => n.id
+
+    # given content of test/fixtures/edges.yml, expect edge_list as follows:
+    # [[2 value edges], [3 peer_of edges], [2 successor_of eges], [2 random]]
+    edge_list = assigns(:edge_list)
+    assert edge_list.length == 4
+    value_edge_array,
+      peer_edge_array,
+      successor_edge_array,
+      random_edge_array = *edge_list
+
+    assert value_edge_array.length == 2
+    assert value_edge_array.include? edges(:nUFAS_value_A).id
+    assert value_edge_array.include? edges(:nUFAS_isAssigned_B).id
+
+    assert peer_edge_array.length == 3
+    assert peer_edge_array.include? edges(:nUFAS_peer_of_X).id
+    assert peer_edge_array.include? edges(:nUFAS_peer_of_Y).id
+    assert peer_edge_array.include? edges(:nUFAS_peer_of_Z).id
+
+    assert successor_edge_array.length == 2
+    assert successor_edge_array.include? edges(:nUFAS_successor_of_C).id
+    assert successor_edge_array.include? edges(:nUFAS_successor_of_D).id
+
+    assert random_edge_array.length == 2
+    assert random_edge_array.include? edges(:nUFAS_predecessor_of_E).id
+    assert random_edge_array.include? edges(:nUFAS_child_of_M).id
+  end
+
+  test "should correctly group is-object edges" do
+    n = nodes(:nodeUsedFrequentlyAsObject)
+    get :show, :id => n.id
+
+    # given content of test/fixtures/edges.yml, expect edge_list as follows:
+    # [[6 edge IDs, sorted (primarily) by edge's predicate ]]
+    edge_list = assigns(:edge_list)
+    assert edge_list.length == 1
+    edges = edge_list.first
+    assert edges.length == 6
+    assert edges.include? edges(:a_isAssigned_nUFAO).id
+    assert edges.include? edges(:b_isAssigned_nUFAO).id
+    assert edges.include? edges(:c_isAssigned_nUFAO).id
+    assert edges.include? edges(:d_isAssigned_nUFAO).id
+    assert edges.include? edges(:e_isAssigned_nUFAO).id
+    assert edges.include? edges(:c_peer_of_nUFAO).id
+    # minimal sort-order test
+    assert Edge.find(edges.first).predicate_id !=
+             Edge.find(edges.last).predicate_id
+  end
+
+  test "should show all predicate edges in last group" do
+    n = Node.find_by_name("sub_property_of")
+    get :show, :id => n.id
+
+    # this time, check built-in "seed" schema.  Lots o' items use sub_prop_of
+    # edge_list should look like: [ ... [many edges]]
+    edge_list = assigns(:edge_list)
+    assert edge_list.length >= 1
+    edges = edge_list.last
+    assert edges.length >= 19
+    # and check some representative items
+    spo_id = Node.find_by_name("sub_property_of").id
+    assert edges.include? Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?", spo_id, spo_id,
+        Node.find_by_name("hierarchical_relationship").id ]).id
+    assert edges.include? Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+        Node.find_by_name("contains").id, spo_id,
+        Node.find_by_name("parent_of").id ]).id
+    assert edges.include? Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+        Node.find_by_name("successor_of").id, spo_id,
+        Node.find_by_name("ordered_relationship").id ]).id
+    assert edges.include? Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+        nodes(:isAssigned).id, spo_id,
+        Node.find_by_name("value_relationship").id ]).id
+    assert edges.include? Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+        nodes(:B).id, spo_id, nodes(:C).id ]).id
+    assert edges.include? Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+        nodes(:B).id, spo_id, nodes(:Z).id ]).id
   end
 
   test "should get edit node page" do

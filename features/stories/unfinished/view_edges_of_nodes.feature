@@ -18,8 +18,8 @@ Feature:  View edges related to a node on that node's "resource" page
 #    - each intermediate group contains all those edges which use the
 #      same predicate.  In group, edges sorted by object; groups sorted
 #      by predicate.
-#   - next group will be those edges with current node as object, sorted
-#     by predicate, sub-sorted by subject
+#   - next group will be those edges with current node as object, grouped
+#     by predicate, sub-grouped by subject
 #   - final group will be those edges with current node as predicate
 
 # these acceptance tests are intentionally agnostic to
@@ -42,6 +42,12 @@ Feature:  View edges related to a node on that node's "resource" page
 
 
   Scenario: View a node with one edge
+    Given there is 2 existing items like "friendlyNode"
+    And there is an existing edge "friendlyNode0" "peer_of" "friendlyNode1"
+    When I am on the show nodes page for "friendlyNode0"
+    Then I should see "Edges for this node:"
+    And I should see "peer_of"
+
 
   Scenario: View a node with multiple edges all using the same predicate
 
@@ -51,3 +57,20 @@ Feature:  View edges related to a node on that node's "resource" page
 
   Scenario: View a node with many edges, all of which use node as predicate
 
+
+# WontoMedia - a wontology web application
+# Copyright (C) 2009 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see <http://www.gnu.org/licenses/>.

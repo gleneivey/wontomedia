@@ -17,6 +17,7 @@
 
 
 require Rails.root.join( 'lib', 'helpers', 'node_helper')
+require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 
 class NodesController < ApplicationController
   # GET /
@@ -58,6 +59,102 @@ class NodesController < ApplicationController
   # GET /nodes/1
   def show
     @node = Node.find(params[:id])
+    used_as_subj = Edge.all( :conditions => [ "subject_id = ?", @node.id ])
+    used_as_pred = Edge.all( :conditions => [ "predicate_id = ?", @node.id ])
+    used_as_obj  = Edge.all( :conditions => [ "obj_id = ?", @node.id ])
+
+    @node_hash = {}
+    @edge_hash = {}
+    [ used_as_subj, used_as_pred, used_as_obj ].each do |edge_array|
+      edge_array.each do |edge|
+        unless @edge_hash.has_key? edge.id
+          @edge_hash[edge.id] = edge
+          [ edge.subject_id, edge.predicate_id, edge.obj_id ].each do |n_id|
+            unless @node_hash.has_key? n_id
+              @node_hash[n_id] = Node.find(n_id)
+            end
+          end
+        end
+      end
+    end
+
+      # now that we've got all the edges to display, order and group them
+    # @edge_list should be an array of arrays, each internal array is
+    # a "section" of the display page, containing .id's of edges
+    @edge_list = []
+
+    value_id = Node.find_by_name("value_relationship").id
+    spo_id   = Node.find_by_name("sub_property_of").id
+
+    # first group, all edges *from* this node with value-type predicates
+    edges = []
+    used_as_subj.each do |edge|
+      if check_properties( :does         => edge.predicate_id,
+                           :inherit_from => value_id,
+                           :via          => spo_id             )
+        edges << edge.id
+        used_as_subj.delete(edge)
+      end
+    end
+    unless edges.empty?
+      @edge_list << edges
+    end
+
+
+    # next N groups: 1 group for edges *from* this node with >1 of same pred.
+    #figure out which predicates occur >1, how many they occur, sort & group
+    pred_counts = {}
+    edge_using_pred = {}
+    used_as_subj.each do |edge|
+      if pred_counts[edge.predicate_id].nil?
+        pred_counts[edge.predicate_id] = 1
+      else
+        pred_counts[edge.predicate_id] += 1
+      end
+      edge_using_pred[edge.predicate_id] = edge.id
+    end
+    subj_edges = pred_counts.keys
+    subj_edges.sort! { |a,b| pred_counts[b] <=> pred_counts[a] }
+    array_of_singles = []
+    subj_edges.each do |predicate_id|
+      if pred_counts[predicate_id] > 1
+        edges = []
+        used_as_subj.each do |edge|   # lazy, more hashes would eliminate rescan
+          if edge.predicate_id == predicate_id
+            edges << edge.id
+          end
+        end
+        unless edges.empty?
+          @edge_list << edges
+        end
+      else
+        array_of_singles << edge_using_pred[predicate_id]
+      end
+    end
+
+    # last group of edges *from* current node: all edges w/ used-once pred's
+    unless array_of_singles.empty?
+      @edge_list << array_of_singles
+    end
+
+
+    obj_edges = used_as_obj.map { |edge| edge.id }
+    obj_edges.sort! do |a,b|
+      if @edge_hash[a].predicate_id == @edge_hash[b].predicate_id
+        @edge_hash[a].obj_id <=> @edge_hash[b].obj_id
+      else
+        @edge_hash[a].predicate_id <=> @edge_hash[b].predicate_id
+      end
+    end
+    unless obj_edges.empty?
+      @edge_list << obj_edges
+    end
+
+
+    pred_edges = used_as_pred.map { |edge| edge.id }
+    unless pred_edges.empty?
+      @edge_list << pred_edges
+    end
   end
 
   # GET /nodes/1/edit
@@ -69,9 +166,9 @@ class NodesController < ApplicationController
   def update
       # we want to be agnostic WRT processing node subclasses, so remap
       # name of incoming parameters if we're actually handling a child
-    params.keys.each do |k|
+    params.each do |k,v|
       if k =~ /_node/
-        params["node"] = params[k]
+        params["node"] = v
       end
     end
 
