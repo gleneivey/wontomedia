@@ -30,16 +30,12 @@
 
 <% @edges.each do |edge| %>
   <tr>
-    <td><%=n = Node.find(edge.subject_id)
-           link_to "#{h n.name}", node_path(n) %></td>
+    <td><%=link_to "#{h edge.subject.name}", node_path(edge.subject) %></td>
     <td style="font-size: 80%">(is [a|an|the])</td>
-    <td><%=n = Node.find(edge.predicate_id)
-           link_to "#{h n.name}", node_path(n) %></td>
-    <td><%=n = Node.find(edge.obj_id)
-           link_to "#{h n.name}", node_path(n) %></td>
-    <td><%=if edge.edge_desc_id
-             n = Node.find(edge.edge_desc_id)
-             link_to "#{h n.name}", node_path(n)
+    <td><%=link_to "#{h edge.predicate.name}", node_path(edge.predicate) %></td>
+    <td><%=link_to "#{h edge.obj.name}", node_path(edge.obj) %></td>
+    <td><%=unless edge.edge_desc.nil?
+             link_to "#{h edge.edge_desc.name}", node_path(edge.edge_desc)
            end %></td>
     <td><%=   link_to 'Edit', edit_edge_path(edge) %></td>
     <td><%=   link_to 'Destroy', edge, :confirm => 'Are you sure?',
