@@ -19,9 +19,9 @@
 def relation_and_all_superproperties(predicate_id, &block)
   yield predicate_id
 
-  subproperty_id = Node.find_by_name("sub_property_of").id
+  spo_id = Node.find_by_name("sub_property_of").id
   edges = Edge.all( :conditions => [
-    "subject_id = ? AND predicate_id = ?", predicate_id, subproperty_id ])
+    "subject_id = ? AND predicate_id = ?", predicate_id, spo_id ])
   edges.each do |e|
     relation_and_all_superproperties(e.obj_id, &block)
   end
@@ -30,9 +30,9 @@ end
 def relation_and_all_subproperties(predicate_id, &block)
   yield predicate_id
 
-  subproperty_id = Node.find_by_name("sub_property_of").id
+  spo_id = Node.find_by_name("sub_property_of").id
   edges = Edge.all( :conditions => [
-    "predicate_id = ? AND obj_id = ?", subproperty_id, predicate_id ])
+    "predicate_id = ? AND obj_id = ?", spo_id, predicate_id ])
   edges.each do |e|
     relation_and_all_subproperties(e.subject_id, &block)
   end
