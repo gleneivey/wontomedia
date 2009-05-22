@@ -49,15 +49,6 @@ Feature:  View edges related to a node on that node's "resource" page
     And I should see "peer_of"
 
 
-  Scenario: View a node with multiple edges all using the same predicate
-
-  Scenario: View a node with many edges all using different predicates
-
-  Scenario: View a node with edges that will fill each (sub)group type
-
-  Scenario: View a node with many edges, all of which use node as predicate
-
-
 # WontoMedia - a wontology web application
 # Copyright (C) 2009 - Glen E. Ivey
 #    www.wontology.com
