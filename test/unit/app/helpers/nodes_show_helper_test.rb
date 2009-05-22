@@ -16,24 +16,29 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ENV["RAILS_ENV"] = "test"
-require File.join( File.dirname(__FILE__), "..", "config", "environment" )
-require 'action_view/test_case'
-require 'test_help'
+require 'test_helper'
 
-class ActiveSupport::TestCase
-  self.use_instantiated_fixtures = true
-  fixtures :all
+class NodesShowHelperTest < ActionView::TestCase
+  test "generate self-node name text" do
+    name = "test_node"
+    @node = Node.new( :name => name, :title => "a test node")
+    @node.save
+    @node_hash= {}
+    @node_hash[@node.id] = @node
 
-  require File.join( File.dirname(__FILE__), 'seed_helper' )
-  setup :load_wontomedia_app_seed_data
+    assert name == self_string_or_other_link(@node.id)
+  end
 
-  def assert_negative_view_contents
-    assert_select "body", { :text => /error/i, :count => 0 },
-      "Page cannot say 'error'"
-    assert_select "body", { :text => /successfully created/i, :count => 0 },
-      "Page cannot say 'successfully created'"
-    assert_select "body", { :text => /warranty/i, :count => 0 },
-      "Page cannot say 'warranty'"
+  test "generate link to other node including name text" do
+    name = "one_node"
+    n = Node.new( :name => name, :title => "one test node")
+    @node = Node.new( :name => "another_node", :title => "another test node")
+    n.save; @node.save
+    @node_hash= {}
+    @node_hash[n.id] = n
+    @node_hash[@node.id] = @node
+
+    assert "<a href=\"#{node_path(n)}\">#{name}</a>" ==
+      self_string_or_other_link(n.id)
   end
 end
