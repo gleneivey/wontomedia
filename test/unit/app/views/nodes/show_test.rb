@@ -71,4 +71,26 @@ class NodesShowViewTest < ActionController::TestCase
     n = get_nodes_show(:two)
     assert_select "a[href=?]", new_edge_path
   end
+
+  test "node-show page should contain names & links of each edge's nodes" do
+    [ nodes(:one),                          # aReiffiedEdge
+      nodes(:testCategory),
+      nodes(:testSubcategory),              # subcategoryHasValue
+      nodes(:isAssigned)
+    ].each do |n|
+      get_nodes_show(:testItem)
+      assert_select "body", /#{n.name}/
+      assert_select "a[href=?]", node_path(n)
+    end
+  end
+
+  test "node-show page should contain links for each edge" do
+    [ edges(:aReiffiedEdge),
+      edges(:subcategoryHasValue)
+    ].each do |e|
+      get_nodes_show(:testItem)
+      assert_select "a[href=?]", edit_edge_path(e)
+      assert_select "a[href=?]", edge_path(e)
+    end
+  end
 end
