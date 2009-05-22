@@ -16,33 +16,57 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-When /^I am on the (\S+) (\S+) page$/ do |action, controller|
-  visit "/#{controller}/#{action}"
-end
-
-When /^I am on the (\S+) edges page for "(.+)" "(.+)" "(.+)"$/ do |action,
-    subj_name, pred_name, obj_name|
-  subj_id = 
-  id = Edge.first(:conditions => [
-    "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-    Node.first(:conditions => "name = '#{subj_name}'").id,
-    Node.first(:conditions => "name = '#{pred_name}'").id,
-    Node.first(:conditions => "name = '#{obj_name}'" ).id       ]).id
-  if action == "show"
-    visit "/edges/#{id}"
+When /^I (am on|go to|try to go to) the (\S+) (\S+) page$/ do |fu, action,
+                                                                   controller|
+  if action == "index"
+    visit "/#{controller}/"
   else
-    visit "/edges/#{id}/#{action}"
+    visit "/#{controller}/#{action}"
   end
 end
 
-# it would be cool to generate a model class from the controllere name, but...
-When /^I am on the (\S+) nodes page for "([^"]+)"$/ do |action, item|
-  id = Node.first(:conditions => "name = '#{item}'").id
-  if action == "show"
-    visit "/nodes/#{id}"
+When /^I (am on|go to|try to go to) the (\S+) edges page for "(.+)" "(.+)" "(.+)"$/ do |fu, action, subj_name, pred_name, obj_name|
+  s = Node.first(:conditions => "name = '#{subj_name}'")
+  p = Node.first(:conditions => "name = '#{pred_name}'")
+  o = Node.first(:conditions => "name = '#{obj_name}'" )
+
+  if s.nil? || p.nil? || o.nil?
+    e = nil
   else
-    visit "/nodes/#{id}/#{action}"
+    e = Edge.first(:conditions => [
+          "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+          s.id, p.id, o.id ])
+  end
+
+  if action == "show"
+    if e.nil?
+      visit "/edges/0"
+    else
+      visit "/edges/#{e.id}"
+    end
+  else
+    if e.nil?
+      visit "/edges/0/#{action}"
+    else
+      visit "/edges/#{e.id}/#{action}"
+    end
   end
 end
 
-
+# it would be cool to generate a model class from the controller name, but...
+When /^I (am on|go to|try to go to) the (\S+) nodes page for "([^"]+)"$/ do |fu, action, item|
+  n = Node.first(:conditions => "name = '#{item}'")
+  if action == "show"
+    if n.nil?
+      visit "/nodes/0"
+    else
+      visit "/nodes/#{n.id}"
+    end
+  else
+    if n.nil?
+      visit "/nodes/0/#{action}"
+    else
+      visit "/nodes/#{n.id}/#{action}"
+    end
+  end
+end

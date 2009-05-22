@@ -58,7 +58,13 @@ class NodesController < ApplicationController
 
   # GET /nodes/1
   def show
-    @node = Node.find(params[:id])
+    begin
+      @node = Node.find(params[:id])
+    rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
+
     used_as_subj = Edge.all( :conditions => [ "subject_id = ?", @node.id ])
     used_as_pred = Edge.all( :conditions => [ "predicate_id = ?", @node.id ])
     used_as_obj  = Edge.all( :conditions => [ "obj_id = ?", @node.id ])
@@ -161,7 +167,12 @@ class NodesController < ApplicationController
 
   # GET /nodes/1/edit
   def edit
-    @node = Node.find(params[:id])
+    begin
+      @node = Node.find(params[:id])
+    rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
   end
 
   # PUT /nodes/1
@@ -174,7 +185,12 @@ class NodesController < ApplicationController
       end
     end
 
-    @node = NodeHelper.find_typed_node(params[:id])
+    begin
+      @node = NodeHelper.find_typed_node(params[:id])
+    rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
 
     if (!params[:node].nil? && !params[:node][:name].nil? &&
           params[:node][:name] =~ /[:.]/                     )  ||
@@ -189,7 +205,13 @@ class NodesController < ApplicationController
 
   # DELETE /nodes/1
   def destroy
-    @node = Node.find(params[:id])
+    begin
+      @node = Node.find(params[:id])
+    rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
+
     @node.destroy
     redirect_to nodes_url
   end

@@ -46,7 +46,13 @@ class EdgesController < ApplicationController
   # GET /edges/1
   def show
       # set @edge for view to use for link building
-    @edge = Edge.find(params[:id])
+    begin
+      @edge = Edge.find(params[:id])
+    rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
+
       # populate these here because I didn't want view causing db queries
     @subject = @edge.subject
     @predicate = @edge.predicate
@@ -56,13 +62,25 @@ class EdgesController < ApplicationController
 
   # GET /edges/1/edit
   def edit
-    @edge = Edge.find(params[:id])
+    begin
+      @edge = Edge.find(params[:id])
+    rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
+
     populate_for_new_update
   end
 
   # PUT /edges/1
   def update
-    @edge = Edge.find(params[:id])
+    begin
+      @edge = Edge.find(params[:id])
+    rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
+
     if !@edge.update_attributes(params[:edge])
       populate_for_new_update
       render :action => "edit"
@@ -74,7 +92,13 @@ class EdgesController < ApplicationController
 
   # DELETE /edges/1
   def destroy
-    @edge = Edge.find(params[:id])
+    begin
+      @edge = Edge.find(params[:id])
+    rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
+
     @edge.destroy
     redirect_to edges_url
   end

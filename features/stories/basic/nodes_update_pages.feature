@@ -39,6 +39,17 @@ Feature:  Edit individual nodes through non-Ajax pages
     Then I should see "error"
 
 
+  Scenario: When I delete a node, edges that use it go too
+    Given there are 2 existing properties like "propFamily"
+    And there is an existing edge "propFamily1" "child_of" "propFamily0"
+    And I am on the show nodes page for "propFamily0"
+    And I follow "Delete this node"
+    When I try to go to the show nodes page for "propFamily0"
+    Then I should see "404"
+    When I try to go to the show edges page for "propFamily1" "child_of" "propFamily0"
+    Then I should see "404"
+
+
 
 # WontoMedia - a wontology web application
 # Copyright (C) 2009 - Glen E. Ivey
