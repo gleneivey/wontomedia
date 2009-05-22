@@ -51,7 +51,6 @@ def check_properties(hash_of_params)
     child_id = hash_of_params[:does]
     parent_id = hash_of_params[:inherit_from]
     via_property_id = hash_of_params[:via]
-
     # treat "self" as a form of inheritence
     if child_id == parent_id
       return true

@@ -123,3 +123,7 @@ nodeUsedFrequentlyAsSubject:
 nodeUsedFrequentlyAsObject:
   name: nodeUsedFrequentlyAsObject
   title: nodeUsedFrequentlyAsObject
+
+veryBusyNode:
+  name: veryBusyNode
+  title: veryBusyNode

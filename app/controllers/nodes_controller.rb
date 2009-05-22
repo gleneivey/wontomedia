@@ -69,9 +69,9 @@ class NodesController < ApplicationController
       edge_array.each do |edge|
         unless @edge_hash.has_key? edge.id
           @edge_hash[edge.id] = edge
-          [ edge.subject_id, edge.predicate_id, edge.obj_id ].each do |n_id|
-            unless @node_hash.has_key? n_id
-              @node_hash[n_id] = Node.find(n_id)
+          [ edge.subject, edge.predicate, edge.obj ].each do |node|
+            unless @node_hash.has_key? node.id
+              @node_hash[node.id] = node
             end
           end
         end
@@ -88,14 +88,16 @@ class NodesController < ApplicationController
 
     # first group, all edges *from* this node with value-type predicates
     edges = []
+    edges_to_delete = []
     used_as_subj.each do |edge|
       if check_properties( :does         => edge.predicate_id,
                            :inherit_from => value_id,
                            :via          => spo_id             )
         edges << edge.id
-        used_as_subj.delete(edge)
+        edges_to_delete << edge
       end
     end
+    used_as_subj -= edges_to_delete # if done incrementally, breaks iterator
     unless edges.empty?
       @edge_list << edges
     end

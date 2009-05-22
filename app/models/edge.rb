@@ -82,7 +82,7 @@ private
           relation_and_all_superproperties(e.predicate_id) do |existing_rel|
             if Edge.all( :conditions => [
               "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-                proposed_rel, inverse_id, existing_rel ] )
+                proposed_rel, inverse_id, existing_rel ] ).length > 0
               errors.add :subject, 'already has this relationship implied.'
               return false
             end

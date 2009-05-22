@@ -112,9 +112,9 @@ class NodesControllerTest < ActionController::TestCase
     assert assigns(:node_hash)[e.predicate_id]
     assert assigns(:node_hash)[e.obj_id]
 
-    array_of_arrays = assigns(:edge_list)
+    assert array_of_arrays = assigns(:edge_list)
     assert array_of_arrays.length >= 1
-    array_of_value_edges = array_of_arrays.delete_at(0)
+    array_of_value_edges = array_of_arrays.first
     assert array_of_value_edges.length >= 1
     assert array_of_value_edges.include? e.id
   end
@@ -125,7 +125,7 @@ class NodesControllerTest < ActionController::TestCase
 
     # given content of test/fixtures/edges.yml, expect edge_list as follows:
     # [[2 value edges], [3 peer_of edges], [2 successor_of eges], [2 random]]
-    edge_list = assigns(:edge_list)
+    assert edge_list = assigns(:edge_list)
     assert edge_list.length == 4
     value_edge_array,
       peer_edge_array,
@@ -156,7 +156,7 @@ class NodesControllerTest < ActionController::TestCase
 
     # given content of test/fixtures/edges.yml, expect edge_list as follows:
     # [[6 edge IDs, sorted (primarily) by edge's predicate ]]
-    edge_list = assigns(:edge_list)
+    assert edge_list = assigns(:edge_list)
     assert edge_list.length == 1
     edges = edge_list.first
     assert edges.length == 6
@@ -177,7 +177,7 @@ class NodesControllerTest < ActionController::TestCase
 
     # this time, check built-in "seed" schema.  Lots o' items use sub_prop_of
     # edge_list should look like: [ ... [many edges]]
-    edge_list = assigns(:edge_list)
+    assert edge_list = assigns(:edge_list)
     assert edge_list.length >= 1
     edges = edge_list.last
     assert edges.length >= 19
@@ -204,6 +204,96 @@ class NodesControllerTest < ActionController::TestCase
     assert edges.include? Edge.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
         nodes(:B).id, spo_id, nodes(:Z).id ]).id
+  end
+
+  test "should do-the-right-thing with node used in all kinds of edges" do
+        # to minimize fixture size/complexity, copy all edges from
+        # preceding cases to a new target node
+    # stuff we'll need a lot
+    target = nodes(:veryBusyNode)
+    spo_id = Node.find_by_name("sub_property_of").id
+    value_id = Node.find_by_name("value_relationship").id
+
+    # edges from 'should show first edge for node with value' test
+    source = nodes(:testSubcategory)
+    known_value_edges = []
+    Edge.all( :conditions => "subject_id = #{source.id}").each do |edge|
+      if check_properties(
+          :does         => edge.predicate.id,
+          :inherit_from => value_id,
+          :via          => spo_id )
+        edge_copy = Edge.new( :subject   => target,
+                              :predicate => edge.predicate,
+                              :obj       => edge.obj          )
+        assert edge_copy.save
+        known_value_edges << edge_copy.id
+      end
+    end
+
+    # edges from 'should correctly group/sort is-subject edges' test
+    source = nodes(:nodeUsedFrequentlyAsSubject)
+    known_nonvalue_subject_edges = []
+    Edge.all( :conditions => "subject_id = #{source.id}").each do |edge|
+      edge_copy = Edge.new( :subject   => target,
+                            :predicate => edge.predicate,
+                            :obj       => edge.obj            )
+      assert edge_copy.save
+
+      if check_properties(
+          :does         => edge.predicate.id,
+          :inherit_from => value_id,
+          :via          => spo_id )
+        known_value_edges << edge_copy.id
+     else
+        known_nonvalue_subject_edges << edge_copy.id
+      end
+    end
+
+    # edges from 'should correctly group is-object edges' test
+    source = nodes(:nodeUsedFrequentlyAsObject)
+    known_object_edges = []
+    Edge.all( :conditions => "obj_id = #{source.id}" ).each do |edge|
+      edge_copy = Edge.new( :subject   => edge.subject,
+                            :predicate => edge.predicate,
+                            :obj       => target            )
+      assert edge_copy.save
+      known_object_edges << edge_copy.id
+    end
+
+    # edges from 'should show all predicate edges in last group' test
+    source = Node.find_by_name("sub_property_of")
+    known_predicate_edges = []
+    Edge.all( :conditions => "predicate_id = #{source.id}" ).each do |edge|
+      edge_copy = Edge.new( :subject   => edge.subject,
+                            :predicate => target,
+                            :obj       => edge.obj               )
+      assert edge_copy.save
+      known_predicate_edges << edge_copy.id
+    end
+
+        # now, execute the "show" action
+    get :show, :id => target.id
+
+        # and perform checks
+    assert edge_list = assigns(:edge_list)
+    # value edges come first
+    edges = edge_list.delete_at(0)
+    assert edges.sort == known_value_edges.sort
+
+    # predicate edges come last
+    edges = edge_list.delete_at(-1)
+    assert edges.sort == known_predicate_edges.sort
+
+    # object edges second to last
+    edges = edge_list.delete_at(-1)
+    assert edges.sort == known_object_edges.sort
+
+    # and all thats left should be groups of non-value is-subject edges
+    assert edge_list.length    == 3 # constants from preceding test
+    assert edge_list[0].length == 3
+    assert edge_list[1].length == 2
+    assert edge_list[2].length == 2
+    assert edge_list.flatten.sort == known_nonvalue_subject_edges.sort
   end
 
   test "should get edit node page" do
