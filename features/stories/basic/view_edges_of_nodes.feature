@@ -31,21 +31,21 @@ Feature:  View edges related to a node on that node's "resource" page
 
   Scenario: Node page should contain a new-edge link
     Given I am on the show nodes page for "parent_of"
-    When I follow "Add new edge"
-    Then I should see "New edge"
+    When I follow "Add a new edge"
+    Then I should see "Make a new edge"
 
 
   Scenario: View a node with no edges
     Given there is 1 existing item like "lonelyNode"
     When I am on the show nodes page for "lonelyNode0"
-    Then I should not see "Edges for this node:"
+    Then I should not see "Edges for this node"
 
 
   Scenario: View a node with one edge
     Given there is 2 existing items like "friendlyNode"
     And there is an existing edge "friendlyNode0" "peer_of" "friendlyNode1"
     When I am on the show nodes page for "friendlyNode0"
-    Then I should see "Edges for this node:"
+    Then I should see "Edges for this node"
     And I should see "peer_of"
 
 

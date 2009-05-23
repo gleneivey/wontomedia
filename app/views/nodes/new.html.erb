@@ -20,17 +20,17 @@
 
 <% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
 
-<h1>New node</h1>
+<h1>Make a new node</h1>
 
 <% options = @node.sti_type.nil? ? {} : { :url => nodes_path() }
    form_for(@node, options) do |f|
  %>
   <%= f.error_messages %>
-  <div style="width: 30%; float: left;">
+  <div style="width: 40%; float: left;">
     <%= render :partial => "form_fields", :locals => { :f => f } %>
   </div>
 
-  <div style="width: 65%; float: right;">
+  <div style="width: 55%; float: right;">
     <%= f.label :sti_type, "Type" %>
     <%= select_tag "node[sti_type]",
 	  options_for_select( [

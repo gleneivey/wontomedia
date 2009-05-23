@@ -1,0 +1,21 @@
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+}
+
+td {
+  vertical-align: top;
+  padding-bottom: 1.5ex;
+  padding-left: 4px;
+  padding-right: 2px;
+}
+
+.edgecolumn {
+  border-width: thin;
+  border-color: black;
+  border-style: none solid;
+}

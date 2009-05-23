@@ -18,16 +18,9 @@
 %>
 
 
-<h1>Make a new edge</h1>
-
-<% form_for(@edge) do |f| %>
-  <%= f.error_messages %>
-  <%= render :partial => "spo_select_controls",
-               :locals => {
-                 :f => f, :edge => @edge,
-                 :nouns => @nouns, :verbs => @verbs
-               } %>
-  <p><%= f.submit 'Create' %></p>
-<% end %>
-
-<%= link_to 'Back', edges_path %>
+<%= link_to 'Add a new node', new_node_path %> |
+<%= link_to 'Add a new edge', new_edge_path %> |
+<%= link_to 'Edit this node', edit_node_path(@node) %> |
+<%= link_to 'Delete this node', node_path(@node), :confirm => 'Are you sure?',
+                                       :method => :delete %> |
+<%= link_to 'Show node list', nodes_path %>

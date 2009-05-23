@@ -20,31 +20,33 @@
 
 <% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
 
-<h1>Listing nodes</h1>
+<h1>Listing all nodes</h1>
+
+<%= render :partial => "index_outbound_links" %>
+<br/>
 
 <table>
   <tr>
     <th></th>
-    <th>Name</th>
-    <th>Title</th>
-    <th>Description</th>
+    <th>&nbsp;&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    <th>&nbsp;&nbsp;Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    <th>&nbsp;&nbsp;Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
   </tr>
 
-<% for node in @nodes %>
-  <tr>
-    <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
-    <td><%= link_to "#{h node.name}", node_path(node) %></td>
-    <td><%=h node.title %></td>
-    <td><%=h node.description %></td>
-    <td><%= link_to 'Edit', edit_node_path(node) %></td>
-    <td><%= link_to 'Destroy', node_path(node),
-                    :confirm => 'Are you sure?',
-                    :method => :delete %></td>
-
-  </tr>
-<% end %>
+  <% @nodes.each do |node| %>
+    <tr>
+      <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
+      <td><%= link_to "#{h node.name}", node_path(node) %></td>
+      <td class="edgecolumn"><%=h node.title %></td>
+      <td><%=h node.description %></td>
+      <td>
+        <%= link_to 'Edit&nbsp;node', edit_node_path(node) %>
+        <%= link_to 'Destroy&nbsp;node', node_path(node),
+		      :confirm => 'Are you sure?',
+		      :method => :delete %>
+      </td>
+    </tr>
+  <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New node', new_node_path %>
+<%= render :partial => "index_outbound_links" %>

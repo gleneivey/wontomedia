@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-05-22}
+  s.date = %q{2009-05-23}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.extra_rdoc_files = [
@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
      "app/controllers/application_controller.rb",
      "app/controllers/edges_controller.rb",
      "app/controllers/nodes_controller.rb",
+     "app/controllers/temp_login_controller.rb",
      "app/helpers/nodes_show_helper.rb",
      "app/models/class_node.rb",
      "app/models/edge.rb",
@@ -36,11 +37,15 @@ Gem::Specification.new do |s|
      "app/views/edges/show.html.erb",
      "app/views/layouts/application.html.erb",
      "app/views/nodes/_form_fields.html.erb",
+     "app/views/nodes/_home_outbound_links.html.erb",
+     "app/views/nodes/_index_outbound_links.html.erb",
+     "app/views/nodes/_show_outbound_links.html.erb",
      "app/views/nodes/edit.html.erb",
      "app/views/nodes/home.html.erb",
      "app/views/nodes/index.html.erb",
      "app/views/nodes/new.html.erb",
      "app/views/nodes/show.html.erb",
+     "app/views/temp_login/login_form.html.erb",
      "config/boot.rb",
      "config/database-mysql-development.yml",
      "config/database-mysql.yml",
@@ -77,8 +82,10 @@ Gem::Specification.new do |s|
      "public/javascripts/dragdrop.js",
      "public/javascripts/effects.js",
      "public/javascripts/prototype.js",
+     "public/not_logged_in.html",
      "public/robots.txt",
      "public/stylesheets/scaffold.css",
+     "public/stylesheets/wm.css",
      "script/about",
      "script/console",
      "script/cucumber",

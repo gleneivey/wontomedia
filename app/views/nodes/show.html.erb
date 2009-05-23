@@ -17,6 +17,7 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
+<h1>Node Contents</h1>
 
 <p>
   <b>Name:</b>  <%=h @node.name %>
@@ -31,13 +32,14 @@
 </p>
 
 <% unless @edge_list.empty? %>
+  <%= render :partial => "show_outbound_links" %>
 
+  <h2>Edges for this node</h2>
   <table>
-    <caption>Edges for this node:</caption>
     <thead><tr>
-      <th>this</th>
-      <th><em>is</em> or <em>has</em></th>
-      <th><em>to</em> or <em>with</em></th>
+      <th>&nbsp;&nbsp;this&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+      <th>&nbsp;&nbsp;<em>is</em> or <em>has</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+      <th>&nbsp;&nbsp;<em>to</em> or <em>with</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
     </tr></thead>
 
     <% @edge_list.each do |edge_array| %>
@@ -47,14 +49,13 @@
             <td>
               <%= e = @edge_hash[edge_id]
                   self_string_or_other_link(e.subject_id) %>
-            </td><td>
+            </td><td class="edgecolumn">
               <%= self_string_or_other_link(e.predicate_id) %>
             </td><td>
               <%= self_string_or_other_link(e.obj_id) %>
             </td><td>
-              <%= link_to 'Edit', edit_edge_path(e) %>
-            </td><td>
-              <%= link_to 'Destroy', edge_path(e),
+              <%= link_to 'Edit edge', edit_edge_path(e) %>
+              <%= link_to 'Destroy edge', edge_path(e),
                           :confirm => 'Are you sure?', :method => :delete %>
             </td>
           </tr>
@@ -64,8 +65,4 @@
   </table>
 <% end %>
 
-<%= link_to 'Add new edge', new_edge_path %> |
-<%= link_to 'Edit this node', edit_node_path(@node) %> |
-<%= link_to 'Delete this node', node_path(@node), :confirm => 'Are you sure?',
-                                       :method => :delete %> |
-<%= link_to 'Show node list', nodes_path %>
+<%= render :partial => "show_outbound_links" %>

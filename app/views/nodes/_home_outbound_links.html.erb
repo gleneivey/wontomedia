@@ -18,37 +18,10 @@
 %>
 
 
-<style type="text/css">
-  p.inputpara {
-    padding-bottom: 0;
-    margin-bottom: 0;
-  }
-  p.directions {
-    padding-top: 0;
-    margin-top: 0;
-    padding-bottom: 2ex;
-    font-size: 80%;
-  }
-</style>
 
-<p class="inputpara">
-  <%= f.label :name %><br />
-  <%= f.text_field :name %>
-</p><p class="directions">
-  Start with a letter. Letters, numbers, - and _ are OK. Must be unique
-  for every node.
-</p>
-
-<p class="inputpara">
-  <%= f.label :title %><br />
-  <%= f.text_field :title %>
-</p><p class="directions">
-  One line only, any text.
-</p>
-
-<p class="inputpara">
-  <%= f.label :description %><br />
-  <%= f.text_area :description %>
-</p><p class="directions">
-  Any amount of any text. Describe what this node represents. No formatting.
+<p>
+  Click on a name to view details &mdash;
+  <%= link_to 'Create a new node', new_node_path %> &mdash;
+  <%= link_to 'View all nodes', nodes_path %> &mdash;
+  <%= link_to 'View all edges', edges_path %>
 </p>

@@ -26,12 +26,25 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <title><%= controller.controller_name -%>: <%= controller.action_name -%></title>
     <%= stylesheet_link_tag 'scaffold' %>
+    <%= stylesheet_link_tag 'wm' %>
   </head>
   <body>
 
     <p style="color: red"><%= flash[:error] %></p>
     <p style="color: green"><%= flash[:notice] %></p>
     <%= yield  %>
+
+    <p style="font-size: 60%; color: grey; clear: both">
+Copyright &copy; 2009, Glen E. Ivey (system design and behavior currently confidential & proprietary) |
+
+Software and page templates licensed under
+<a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a> |
+
+Page content licensed under
+<a href="http://www.gnu.org/licenses/fdl-1.3.html">GNU FDL v1.3</a> |
+
+Powered by <a href="http://wontomedia.rubyforge.org/">WontoMedia</a>
+    </p>
 
   </body>
 </html>

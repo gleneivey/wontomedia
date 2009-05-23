@@ -20,26 +20,26 @@
 
 <% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
 
-<h1>Listing nodes</h1>
+<h1>Current Categories and Items</h1>
+
+<%= render :partial => "home_outbound_links" %>
 
 <table>
   <tr>
     <th></th>
-    <th>Name</th>
-    <th>Title</th>
-    <th>Description</th>
+    <th>&nbsp;&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    <th>&nbsp;&nbsp;Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    <th>&nbsp;&nbsp;Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
   </tr>
 
-<% for node in @nouns %>
-  <tr>
-    <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
-    <td><%= link_to "#{h node.name}", node_path(node) %></td>
-    <td><%=h node.title %></td>
-    <td><%=h node.description %></td>
-  </tr>
-<% end %>
+  <% @nouns.each do |node| %>
+    <tr>
+      <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
+      <td><%= link_to "#{h node.name}", node_path(node) %></td>
+      <td class="edgecolumn"><%=h node.title %></td>
+      <td><%=h node.description %></td>
+    </tr>
+  <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New node', new_node_path %>
+<%= render :partial => "home_outbound_links" %>
