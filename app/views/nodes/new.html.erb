@@ -36,7 +36,8 @@
 	  options_for_select( [
 	    [ "- type of node -",          "" ],
 	    [ "Category",         "ClassNode" ],
-	    [ "Item",              "ItemNode" ] ],
+	    [ "Item",              "ItemNode" ],
+	    [ "Property",      "PropertyNode" ] ],
             @node.sti_type.nil? ? "" : @node.sti_type )
      %>
     <dl><dt>Category</dt><dd>
@@ -52,6 +53,24 @@
       other items, but cannot contain categories.  ("Ford Model-T" might
       be an item, but could still contain parts that are also items,
       like "Windshield" and "Tire".)
+
+    </dd><dt>Property</dt><dd>
+
+      "Property" is used to define relationships between other nodes.
+      Once you create a new Property node, you should create one or
+      more edges that relate that property to other existing
+      properties.  In general, you will use the "sub_property_of"
+      property in order to create these edges.  For example, if you
+      were creating a description of famillial relations between
+      people, you might create a new property named "spouseOf".  To
+      define what the creation of edges using this new property
+      <em>means</em>, you can create the edge "<code>spouseOf
+      sub_property_of symmetric_relationship</code>".  This example
+      will cause "spouseOf" to be treated as a "peer" relationship
+      (rather than a hierarchical one), and as a symmetric
+      relationship, so that creating a "spouseOf" edge from one node
+      to another implies an edge going the other direction even if it
+      is not defined explicitly.
 
     </dd></dl>
 
