@@ -20,6 +20,15 @@ require Rails.root.join( 'lib', 'helpers', 'node_helper')
 require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 
 class NodesController < ApplicationController
+  before_filter :temporary_page_protection
+  def temporary_page_protection
+    if session[:who_am_i].nil?
+      render :file => "#{RAILS_ROOT}/public/not_logged_in.html"
+      return
+    end
+  end
+
+
   # GET /
   def home
     @nouns = NodeHelper.nouns

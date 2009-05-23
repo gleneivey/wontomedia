@@ -16,17 +16,33 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ActionController::Routing::Routes.draw do |map|
-  map.login_form   '/temporary-login/new',
-    :controller => 'temp_login', :action => 'login_form'
-  map.login_verify '/temporary-login/verify',
-    :controller => 'temp_login', :action => 'login_verify'
 
-  map.resources :nodes
-  map.resources :edges
-  map.root :controller => "nodes", :action => "home"
+class TempLoginController < ApplicationController
+  # GET /temporary-login/new
+  def login_form
+  end
 
-  # Install the default routes as the lowest priority.
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
+  # POST /temporary-login/verify
+  def login_verify
+    people = {
+      "gei@mcn.org"         => "1968",
+      "esh@qualitytree.com" => "1986",
+      "pivey@mcn.org"       => "1989",
+      "dongar37@gmail.com"  => "2007",
+      "joe@jsinnott.net"    => "2005"
+    }
+
+    if !people.has_key? params[:token1]
+      render :file => "#{RAILS_ROOT}/public/not_logged_in.html"
+      return
+    end
+
+    if people[params[:token1]] != params[:token2]
+      render :file => "#{RAILS_ROOT}/public/not_logged_in.html"
+      return
+    end
+
+    session[:who_am_i] = "logged in"
+    redirect_to "/"
+  end
 end
