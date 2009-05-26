@@ -103,4 +103,7 @@ class NodeHelper
   def self.nouns
     ClassNode.all + ItemNode.all
   end
+  def self.not_reiffied
+    ClassNode.all + ItemNode.all + PropertyNode.all
+  end
 end

@@ -3,7 +3,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
   as a contributor, I want
   to be able to create and view edges.
 
-  Scenario: Create new edge 
+  Scenario: Create new class-hierarchy-class edge 
     Given there are 2 existing classes like "itemFamily"
     And I am on the new edges page
     And I select "itemFamily node number 0" from "Subject"
@@ -15,6 +15,17 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I should see "parent_of"
     And I should see "itemFamily1"
 
+  Scenario: Create new property-sub_property_of-property edge
+    Given there is 1 existing property like "newProp"
+    And I am on the new edges page
+    And I select "newProp node number 0" from "Subject"
+    And I select "SubProperty Of (wm built-in type of relationship)" from "Relates to"
+    And I select "Predecessor Of (wm built-in relationship)" from "Obj"
+    When I press "Create"
+    Then I should see "successfully created"
+    And I should see "newProp0"
+    And I should see "sub_property_of"
+    And I should see "predecessor_of"
 
   Scenario: I can't create an edge duplicating an existing one
     Given there are 2 existing items like "thing"

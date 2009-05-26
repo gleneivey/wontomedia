@@ -115,7 +115,7 @@ class EdgesController < ApplicationController
 private
 
   def populate_for_new_update
-    @nouns = NodeHelper.nouns
+    @nodes = NodeHelper.not_reiffied
     @verbs = PropertyNode.all
   end
 end

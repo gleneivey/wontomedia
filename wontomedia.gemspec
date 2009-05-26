@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-05-23}
+  s.date = %q{2009-05-26}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.extra_rdoc_files = [
@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
      "app/models/node.rb",
      "app/models/property_node.rb",
      "app/models/reiffied_node.rb",
+     "app/views/edges/_index_outbound_links.html.erb",
      "app/views/edges/_spo_select_controls.html.erb",
      "app/views/edges/edit.html.erb",
      "app/views/edges/index.html.erb",

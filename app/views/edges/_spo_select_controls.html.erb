@@ -23,7 +23,7 @@
   <%= select_tag "edge[subject_id]",
         options_for_select(
           [[ "- this category or item -", "" ]] +
-	    nouns.map do |n|
+	    nodes.map do |n|
 	      [ h(n.title), n.id ]
 	    end,
           edge.subject.nil? ? "" : edge.subject.id
@@ -47,7 +47,7 @@
   <%= select_tag "edge[obj_id]",
         options_for_select(
           [[ "- to this category or item -", "" ]] +
-	    nouns.map do |n|
+	    nodes.map do |n|
 	      [ h(n.title), n.id ]
 	    end,
           edge.obj.nil? ? "" : edge.obj.id

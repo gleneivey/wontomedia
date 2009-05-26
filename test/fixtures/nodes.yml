@@ -37,22 +37,32 @@ testContainer:
 testItem:
   name: testItem
   title: testItem
+  sti_type: ItemNode
 
 testCategory:
   name: testCategory
   title: testCategory
+  sti_type: ClassNode
+
+testProperty:
+  name: testProperty
+  title: testProperty
+  sti_type: PropertyNode
 
 edge_one:
   name: testItem.one_of.testCategory
   title: a title
+  sti_type: ReiffiedNode
 
 testSubcategory:
   name: testSubcategory
   title: testSubcategory
+  sti_type: ClassNode
 
 isAssigned:
   name: isAssigned
   title: isAssigned
+  sti_type: PropertyNode
 
 
 

@@ -16,6 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'enumerator'
 require 'test_helper'
 
 class EdgesControllerTest < ActionController::TestCase
@@ -28,7 +29,7 @@ class EdgesControllerTest < ActionController::TestCase
   test "should get new" do
     get :new
     assert_response :success
-    assert_not_nil assigns(:nouns)
+    assert_not_nil assigns(:nodes)
     assert_not_nil assigns(:verbs)
   end
 
@@ -42,17 +43,64 @@ class EdgesControllerTest < ActionController::TestCase
     assert_nil edge.edge_desc_id
   end
 
-  test "should create edge with valid data" do
-    s_id = nodes(:testContainer).id
-    p_id = Node.find_by_name("parent_of").id
-    o_id = nodes(:testItem).id
+  test "new form should populate arrays for view" do
+    get :new
 
-    assert_difference('Edge.count') do
-      post :create, :edge => { :subject_id => s_id, :predicate_id => p_id,
-                               :obj_id => o_id }
+    # spot-check for presence/absence of one known node of each STI child type
+    ns = assigns(:nodes)
+    assert   ns.include? nodes(:testCategory)
+    assert   ns.include? nodes(:testItem)
+    assert   ns.include? nodes(:testProperty)
+    assert !(ns.include? nodes(:edge_one))
+
+    vs = assigns(:verbs)
+    assert !(vs.include? nodes(:testCategory))
+    assert !(vs.include? nodes(:testItem))
+    assert   vs.include? nodes(:testProperty)
+    assert !(vs.include? nodes(:edge_one))
+  end
+
+  # possible edge combinations:
+  #   class    -- class
+  #   class    -- item
+  #   item     -- item
+  #   item     -- class    [non-hierarchical only]
+  #   property -- property [only type that can use "sub_property_of"]
+  #   property -- class
+  #   property -- item
+  #   class    -- property
+  #   item     -- property
+  # note: checks for rejection of invalid edge cases are in unit//models/edge
+  test "should create all valid edges" do
+    subj_nodes = [
+      nodes(:testCategory), nodes(:testItem), nodes(:testProperty) ]
+    obj_nodes  = [
+      nodes(:two), nodes(:one), nodes(:isAssigned) ]
+    verb_nodes = [
+      Node.find_by_name( "parent_of" ),                    # tC -> tC
+      Node.find_by_name( "contains" ),                     # tC -> tI
+      Node.find_by_name( "hierarchical_relationship" ),    # tC -> tP
+      Node.find_by_name( "one_of" ),                       # tI -> tC
+      Node.find_by_name( "peer_of" ),                      # tI -> tI
+      nodes(             :A ),                             # tI -> tP
+      Node.find_by_name( "child_of" ),                     # tP -> tC
+      nodes(             :testProperty ),                  # tP -> tI
+      Node.find_by_name( "sub_property_of" ),              # tP -> tP
+    ]
+
+    verbs = verb_nodes.to_enum
+    subj_nodes.each do |subj_node|
+      obj_nodes.each do |obj_node|
+
+        assert_difference('Edge.count') do
+          post :create, :edge => { :subject_id   => subj_node.id,
+                                   :predicate_id => verbs.next.id,
+                                   :obj_id       => obj_node.id      }
+        end
+        assert_redirected_to edge_path(assigns(:edge))
+        assert_not_nil Edge.find(assigns(:edge).id)
+      end
     end
-    assert_redirected_to edge_path(assigns(:edge))
-    assert_not_nil Edge.find(assigns(:edge).id)
   end
 
   test "should not create an edge if missing an element of triple" do
