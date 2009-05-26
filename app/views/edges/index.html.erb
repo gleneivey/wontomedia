@@ -18,7 +18,10 @@
 %>
 
 
-<h1>Listing edges</h1>
+<h1>Listing all edges</h1>
+
+<%= render :partial => "index_outbound_links" %>
+<br/>
 
 <table>
   <tr>
@@ -44,6 +47,4 @@
 <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New edge', new_edge_path %>
+<%= render :partial => "index_outbound_links" %>

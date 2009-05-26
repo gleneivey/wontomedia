@@ -18,9 +18,9 @@
 %>
 
 
-<%= link_to 'Add a new node', new_node_path %> |
-<%= link_to 'Add a new edge', new_edge_path %> |
-<%= link_to 'Edit this node', edit_node_path(@node) %> |
+<%= link_to 'Edit this node', edit_node_path(@node) %> &mdash;
 <%= link_to 'Delete this node', node_path(@node), :confirm => 'Are you sure?',
-                                       :method => :delete %> |
-<%= link_to 'Show node list', nodes_path %>
+                                       :method => :delete %> &mdash;
+<%= link_to 'Show node list', nodes_path %> &mdash;
+<%= link_to 'Add a new node', new_node_path %> &mdash;
+<%= link_to 'Add a new edge', new_edge_path %>

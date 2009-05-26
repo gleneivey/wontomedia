@@ -17,27 +17,10 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<h1>Edge Contents</h1>
 
-<p><b>Subject:</b>
-  <%= h @subject.title %> &mdash;
-  (<%= link_to "#{h @subject.name}", node_path(@subject) %>)
+
+<p>
+  Click on a name to view details &mdash;
+  <%= link_to 'Create a new edge', new_edge_path %> &mdash;
+  <%= link_to 'View all nodes', nodes_path %>
 </p>
-
-<p><b>Predicate:</b>
-  <%= h @predicate.title %> &mdash;
-  (<%= link_to "#{@predicate.name}", node_path(@predicate) %>)
-</p>
-
-<p><b>Object:</b>
-  <%= h @obj.title %> &mdash;
-  (<%= link_to "#{@obj.name}", node_path(@obj) %>)
-</p>
-
-<%= link_to 'Edit this edge', edit_edge_path(@edge) %> &mdash;
-<%= link_to 'Delete this edge', edge_path(@edge), :confirm => 'Are you sure?',
-                                                  :method => :delete %> &mdash;
-<%= link_to 'Show edge list', edges_path %>
-
-
-
