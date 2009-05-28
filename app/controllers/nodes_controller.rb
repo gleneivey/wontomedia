@@ -36,8 +36,7 @@ class NodesController < ApplicationController
 
   # GET /nodes
   def index
-    @nodes = Node.find(:all)
-    @nodes.reverse!
+    @nodes = Node.all.reverse
   end
 
   # GET /nodes/new

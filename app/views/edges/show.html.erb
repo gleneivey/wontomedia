@@ -37,7 +37,7 @@
 <%= link_to 'Edit this edge', edit_edge_path(@edge) %> &mdash;
 <%= link_to 'Delete this edge', edge_path(@edge), :confirm => 'Are you sure?',
                                                   :method => :delete %> &mdash;
-<%= link_to 'Show edge list', edges_path %>
-
-
-
+<%= link_to 'Show edge list', edges_path %> &mdash;
+<%= link_to 'Create a new edge', new_edge_path %> &mdash;
+<%= link_to 'Show node list',    nodes_path %> &mdash;
+<%= link_to 'Create a new node', new_node_path %>

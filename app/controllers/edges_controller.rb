@@ -30,7 +30,7 @@ class EdgesController < ApplicationController
 
   # GET /edges
   def index
-    @edges = Edge.all
+    @edges = Edge.all.reverse
   end
 
   # GET /edges/new
