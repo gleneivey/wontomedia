@@ -22,9 +22,9 @@
   <%= f.label :subject_id %>
   <%= select_tag "edge[subject_id]",
         options_for_select(
-          [[ "- this category or item -", "" ]] +
+          [[ "- this object -", "" ]] +
 	    nodes.map do |n|
-	      [ h(n.title), n.id ]
+	      [ h("#{n.name} : #{n.title}"), n.id ]
 	    end,
           edge.subject.nil? ? "" : edge.subject.id
         )
@@ -36,7 +36,7 @@
         options_for_select(
           [[ "- has this relationship -", "" ]] +
 	    verbs.map do |n|
-	      [ h(n.title), n.id ]
+	      [ h("#{n.name} : #{n.title}"), n.id ]
 	    end,
           edge.predicate.nil? ? "" : edge.predicate.id
         )
@@ -46,9 +46,9 @@
   <%= f.label :obj_id %>
   <%= select_tag "edge[obj_id]",
         options_for_select(
-          [[ "- to this category or item -", "" ]] +
+          [[ "- to this object -", "" ]] +
 	    nodes.map do |n|
-	      [ h(n.title), n.id ]
+	      [ h("#{n.name} : #{n.title}"), n.id ]
 	    end,
           edge.obj.nil? ? "" : edge.obj.id
         )

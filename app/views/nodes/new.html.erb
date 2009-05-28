@@ -75,6 +75,10 @@
     </dd></dl>
 
     <p style="text-align: center"> <%= f.submit "Create" %> </p>
+    <p>
+      <%= link_to 'Cancel, goto node list', nodes_path %> &mdash;
+      <%= link_to 'Cancel, goto edge list', edges_path %>
+    </p>
   </div>
 <% end %>
 
