@@ -80,6 +80,42 @@ class NodeTest < ActiveSupport::TestCase
     assert !n.save
   end
 
+  test "node names can be 80 characters long" do
+    n = Node.new(:title => "long name node", :description => "long", :name =>
+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" )
+    assert n.save
+  end
+
+  test "node names cannot be 81 characters long" do
+    n = Node.new(:title => "long name node", :description => "long", :name =>
+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxX" )
+    assert !n.save
+  end
+
+  test "node titles can be 255 characters long" do
+    title = 'x'*255
+    n = Node.new(:name => "name", :title => title, :description => "long" )
+    assert n.save
+  end
+
+  test "node titles cannot be 256 characters long" do
+    title = 'x'*256
+    n = Node.new(:name => "name", :title => title, :description => "long" )
+    assert !n.save
+  end
+
+  test "node descriptions can be 65,000 characters long" do
+    desc = 'x'*65000
+    n = Node.new(:name => "name", :title => "title", :description => desc )
+    assert n.save
+  end
+
+  test "node names cannot be 65,001 characters long" do
+    desc = 'x'*65001
+    n = Node.new(:name => "name", :title => "title", :description => desc )
+    assert !n.save
+  end
+
 
           # verify existence/correctness of :title validations
   test "node title is required" do

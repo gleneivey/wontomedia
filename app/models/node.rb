@@ -21,6 +21,8 @@ class Node < ActiveRecord::Base
 
     # name
   validates_presence_of   :name, :message => "Node's name cannot be blank."
+  validates_length_of     :name, :maximum => 80,
+    :message => "Node name must be 80 characters or less."
   validates_each          :name do |record, attr, value|
     if !(value =~ /^[a-zA-Z][a-zA-Z0-9._:-]*$/m) ||
         (value =~ /\n/m)
@@ -34,9 +36,15 @@ class Node < ActiveRecord::Base
 
     # title
   validates_presence_of   :title, :message => "Node's title cannot be blank."
+  validates_length_of     :title, :maximum => 255,
+    :message => "Node title must be 255 characters or less."
   validates_each          :title do |record, attr, value|
     if value =~ /[\n\t]/m
       record.errors.add attr, "should not be multiple lines."
     end
   end
+
+  validates_length_of     :description, :maximum => 65000,
+    :allow_nil => true, :allow_blank => true,
+    :message => "Node description must be 65,000 characters or less."
 end

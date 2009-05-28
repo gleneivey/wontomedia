@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-05-26}
+  s.date = %q{2009-05-27}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.extra_rdoc_files = [
@@ -101,42 +101,7 @@ Gem::Specification.new do |s|
      "script/process/reaper",
      "script/process/spawner",
      "script/runner",
-     "script/server",
-     "test/db_migrations_test.rb",
-     "test/fixtures/edges.yml",
-     "test/fixtures/nodes.yml",
-     "test/functional/edges_controller_test.rb",
-     "test/functional/nodes_controller_test.rb",
-     "test/integration/home_create_nodes_test.rb",
-     "test/integration/test_helper.rb",
-     "test/seed_helper.rb",
-     "test/test_helper.rb",
-     "test/unit/app/helpers/nodes_show_helper_test.rb",
-     "test/unit/app/models/class_node_test.rb",
-     "test/unit/app/models/edge_test.rb",
-     "test/unit/app/models/item_node_test.rb",
-     "test/unit/app/models/node_test.rb",
-     "test/unit/app/models/property_node_test.rb",
-     "test/unit/app/models/reiffied_node_test.rb",
-     "test/unit/app/views/edges/edit_test.rb",
-     "test/unit/app/views/edges/index_test.rb",
-     "test/unit/app/views/edges/new_test.rb",
-     "test/unit/app/views/edges/show_test.rb",
-     "test/unit/app/views/layouts/application_test.rb",
-     "test/unit/app/views/nodes/edit_test.rb",
-     "test/unit/app/views/nodes/home_test.rb",
-     "test/unit/app/views/nodes/index_test.rb",
-     "test/unit/app/views/nodes/new_test.rb",
-     "test/unit/app/views/nodes/show_test.rb",
-     "test/unit/config/routes_test.rb",
-     "test/unit/db/assert_current_schema.rb",
-     "test/unit/db/fixtures/nodes_test.rb",
-     "test/unit/db/schema_test.rb",
-     "test/unit/db/test_helper.rb",
-     "test/unit/lib/helpers/tripple_navigation_ck_inherit_test.rb",
-     "test/unit/lib/helpers/tripple_navigation_ck_link_test.rb",
-     "test/unit/lib/helpers/tripple_navigation_raaSub_test.rb",
-     "test/unit/lib/helpers/tripple_navigation_raaSuper_test.rb"
+     "script/server"
   ]
   s.has_rdoc = true
   s.homepage = %q{http://wontomedia.rubyforge.org}
