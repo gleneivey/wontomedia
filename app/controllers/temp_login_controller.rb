@@ -27,6 +27,7 @@ class TempLoginController < ApplicationController
     people = {
       "gei@mcn.org"         => "1968",
       "esh@qualitytree.com" => "1986",
+      "bill@netwidget.com"  => "1989",
       "pivey@mcn.org"       => "1989",
       "dongar37@gmail.com"  => "2007",
       "joe@jsinnott.net"    => "2005"
