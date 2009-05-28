@@ -48,7 +48,7 @@ ENDOSTRING
     s.extra_rdoc_files = ["README"]
 
     s.files =  FileList["[A-Z]*",
-      "{app,config,bin,db,generators,lib,public,script,test,vendor}/**/*"].
+      "{app,config,bin,db,generators,lib,public,script,vendor}/**/*"].
         exclude("database.yml")
     # Note:
     #       .autotest cucumber.yml .gitignore
