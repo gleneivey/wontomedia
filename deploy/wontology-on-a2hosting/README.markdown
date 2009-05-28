@@ -15,7 +15,9 @@ In short, the deployment procedure is as follows:
       $ ./deploy/wontology-on-a2hosting/deploy-to-a2.sh
 
  * from the root of the A2 user account:
+     [  shutdown WontoMedia via cPanel RoR widget ]
       $ ./install-wontomedia.sh
+     [  start WontoMedia via cPanel RoR widget ]
 
 
 These scripts make the following assumption about the A2 host's configuration:
