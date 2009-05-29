@@ -17,6 +17,9 @@
 
 
 class Node < ActiveRecord::Base
+  DATA_IS_UNALTERABLE = 1
+
+
   self.inheritance_column = "sti_type"
 
     # name

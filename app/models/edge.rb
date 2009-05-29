@@ -20,6 +20,9 @@ require Rails.root.join( 'lib', 'helpers', 'node_helper')
 require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 
 class Edge < ActiveRecord::Base
+  DATA_IS_UNALTERABLE = 1
+
+
   before_validation :complex_validations
 #  validates_presence_of :subject, :predicate, :obj
 #explicitly do the equivalent of the above in complex_validations because

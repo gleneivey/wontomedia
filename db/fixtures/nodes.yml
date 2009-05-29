@@ -28,6 +28,7 @@
 peer_of:
   name: peer_of
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: Peer Of (wm built-in relationship)
   description: >-
     A relationship of this type between two nodes indicates a
@@ -47,6 +48,7 @@ peer_of:
 one_of:
   name: one_of
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: One Of (wm built-in relationship)
   description: >-
     A relationship of this type between two nodes is hierarchical.
@@ -76,6 +78,7 @@ one_of:
 contains:
   name: contains
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: Contains (wm built-in relationship)
   description: >-
 
@@ -106,6 +109,7 @@ contains:
 parent_of:
   name: parent_of
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: Parent Of (wm built-in relationship)
   description: >-
     
@@ -136,6 +140,7 @@ parent_of:
 child_of:
   name: child_of
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: Child Of (wm built-in relationship)
   description: >-
 
@@ -165,6 +170,7 @@ child_of:
 predecessor_of:
   name: predecessor_of
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: Predecessor Of (wm built-in relationship)
   description: >-
 
@@ -177,6 +183,7 @@ predecessor_of:
 successor_of:
   name: successor_of
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: Successor Of (wm built-in relationship)
   description: >-
 
@@ -190,6 +197,7 @@ successor_of:
 inverse_relationship:
   name: inverse_relationship
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: Inverse Relationship (wm built-in type of relationship)
   description: >-
 
@@ -209,6 +217,7 @@ inverse_relationship:
 sub_property_of:
   name: sub_property_of
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: SubProperty Of (wm built-in type of relationship)
   description: >-
 
@@ -233,6 +242,7 @@ sub_property_of:
 symmetric_relationship:
   name: symmetric_relationship
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: generic Symmetric Relationship (wm built-in root type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
@@ -242,6 +252,7 @@ symmetric_relationship:
 value_relationship:
   name: value_relationship
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: generic Value Relationship (wm built-in root type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
@@ -251,6 +262,7 @@ value_relationship:
 hierarchical_relationship:
   name: hierarchical_relationship
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: generic Hierarchical Relationship (wm built-in root type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
@@ -260,6 +272,7 @@ hierarchical_relationship:
 ordered_relationship:
   name: ordered_relationship
   sti_type: PropertyNode
+  flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: generic Ordered Relationship (wm built-in root type)
   description: >-
     This is a root element in WontoMedia's internal schema.

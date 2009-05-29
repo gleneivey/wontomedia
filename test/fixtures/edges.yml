@@ -22,21 +22,25 @@ aReiffiedEdge:
   predicate: one
   obj: testCategory
   edge_desc: edge_one
+  flags: 0
 
 aParentEdge:
   subject: testCategory
   predicate: parent_of
   obj: testSubcategory
+  flags: 0
 
 isAssignedIsAValueProperty:
   subject: isAssigned
   predicate: sub_property_of
   obj: value_relationship
+  flags: 0
 
 subcategoryHasValue:
   subject: testSubcategory
   predicate: isAssigned
   obj: testItem
+  flags: 0
 
 
 # group of nodes used for testing sub_property_of relationship traversal
@@ -49,56 +53,67 @@ aSpoB:
   subject: A
   predicate: sub_property_of
   obj: B
+  flags: 0
 
 bSpoC:
   subject: B
   predicate: sub_property_of
   obj: C
+  flags: 0
 
 cSpoD:
   subject: C
   predicate: sub_property_of
   obj: D
+  flags: 0
 
 dSpoE:
   subject: D
   predicate: sub_property_of
   obj: E
+  flags: 0
 
 cSpoM:
   subject: C
   predicate: sub_property_of
   obj: M
+  flags: 0
 
 mSpoY:
   subject: M
   predicate: sub_property_of
   obj: Y
+  flags: 0
 
 bSpoZ:
   subject: B
   predicate: sub_property_of
   obj: Z
+  flags: 0
 
 zSpoY:
   subject: Z
   predicate: sub_property_of
   obj: Y
+  flags: 0
 
 ySpoX:
   subject: Y
   predicate: sub_property_of
   obj: X
+  flags: 0
 
 fuIRbar:
   subject: fu
   predicate: inverse_relationship
   obj: bar
+  flags: 0
 
 snIRafu:
   subject: sn
   predicate: symmetric_relationship
   obj: afu
+  flags: 0
 
 
 # group of nodes for testing display/sorting of edges on node pages
@@ -106,75 +121,90 @@ nUFAS_value_A:
   subject: nodeUsedFrequentlyAsSubject
   predicate: value_relationship
   obj: A
+  flags: 0
 
 nUFAS_isAssigned_B:
   subject: nodeUsedFrequentlyAsSubject
   predicate: isAssigned
   obj: B
+  flags: 0
 
 nUFAS_peer_of_X:
   subject: nodeUsedFrequentlyAsSubject
   predicate: peer_of
   obj: X
+  flags: 0
 
 nUFAS_peer_of_Y:
   subject: nodeUsedFrequentlyAsSubject
   predicate: peer_of
   obj: Y
+  flags: 0
 
 nUFAS_peer_of_Z:
   subject: nodeUsedFrequentlyAsSubject
   predicate: peer_of
   obj: Z
+  flags: 0
 
 nUFAS_successor_of_C:
   subject: nodeUsedFrequentlyAsSubject
   predicate: successor_of
   obj: C
+  flags: 0
 
 nUFAS_successor_of_D:
   subject: nodeUsedFrequentlyAsSubject
   predicate: successor_of
   obj: D
+  flags: 0
 
 nUFAS_predecessor_of_E:
   subject: nodeUsedFrequentlyAsSubject
   predicate: predecessor_of
   obj: E
+  flags: 0
 
 nUFAS_child_of_M:
   subject: nodeUsedFrequentlyAsSubject
   predicate: child_of
   obj: M
+  flags: 0
 
 
 a_isAssigned_nUFAO:
   subject: A
   predicate: isAssigned
   obj: nodeUsedFrequentlyAsObject
+  flags: 0
 
 b_isAssigned_nUFAO:
   subject: B
   predicate: isAssigned
   obj: nodeUsedFrequentlyAsObject
+  flags: 0
 
 c_isAssigned_nUFAO:
   subject: C
   predicate: isAssigned
   obj: nodeUsedFrequentlyAsObject
+  flags: 0
 
 c_peer_of_nUFAO:
   subject: C
   predicate: peer_of
   obj: nodeUsedFrequentlyAsObject
+  flags: 0
 
 d_isAssigned_nUFAO:
   subject: D
   predicate: isAssigned
   obj: nodeUsedFrequentlyAsObject
+  flags: 0
 
 e_isAssigned_nUFAO:
   subject: E
   predicate: isAssigned
   obj: nodeUsedFrequentlyAsObject
+  flags: 0
 

@@ -22,48 +22,57 @@ one:
   title: My first node
   description: This node could be anything
   sti_type: ItemNode
+  flags: 0
 
 two:
   name: bNode
   title: A second node
   description: This category could contain anything
   sti_type: ClassNode
+  flags: 0
 
 
 testContainer:
   name: testContainer
   title: testContainer
   sti_type: ClassNode
+  flags: 0
 
 testItem:
   name: testItem
   title: testItem
   sti_type: ItemNode
+  flags: 0
 
 testCategory:
   name: testCategory
   title: testCategory
   sti_type: ClassNode
+  flags: 0
 
 testProperty:
   name: testProperty
   title: testProperty
   sti_type: PropertyNode
+  flags: 0
 
 edge_one:
   name: testItem.one_of.testCategory
   title: a title
   sti_type: ReiffiedNode
+  flags: 0
 
 testSubcategory:
   name: testSubcategory
   title: testSubcategory
   sti_type: ClassNode
+  flags: 0
 
 isAssigned:
   name: isAssigned
   title: isAssigned
   sti_type: PropertyNode
+  flags: 0
 
 
 
@@ -76,66 +85,79 @@ A:
   name: A
   title: A
   sti_type: PropertyNode
+  flags: 0
 
 B:
   name: B
   title: B
   sti_type: PropertyNode
+  flags: 0
 
 C:
   name: C
   title: C
   sti_type: PropertyNode
+  flags: 0
 
 D:
   name: D
   title: D
   sti_type: PropertyNode
+  flags: 0
 
 E:
   name: E
   title: E
   sti_type: PropertyNode
+  flags: 0
 
 M:
   name: M
   title: M
   sti_type: PropertyNode
+  flags: 0
 
 X:
   name: X
   title: X
   sti_type: PropertyNode
+  flags: 0
 
 Y:
   name: Y
   title: Y
   sti_type: PropertyNode
+  flags: 0
 
 Z:
   name: Z
   title: Z
   sti_type: PropertyNode
+  flags: 0
 
 fu:
   name: fu
   title: fu
   sti_type: PropertyNode
+  flags: 0
 
 bar:
   name: bar
   title: bar
   sti_type: PropertyNode
+  flags: 0
 
 sn:
   name: sn
   title: sn
   sti_type: PropertyNode
+  flags: 0
 
 afu:
   name: afu
   title: afu
   sti_type: PropertyNode
+  flags: 0
 
 
 
@@ -144,13 +166,16 @@ nodeUsedFrequentlyAsSubject:
   name: nodeUsedFrequentlyAsSubject
   title: nodeUsedFrequentlyAsSubject
   sti_type: ClassNode
+  flags: 0
 
 nodeUsedFrequentlyAsObject:
   name: nodeUsedFrequentlyAsObject
   title: nodeUsedFrequentlyAsObject
   sti_type: ClassNode
+  flags: 0
 
 veryBusyNode:
   name: veryBusyNode
   title: veryBusyNode
   sti_type: ClassNode
+  flags: 0
