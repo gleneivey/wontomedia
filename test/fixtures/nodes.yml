@@ -33,6 +33,7 @@ two:
 testContainer:
   name: testContainer
   title: testContainer
+  sti_type: ClassNode
 
 testItem:
   name: testItem
@@ -74,54 +75,67 @@ isAssigned:
 A:
   name: A
   title: A
+  sti_type: PropertyNode
 
 B:
   name: B
   title: B
+  sti_type: PropertyNode
 
 C:
   name: C
   title: C
+  sti_type: PropertyNode
 
 D:
   name: D
   title: D
+  sti_type: PropertyNode
 
 E:
   name: E
   title: E
+  sti_type: PropertyNode
 
 M:
   name: M
   title: M
+  sti_type: PropertyNode
 
 X:
   name: X
   title: X
+  sti_type: PropertyNode
 
 Y:
   name: Y
   title: Y
+  sti_type: PropertyNode
 
 Z:
   name: Z
   title: Z
+  sti_type: PropertyNode
 
 fu:
   name: fu
   title: fu
+  sti_type: PropertyNode
 
 bar:
   name: bar
   title: bar
+  sti_type: PropertyNode
 
 sn:
   name: sn
   title: sn
+  sti_type: PropertyNode
 
 afu:
   name: afu
   title: afu
+  sti_type: PropertyNode
 
 
 
@@ -129,11 +143,14 @@ afu:
 nodeUsedFrequentlyAsSubject:
   name: nodeUsedFrequentlyAsSubject
   title: nodeUsedFrequentlyAsSubject
+  sti_type: ClassNode
 
 nodeUsedFrequentlyAsObject:
   name: nodeUsedFrequentlyAsObject
   title: nodeUsedFrequentlyAsObject
+  sti_type: ClassNode
 
 veryBusyNode:
   name: veryBusyNode
   title: veryBusyNode
+  sti_type: ClassNode
