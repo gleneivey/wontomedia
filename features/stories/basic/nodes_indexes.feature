@@ -5,7 +5,7 @@ Feature:  Show existing ontology information in app home and index pages
 
 
   Scenario: Homepage doesn't show built-in property nodes
-    When I go to the homepage
+    When I go to "the homepage"
     Then I should see 0 matches of "peer_of"
     And I should see 0 matches of "value_relationship"
 
@@ -15,13 +15,13 @@ Feature:  Show existing ontology information in app home and index pages
     Given there are 3 existing items like "kirgagh1"
     Given there are 4 existing properties like "kirgagh2"
     Given there are 1 existing reiffied-properties like "kirgagh3"
-    When I go to the homepage
+    When I go to "the homepage"
       # two instances each of strings for "class" and "item", none for others
     Then I should see 10 matches of "kirgagh[0-9]+"
 
 
   Scenario: Node index shows built-in nodes
-    When I go to /nodes
+    When I go to the index nodes page
     Then I should see 1 match of "one_of"
     Then I should see 1 match of "symmetric_relationship"
 
@@ -31,7 +31,7 @@ Feature:  Show existing ontology information in app home and index pages
     Given there are 3 existing items like "fufubarfu1"
     Given there are 4 existing properties like "fufubarfu2"
     Given there are 1 existing reiffied-properties like "fufubarfu3"
-    When I go to /nodes
+    When I go to the index nodes page
       # three instances of string for each node created
     Then I should see 78 matches of "fufubarfu"
 
