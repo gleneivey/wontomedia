@@ -310,6 +310,24 @@ class NodesControllerTest < ActionController::TestCase
     assert_not_nil Node.find_by_name(new_name)
   end
 
+  test "should not update builtin node" do
+    name = "sub_property_of"
+    before = Node.find_by_name(name)
+    during = before
+    during.name = "VeryVeryBad"
+    assert_no_difference('Node.count') do
+      put :update, :id => during.id, :node => NodeHelper.node_to_hash(during)
+    end
+
+    # db unchanged?
+    after = Node.find_by_name(name)
+    assert before == after
+
+    # right output?
+    assert assigns(:node) == before
+    assert_redirected_to node_path(before)
+  end
+
   # validation tests here because these restrictions are enforced by
   # the controller -- "." and ":" are allowed by the model because
   # they're used in internally-generated node names
@@ -335,12 +353,23 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should delete node" do
-    name = nodes(:one).name
+    n = nodes(:one)
+    name = n.name
     assert_difference('Node.count', -1) do
-      delete :destroy, :id => nodes(:one).id
+      delete :destroy, :id => n.id
     end
     assert_redirected_to nodes_path
     assert_nil Node.find_by_name(name)
+  end
+
+  test "should not delete builtin node" do
+    name = "value_relationship"
+    n = Node.find_by_name(name)
+    assert_difference('Node.count', 0) do
+      delete :destroy, :id => n.id
+    end
+    assert_redirected_to node_path(n)
+    assert_not_nil n == Node.find_by_name(name)
   end
 
 

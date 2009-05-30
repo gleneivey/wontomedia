@@ -201,7 +201,10 @@ class NodesController < ApplicationController
       return
     end
 
-    if (!params[:node].nil? && !params[:node][:name].nil? &&
+    if (@node.flags & Node::DATA_IS_UNALTERABLE) != 0
+      flash[:error] = 'This Node cannot be altered.'
+      redirect_to node_path(@node)
+    elsif (!params[:node].nil? && !params[:node][:name].nil? &&
           params[:node][:name] =~ /[:.]/                     )  ||
         !@node.update_attributes(params[:node])
       @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
@@ -221,7 +224,12 @@ class NodesController < ApplicationController
       return
     end
 
-    @node.destroy
-    redirect_to nodes_url
+    if (@node.flags & Node::DATA_IS_UNALTERABLE) != 0
+      flash[:error] = 'This Node cannot be altered.'
+      redirect_to node_path(@node)
+    else
+      @node.destroy
+      redirect_to nodes_url
+    end
   end
 end
