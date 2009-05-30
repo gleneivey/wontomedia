@@ -90,7 +90,10 @@ class EdgesController < ApplicationController
       return
     end
 
-    if !@edge.update_attributes(params[:edge])
+    if (@edge.flags & Edge::DATA_IS_UNALTERABLE) != 0
+      flash[:error] = 'This Edge cannot be altered.'
+      redirect_to edge_path(@edge)
+    elsif !@edge.update_attributes(params[:edge])
       populate_for_new_update
       render :action => "edit"
     else
@@ -108,8 +111,13 @@ class EdgesController < ApplicationController
       return
     end
 
-    @edge.destroy
-    redirect_to edges_url
+    if (@edge.flags & Edge::DATA_IS_UNALTERABLE) != 0
+      flash[:error] = 'This Edge cannot be altered.'
+      redirect_to edge_path(@edge)
+    else
+      @edge.destroy
+      redirect_to edges_url
+    end
   end
 
 private

@@ -156,6 +156,31 @@ class EdgesControllerTest < ActionController::TestCase
       e.subject_id, e.predicate_id, e.obj_id   ])
   end
 
+  test "should not update builtin edge" do
+    # test define_sub_property_of edge
+    subj_n   = Node.find_by_name("sub_property_of")
+    obj_n    = Node.find_by_name("hierarchical_relationship")
+    change_n = Node.find_by_name("child_of")
+    e = Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      subj_n.id, subj_n.id, obj_n.id   ])
+
+    before = e
+    e.predicate = change_n
+    h = { :id => e.id, :subject_id => e.subject_id,
+      :predicate_id => e.predicate_id, :obj_id => e.obj_id }
+
+    assert_no_difference('Edge.count') do
+      put :update, :id => e.id, :edge => h
+    end
+    assert assigns(:edge) == e
+    assert_redirected_to edge_path(e)
+    assert after = Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      subj_n.id, subj_n.id, obj_n.id   ])
+    assert before == after
+  end
+
   test "should delete edge" do
     e = edges(:aReiffiedEdge)
     subj_id = e.subject_id; pred_id = e.predicate_id; obj_id = e.obj_id
@@ -166,5 +191,25 @@ class EdgesControllerTest < ActionController::TestCase
     assert_nil Edge.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
       subj_id, pred_id, obj_id   ])
+  end
+
+  test "should not delete builtin edge" do
+    # test define_inverse_relationship edge
+    subj_n = Node.find_by_name("inverse_relationship")
+    pred_n = Node.find_by_name("sub_property_of")
+    obj_n  = Node.find_by_name("symmetric_relationship")
+    e = Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      subj_n.id, pred_n.id, obj_n.id   ])
+
+    assert_difference('Edge.count', 0) do
+      delete :destroy, :id => e.id
+    end
+    assert assigns(:edge) == e
+    assert_redirected_to edge_path(e)
+    assert after = Edge.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      subj_n.id, pred_n.id, obj_n.id   ])
+    assert e == after
   end
 end

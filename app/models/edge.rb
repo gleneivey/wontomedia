@@ -37,6 +37,14 @@ class Edge < ActiveRecord::Base
   belongs_to :obj,       :class_name => "Node"
   belongs_to :edge_desc, :class_name => "Node"
 
+
+
+  # hack to provide default; alternative @ http://blog.phusion.nl/2008/10/03/47/
+  def flags
+    self[:flags] or 0
+  end
+
+
 private
   def complex_validations
     [ [subject_id, :subject], [predicate_id, :predicate],
