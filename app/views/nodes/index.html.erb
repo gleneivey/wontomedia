@@ -40,7 +40,6 @@
       <td class="edgecolumn"><%=h node.title %></td>
       <td><%=h node.description %></td>
       <td>
-:<%= node.flags %>:
 	<% if (node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
 	  <%= link_to 'Edit&nbsp;node', edit_node_path(node) %>
 	  <%= link_to 'Destroy&nbsp;node', node_path(node),
