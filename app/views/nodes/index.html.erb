@@ -34,18 +34,21 @@
   </tr>
 
   <% @nodes.each do |node| %>
-    <tr>
+    <% content_tag :tr, :id => node.name do %>
       <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
       <td><%= link_to "#{h node.name}", node_path(node) %></td>
       <td class="edgecolumn"><%=h node.title %></td>
       <td><%=h node.description %></td>
       <td>
-        <%= link_to 'Edit&nbsp;node', edit_node_path(node) %>
-        <%= link_to 'Destroy&nbsp;node', node_path(node),
-		      :confirm => 'Are you sure?',
-		      :method => :delete %>
+:<%= node.flags %>:
+	<% if (node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
+	  <%= link_to 'Edit&nbsp;node', edit_node_path(node) %>
+	  <%= link_to 'Destroy&nbsp;node', node_path(node),
+			:confirm => 'Are you sure?',
+			:method => :delete %>
+	<% end %>
       </td>
-    </tr>
+    <% end %>
   <% end %>
 </table>
 

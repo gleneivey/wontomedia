@@ -42,7 +42,23 @@ class NodeTest < ActiveSupport::TestCase
     assert n.save
   end
 
-  
+  test "default value for nodes flags is 0" do
+    n = Node.new( :name => "fu", :title => "bar")
+    assert n.flags == 0
+  end
+
+  test "can set node flags on creation" do
+    value = 42
+    n = Node.new( :name => "fu", :title => "bar", :flags => value)
+    assert n.flags == value
+  end
+
+  test "flag values of sample builtin nodes are correct" do
+    n = Node.find_by_name("sub_property_of")
+    assert n.flags == Node::DATA_IS_UNALTERABLE
+  end
+
+
           # verify existence/correctness of :name validations
   test "node name is required" do
     n = Node.new(:name => "", :title => "Node's title",

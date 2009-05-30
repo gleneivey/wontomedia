@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-05-28}
+  s.date = %q{2009-05-30}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.extra_rdoc_files = [
@@ -65,6 +65,8 @@ Gem::Specification.new do |s|
      "db/migrate/20090411014503_add_type_for_node_subclasses.rb",
      "db/migrate/20090415142152_rename_node_type.rb",
      "db/migrate/20090518022918_rename_object_and_self.rb",
+     "db/migrate/20090529171442_add_flags_to_nodes.rb",
+     "db/migrate/20090529171508_add_flags_to_edges.rb",
      "db/schema.rb",
      "lib/helpers/node_helper.rb",
      "lib/helpers/tripple_navigation.rb",

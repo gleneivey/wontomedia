@@ -45,5 +45,30 @@ class NodesIndexViewTest < ActionController::TestCase
   test "nodes index page shouldnt contain status" do
     get :index
     assert_negative_view_contents
-  end    
+  end
+
+  test "nodes index page should have and only have right edit destroy links" do
+    get :index
+
+    Node.all.each do |node|
+      if node.sti_type == "ReiffiedNode"
+        # nodes representing reiffied edges aren't listed
+        assert_select "body", { :text => node.name, :count => 0 }
+      else
+        # other node types all listed
+        assert_select "body", /#{node.name}/
+
+        test_sense = (node.flags & Node::DATA_IS_UNALTERABLE) == 0
+
+        # edit link present/absent
+        assert_select( "*##{node.name} a[href=\"#{edit_node_path(node)}\"]",
+          test_sense   )
+        # delete link present/absent
+        # (attribute check is very Rails specific and a little sloppy, alas...)
+        assert_select(
+          "*##{node.name} a[href=\"#{node_path(node)}\"][onclick*=\"delete\"]",
+          test_sense   )
+      end
+    end
+  end
 end

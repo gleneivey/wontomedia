@@ -34,3 +34,34 @@ Then /^I should see all of "(.+)"$/ do |patterns|
   end
 end
 
+Then /^there should(.*)be a node container for "([^\"]+)" including the tag "(.+)"$/ do |test_sense, node_name, selector|
+
+  subst_syntax_re = /\?([^?]+)\?/
+  while selector =~ subst_syntax_re
+    node_name = $1
+    node = Node.find_by_name(node_name)
+    selector.sub!(subst_syntax_re, node.id.to_s)
+  end
+
+# have_selector appears to be grumpy about my CSS; assert_select & Selenium?
+#  response.should have_selector("*##{node_name}") do |tag|
+#    if    test_sense == " "
+#      tag.should have_selector(selector)
+#    elsif test_sense == " not "
+#      tag.should_not have_selector(selector)
+#    else
+#      assert false, "Bad step string."
+#    end
+#  end
+
+  assert_select "*##{node.name}" do
+    if     test_sense == " "
+      assert_select selector
+    elsif test_sense == " not "
+      assert_select selector, false
+    else
+      assert false, "Bad step string."
+    end
+  end
+end
+

@@ -50,4 +50,11 @@ class Node < ActiveRecord::Base
   validates_length_of     :description, :maximum => 65000,
     :allow_nil => true, :allow_blank => true,
     :message => "Node description must be 65,000 characters or less."
+
+
+
+  # hack to provide default; alternative @ http://blog.phusion.nl/2008/10/03/47/
+  def flags
+    self[:flags] or 0
+  end
 end

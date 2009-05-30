@@ -50,6 +50,20 @@ Feature:  Edit individual nodes through non-Ajax pages
     Then I should see "404"
 
 
+  Scenario: No delete links for built-in nodes
+    Given there is 1 existing item like "anItem"
+    When I go to the index nodes page
+    Then there should be a node container for "anItem0" including the tag "a[href="/nodes/?anItem0?"][onclick*="delete"]"
+    And there should not be a node container for "sub_property_of" including the tag "a[href="/nodes/?sub_property_of?"][onclick*="delete"]"
+
+
+  Scenario: No edit links for built-in nodes
+    Given there is 1 existing class like "aClass"
+    When I go to the index nodes page
+    Then there should be a node container for "aClass0" including the tag "a[href="/nodes/?aClass0?/edit"]"
+    And there should not be a node container for "parent_of" including the tag "a[href="/nodes/?sub_property_of?/edit"]"
+
+
 
 # WontoMedia - a wontology web application
 # Copyright (C) 2009 - Glen E. Ivey
