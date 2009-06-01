@@ -65,6 +65,7 @@ class HeaderMatcher
         a = File.new(path).readlines
         to = a.length
         from = to - (4 + @count)
+        if from < 0 then from = 0 end
         a[from..to].join
       else
         STDERR.puts "ERROR: attempt to process unknown reference file type" +
