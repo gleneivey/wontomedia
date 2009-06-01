@@ -47,4 +47,18 @@ class EdgesShowViewTest < ActionController::TestCase
     get_edges_show
     assert_negative_view_contents
   end    
+
+  test "edges show page should have and only have right edit destroy links" do
+    Edge.all.each do |edge|
+      get :show, :id => edge.id
+
+      test_sense = (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0
+
+      # edit link present/absent
+      assert_select( "a[href=\"#{edit_edge_path(edge)}\"]", test_sense )
+      # delete link present/absent
+      assert_select(
+        "a[href=\"#{edge_path(edge)}\"][onclick*=\"delete\"]", test_sense )
+    end
+  end
 end

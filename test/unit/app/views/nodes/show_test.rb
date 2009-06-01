@@ -84,13 +84,58 @@ class NodesShowViewTest < ActionController::TestCase
     end
   end
 
-  test "node-show page should contain links for each edge" do
+  test "node-show page should contain links for edges" do
     [ edges(:aReiffiedEdge),
       edges(:subcategoryHasValue)
     ].each do |e|
       get_nodes_show(:testItem)
       assert_select "a[href=?]", edit_edge_path(e)
       assert_select "a[href=?]", edge_path(e)
+    end
+  end
+
+  test "node-show page should have and only have correct edit destroy links" do
+    Node.all.each do |node|
+
+      if node.sti_type != "ReiffiedNode"
+        get :show, :id => node.id
+
+        # other node types all listed
+        assert_select "body", /#{node.name}/
+
+        test_sense = (node.flags & Node::DATA_IS_UNALTERABLE) == 0
+
+        # edit link present/absent
+        assert_select( "a[href=\"#{edit_node_path(node)}\"]",
+          test_sense   )
+        # delete link present/absent
+        # (attribute check is very Rails specific and a little sloppy, alas...)
+        assert_select(
+          "a[href=\"#{node_path(node)}\"][onclick*=\"delete\"]",
+          test_sense   )
+      end
+    end
+  end
+
+  test "node-show page's edge list should h-o-h correct per-edge links" do
+    Node.all.each do |node|
+
+      if node.sti_type != "ReiffiedNode"
+        get :show, :id => node.id
+
+        edges = Edge.all( :conditions => [ "subject_id = ?", node.id ])        +
+                Edge.all( :conditions => [ "predicate_id = ?", node.id ])      +
+                Edge.all( :conditions => [ "obj_id = ?", node.id ])
+        edges.each do |edge|
+          test_sense = (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0
+
+          # edit link present/absent
+          assert_select( "a[href=\"#{edit_edge_path(edge)}\"]", test_sense )
+          # delete link present/absent
+          assert_select(
+            "a[href=\"#{edge_path(edge)}\"][onclick*=\"delete\"]", test_sense )
+        end
+      end
     end
   end
 end

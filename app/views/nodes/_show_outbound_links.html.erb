@@ -18,9 +18,12 @@
 %>
 
 
-<%= link_to 'Edit this node', edit_node_path(@node) %> &mdash;
-<%= link_to 'Delete this node', node_path(@node), :confirm => 'Are you sure?',
-                                       :method => :delete %> &mdash;
+<% if (@node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
+  <%= link_to 'Edit this node', edit_node_path(@node) %> &mdash;
+  <%= link_to 'Delete this node', node_path(@node),
+              :confirm => 'Are you sure?', :method => :delete %> &mdash;
+<% end %>
+
 <%= link_to 'Show node list', nodes_path %> &mdash;
 <%= link_to 'Add a new node', new_node_path %> &mdash;
 <%= link_to 'Show edge list', edges_path %> &mdash;

@@ -32,7 +32,7 @@
   </tr>
 
 <% @edges.each do |edge| %>
-  <tr>
+  <% content_tag :tr, :id => edge.id do %>
     <td><%=link_to "#{h edge.subject.name}", node_path(edge.subject) %></td>
     <td style="font-size: 80%">(is [a|an|the])</td>
     <td><%=link_to "#{h edge.predicate.name}", node_path(edge.predicate) %></td>
@@ -40,10 +40,12 @@
     <td><%=unless edge.edge_desc.nil?
              link_to "#{h edge.edge_desc.name}", node_path(edge.edge_desc)
            end %></td>
-    <td><%=   link_to 'Edit', edit_edge_path(edge) %></td>
-    <td><%=   link_to 'Destroy', edge, :confirm => 'Are you sure?',
-	                               :method => :delete %></td>
-  </tr>
+    <% if (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
+      <td><%=   link_to 'Edit', edit_edge_path(edge) %></td>
+      <td><%=   link_to 'Destroy', edge,
+		        :confirm => 'Are you sure?', :method => :delete %></td>
+    <% end %>
+  <% end %>
 <% end %>
 </table>
 

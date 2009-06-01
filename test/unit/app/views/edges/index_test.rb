@@ -52,4 +52,20 @@ class EdgesIndexViewTest < ActionController::TestCase
     get :index
     assert_negative_view_contents
   end    
+
+  test "edges index page should have and only have right edit destroy links" do
+    get :index
+
+    Edge.all.each do |edge|
+      test_sense = (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0
+
+      # edit link present/absent
+      assert_select( "*##{edge.id} a[href=\"#{edit_edge_path(edge)}\"]",
+        test_sense   )
+      # delete link present/absent
+      assert_select(
+        "*##{edge.id} a[href=\"#{edge_path(edge)}\"][onclick*=\"delete\"]",
+        test_sense   )
+    end
+  end
 end

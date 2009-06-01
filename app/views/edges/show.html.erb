@@ -34,9 +34,12 @@
   (<%= link_to "#{@obj.name}", node_path(@obj) %>)
 </p>
 
-<%= link_to 'Edit this edge', edit_edge_path(@edge) %> &mdash;
-<%= link_to 'Delete this edge', edge_path(@edge), :confirm => 'Are you sure?',
-                                                  :method => :delete %> &mdash;
+<% if (@edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
+  <%= link_to 'Edit this edge', edit_edge_path(@edge) %> &mdash;
+  <%= link_to 'Delete this edge', edge_path(@edge),
+              :confirm => 'Are you sure?', :method => :delete %> &mdash;
+<% end %>
+
 <%= link_to 'Show edge list', edges_path %> &mdash;
 <%= link_to 'Create a new edge', new_edge_path %> &mdash;
 <%= link_to 'Show node list',    nodes_path %> &mdash;
