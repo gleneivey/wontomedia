@@ -20,12 +20,9 @@
 # result page content checks
 
 
-Then /^I should see ([0-9]+) match(es)? of "(.*)"$/ do |number, foo, text|
-  if number.to_i == 0
-    assert_select "body", { :text => /#{text}/, :count => 0 }
-  else
-    assert_select "body", /#{text}/, number.to_i
-  end
+Then /^I should see ([0-9]+) match(es)? of "(.*)" in "(.*)"$/ do |
+    number, foo, text, selector|
+  assert_select selector, { :text => /#{text}/, :count => number.to_i }
 end
 
 Then /^I should see all of "(.+)"$/ do |patterns|
