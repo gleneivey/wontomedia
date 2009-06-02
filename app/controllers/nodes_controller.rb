@@ -40,7 +40,12 @@ class NodesController < ApplicationController
     @nodes = Node.all.reverse
     respond_to do |wants|
       wants.html
-      wants.yaml { render :text => @nodes.to_yaml }
+      wants.yaml do
+        render :text =>
+          @nodes.reject { |node|
+            (node.flags & Node::DATA_IS_UNALTERABLE) != 0 }.
+          to_yaml
+      end
     end
   end
 

@@ -36,7 +36,13 @@ class NodesControllerTest < ActionController::TestCase
     assert @response.header['Content-Type'] =~ /application\/x-yaml/
 
     Node.all.each do |node|
-      assert @response.body =~ /#{node.name}/
+      if node.flags & Node::DATA_IS_UNALTERABLE == 0
+        assert @response.body =~ /#{node.name}/,
+          "Expected '#{node.name}' but didn't find"
+      elsif not [ 'one_of' ].include? node.name # special, used in desc. text
+        assert !(@response.body =~ /#{node.name}/),
+          "Found '#{node.name}', unexpected"
+      end
     end
   end
 
