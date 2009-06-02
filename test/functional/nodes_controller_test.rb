@@ -25,10 +25,19 @@ class NodesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:nouns)
   end
 
-  test "should get index" do
+  test "should get HTML index page" do
     get :index
     assert_response :success
     assert_not_nil assigns(:nodes)
+  end
+
+  test "sould get YAML-format all-nodes download/index" do
+    get :index, :format => "yaml"
+    assert @response.header['Content-Type'] =~ /application\/x-yaml/
+
+    Node.all.each do |node|
+      assert @response.body =~ /#{node.name}/
+    end
   end
 
   test "should get new" do

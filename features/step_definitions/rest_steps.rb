@@ -16,6 +16,10 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+When /^I (am on|go to|try to go to) the path "(.+)"$/ do |fu, path|
+  visit path
+end
+
 When /^I (am on|go to|try to go to) the (\S+) (\S+) page$/ do |fu, action,
                                                                    controller|
   if action == "index"

@@ -62,3 +62,23 @@ Then /^there should(.*)be a node container for "([^\"]+)" including the tag "(.+
   end
 end
 
+Then /^the response should contain ([0-9]+) match(es)? of "(.*)"$/ do |
+    number, foo, text|
+  i = number.to_i
+  rb = webrat.response_body
+  response_parts = rb.split(/#{text}/)
+  if (i == 0)
+    assert response_parts.length == 1, "Expected no match for '#{text}'"
+  elsif rb =~ /^#{text}$/
+    assert i == 1, "Got one match of '#{text}', expecting #{number}"
+  else
+    i -= 1
+    if !( rb =~ /^#{text}/ )
+      i += 1
+    end
+    if !( rb =~ /#{text}$/ )
+      i += 1
+    end
+    assert response_parts.length == i, "Expected #{number} matches of '#{text}'"
+  end
+end

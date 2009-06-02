@@ -18,6 +18,7 @@
 
 require Rails.root.join( 'lib', 'helpers', 'node_helper')
 require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
+require 'yaml'
 
 class NodesController < ApplicationController
   before_filter :temporary_page_protection
@@ -37,6 +38,10 @@ class NodesController < ApplicationController
   # GET /nodes
   def index
     @nodes = Node.all.reverse
+    respond_to do |wants|
+      wants.html
+      wants.yaml { render :text => @nodes.to_yaml }
+    end
   end
 
   # GET /nodes/new
