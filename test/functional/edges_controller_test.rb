@@ -26,6 +26,25 @@ class EdgesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:edges)
   end
 
+  test "sould get N3-format all-edges download/index" do
+    get :index, :format => "n3"
+    assert @response.header['Content-Type'] =~ /application\/x-n3/
+
+    Edge.all.each do |edge|
+      if edge.flags & Edge::DATA_IS_UNALTERABLE == 0
+        assert @response.body =~
+          /#{edge.subject.name}.+#{edge.predicate.name}.+#{edge.obj.name}/,
+          "Expected '#{edge.subject.name}-#{edge.predicate.name}-" +
+            "#{edge.obj.name}' edge but didn't find"
+      else
+        assert !(@response.body =~
+          /#{edge.subject.name}.+#{edge.predicate.name}.+#{edge.obj.name}/),
+          "Found '#{edge.subject.name}-#{edge.predicate.name}-" +
+            "#{edge.obj.name}' edge, but didn't expect"
+      end
+    end
+  end
+
   test "should get new" do
     get :new
     assert_response :success

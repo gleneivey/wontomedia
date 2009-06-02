@@ -68,6 +68,7 @@ Gem::Specification.new do |s|
      "db/migrate/20090529171442_add_flags_to_nodes.rb",
      "db/migrate/20090529171508_add_flags_to_edges.rb",
      "db/schema.rb",
+     "lib/helpers/edge_helper.rb",
      "lib/helpers/node_helper.rb",
      "lib/helpers/tripple_navigation.rb",
      "lib/tasks/cucumber.rake",

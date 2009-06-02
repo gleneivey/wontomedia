@@ -17,9 +17,15 @@
 
 
 require Rails.root.join( 'lib', 'helpers', 'node_helper')
+require Rails.root.join( 'lib', 'helpers', 'edge_helper')
 
 class EdgesController < ApplicationController
   before_filter :temporary_page_protection
+
+  Mime::Type.register "application/x-n3", :n3
+
+
+
   def temporary_page_protection
     if ENV['RAILS_ENV'] != 'test' && session[:who_am_i].nil?
       render :file => "#{RAILS_ROOT}/public/not_logged_in.html"
@@ -31,6 +37,14 @@ class EdgesController < ApplicationController
   # GET /edges
   def index
     @edges = Edge.all.reverse
+    respond_to do |wants|
+      wants.html
+      wants.n3 do
+        e = @edges.reject { |edge|
+          (edge.flags & Edge::DATA_IS_UNALTERABLE) != 0 }
+        render :text => EdgeHelper::edge_array_to_n3(e)
+      end
+    end
   end
 
   # GET /edges/new
