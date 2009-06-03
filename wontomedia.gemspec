@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
      "README",
      "Rakefile",
      "VERSION.yml",
+     "app/controllers/admin_controller.rb",
      "app/controllers/application_controller.rb",
      "app/controllers/edges_controller.rb",
      "app/controllers/nodes_controller.rb",
@@ -30,6 +31,7 @@ Gem::Specification.new do |s|
      "app/models/node.rb",
      "app/models/property_node.rb",
      "app/models/reiffied_node.rb",
+     "app/views/admin/index.html.erb",
      "app/views/edges/_index_outbound_links.html.erb",
      "app/views/edges/_spo_select_controls.html.erb",
      "app/views/edges/edit.html.erb",
@@ -143,6 +145,7 @@ Gem::Specification.new do |s|
      "test/integration/home_create_nodes_test.rb",
      "test/integration/test_helper.rb",
      "test/test_helper.rb",
+     "test/functional/admin_controller_test.rb",
      "test/functional/nodes_controller_test.rb",
      "test/functional/edges_controller_test.rb",
      "test/seed_helper.rb"

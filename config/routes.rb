@@ -22,6 +22,12 @@ ActionController::Routing::Routes.draw do |map|
   map.login_verify '/temporary-login/verify',
     :controller => 'temp_login', :action => 'login_verify'
 
+  map.admin_index   '/admin', :controller => 'admin', :action => 'index'
+  map.admin_node_up '/admin/node_up', :controller => 'admin',
+    :action => 'node_up'
+  map.admin_edge_up '/admin/edge_up', :controller => 'admin',
+    :action => 'edge_up'
+
   map.resources :nodes
   map.resources :edges
   map.root :controller => "nodes", :action => "home"
