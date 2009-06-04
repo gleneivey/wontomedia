@@ -17,6 +17,7 @@ In short, the deployment procedure is as follows:
  * from the root of the A2 user account:
      [  shutdown WontoMedia via cPanel RoR widget ]
       $ ./install-wontomedia.sh
+     [  rake db:<whatever> if necessary ]
      [  start WontoMedia via cPanel RoR widget ]
 
 

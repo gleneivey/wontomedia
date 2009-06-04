@@ -1,6 +1,9 @@
 
+cat/home/glenivey/etc/rails_apps/WontoMedia/log/mongrel.log    >> /home/glenivey/WmLogs/mongrel.log
+cat/home/glenivey/etc/rails_apps/WontoMedia/log/production.log >> /home/glenivey/WmLogs/production.log
 rm /home/glenivey/etc/rails_apps/WontoMedia
 gem uninstall wontomedia
+
 gem install -l wontomedia
 ln -s /home/glenivey/ruby/gems/gems/wontomed* /home/glenivey/etc/rails_apps/WontoMedia
 
