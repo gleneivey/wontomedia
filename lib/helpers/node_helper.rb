@@ -96,7 +96,7 @@ class NodeHelper
 
   def self.node_to_hash(n)
       # again, I ought to be able to make the list programatically....
-    { :id => n.id, :name => n.name, :title => n.title,
+    { :id => n.id, :name => n.name, :title => n.title, :flags => n.flags,
       :description => n.description, :sti_type => n.sti_type }
   end
 

@@ -27,18 +27,46 @@ class AdminController < ApplicationController
   # POST /admin/node_up
   def node_up
     count = 0
+    flash[:error] ||= ""
     YAML::load(params[:node_upload][:nodefile]).each do |node|
 
-      # this is magic dependent on the structure of the YAML::Object class
-      node_hash = node.instance_eval { @ivars }['attributes']
+      if node.is_a? Node
+        # need to create a new node object so that it saves to db as "new"
+        node_hash = NodeHelper.node_to_hash(node)
+        name = node.name
+      elsif node.is_a? YAML::Object
+        # this is magic dependent on the internals of the YAML::Object class
+        node_hash = node.instance_eval { @ivars }['attributes']
+        name = node_hash['name'] || node_hash[:name]
+      else
+        flash[:error] <<
+          "YAML parser generated an object of type '#{node.class}'.\n"
+        redirect_to :action => 'index'
+        return
+      end
 
-      n = NodeHelper.new_typed_node node_hash['sti_type']
-      n.name        = node_hash['name']
-      n.title       = node_hash['title']
-      n.description = node_hash['description']
-      n.flags       = node_hash['flags']
-      n.save
-      count += 1
+      n = NodeHelper.new_typed_node(
+        node_hash['sti_type'] || node_hash[:sti_type] )
+      if n.nil?
+        err_str = "No/bad sti_type for node '#{name}', " +
+          "tried to create '#{node_hash.inspect}'.\n"
+        logger.error(err_str)
+        flash[:error] << err_str
+      else
+        n.name        = name
+        n.title       = node_hash['title']       || node_hash[:title]
+        n.description = node_hash['description'] || node_hash[:description]
+        n.flags       = node_hash['flags']       || node_hash[:flags]
+        # even if ID present, don't copy; let db assign a new value
+
+        if n.save
+          count += 1
+        else
+          err_str = "Could not save node named 'n.name': #{n.errors.inspect}\n"
+          logger.error(err_str)
+          flash[:error] << err_str
+        end
+      end
     end
 
     flash[:notice] = "Created #{count} new nodes."
@@ -47,21 +75,40 @@ class AdminController < ApplicationController
 
   # POST /admin/edge_up
   def edge_up
-    count = 0
+    count = unparsed = 0
+    flash[:error] =""
+
     params[:edge_upload][:edgefile].readlines.each do |n3line|
       # this is a really, *really* bad N3 parser. Almost certainly won't
       # handly any but the most trivial input (like what we export :-)
       if n3line =~ /<#([^>]+)>[^<]+<#([^>]+)>[^<]+<#([^>]+)>[^.]+\./
-        e = Edge.new
-        e.subject   = Node.find_by_name($1)
-        e.predicate = Node.find_by_name($2)
-        e.obj       = Node.find_by_name($3)
-        e.save
-        count += 1
+        e = Edge.new(
+          :subject   => Node.find_by_name($1),
+          :predicate => Node.find_by_name($2),
+          :obj       => Node.find_by_name($3)
+                     )
+        if e.nil?
+          err_stry = "Couldn't create edge for #{$1} #{$2} #{$3}.\n"
+          logger.error(err_str)
+          flash[:error] << err_str
+        else
+          if e.save
+            count += 1
+          else
+            err_stry = "Couldn't save edge for #{$1} #{$2} #{$3}.\n"
+            logger.error(err_str)
+            flash[:error] << err_str
+          end
+        end
+      else
+        unparsed += 1
       end
     end
 
     flash[:notice] = "Created #{count} new edges."
+    if unparsed > 0
+      flash[:notice] << "(Discarded #{unparsed} non-edge lines from input file)"
+    end
     redirect_to :action => 'index'
   end
 end
