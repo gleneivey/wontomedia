@@ -9,14 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090529171508) do
+ActiveRecord::Schema.define(:version => 20090605215028) do
 
   create_table "edges", :force => true do |t|
     t.integer "subject_id"
     t.integer "predicate_id"
     t.integer "obj_id"
     t.integer "edge_desc_id"
-    t.integer "flags"
+    t.integer "flags",        :default => 0, :null => false
   end
 
   create_table "nodes", :force => true do |t|
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(:version => 20090529171508) do
     t.string  "title"
     t.text    "description"
     t.string  "sti_type"
-    t.integer "flags"
+    t.integer "flags",       :default => 0, :null => false
   end
 
 end

@@ -16,20 +16,39 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# Sets up the Rails environment for Cucumber
-ENV["RAILS_ENV"] = "test"
-$KCODE = "u"
-require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
-require 'cucumber/rails/world'
-require 'cucumber/formatter/unicode'
+require 'spec/expectations'
+require 'selenium'
 
-require 'webrat/rails'
+
 Webrat.configure do |config|
-  config.mode = :rails
+#  config.mode = :selenium
+  config.application_environment = :test
 end
 
-require 'cucumber/rails/rspec'
+#World(Webrat::Selenium::Matchers)
 
 
-require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
-load_wontomedia_app_seed_data
+# "before all"
+browser = Selenium::SeleniumDriver.new("localhost", 4444, "*chrome",
+                                       "http://localhost", 15000)
+
+Before do
+  c = ActiveRecord::Base.connection
+  flag = Node::DATA_IS_UNALTERABLE
+  c.execute( "DELETE FROM nodes WHERE (nodes.flags & #{flag}) = 0" )
+  flag = Edge::DATA_IS_UNALTERABLE
+  c.execute( "DELETE FROM edges WHERE (edges.flags & #{flag}) = 0" )
+
+  @browser = browser
+  @browser.start
+end
+
+After do
+  @browser.stop
+end
+
+# "after all"
+at_exit do
+  browser.close rescue nil
+end
+

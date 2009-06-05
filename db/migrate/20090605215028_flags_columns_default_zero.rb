@@ -16,20 +16,14 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# Sets up the Rails environment for Cucumber
-ENV["RAILS_ENV"] = "test"
-$KCODE = "u"
-require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
-require 'cucumber/rails/world'
-require 'cucumber/formatter/unicode'
+class FlagsColumnsDefaultZero < ActiveRecord::Migration
+  def self.up
+    change_column :nodes, :flags, :integer, :null => false, :default => 0
+    change_column :edges, :flags, :integer, :null => false, :default => 0
+  end
 
-require 'webrat/rails'
-Webrat.configure do |config|
-  config.mode = :rails
+  def self.down
+    change_column :nodes, :flags, :integer, :null => false
+    change_column :edges, :flags, :integer, :null => false
+  end
 end
-
-require 'cucumber/rails/rspec'
-
-
-require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
-load_wontomedia_app_seed_data

@@ -25,7 +25,7 @@ module AssertCurrentSchema
         t.column    :title,           :string
         t.column    :description,     :text
         t.column    :sti_type,        :string
-        t.column    :flags,           :integer
+        t.column    :flags,           :integer, :null => false, :default => 0
       end
 
       s.table "edges" do |t|
@@ -34,7 +34,7 @@ module AssertCurrentSchema
         t.column    :predicate_id,    :integer
         t.column    :obj_id,          :integer
         t.column    :edge_desc_id,    :integer
-        t.column    :flags,           :integer
+        t.column    :flags,           :integer, :null => false, :default => 0
       end
 
       # expect this won't be needed for future upgrade to m_t_h

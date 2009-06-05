@@ -53,11 +53,14 @@ class AdminController < ApplicationController
         logger.error(err_str)
         flash[:error] << err_str
       else
+        # even if ID present, don't copy; let db assign a new value
         n.name        = name
         n.title       = node_hash['title']       || node_hash[:title]
         n.description = node_hash['description'] || node_hash[:description]
         n.flags       = node_hash['flags']       || node_hash[:flags]
-        # even if ID present, don't copy; let db assign a new value
+        if n.flags.nil?
+          n.flags = 0
+        end
 
         if n.save
           count += 1
@@ -85,7 +88,8 @@ class AdminController < ApplicationController
         e = Edge.new(
           :subject   => Node.find_by_name($1),
           :predicate => Node.find_by_name($2),
-          :obj       => Node.find_by_name($3)
+          :obj       => Node.find_by_name($3),
+          :flags     => 0
                      )
         if e.nil?
           err_stry = "Couldn't create edge for #{$1} #{$2} #{$3}.\n"

@@ -160,13 +160,16 @@ Rake::Task[:test].clear!
 desc 'Run all unit, functional and integration tests'
 task :test do
   errors = %w(test:dev test:dbmigrations test:functionals test:integration
-              features).collect do |task|
+              features:acceptance).
+      collect do |task|
+
     begin
       Rake::Task[task].invoke
       nil
     rescue => e
       task
     end
+
   end.compact
   abort "Errors running #{errors.to_sentence(:locale => :en)}!" if errors.any?
 end

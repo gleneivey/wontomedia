@@ -16,7 +16,42 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-default:                                       --format pretty   features
-html: --format html --out features.html                          features
-autotest:     --require features --require lib                   features  
-autotest-all: --require features --require lib --format progress features
+default:           -r features/support/env.rb   -r features/support/ajax.rb
+                   -r features/step_definitions
+                       --format pretty             features
+
+manual:            -r features/support/env.rb   -r features/support/ajax.rb
+                   -r features/step_definitions
+                       --format pretty
+
+  # profiles to be used from rake
+basic_acceptance:  -r features/support/env.rb   -r features/support/basic.rb
+                   -r features/step_definitions
+                       --tags ~@unfinished
+                       --format progress
+
+basic_unfinished:  -r features/support/env.rb   -r features/support/basic.rb
+                   -r features/step_definitions
+                       --tags @unfinished
+                       --format progress
+
+ajax_acceptance:   -r features/support/env.rb   -r features/support/ajax.rb
+                   -r features/step_definitions
+                       --tags ~@unfinished
+                       --format progress
+
+ajax_unfinished:   -r features/support/env.rb   -r features/support/ajax.rb
+                   -r features/step_definitions
+                       --tags @unfinished
+                       --format progress
+
+
+autotest:          -r features/support/env.rb   -r features/support/basic.rb
+                   -r features/step_definitions -r lib
+                       --tags ~@unfinished
+                       --format progress
+
+autotest-all:      -r features/support/env.rb   -r features/support/basic.rb
+                   -r features/step_definitions -r lib
+                       --format progress
+

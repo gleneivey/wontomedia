@@ -91,7 +91,9 @@ class NodeHelper
             when "reiffied-property" then ReiffiedNode
             end
 #    klass = NODE_SUBTYPES_FROM_TEXT[type_string]
-    klass.new(*args)
+    k = klass.new(*args)
+    k.flags = 0
+    k
   end
 
   def self.node_to_hash(n)

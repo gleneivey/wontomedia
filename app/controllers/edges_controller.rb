@@ -56,6 +56,7 @@ class EdgesController < ApplicationController
   # POST /edges
   def create
     @edge = Edge.new(params[:edge])
+    @edge.flags = 0
 
     if @edge.save
       flash[:notice] = 'Edge was successfully created.'
