@@ -16,42 +16,42 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-default:           -r features/support/env.rb   -r features/support/ajax.rb
-                   -r features/step_definitions
+default:            -r features/support/env.rb   -r features/support/dynamic.rb
+                    -r features/step_definitions
                        --format pretty             features
 
-manual:            -r features/support/env.rb   -r features/support/ajax.rb
-                   -r features/step_definitions
+manual:             -r features/support/env.rb   -r features/support/dynamic.rb
+                    -r features/step_definitions
                        --format pretty
 
   # profiles to be used from rake
-basic_acceptance:  -r features/support/env.rb   -r features/support/basic.rb
-                   -r features/step_definitions
+static_acceptance:  -r features/support/env.rb   -r features/support/static.rb
+                    -r features/step_definitions
                        --tags ~@unfinished
                        --format progress
 
-basic_unfinished:  -r features/support/env.rb   -r features/support/basic.rb
-                   -r features/step_definitions
+static_unfinished:  -r features/support/env.rb   -r features/support/static.rb
+                    -r features/step_definitions
                        --tags @unfinished
                        --format progress
 
-ajax_acceptance:   -r features/support/env.rb   -r features/support/ajax.rb
-                   -r features/step_definitions
+dynamic_acceptance: -r features/support/env.rb   -r features/support/dynamic.rb
+                    -r features/step_definitions
                        --tags ~@unfinished
                        --format progress
 
-ajax_unfinished:   -r features/support/env.rb   -r features/support/ajax.rb
-                   -r features/step_definitions
+dynamic_unfinished: -r features/support/env.rb   -r features/support/dynamic.rb
+                    -r features/step_definitions
                        --tags @unfinished
                        --format progress
 
 
-autotest:          -r features/support/env.rb   -r features/support/basic.rb
-                   -r features/step_definitions -r lib
+autotest:           -r features/support/env.rb   -r features/support/static.rb
+                    -r features/step_definitions -r lib
                        --tags ~@unfinished
                        --format progress
 
-autotest-all:      -r features/support/env.rb   -r features/support/basic.rb
-                   -r features/step_definitions -r lib
+autotest-all:       -r features/support/env.rb   -r features/support/static.rb
+                    -r features/step_definitions -r lib
                        --format progress
 

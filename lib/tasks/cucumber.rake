@@ -26,34 +26,34 @@ begin    # don't force Cucumber dependency on non-developers
     # note, real definitions of what these tasks do left to option profiles
     # defined in wontomedia/cucumber.yml
 
-    Cucumber::Rake::Task.new(:basic_acceptance => 'db:test:prepare') do |t|
+    Cucumber::Rake::Task.new(:static_acceptance => 'db:test:prepare') do |t|
       t.fork = true
-      t.cucumber_opts = "-p basic_acceptance"
-      t.feature_list = Dir.glob("features/**/basic/**/*.feature")
+      t.cucumber_opts = "-p static_acceptance"
+      t.feature_list = Dir.glob("features/**/static/**/*.feature")
     end
 
-    Cucumber::Rake::Task.new(:ajax_acceptance => 'db:test:prepare') do |t|
+    Cucumber::Rake::Task.new(:dynamic_acceptance => 'db:test:prepare') do |t|
       t.fork = true
-      t.cucumber_opts = "-p ajax_acceptance"
-      t.feature_list = Dir.glob("features/**/ajax/**/*.feature")
+      t.cucumber_opts = "-p dynamic_acceptance"
+      t.feature_list = Dir.glob("features/**/dynamic/**/*.feature")
     end
 
-    Cucumber::Rake::Task.new(:basic_unfinished => 'db:test:prepare') do |t|
+    Cucumber::Rake::Task.new(:static_unfinished => 'db:test:prepare') do |t|
       t.fork = true
-      t.cucumber_opts = "-p basic_unfinished"
-      t.feature_list = Dir.glob("features/**/basic/**/*.feature")
+      t.cucumber_opts = "-p static_unfinished"
+      t.feature_list = Dir.glob("features/**/static/**/*.feature")
     end
 
-    Cucumber::Rake::Task.new(:ajax_unfinished => 'db:test:prepare') do |t|
+    Cucumber::Rake::Task.new(:dynamic_unfinished => 'db:test:prepare') do |t|
       t.fork = true
-      t.cucumber_opts = "-p ajax_unfinished"
-      t.feature_list = Dir.glob("features/**/ajax/**/*.feature")
+      t.cucumber_opts = "-p dynamic_unfinished"
+      t.feature_list = Dir.glob("features/**/dynamic/**/*.feature")
     end
 
-    task :acceptance => [ "features:basic_acceptance",
-                          "features:ajax_acceptance"   ]
-    task :unfinished => [ "features:basic_unfinished",
-                          "features:ajax_unfinished"   ]
+    task :acceptance => [ "features:static_acceptance",
+                          "features:dynamic_acceptance"   ]
+    task :unfinished => [ "features:static_unfinished",
+                          "features:dynamic_unfinished"   ]
   end
 
   task :features => [ "features:acceptance",
