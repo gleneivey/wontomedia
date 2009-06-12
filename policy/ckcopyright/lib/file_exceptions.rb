@@ -81,20 +81,30 @@ private
         @policies.add_remapped_file(file_path, extension)
 
       else # must be a path/name/pattern
-        # exclude all files, from any directory, that match this line
-        matches = Dir.glob( File.join("**", line.chomp), File::FNM_DOTMATCH ).
-          reject { |path| File.directory?(path) }
+        line = line.chomp
 
-        # exclude all files *under* any directory matching this line
-        matches += Dir.glob( File.join("**", line.chomp, "**", "*"),
-                             File::FNM_DOTMATCH ).
-          reject { |path| File.directory?(path) }
+        if line[0] == "/"[0]
+          # if pattern is an absolute path/name (relative to the
+          # project root, not to the real fs root), exclude exactly
+          # that from consideration
+          matches = [ line ]
+        else
+          # exclude all files, from any directory, that match this line
+          matches = Dir.glob( File.join("**", line), File::FNM_DOTMATCH ).
+            reject { |path| File.directory?(path) }
+
+          # exclude all files *under* any directory matching this line
+          matches += Dir.glob( File.join("**", line.chomp, "**", "*"),
+                               File::FNM_DOTMATCH ).
+            reject { |path| File.directory?(path) }
+        end
 
         # we're never going to do a content check on matching file(s)
         @header_exceptions += matches
         # but we might have to check git if match is '!lock'ed
         if commit
           matches.each do |path|
+            path.sub! %r%^/%, ""
             @git_includes <<= "#{commit} #{path}"
           end 
         end

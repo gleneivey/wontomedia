@@ -11,6 +11,11 @@
 !treat .autotest                                     !as .rb
 
 
+    # un- and not-to-be-modified third-party components, expect to be
+    # updated periodically with new versions
+vendor
+
+
     # repeatedly auto-generated from other files
 db/schema.rb
 VERSION.yml
@@ -41,10 +46,9 @@ public/javascripts/controls.js
 public/javascripts/dragdrop.js
 public/javascripts/effects.js
 public/javascripts/prototype.js
-vendor
 COPYING
 COPYING.DOCUMENTATION
-LICENSE
+/LICENSE
 !unlock
 
     # can't embed license notice in binary files--our originals still
