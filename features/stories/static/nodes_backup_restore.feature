@@ -3,6 +3,7 @@ Feature:  Download (for backup) and upload (for restore) all nodes in YAML
   as an administrator, I want
   to be able to download and upload the system's nodes.
 
+  @not_for_selenium
   Scenario: Download nodes.yml
     Given there are 3 existing items like "anItem"
     When I go to the path "/nodes.yaml"

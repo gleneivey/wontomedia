@@ -3,6 +3,7 @@ Feature:  Download (for backup) and upload (for restore) all edges in N3
   as an administrator, I want
   to be able to download and upload the system's edges.
 
+  @not_for_selenium
   Scenario: Download edges.n3
     Given there are 4 existing items like "item"
     And there is an existing edge "item1" "child_of" "item0"

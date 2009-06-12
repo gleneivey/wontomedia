@@ -48,6 +48,7 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     Then I should see "error"
 
 
+  @not_for_selenium
   Scenario: System should prevent entry of invalid node titles
     Given I am on the new nodes page
     And I fill in "Name" with "goodName"
