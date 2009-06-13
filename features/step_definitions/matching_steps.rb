@@ -22,12 +22,12 @@
 
 Then /^I should see ([0-9]+) match(es)? of "(.*)" in "(.*)"$/ do |
     number, foo, text, selector|
-  assert_select selector, { :text => /#{text}/, :count => number.to_i }
+  assert_have_selector selector, :content => text, :count => number.to_i
 end
 
 Then /^I should see all of "(.+)"$/ do |patterns|
   patterns.split(/"\s*,?\s*"/).each do |text|
-    assert_select "body", /#{text}/
+    assert_contain /#{text}/
   end
 end
 
@@ -35,30 +35,18 @@ Then /^there should(.*)be a node container for "([^\"]+)" including the tag "(.+
 
   subst_syntax_re = /\?([^?]+)\?/
   while selector =~ subst_syntax_re
-    node_name = $1
-    node = Node.find_by_name(node_name)
+    subst_name = $1
+    node = Node.find_by_name(subst_name)
     selector.sub!(subst_syntax_re, node.id.to_s)
   end
 
-# have_selector appears to be grumpy about my CSS; assert_select & Selenium?
-#  response.should have_selector("*##{node_name}") do |tag|
-#    if    test_sense == " "
-#      tag.should have_selector(selector)
-#    elsif test_sense == " not "
-#      tag.should_not have_selector(selector)
-#    else
-#      assert false, "Bad step string."
-#    end
-#  end
-
-  assert_select "*##{node.name}" do
-    if     test_sense == " "
-      assert_select selector
-    elsif test_sense == " not "
-      assert_select selector, false
-    else
-      assert false, "Bad step string."
-    end
+  assert_have_selector      "*##{node_name}"
+  if     test_sense == " "
+    assert_have_selector    "*##{node_name} #{selector}"
+  elsif test_sense == " not "
+    assert_have_no_selector "*##{node_name} #{selector}"
+  else
+    assert false, "Bad step string."
   end
 end
 
