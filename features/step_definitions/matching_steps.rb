@@ -21,6 +21,7 @@
 
 
 require 'nokogiri'
+require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "step_helpers"))
 
 
 
@@ -33,13 +34,7 @@ end
 
 Then /^there should(.*)be a node container for "([^\"]+)" including the tag "(.+)"$/ do |test_sense, node_name, selector|
 
-  subst_syntax_re = /\?([^?]+)\?/
-  while selector =~ subst_syntax_re
-    subst_name = $1
-    node = Node.find_by_name(subst_name)
-    selector.sub!(subst_syntax_re, node.id.to_s)
-  end
-
+  selector = node_id_substitute(selector)
   assert_have_selector      "*##{node_name}"
   if     test_sense == " "
     assert_have_selector    "*##{node_name} #{selector}"

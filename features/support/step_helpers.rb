@@ -17,16 +17,13 @@
 
 
 
-require 'nokogiri'
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "step_helpers"))
-
-
-
-When /^I follow "([^\"]*)", accepting confirmation$/ do |link|
-  if @browser.nil?
-    click_link(link)
-  else
-    selenium.click("link=#{link}")
-    assert selenium.get_confirmation
+def node_id_substitute(selector)
+  subst_syntax_re = /\?([^?]+)\?/
+  while selector =~ subst_syntax_re
+    subst_name = $1
+    node = Node.find_by_name(subst_name)
+    selector.sub!(subst_syntax_re, node.id.to_s)
   end
+  selector
 end
+
