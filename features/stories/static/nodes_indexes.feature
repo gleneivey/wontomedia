@@ -6,9 +6,8 @@ Feature:  Show existing ontology information in app home and index pages
 
   Scenario: Homepage doesn't show property nodes
     When I go to "the homepage"
-    Then I should see 0 matches of "peer_of" in "body"
-    And I should see 0 matches of "value_relationship" in "body"
-
+    Then I should see 0 matches of "peer_of"
+    And I should see 0 matches of "value_relationship"
 
   Scenario: Homepage shows list of existing nodes
     Given there are 2 existing classes like "kirgagh0"
@@ -22,8 +21,8 @@ Feature:  Show existing ontology information in app home and index pages
 
   Scenario: Node index shows property nodes
     When I go to the index nodes page
-    Then I should see 1 match of "one_of" in "body"
-    Then I should see 1 match of "symmetric_relationship" in "body"
+    Then I should see 1 match of "child_of"
+    Then I should see 1 match of "symmetric_relationship"
 
 
   Scenario: View index of existing nodes

@@ -25,12 +25,12 @@ Webrat.configure do |config|
   config.application_environment = :test
 end
 
-#World(Webrat::Selenium::Matchers)
-
 
 # "before all"
 browser = Selenium::SeleniumDriver.new("localhost", 4444, "*chrome",
                                        "http://localhost", 15000)
+
+
 
 Before do
   c = ActiveRecord::Base.connection
@@ -40,15 +40,9 @@ Before do
   c.execute( "DELETE FROM edges WHERE (edges.flags & #{flag}) = 0" )
 
   @browser = browser
-  @browser.start
+  @browser.start rescue nil
 end
 
 After do
-  @browser.stop
+  @browser.stop rescue nil
 end
-
-# "after all"
-at_exit do
-  browser.close rescue nil
-end
-

@@ -16,20 +16,20 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# Cucumber steps, depending on Webrat::Matchers, for more interesting
-# result page content checks
+# Cucumber steps, depending on Webrat::[Selenium::]Matchers, for more
+# interesting result page content checks
 
 
-Then /^I should see ([0-9]+) match(es)? of "(.*)" in "(.*)"$/ do |
-    number, foo, text, selector|
-  assert_have_selector selector, :content => text, :count => number.to_i
-end
+require 'nokogiri'
+
+
 
 Then /^I should see all of "(.+)"$/ do |patterns|
   patterns.split(/"\s*,?\s*"/).each do |text|
     assert_contain /#{text}/
   end
 end
+
 
 Then /^there should(.*)be a node container for "([^\"]+)" including the tag "(.+)"$/ do |test_sense, node_name, selector|
 
@@ -50,23 +50,51 @@ Then /^there should(.*)be a node container for "([^\"]+)" including the tag "(.+
   end
 end
 
-Then /^the response should contain ([0-9]+) match(es)? of "(.*)"$/ do |
-    number, foo, text|
-  i = number.to_i
-  rb = webrat.response_body
-  response_parts = rb.split(/#{text}/)
+
+Then /^I should see ([0-9]+) match(es)? of "([^\"]+)" in "([^\"]+)"$/ do |
+    num_str, foo, text, selector|
+  path = Nokogiri::CSS.parse(selector)[0].to_xpath
+  response_fragment = Nokogiri.HTML(webrat.response_body).document.xpath(path)
+  exact_count_match_helper( response_fragment.inner_text, text, num_str.to_i )
+end
+
+
+Then /^I should see ([0-9]+) match(es)? of "([^\"]+)"$/ do |
+    num_str, foo, text|
+  exact_count_match_helper( Nokogiri.HTML(webrat.response_body).inner_text,
+                            text, num_str.to_i )
+end
+
+
+Then /^the response should contain ([0-9]+) match(es)? of "([^\"]+)"$/ do |
+    num_str, foo, text|
+  exact_count_match_helper( webrat.response_body, text, num_str.to_i )
+end
+
+
+private
+
+
+def exact_count_match_helper(response_fragment, compare_string, i)
+  response_parts = response_fragment.split(/#{compare_string}/m)
+
+  original_i = i
   if (i == 0)
-    assert response_parts.length == 1, "Expected no match for '#{text}'"
-  elsif rb =~ /^#{text}$/
-    assert i == 1, "Got one match of '#{text}', expecting #{number}"
+    assert response_parts.length == 1,
+      "Expected no match for '#{compare_string}'"
+  elsif response_fragment =~ /\A#{compare_string}\Z/m
+    assert i == 1,
+      "Got one match of '#{compare_string}', expecting #{original_i}"
   else
-    i -= 1
-    if !( rb =~ /^#{text}/ )
-      i += 1
+    i += 1     # normally, we'll have one more "part" than the matches between
+    if response_fragment =~ /\A#{compare_string}/m
+      i -= 1   # won't have a string-before-first-occurance in _parts
     end
-    if !( rb =~ /#{text}$/ )
-      i += 1
+    if response_fragment =~ /#{compare_string}\Z/m
+      i -= 1   # won't have a string-after-last-occurance in _parts
     end
-    assert response_parts.length == i, "Expected #{number} matches of '#{text}'"
+    assert response_parts.length == i,
+      "Expected #{original_i} match(es) of '#{compare_string}', " +
+      "got #{response_parts.length} parts."
   end
 end
