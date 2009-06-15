@@ -102,7 +102,7 @@ DoASystemCommand(
     "   $gemInstallDir/config/database.yml "          );
     # initialize the database
 DoASystemCommand( "cd $gemInstallDir; " .
-                  "RAILS_ENV=production rake db:schema:load" );
+                  "RAILS_ENV=production rake db:reseed" );
 
 
 print "\n\nInstallation appears to have completed successfully,\n";

@@ -1,10 +1,16 @@
 #!/usr/bin/perl
 
             #### from here, uninstall developer stuff and Git version
+system "gem1.8 uninstall mongrel --all --executables -I";
+system "gem1.8 uninstall migration_test_helper Selenium selenium-client --all --executables -I";
 system "gem1.8 uninstall technicalpickles-jeweler ZenTest --all --executables -I";
 system "gem1.8 uninstall rspec rspec-rails webrat cucumber --all --executables -I";
 system "gem1.8 uninstall builder diff-lcs peterwald-git polyglot treetop term-ansicolor --all --executables -I";
 system "gem1.8 uninstall nokogiri --all --executables -I";
+system "apt-get -y purge avahi-daemon gsfonts-x11 libavahi-core5 libdaemon0 ";
+system "apt-get -y purge libnss-mdns odbcinst1debian1 unixodbc ";
+system "apt-get -y purge sun-java6-bin sun-java6-jre java-common rhino ";
+system "apt-get -y purge libxml2-dev libxslt1-dev ";
 
 system "rm -rf wontomedia";
 system "apt-get -y purge git-core liberror-perl libdigest-sha1-perl ";
@@ -38,7 +44,7 @@ system "DEBIAN_FRONTEND=noninteractive apt-get -y purge " .
 			 " mysql-server-5.0 mysql-client-5.0 " .
 			 " mysql-common ruby1.8-dev libdbd-mysql-perl " .
 			 " libmysqlclient15off libmysqlclient15-dev " .
-			 " libc6-dev zlib1g-dev libdbi-perl " .
+			 " zlib1g-dev libdbi-perl " .
 			 " libnet-daemon-perl libplrpc-perl linux-libc-dev";
 
 

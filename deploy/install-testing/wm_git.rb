@@ -40,9 +40,6 @@ exit $?.exitstatus if $?.exitstatus != 0
           # make sure we've got the databases in place
 puts "mysql CREATE/GRANT"
 IO.popen("mysql -u root -pmysql", "r+") { |mysql|
-#  mysql.write( "CREATE DATABASE wm_test_db;\n" )
-#  mysql.write( "GRANT ALL PRIVILEGES ON wm_test_db.* TO 'wm'\@'localhost' " +
-#		 "IDENTIFIED BY 'wm-pass';\n" )
   mysql.write( "CREATE DATABASE wm_dev_db;\n" )
   mysql.write( "GRANT ALL PRIVILEGES ON wm_dev_db.* TO 'wm'\@'localhost' " +
 		 "IDENTIFIED BY 'wm-pass';\n" )
@@ -63,8 +60,4 @@ end
 db_yml = File.new("wontomedia/config/database.yml", "w")
 db_yml.write( yml_file.join );
 db_yml.close()
-
-
-#FIXME: should we run the initial "rake db:migrate" here automatically
-# instead of just reminding developers at the end of wm_developer?
 

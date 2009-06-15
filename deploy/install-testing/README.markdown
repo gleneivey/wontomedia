@@ -5,7 +5,7 @@ Intro
 
 This directory contains scripts (shell, Perl, and Ruby) used for
 testing the installation of WontoMedia on a clean/minimal Linux
-system.  They have been used on Ubuntu 8.04, and are written assuming
+system.  They have been used on Ubuntu 9.04, and are written assuming
 the presence of the Debian package manager `apt-get`.  The scripts
 whose names begin "wm_*" are intended to be executed on the test
 target (the system being installed on), with the other scripts being
@@ -44,14 +44,14 @@ based on WontoMedia installed from a gem to a development
 configuration based on WontoMedia installed into a local Git
 repository.
 
- * One for reversing all of the steps in the other steps, returning
+ * One for reversing all of the steps in the other scripts, returning
 the the system to its "clean" configuration.  Note that this
 unconditionally uninstalls WontoMedia and *all* of its dependencies.
 So, if you are using these scripts on your daily-use system, this
 script might break dependencies of other software you use and is not
 suggested.  However, it is appropriate for hosts used to
-regression-test the WontoMedia install process, to ensure that the
-system does not acquire new dependencies unnoticed.
+regression-test the WontoMedia install process itself, to ensure that
+the system does not acquire new dependencies unnoticed.
 
 Note that all of these scripts expect WontoMedia to be run with
 MySQL.  If you want to use a different database server, wm_developer
