@@ -39,7 +39,7 @@ class NodesControllerTest < ActionController::TestCase
       if node.flags & Node::DATA_IS_UNALTERABLE == 0
         assert @response.body =~ /#{node.name}/,
           "Expected '#{node.name}' but didn't find"
-      elsif not [ 'one_of' ].include? node.name # special, used in desc. text
+      elsif not [ 'one_of' ].include?( node.name ) # special, used in desc. text
         assert !(@response.body =~ /#{node.name}/),
           "Found '#{node.name}', unexpected"
       end
@@ -131,7 +131,7 @@ class NodesControllerTest < ActionController::TestCase
     assert array_of_arrays.length >= 1
     array_of_value_edges = array_of_arrays.first
     assert array_of_value_edges.length >= 1
-    assert array_of_value_edges.include? e.id
+    assert array_of_value_edges.include?( e.id )
   end
 
   test "should correctly group/sort is-subject edges" do
@@ -148,21 +148,21 @@ class NodesControllerTest < ActionController::TestCase
       random_edge_array = *edge_list
 
     assert value_edge_array.length == 2
-    assert value_edge_array.include? edges(:nUFAS_value_A).id
-    assert value_edge_array.include? edges(:nUFAS_isAssigned_B).id
+    assert value_edge_array.include?( edges(:nUFAS_value_A).id )
+    assert value_edge_array.include?( edges(:nUFAS_isAssigned_B).id )
 
     assert peer_edge_array.length == 3
-    assert peer_edge_array.include? edges(:nUFAS_peer_of_X).id
-    assert peer_edge_array.include? edges(:nUFAS_peer_of_Y).id
-    assert peer_edge_array.include? edges(:nUFAS_peer_of_Z).id
+    assert peer_edge_array.include?( edges(:nUFAS_peer_of_X).id )
+    assert peer_edge_array.include?( edges(:nUFAS_peer_of_Y).id )
+    assert peer_edge_array.include?( edges(:nUFAS_peer_of_Z).id )
 
     assert successor_edge_array.length == 2
-    assert successor_edge_array.include? edges(:nUFAS_successor_of_C).id
-    assert successor_edge_array.include? edges(:nUFAS_successor_of_D).id
+    assert successor_edge_array.include?( edges(:nUFAS_successor_of_C).id )
+    assert successor_edge_array.include?( edges(:nUFAS_successor_of_D).id )
 
     assert random_edge_array.length == 2
-    assert random_edge_array.include? edges(:nUFAS_predecessor_of_E).id
-    assert random_edge_array.include? edges(:nUFAS_child_of_M).id
+    assert random_edge_array.include?( edges(:nUFAS_predecessor_of_E).id )
+    assert random_edge_array.include?( edges(:nUFAS_child_of_M).id )
   end
 
   test "should correctly group is-object edges" do
@@ -175,12 +175,12 @@ class NodesControllerTest < ActionController::TestCase
     assert edge_list.length == 1
     edges = edge_list.first
     assert edges.length == 6
-    assert edges.include? edges(:a_isAssigned_nUFAO).id
-    assert edges.include? edges(:b_isAssigned_nUFAO).id
-    assert edges.include? edges(:c_isAssigned_nUFAO).id
-    assert edges.include? edges(:d_isAssigned_nUFAO).id
-    assert edges.include? edges(:e_isAssigned_nUFAO).id
-    assert edges.include? edges(:c_peer_of_nUFAO).id
+    assert edges.include?( edges(:a_isAssigned_nUFAO).id )
+    assert edges.include?( edges(:b_isAssigned_nUFAO).id )
+    assert edges.include?( edges(:c_isAssigned_nUFAO).id )
+    assert edges.include?( edges(:d_isAssigned_nUFAO).id )
+    assert edges.include?( edges(:e_isAssigned_nUFAO).id )
+    assert edges.include?( edges(:c_peer_of_nUFAO).id )
     # minimal sort-order test
     assert Edge.find(edges.first).predicate_id !=
              Edge.find(edges.last).predicate_id
@@ -198,27 +198,27 @@ class NodesControllerTest < ActionController::TestCase
     assert edges.length >= 19
     # and check some representative items
     spo_id = Node.find_by_name("sub_property_of").id
-    assert edges.include? Edge.first( :conditions => [
+    assert edges.include?( Edge.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?", spo_id, spo_id,
-        Node.find_by_name("hierarchical_relationship").id ]).id
-    assert edges.include? Edge.first( :conditions => [
+        Node.find_by_name("hierarchical_relationship").id ]).id )
+    assert edges.include?( Edge.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
         Node.find_by_name("contains").id, spo_id,
-        Node.find_by_name("parent_of").id ]).id
-    assert edges.include? Edge.first( :conditions => [
+        Node.find_by_name("parent_of").id ]).id )
+    assert edges.include?( Edge.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
         Node.find_by_name("successor_of").id, spo_id,
-        Node.find_by_name("ordered_relationship").id ]).id
-    assert edges.include? Edge.first( :conditions => [
+        Node.find_by_name("ordered_relationship").id ]).id )
+    assert edges.include?( Edge.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
         nodes(:isAssigned).id, spo_id,
-        Node.find_by_name("value_relationship").id ]).id
-    assert edges.include? Edge.first( :conditions => [
+        Node.find_by_name("value_relationship").id ]).id )
+    assert edges.include?( Edge.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-        nodes(:B).id, spo_id, nodes(:C).id ]).id
-    assert edges.include? Edge.first( :conditions => [
+        nodes(:B).id, spo_id, nodes(:C).id ]).id )
+    assert edges.include?( Edge.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-        nodes(:B).id, spo_id, nodes(:Z).id ]).id
+        nodes(:B).id, spo_id, nodes(:Z).id ]).id )
   end
 
   test "should do-the-right-thing with node used in all kinds of edges" do

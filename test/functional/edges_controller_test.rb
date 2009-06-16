@@ -67,16 +67,16 @@ class EdgesControllerTest < ActionController::TestCase
 
     # spot-check for presence/absence of one known node of each STI child type
     ns = assigns(:nodes)
-    assert   ns.include? nodes(:testCategory)
-    assert   ns.include? nodes(:testItem)
-    assert   ns.include? nodes(:testProperty)
-    assert !(ns.include? nodes(:edge_one))
+    assert   ns.include?( nodes(:testCategory) )
+    assert   ns.include?( nodes(:testItem) )
+    assert   ns.include?( nodes(:testProperty) )
+    assert !(ns.include?( nodes(:edge_one) ))
 
     vs = assigns(:verbs)
-    assert !(vs.include? nodes(:testCategory))
-    assert !(vs.include? nodes(:testItem))
-    assert   vs.include? nodes(:testProperty)
-    assert !(vs.include? nodes(:edge_one))
+    assert !(vs.include?( nodes(:testCategory) ))
+    assert !(vs.include?( nodes(:testItem) ))
+    assert   vs.include?( nodes(:testProperty) )
+    assert !(vs.include?( nodes(:edge_one) ))
   end
 
   # possible edge combinations:
