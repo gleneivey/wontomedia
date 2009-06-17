@@ -18,8 +18,6 @@
 
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
-# Commonly used webrat steps
-# http://github.com/brynary/webrat
 
 When /^I go to "(.+)"$/ do |page_name|
   visit path_to(page_name)
@@ -117,6 +115,10 @@ end
 
 Then /^I should not see "([^\"]*)"$/ do |text|
   response.should_not contain(text)
+end
+
+Then /^there should be an element "([^\"]+)"$/ do |selector|
+  assert_have_selector(selector)
 end
 
 Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|

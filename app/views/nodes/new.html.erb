@@ -27,10 +27,6 @@
  %>
   <%= f.error_messages %>
   <div style="width: 40%; float: left;">
-    <%= render :partial => "form_fields", :locals => { :f => f } %>
-  </div>
-
-  <div style="width: 55%; float: right;">
     <%= f.label :sti_type, "Type" %>
     <%= select_tag "node[sti_type]",
 	  options_for_select( [
@@ -40,6 +36,14 @@
 	    [ "Property",      "PropertyNode" ] ],
             @node.sti_type.nil? ? "" : @node.sti_type )
      %>
+    <script type="text/javascript">
+      $('node_sti_type').focus();
+    </script>
+
+    <%= render :partial => "form_fields", :locals => { :f => f } %>
+  </div>
+
+  <div style="width: 55%; float: right;">
     <dl><dt>Category</dt><dd>
 
       "Category" is for groups of things, for concepts, and for the
