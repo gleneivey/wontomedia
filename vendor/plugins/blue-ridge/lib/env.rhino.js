@@ -1,20 +1,35 @@
+/**
+ * @author thatcher
+ */
+var Envjs = function(){
+    if(arguments.length === 2){
+        for ( var i in arguments[1] ) {
+    		var g = arguments[1].__lookupGetter__(i), 
+                s = arguments[1].__lookupSetter__(i);
+    		if ( g || s ) {
+    			if ( g ) Envjs.__defineGetter__(i, g);
+    			if ( s ) Envjs.__defineSetter__(i, s);
+    		} else
+    			Envjs[i] = arguments[1][i];
+    	}
+    }
+    window.location = arguments[0];
+};
+
 /*
 *	env.rhino.js
 */
-var __env__ = {};
 (function($env){
     
     //You can emulate different user agents by overriding these after loading env
-    $env.appCodeName  = "EnvJS";//eg "Mozilla"
+    $env.appCodeName  = "Envjs";//eg "Mozilla"
     $env.appName      = "Resig/20070309 BirdDog/0.0.0.1";//eg "Gecko/20070309 Firefox/2.0.0.3"
 
     //set this to true and see profile/profile.js to select which methods
     //to profile
     $env.profile = false;
     
-    $env.log = function(msg, level){
-         print(' '+ (level?level:'LOG') + ':\t['+ new Date()+"] {ENVJS} "+msg);
-    };
+    $env.log = function(msg, level){};
     $env.debug  = function(){};
     $env.info   = function(){};
     $env.warn   = function(){};
@@ -23,10 +38,10 @@ var __env__ = {};
     //uncomment these if you want to get some internal log statementes
     /*$env.debug  = function(msg){
         $env.log(msg,"DEBUG"); 
-    };
+    };*/
     $env.info   = function(msg){
         $env.log(msg,"INFO"); 
-    };*/
+    };
     $env.warn   = function(msg){
         $env.log(msg,"WARNIING");    
     };
@@ -35,7 +50,123 @@ var __env__ = {};
         $env.log(e||"",'ERROR');
     };
     
-    $env.info("Initializing Rhino Platform Env");
+    $env.info("Initializing Core Platform Env");
+    
+    $env.lineSource = function(e){};
+    
+    $env.hashCode = function(obj){};
+    
+    //resolves location relative to base or window location
+    $env.location = function(path, base){};
+    
+    //For Java the window.timer is created using the java.lang.Thread in combination
+    //with the java.lang.Runnable
+    $env.timer = function(fn, time){};	
+    
+    $env.javaEnabled = false;	
+    
+    //Used in the XMLHttpRquest implementation to run a
+    // request in a seperate thread
+    $env.runAsync = function(fn){};
+    
+    //Used to write to a local file
+    $env.writeToFile = function(text, url){};
+    
+    //Used to write to a local file
+    $env.writeToTempFile = function(text, suffix){};
+    
+    //Used to delete a local file
+    $env.deleteFile = function(url){};
+    
+    $env.connection = function(xhr, responseHandler, data){};
+    
+    $env.parseHTML = function(htmlstring){};
+    $env.parseXML = function(xmlstring){};
+    $env.xpath = function(expression, doc){};
+    
+    $env.tmpdir         = ''; 
+    $env.os_name        = ''; 
+    $env.os_arch        = ''; 
+    $env.os_version     = ''; 
+    $env.lang           = ''; 
+    $env.platform       = "Rhino ";//how do we get the version
+    
+    $env.safeScript = function(){
+      //do nothing  
+    };
+    
+    $env.scriptTypes = {
+        "text/javascript"   :false,
+        "text/envjs"        :true
+    };
+    
+    $env.loadLocalScript = function(script, parser){
+        $env.debug("loading script ");
+        var types, type, src, i, base, 
+            docWrites = [],
+            write = document.write,
+            writeln = document.writeln;
+        //temporarily replace document write becuase the function
+        //has a different meaning during parsing
+        document.write = function(text){
+			docWrites.push(text);
+		};
+        try{
+			if(script.type){
+                types = script.type?script.type.split(";"):[];
+                for(i=0;i<types.length;i++){
+                    if($env.scriptTypes[types[i]]){
+						if(script.src){
+                            $env.info("loading allowed external script :" + script.src);
+                            if($env.beforeload&&$env.beforeload[script.src]){
+                                //lets you register a function to execute 
+                                //before the script is loaded
+                                $env.beforeload[script.src]();
+                            }
+                            base = "" + window.location;
+							load($env.location(script.src.match(/([^\?#]*)/)[1], base ));
+                            if($env.afterload&&$env.afterload[script.src]){
+                                //lets you register a function to execute 
+                                //after the script is loaded
+                                $env.afterload[script.src]();
+                            }
+                        }else{
+                            $env.loadInlineScript(script);
+                        }
+                    }else{
+                        if(!script.src && script.type == "text/javascript"){
+                            $env.loadInlineScript(script);
+                        }
+                    }
+                }
+            }else{
+                //anonymous type and anonymous src means inline
+                if(!script.src){
+                    $env.loadInlineScript(script);
+                }
+            }
+        }catch(e){
+            $env.error("Error loading script.", e);
+        }finally{
+            if(parser){
+                parser.appendFragment(docWrites.join(''));
+			}
+			//return document.write to it's non-script loading form
+            document.write = write;
+            document.writeln = writeln;
+        }
+    };
+    
+    $env.loadInlineScript = function(script){};
+    
+})(Envjs);/*
+*	env.rhino.js
+*/
+(function($env){
+    
+    $env.log = function(msg, level){
+         print(' '+ (level?level:'LOG') + ':\t['+ new Date()+"] {ENVJS} "+msg);
+    };
     
     $env.lineSource = function(e){
         return e&&e.rhinoException?e.rhinoException.lineSource():"(line ?)";
@@ -67,16 +198,22 @@ var __env__ = {};
     //For Java the window.timer is created using the java.lang.Thread in combination
     //with the java.lang.Runnable
     $env.timer = function(fn, time){
-        //$env.debug("wating for timer "+time);
-        return new java.lang.Thread(new java.lang.Runnable({
+        var running = true;
+        var thread = new java.lang.Thread(new java.lang.Runnable({
             run: function(){
-                while (true){
+                while (running){
                     java.lang.Thread.currentThread().sleep(time);
                     //$env.debug("calling in timer "+time);
                     fn();
                 }
             }
         }));
+        this.start = function(){ 
+            thread.start(); 
+        };
+        this.stop = function(){
+            running = false;
+        }
     };	
     
     //Since we're running in rhino I guess we can safely assume
@@ -127,7 +264,7 @@ var __env__ = {};
         file["delete"]();
     };
     
-    $env.connection = function(xhr, responseHandler){
+    $env.connection = function(xhr, responseHandler, data){
         var url = java.net.URL(xhr.url);//, $w.location);
       var connection;
         if ( /^file\:/.test(url) ) {
@@ -143,17 +280,32 @@ var __env__ = {};
         } else { 
             connection = url.openConnection();
             connection.setRequestMethod( xhr.method );
-            
+			
             // Add headers to Java connection
             for (var header in xhr.headers){
                 connection.addRequestProperty(header+'', xhr.headers[header]+'');
-          }connection.connect();
+            }
+			
+			//write data to output stream if required
+            if(data&&data.length&&data.length>0){
+				 if ( xhr.method == "PUT" ) {
+                	connection.setDoOutput(true);
+					var outstream = connection.getOutputStream(),
+						outbuffer = new java.lang.String(data).getBytes('UTF-8');
+					
+                    outstream.write(outbuffer, 0, outbuffer.length);
+					outstream.close();
+            	}
+			}else{
+		  		connection.connect();
+			}
+			
             
+            var respheadlength = connection.getHeaderFields().size();
             // Stick the response headers into responseHeaders
-            for (var i = 0; ; i++) { 
+            for (var i = 0; i < respheadlength; i++) { 
                 var headerName = connection.getHeaderFieldKey(i); 
                 var headerValue = connection.getHeaderField(i); 
-                if (!headerName && !headerValue) break; 
                 if (headerName)
                     xhr.responseHeaders[headerName+''] = headerValue+'';
             }
@@ -231,72 +383,15 @@ var __env__ = {};
         "text/envjs"        :true
     };
     
-    $env.loadLocalScript = function(script, parser){
-        $env.debug("loading script ");
-        var types, type, src, i, base, 
-            docWrites = [],
-            write = document.write,
-            writeln = document.writeln;
-        //temporarily replace document write becuase the function
-        //has a different meaning during parsing
-        document.write = function(text){
-			docWrites.push(text);
-		};
-        try{
-			if(script.type){
-                types = script.type?script.type.split(";"):[];
-                for(i=0;i<types.length;i++){
-                    if($env.scriptTypes[types[i]]){
-						if(script.src){
-                            $env.info("loading allowed external script :" + script.src);
-                            base = "" + window.location;
-							load($env.location(script.src.match(/([^\?#]*)/)[1], base ));
-                        }else{
-                            $env.loadInlineScript(script);
-                        }
-                    }else{
-                        if(!script.src && script.type == "text/javascript"){
-                            $env.loadInlineScript(script);
-                        }
-                    }
-                }
-            }else{
-                //anonymous type and anonymous src means inline
-                if(!script.src){
-                    $env.loadInlineScript(script);
-                }
-            }
-        }catch(e){
-            $env.error("Error loading script.", e);
-        }finally{
-            if(parser){
-                parser.appendFragment(docWrites.join(''));
-			}
-			//return document.write to it's non-script loading form
-            document.write = write;
-            document.writeln = writeln;
-        }
-    };
     
     $env.loadInlineScript = function(script){
         $env.debug("loading inline script :" + script.text);
         var tmpFile = $env.writeToTempFile(script.text, 'js') ;
-        $env.info("loading " + tmpFile);
+        $env.debug("loading " + tmpFile);
         load(tmpFile);
     };
     
-})(__env__);/*
-*	policy.js
-*/
-var __policy__ = {};
-(function($policy, $env){
-    
-    //you can change these to $env.safeScript to avoid loading scripts
-    //or change to $env.loadLocalScripts to load local scripts
-    //$policy.loadScript    = $env.safeScript;
-    $policy.loadScript    = $env.loadLocalScript;
-    
-})(__policy__, __env__);/*
+})(Envjs);/*
  * Pure JavaScript Browser Environment
  *   By John Resig <http://ejohn.org/>
  * Copyright 2008 John Resig, under the MIT License
@@ -310,7 +405,7 @@ this.__defineGetter__('window', function(){
 });
 
 try{
-(function($w, $env, $policy){
+(function($w, $env){
         /*
 *	window.js
 *   - this file will be wrapped in a closure providing the window object as $w
@@ -530,17 +625,12 @@ function __setArray__( target, array ) {
 	target.length = 0;
 	Array.prototype.push.apply( target, array );
 };
+
+
 $debug("Defining NodeList");
 /*
 * NodeList - DOM Level 2
 */
-$w.__defineGetter__('NodeList', function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
-
 /**
  * @class  DOMNodeList - provides the abstraction of an ordered collection of nodes
  *
@@ -732,6 +822,7 @@ var __cloneNodes__ = function(nodelist, deep, parentNode) {
     return cloneNodeList;
 };
 
+$w.NodeList = DOMNodeList;
 
 /**
  * @class  DOMNamedNodeMap - used to represent collections of nodes that can be accessed by name
@@ -1099,22 +1190,6 @@ $debug("Defining Node");
 /*
 * Node - DOM Level 2
 */	
-$w.__defineGetter__('Node', function(){
-  return __extend__(function(){
-        throw new Error("Object cannot be created in this context");
-      } , {
-  		ELEMENT_NODE    :1,
-  		ATTRIBUTE_NODE  :2,
-  		TEXT_NODE       :3,
-  		CDATA_SECTION_NODE: 4,
-  		PROCESSING_INSTRUCTION_NODE: 7,
-  		COMMENT_NODE: 8,
-  		DOCUMENT_NODE: 9,
-  		DOCUMENT_TYPE_NODE: 10,
-  		DOCUMENT_FRAGMENT_NODE: 11
-	});
-});
-
 /**
  * @class  DOMNode - The Node interface is the primary datatype for the entire Document Object Model.
  *   It represents a single node in the document tree.
@@ -1131,7 +1206,7 @@ var DOMNode = function(ownerDocument) {
   this.localName    = "";                        // The localName of this node (Level 2)
 
   this.nodeName = "";                            // The name of this node
-  this.nodeValue = "";                           // The value of this node
+  this.nodeValue = null;                           // The value of this node
   this.className = "";                           // The CSS class name of this node.
   
   // The parent of this node. All nodes, except Document, DocumentFragment, and Attr may have a parent.
@@ -1180,6 +1255,10 @@ __extend__(DOMNode.prototype, {
     },
     insertBefore : function(newChild, refChild) {
         var prevNode;
+        
+        if(newChild==null || refChild==null){
+            return newChild;
+        }
         
         // test for exceptions
         if (__ownerDocument__(this).implementation.errorChecking) {
@@ -1271,6 +1350,10 @@ __extend__(DOMNode.prototype, {
     replaceChild : function(newChild, oldChild) {
         var ret = null;
         
+        if(newChild==null || oldChild==null){
+            return oldChild;
+        }
+        
         // test for exceptions
         if (__ownerDocument__(this).implementation.errorChecking) {
             // throw Exception if DOMNode is readonly
@@ -1350,6 +1433,9 @@ __extend__(DOMNode.prototype, {
         return ret;
     },
     removeChild : function(oldChild) {
+        if(!oldChild){
+            return null;
+        }
         // throw Exception if DOMNamedNodeMap is readonly
         if (__ownerDocument__(this).implementation.errorChecking && (this._readonly || oldChild._readonly)) {
             throw(new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR));
@@ -1386,6 +1472,9 @@ __extend__(DOMNode.prototype, {
         return oldChild;
     },
     appendChild : function(newChild) {
+        if(!newChild){
+            return null;
+        }
       // test for exceptions
       if (__ownerDocument__(this).implementation.errorChecking) {
         // throw Exception if Node is readonly
@@ -1692,6 +1781,9 @@ var __isAncestor__ = function(target, node) {
 var __ownerDocument__ = function(node){
     return (node.nodeType == DOMNode.DOCUMENT_NODE)?node:node.ownerDocument;
 };
+
+$w.Node = DOMNode;
+
 /**
  * @class  DOMNamespace - The Namespace interface represents an namespace in an Element object
  *
@@ -1745,12 +1837,6 @@ $debug("Defining CharacterData");
 /*
 * CharacterData - DOM Level 2
 */
-$w.__defineGetter__("CharacterData", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
 /**
  * @class  DOMCharacterData - parent abstract class for DOMText and DOMComment
  * @extends DOMNode
@@ -1864,16 +1950,11 @@ __extend__(DOMCharacterData.prototype,{
         return ret;
     }
 });
-$debug("Defining Text");
+
+$w.CharacterData = DOMCharacterData;$debug("Defining Text");
 /*
 * Text - DOM Level 2
 */
-$w.__defineGetter__("Text", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 /**
  * @class  DOMText - The Text interface represents the textual content (termed character data in XML) of an Element or Attr.
  *   If there is no markup inside an element's content, the text is contained in a single object implementing the Text interface
@@ -1883,7 +1964,7 @@ $w.__defineGetter__("Text", function(){
  * @author Jon van Noort (jon@webarcana.com.au) and David Joham (djoham@yahoo.com)
  * @param  ownerDocument : DOMDocument - The Document object associated with this node.
  */
-DOMText = function(ownerDocument) {
+var DOMText = function(ownerDocument) {
   this.DOMCharacterData  = DOMCharacterData;
   this.DOMCharacterData(ownerDocument);
 
@@ -1942,16 +2023,10 @@ __extend__(DOMText.prototype,{
     }
 });
 
-$debug("Defining CDATASection");
+$w.Text = DOMText;$debug("Defining CDATASection");
 /*
 * CDATASection - DOM Level 2
 */
-$w.__defineGetter__("CDATASection", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
 /**
  * @class  DOMCDATASection - CDATA sections are used to escape blocks of text containing characters that would otherwise be regarded as markup.
  *   The only delimiter that is recognized in a CDATA section is the "\]\]\>" string that ends the CDATA section
@@ -1976,16 +2051,12 @@ __extend__(DOMCDATASection.prototype,{
     toString : function(){
         return "CDATA #"+this._id;
     }
-});$debug("Defining Comment");
+});
+
+$w.CDATASection = DOMCDATASection;$debug("Defining Comment");
 /* 
 * Comment - DOM Level 2
 */
-$w.__defineGetter__("Comment", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 /**
  * @class  DOMComment - This represents the content of a comment, i.e., all the characters between the starting '<!--' and ending '-->'
  * @extends DOMCharacterData
@@ -2010,27 +2081,21 @@ __extend__(DOMComment.prototype, {
         return "Comment #"+this._id;
     }
 });
+
+$w.Comment = DOMComment;
 $debug("Defining DocumentType");
 ;/*
 * DocumentType - DOM Level 2
 */
-$w.__defineGetter__('DocumentType', function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
+var DOMDocumentType    = function() { 
+    $error("DOMDocumentType.constructor(): Not Implemented"   ); 
+};
 
-var DOMDocumentType    = function() { $error("DOMDocumentType.constructor(): Not Implemented"   ); };$debug("Defining Attr");
+$w.DocumentType = DOMDocumentType;
+$debug("Defining Attr");
 /*
 * Attr - DOM Level 2
 */
-$w.__defineGetter__("Attr", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
-
 /**
  * @class  DOMAttr - The Attr interface represents an attribute in an Element object
  * @extends DOMNode
@@ -2076,19 +2141,10 @@ __extend__(DOMAttr.prototype, {
     toString : function(){
         return "Attr #" + this._id + " " + this.name;
     }
-});    
-
-$debug("Defining Element");
-/*
-* Element - DOM Level 2
-*/
-$w.__defineGetter__("Element", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
 });
 
-	
+$w.Attr = DOMAttr;
+$debug("Defining Element");
 /**
  * @class  DOMElement - By far the vast majority of objects (apart from text) that authors encounter
  *   when traversing a document are Element nodes.
@@ -2292,6 +2348,7 @@ __extend__(DOMElement.prototype, {
     }
 });
 
+$w.Element = DOMElement;
 /**
  * @class  DOMException - raised when an operation is impossible to perform
  * @author Jon van Noort (jon@webarcana.com.au)
@@ -2324,12 +2381,6 @@ $debug("Defining DocumentFragment");
 /* 
 * DocumentFragment - DOM Level 2
 */
-$w.__defineGetter__("DocumentFragment", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 /**
  * @class  DOMDocumentFragment - DocumentFragment is a "lightweight" or "minimal" Document object.
  * @extends DOMNode
@@ -2361,16 +2412,12 @@ __extend__(DOMDocumentFragment.prototype,{
         return "DocumentFragment #"+this._id;
     }
 });
+
+$w.DocumentFragment = DOMDocumentFragment;
 $debug("Defining ProcessingInstruction");
 /*
 * ProcessingInstruction - DOM Level 2
 */
-$w.__defineGetter__('ProcessingInstruction', function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 /**
  * @class  DOMProcessingInstruction - The ProcessingInstruction interface represents a "processing instruction",
  *   used in XML as a way to keep processor-specific information in the text of the document
@@ -2410,6 +2457,8 @@ __extend__(DOMProcessingInstruction.prototype, {
         return "ProcessingInstruction #"+this._id;
     }
 });
+
+$w.ProcessesingInstruction = DOMProcessingInstruction;
 $debug("Defining DOMParser");
 /*
 * DOMParser
@@ -2427,7 +2476,7 @@ $debug("Initializing Internal DOMParser.");
 //keep one around for internal use
 $domparser = new DOMParser();
 
-$w.__defineGetter__('DOMParser', DOMParser);
+$w.DOMParser = DOMParser;
 // =========================================================================
 //
 // xmlsax.js - an XML SAX parser in JavaScript.
@@ -3583,12 +3632,6 @@ function __unescapeXML__(str) {
 
 //DOMImplementation
 $debug("Defining DOMImplementation");
-$w.__defineGetter__("DOMImplementation", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
 /**
  * @class  DOMImplementation - provides a number of methods for performing operations
  *   that are independent of any particular instance of the document object model.
@@ -3829,7 +3872,7 @@ function __parseLoop__(impl, doc, p) {
       //handle script tag
       if(iNodeParent.nodeName.toLowerCase() == 'script'){
          p.replaceEntities = true;
-         $policy.loadScript(iNodeParent, p);
+         $env.loadLocalScript(iNodeParent, p);
       }
       iNodeParent = iNodeParent.parentNode;         // ascend one level of the DOM Tree
 
@@ -3994,12 +4037,16 @@ function __parseLoop__(impl, doc, p) {
         throw(new DOMException(DOMException.SYNTAX_ERR));
     }
     else if(iEvt == XMLP._NONE) {                   // no more events
-      if (iNodeParent == doc) {                     // confirm that we have recursed back up to root
+      //steven woods notes that unclosed tags are rejected elsewhere and this check
+	  //breaks a table patching routine
+	  /*if (iNodeParent == doc) {                     // confirm that we have recursed back up to root
         break;
       }
       else {
         throw(new DOMException(DOMException.SYNTAX_ERR));  // one or more Tags were not closed properly
-      }
+      }*/
+        break;
+
     }
   }
 
@@ -4156,17 +4203,6 @@ $debug("Initializing document.implementation");
 var $implementation =  new DOMImplementation();
 $implementation.namespaceAware = false;
 $implementation.errorChecking = false;$debug("Defining Document");
-/*
-* Document - DOM Level 2
-*  The Document object is not directly 
-*/
-$w.__defineGetter__('Document', function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
-
 /**
  * @class  DOMDocument - The Document interface represents the entire HTML or XML document.
  *   Conceptually, it is the root of the document tree, and provides the primary access to the document's data.
@@ -4266,7 +4302,7 @@ __extend__(DOMDocument.prototype, {
         return event;
     },
     createExpression        : function(xpath, nsuriMap){ 
-        return null;/*TODO*/
+        return new XPathExpression(xpath, nsuriMap);
     },
     createElement : function(tagName) {
           //$debug("DOMDocument.createElement( "+tagName+" )");
@@ -4416,6 +4452,39 @@ __extend__(DOMDocument.prototype, {
         
           return node;
     },
+    /** from David Flanagan's JavaScript - The Definitive Guide
+     * 
+     * @param {String} xpathText
+     *     The string representing the XPath expression to evaluate.
+     * @param {Node} contextNode 
+     *     The node in this document against which the expression is to
+     *     be evaluated.
+     * @param {Function} nsuriMapper 
+     *     A function that will map from namespace prefix to to a full 
+     *     namespace URL or null if no such mapping is required.
+     * @param {Number} resultType 
+     *     Specifies the type of object expected as a result, using
+     *     XPath conversions to coerce the result. Possible values for
+     *     type are the constrainsts defined by the XPathResult object.
+     *     (null if not required)
+     * @param {XPathResult} result 
+     *     An XPathResult object to be reused or null
+     *     if you want a new XPathResult object to be created.
+     * @returns {XPathResult} result
+     *     A XPathResult object representing the evaluation of the 
+     *     expression against the given context node.
+     * @throws {Exception} e
+     *     This method may throw an exception if the xpathText contains 
+     *     a syntax error, if the expression cannot be converted to the
+     *     desired resultType, if the expression contains namespaces 
+     *     that nsuriMapper cannot resolve, or if contextNode is of the 
+     *     wrong type or is not assosciated with this document.
+     * @seealso
+     *     Document.evaluate
+     */
+    /*evaluate: function(xpathText, contextNode, nsuriMapper, resultType, result){
+        return new XPathExpression().evaluate();
+    },*/
     getElementById : function(elementId) {
           var retNode = null,
               node;
@@ -4509,6 +4578,8 @@ var __isValidNamespace__ = function(doc, namespaceURI, qualifiedName, isAttribut
     
       return valid;
 };
+
+$w.Document = DOMDocument;
 /*
 *	parser.js
 */
@@ -4852,13 +4923,7 @@ var __isValidNamespace__ = function(doc, namespaceURI, qualifiedName, isAttribut
 $debug("Defining HTMLDocument");
 /*
 * HTMLDocument - DOM Level 2
-*  The Document object is not directly 
 */
-$w.__defineGetter__("HTMLDocument", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
 /**
  * @class  HTMLDocument - The Document interface represents the entire HTML or XML document.
  *   Conceptually, it is the root of the document tree, and provides the primary access to the document's data.
@@ -4925,7 +4990,7 @@ __extend__(HTMLDocument.prototype, {
           else if(tagName.match(/SELECT/))              {node = new HTMLSelectElement(this);}
           else if(tagName.match(/STYLE/))               {node = new HTMLStyleElement(this);}
           else if(tagName.match(/TABLE/))               {node = new HTMLTableElement(this);}
-          else if(tagName.match(/TBODY|TFOOT|THEAD/))   {node = new HTMLElement(this);}
+          else if(tagName.match(/TBODY|TFOOT|THEAD/))   {node = new HTMLSectionElement(this);}
           else if(tagName.match(/TD|TH/))               {node = new HTMLTableCellElement(this);}
           else if(tagName.match(/TEXTAREA/))            {node = new HTMLElement(this);}
           else if(tagName.match(/TITLE/))               {node = new HTMLElement(this);}
@@ -5038,30 +5103,11 @@ __extend__(HTMLDocument.prototype, {
     }
 });
 
-//This is useful as html elements that modify the dom must also run through the new 
-//nodes and determine if they are javascript tags and load it.  This is really the fun 
-//parts! ;)
-function __execScripts__( node ) {
-	if ( node.nodeName == "SCRIPT" ) {
-		if ( !node.getAttribute("src") ) {
-			eval.call( window, node.textContent );
-		}
-	} else {
-		var scripts = node.getElementsByTagName("script");
-		for ( var i = 0; i < scripts.length; i++ ) {
-			__execScripts__( node );
-		}
-	}
-};$debug("Defining HTMLElement");
+$w.HTMLDocument = HTMLDocument;
+$debug("Defining HTMLElement");
 /*
 * HTMLElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLElement = function(ownerDocument) {
     this.DOMElement = DOMElement;
     this.DOMElement(ownerDocument);
@@ -5099,7 +5145,7 @@ __extend__(HTMLElement.prototype, {
 		    
 	    },
 		set innerHTML(html){
-		    $debug("htmlElement.innerHTML("+html+")");
+		    //$debug("htmlElement.innerHTML("+html+")");
 		    //Should be replaced with HTMLPARSER usage
 		    var doc = new DOMParser().
 			  parseFromString('<div>'+html+'</div>');
@@ -5276,17 +5322,13 @@ var __blur__ = function(element){
 	event.initEvent("blur");
 	element.dispatchEvent(event);
 };
+
+$w.HTMLElement = HTMLElement;
 $debug("Defining HTMLCollection");
 /*
 * HTMLCollection - DOM Level 2
 * Implementation Provided by Steven Wood
 */
-$w.__defineGetter__("HTMLCollection", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
 var HTMLCollection = function(nodelist, type){
 
   __setArray__(this, []);
@@ -5312,6 +5354,8 @@ HTMLCollection.prototype = {
     namedItem : function (name) {
     }
 };
+
+$w.HTMLCollection = HTMLCollection;
 
 /*var HTMLCollection = function(nodelist, type){
   var $items = [], 
@@ -5355,12 +5399,6 @@ HTMLCollection.prototype = {
 /* 
 * HTMLAnchorElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLAnchorElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLAnchorElement = function(ownerDocument) {
     //$log("creating anchor element");
     this.HTMLElement = HTMLElement;
@@ -5474,21 +5512,14 @@ __extend__(HTMLAnchorElement.prototype, {
     }
 });
 
-			$debug("Defining Anchor");
+$w.HTMLAnchorElement = HTMLAnchorElement;$debug("Defining Anchor");
 /* 
 * Anchor - DOM Level 2
 */
-$w.__defineGetter__("Anchor", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var Anchor = function(ownerDocument) {
     this.HTMLAnchorElement = HTMLAnchorElement;
     this.HTMLAnchorElement(ownerDocument);
 };
-Anchor.prototype = new Anchor;
 
 (function(){
     //static regular expressions
@@ -5559,16 +5590,12 @@ Anchor.prototype = new Anchor;
   });
 
 })();
-			$debug("Defining HTMLAreaElement");
+
+$w.Anchor = Anchor;
+$debug("Defining HTMLAreaElement");
 /* 
 * HTMLAreaElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLAreaElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLAreaElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -5620,16 +5647,11 @@ __extend__(HTMLAreaElement.prototype, {
     }
 });
 
+$w.HTMLAreaElement = HTMLAreaElement;
 			$debug("Defining HTMLBaseElement");
 /* 
 * HTMLBaseElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLBaseElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLBaseElement = function(ownerDocument) {
     //$log("creating anchor element");
     this.HTMLElement = HTMLElement;
@@ -5651,16 +5673,10 @@ __extend__(HTMLBaseElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLQuoteElement");
+$w.HTMLBaseElement = HTMLBaseElement;		$debug("Defining HTMLQuoteElement");
 /* 
 * HTMLQuoteElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLQuoteElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLQuoteElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -5675,16 +5691,10 @@ __extend__(HTMLQuoteElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLButtonElement");
+$w.HTMLQuoteElement = HTMLQuoteElement;		$debug("Defining HTMLButtonElement");
 /* 
 * HTMLButtonElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLButtonElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLButtonElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -5724,16 +5734,10 @@ __extend__(HTMLButtonElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLTableColElement");
+$w.HTMLButtonElement = HTMLButtonElement;				$debug("Defining HTMLTableColElement");
 /* 
 * HTMLTableColElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLTableColElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLTableColElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -5778,16 +5782,11 @@ __extend__(HTMLTableColElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLModElement");
+$w.HTMLTableColElement = HTMLTableColElement;
+$debug("Defining HTMLModElement");
 /* 
 * HTMLModElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLModElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLModElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -5808,16 +5807,10 @@ __extend__(HTMLModElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLFieldSetElement");
+$w.HTMLModElement = HTMLModElement;	$debug("Defining HTMLFieldSetElement");
 /* 
 * HTMLFieldSetElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLFieldSetElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLFieldSetElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -5833,21 +5826,10 @@ __extend__(HTMLFieldSetElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLFormElement");
+$w.HTMLFieldSetElement = HTMLFieldSetElement;	$debug("Defining HTMLFormElement");
 /* 
-* HTMLAnchorElement - DOM Level 2
+* HTMLFormElement - DOM Level 2
 */
-$w.__defineGetter__("Form", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-$w.__defineGetter__("HTMLFormElement", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
 var HTMLFormElement = function(ownerDocument){
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -5920,16 +5902,10 @@ __extend__(HTMLFormElement.prototype,{
     }
 });
 
-			$debug("Defining HTMLFrameElement");
+$w.HTMLFormElement	= HTMLFormElement;$debug("Defining HTMLFrameElement");
 /* 
 * HTMLFrameElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLFrameElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLFrameElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6001,16 +5977,11 @@ __extend__(HTMLFrameElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLFrameSetElement");
+$w.HTMLFrameElement = HTMLFrameElement;
+$debug("Defining HTMLFrameSetElement");
 /* 
 * HTMLFrameSetElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLFrameSetElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLFrameSetElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6031,16 +6002,10 @@ __extend__(HTMLFrameSetElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLHeadElement");
+$w.HTMLFrameSetElement = HTMLFrameSetElement;	$debug("Defining HTMLHeadElement");
 /* 
 * HTMLHeadElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLHeadElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLHeadElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6078,16 +6043,13 @@ var __evalScript__ = function(newChild){
             $policy.loadScript(newChild);
         }
     }
-};$debug("Defining HTMLIFrameElement");
+};
+
+$w.HTMLHeadElement = HTMLHeadElement;
+$debug("Defining HTMLIFrameElement");
 /* 
 * HTMLIFrameElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLIFrameElement", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
 var HTMLIFrameElement = function(ownerDocument) {
     this.HTMLFrameElement = HTMLFrameElement;
     this.HTMLFrameElement(ownerDocument);
@@ -6108,17 +6070,11 @@ __extend__(HTMLIFrameElement.prototype, {
     }
 });
 
-
+$w.HTMLIFrameElement = HTMLIFrameElement;
 			$debug("Defining HTMLImageElement");
 /* 
 * HTMLImageElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLImageElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLImageElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6169,16 +6125,10 @@ __extend__(HTMLImageElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLInputElement");
+$w.HTMLImageElement = HTMLImageElement;$debug("Defining HTMLInputElement");
 /* 
 * HTMLInputElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLInputElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLInputElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6300,16 +6250,10 @@ __extend__(HTMLInputElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLLabelElement");
+$w.HTMLInputElement = HTMLInputElement;$debug("Defining HTMLLabelElement");
 /* 
 * HTMLLabelElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLLabelElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLLabelElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6337,16 +6281,10 @@ __extend__(HTMLLabelElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLLegendElement");
+$w.HTMLLabelElement = HTMLLabelElement;	$debug("Defining HTMLLegendElement");
 /* 
 * HTMLLegendElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLLegendElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLLegendElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6368,7 +6306,7 @@ __extend__(HTMLLegendElement.prototype, {
     }
 });
 
-			/**
+$w.HTMLLegendElement = HTMLLegendElement;	/**
 * Link - HTMLElement 
 */
 $w.__defineGetter__("Link", function(){
@@ -6382,12 +6320,6 @@ $debug("Defining HTMLLinkElement");
 /* 
 * HTMLLinkElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLLinkElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLLinkElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6450,18 +6382,11 @@ __extend__(HTMLLinkElement.prototype, {
     }
 });
 
-			
-
-			$debug("Defining HTMLMapElement");
+$w.HTMLLinkElement = HTMLLinkElement;
+$debug("Defining HTMLMapElement");
 /* 
 * HTMLMapElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLMapElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLMapElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6479,16 +6404,10 @@ __extend__(HTMLMapElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLMetaElement");
+$w.HTMLMapElement = HTMLMapElement;$debug("Defining HTMLMetaElement");
 /* 
 * HTMLMetaElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLMetaElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLMetaElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6521,16 +6440,11 @@ __extend__(HTMLMetaElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLObjectElement");
+$w.HTMLMetaElement = HTMLMetaElement;
+$debug("Defining HTMLObjectElement");
 /* 
 * HTMLObjectElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLObjectElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLObjectElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6614,16 +6528,11 @@ __extend__(HTMLObjectElement.prototype, {
     }
 });
 
+$w.HTMLObjectElement = HTMLObjectElement;
 			$debug("Defining HTMLOptGroupElement");
 /* 
 * HTMLOptGroupElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLOptGroupElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLOptGroupElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6644,16 +6553,10 @@ __extend__(HTMLOptGroupElement.prototype, {
     },
 });
 
-			$debug("Defining HTMLOptionElement");
+$w.HTMLOptGroupElement = HTMLOptGroupElement;		$debug("Defining HTMLOptionElement");
 /* 
 * HTMLOptionElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLOptionElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLOptionElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6674,7 +6577,9 @@ __extend__(HTMLOptionElement.prototype, {
         this.setAttribute('defaultSelected',value);
     },
     get text(){
-        return this.nodeValue;
+         return ((this.nodeValue === null) ||  (this.nodeValue ===undefined)) ? 
+             this.innerHTML : 
+             this.nodeValue;
     },
     get index(){
         var options = this.parent.childNodes;
@@ -6703,23 +6608,20 @@ __extend__(HTMLOptionElement.prototype, {
         this.setAttribute('selected', (value ? 'selected' :''));
     },
     get value(){
-        return this.getAttribute('value');
+        return ((this.getAttribute('value') === undefined) || (this.getAttribute('value') === null)) ?
+            this.text : 
+            this.getAttribute('value');
     },
     set value(value){
         this.setAttribute('value',value);
     }
 });
 
-			$debug("Defining HTMLParamElement");
+$w.HTMLOptionElement = HTMLOptionElement;
+$debug("Defining HTMLParamElement");
 /* 
 * HTMLParamElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLParamElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLParamElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6752,16 +6654,11 @@ __extend__(HTMLParamElement.prototype, {
     },
 });
 
-			$debug("Defining HTMLScriptElement");
+$w.HTMLParamElement = HTMLParamElement;
+		$debug("Defining HTMLScriptElement");
 /* 
 * HTMLScriptElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLScriptElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLScriptElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6821,16 +6718,10 @@ __extend__(HTMLScriptElement.prototype, {
     }
 });
 
-            $debug("Defining HTMLSelectElement");
+$w.HTMLScriptElement = HTMLScriptElement;$debug("Defining HTMLSelectElement");
 /* 
 * HTMLSelectElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLSelectElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLSelectElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6850,7 +6741,13 @@ __extend__(HTMLSelectElement.prototype, {
         return -1;
     },
     set selectedIndex(value){
-        this.options[Number(value)].selected = 'selected';
+        if (this.selectedIndex != -1) {
+            this.options[this.selectedIndex].selected = '';
+        }
+        var option = this.options[Number(value)];
+        if (option) {
+            option.selected = 'selected';
+        }
     },
     get value(){
         return this.getAttribute('value')||'';
@@ -6926,16 +6823,10 @@ __extend__(HTMLSelectElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLStyleElement");
+$w.HTMLSelectElement = HTMLSelectElement;$debug("Defining HTMLStyleElement");
 /* 
 * HTMLStyleElement - DOM Level 2
 */
-$w.__defineGetter__("HTMLStyleElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLStyleElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -6962,19 +6853,12 @@ __extend__(HTMLStyleElement.prototype, {
     }
 });
 
-			$debug("Defining HTMLTableElement");
+$w.HTMLStyleElement = HTMLStyleElement;$debug("Defining HTMLTableElement");
 /* 
 * HTMLTableElement - DOM Level 2
 * Implementation Provided by Steven Wood
 */
-$w.__defineGetter__("HTMLTableElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLTableElement = function(ownerDocument) {
-
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
 
@@ -6982,6 +6866,79 @@ var HTMLTableElement = function(ownerDocument) {
 
 HTMLTableElement.prototype = new HTMLElement;
 __extend__(HTMLTableElement.prototype, {
+    
+        get tFoot() { 
+        //tFoot returns the table footer.
+        return this.getElementsByTagName("tfoot")[0];
+    },
+    
+    createTFoot : function () {
+        var tFoot = this.tFoot;
+       
+        if (!tFoot) {
+            tFoot = document.createElement("tfoot");
+            this.appendChild(tFoot);
+        }
+        
+        return tFoot;
+    },
+    
+    deleteTFoot : function () {
+        var foot = this.tFoot;
+        if (foot) {
+            foot.parentNode.removeChild(foot);
+        }
+    },
+    
+    get tHead() { 
+        //tHead returns the table head.
+        return this.getElementsByTagName("thead")[0];
+    },
+    
+    createTHead : function () {
+        var tHead = this.tHead;
+       
+        if (!tHead) {
+            tHead = document.createElement("thead");
+            this.insertBefore(tHead, this.firstChild);
+        }
+        
+        return tHead;
+    },
+    
+    deleteTHead : function () {
+        var head = this.tHead;
+        if (head) {
+            head.parentNode.removeChild(head);
+        }
+    },
+ 
+    appendChild : function (child) {
+
+        var tagName = child.tagName.toLowerCase();
+        if (tagName === "tr") {
+            // need an implcit <tbody> to contain this...
+            if (!this.currentBody) {
+                this.currentBody = document.createElement("tbody");
+            
+                DOMNode.prototype.appendChild.apply(this, [this.currentBody]);
+            }
+          
+            return this.currentBody.appendChild(child); 
+   
+        } else if (tagName === "tbody" || tagName === "tfoot" && this.currentBody) {
+            this.currentBody = child;
+            return DOMNode.prototype.appendChild.apply(this, arguments);  
+            
+        } else {
+            return DOMNode.prototype.appendChild.apply(this, arguments);
+        }
+    },
+     
+    get tBodies() {
+        return new HTMLCollection(this.getElementsByTagName("tbody"));
+        
+    },
     
     get rows() {
         return new HTMLCollection(this.getElementsByTagName("tr"));
@@ -6992,11 +6949,165 @@ __extend__(HTMLTableElement.prototype, {
             throw new Error("Index omitted in call to HTMLTableElement.insertRow ");
         }
         
+        var rows = this.rows, 
+            numRows = rows.length,
+            node,
+            inserted, 
+            lastRow;
+        
+        if (idx > numRows) {
+            throw new Error("Index > rows.length in call to HTMLTableElement.insertRow");
+        }
+        
+        var inserted = document.createElement("tr");
+        // If index is -1 or equal to the number of rows, 
+        // the row is appended as the last row. If index is omitted 
+        // or greater than the number of rows, an error will result
+        if (idx === -1 || idx === numRows) {
+            lastRow = rows[rows.length-1];
+            lastRow.parentNode.appendChild(inserted);
+        } else {
+            rows[idx].parentNode.insertBefore(inserted, rows[idx]);
+        }
+
+        return inserted;
+    },
+    
+    deleteRow : function (idx) {
+        var elem = this.rows[idx];
+        elem.parentNode.removeChild(elem);
+    },
+    
+    get summary() {
+        return this.getAttribute("summary");
+    },
+    
+    set summary(summary) {
+        this.setAttribute("summary", summary);
+    },
+    
+    get align() {
+        return this.getAttribute("align");
+    },
+    
+    set align(align) {
+        this.setAttribute("align", align);
+    },
+    
+     
+    get bgColor() {
+        return this.getAttribute("bgColor");
+    },
+    
+    set bgColor(bgColor) {
+        return this.setAttribute("bgColor", bgColor);
+    },
+   
+    get cellPadding() {
+        return this.getAttribute("cellPadding");
+    },
+    
+    set cellPadding(cellPadding) {
+        return this.setAttribute("cellPadding", cellPadding);
+    },
+    
+    
+    get cellSpacing() {
+        return this.getAttribute("cellSpacing");
+    },
+    
+    set cellSpacing(cellSpacing) {
+        this.setAttribute("cellSpacing", cellSpacing);
+    },
+
+    get frame() {
+        return this.getAttribute("frame");
+    },
+    
+    set frame(frame) { 
+        this.setAttribute("frame", frame);
+    },
+    
+    get rules() {
+        return this.getAttribute("rules");
+    }, 
+    
+    set rules(rules) {
+        this.setAttribute("rules", rules);
+    }, 
+    
+    get width() {
+        return this.getAttribute("width");
+    },
+    
+    set width(width) {
+        this.setAttribute("width", width);
+    }
+    
+});
+
+$w.HTMLTableElement = HTMLTableElement;		$debug("Defining HTMLTableSectionElement");
+/* 
+* HTMLxElement - DOM Level 2
+* - Contributed by Steven Wood
+*/
+var HTMLTableSectionElement = function(ownerDocument) {
+    this.HTMLElement = HTMLElement;
+    this.HTMLElement(ownerDocument);
+};
+HTMLTableSectionElement.prototype = new HTMLElement;
+__extend__(HTMLTableSectionElement.prototype, {    
+    
+    appendChild : function (child) {
+    
+        // disallow nesting of these elements.
+        if (child.tagName.match(/TBODY|TFOOT|THEAD/)) {
+            return this.parentNode.appendChild(child);
+        } else {
+            return DOMNode.prototype.appendChild.apply(this, arguments);
+        }
+
+    },
+    
+    get align() {
+        return this.getAttribute("align");
+    },
+
+    get ch() {
+        return this.getAttribute("ch");
+    },
+     
+    set ch(ch) {
+        this.setAttribute("ch", ch);
+    },
+    
+    // ch gets or sets the alignment character for cells in a column. 
+    set chOff(chOff) {
+        this.setAttribute("chOff", chOff);
+    },
+     
+    get chOff(chOff) {
+        return this.getAttribute("chOff");
+    },
+     
+    get vAlign () {
+         return this.getAttribute("vAlign");
+    },
+    
+    get rows() {
+        return new HTMLCollection(this.getElementsByTagName("tr"));
+    },
+    
+    insertRow : function (idx) {
+        if (idx === undefined) {
+            throw new Error("Index omitted in call to HTMLTableSectionElement.insertRow ");
+        }
+        
         var numRows = this.rows.length,
             node = null;
         
         if (idx > numRows) {
-            throw new Error("Index > rows.length in call to HTMLTableElement.insertRow");
+            throw new Error("Index > rows.length in call to HTMLTableSectionElement.insertRow");
         }
         
         var row = document.createElement("tr");
@@ -7006,8 +7117,6 @@ __extend__(HTMLTableElement.prototype, {
         if (idx === -1 || idx === numRows) {
             this.appendChild(row);
         } else {
-            
-
             node = this.firstChild;
 
             for (var i=0; i<idx; i++) {
@@ -7024,20 +7133,15 @@ __extend__(HTMLTableElement.prototype, {
         var elem = this.rows[idx];
         this.removeChild(elem);
     }
-    
+
 });
 
-			$debug("Defining HTMLTableCellElement");
+$w.HTMLTableSectionElement = HTMLTableSectionElement;
+$debug("Defining HTMLTableCellElement");
 /* 
 * HTMLTableCellElement - DOM Level 2
 * Implementation Provided by Steven Wood
 */
-$w.__defineGetter__("HTMLTableCellElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLTableCellElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -7050,17 +7154,11 @@ __extend__(HTMLTableCellElement.prototype, {
     
 });
 
-			$debug("Defining HTMLRowElement");
+$w.HTMLTableCellElement	= HTMLTableCellElement;$debug("Defining HTMLTableRowElement");
 /* 
 * HTMLRowElement - DOM Level 2
 * Implementation Provided by Steven Wood
 */
-$w.__defineGetter__("HTMLTableRowElement", function(){
-    return function(){
-        throw new Error("Object cannot be created in this context");
-    };
-});
-
 var HTMLTableRowElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
@@ -7157,28 +7255,138 @@ __extend__(HTMLTableRowElement.prototype, {
         var elem = this.cells[idx];
         this.removeChild(elem);
     }
-    
-    
+
 });
 
-			$debug("Defining Event");
+$w.HTMLTableRowElement = HTMLTableRowElement;
+/**
+ * @author thatcher
+ */
+$debug("Defining XMLSerializer");
+/*
+* XMLSerializer 
+*/
+$w.__defineGetter__("XMLSerializer", function(){
+    return new XMLSerializer(arguments);
+});
+
+var XMLSerializer = function() {
+
+};
+__extend__(XMLSerializer.prototype, {
+    serializeToString: function(node){
+        return node.xml;
+    }
+});/**
+ * @author thatcher
+ */
+$debug("Defining XPathExpression");
+/*
+* XPathExpression 
+*/
+$w.__defineGetter__("XPathExpression", function(){
+    return XPathExpression;
+});
+
+var XPathExpression = function() {};
+__extend__(XPathExpression.prototype, {
+    evaluate: function(){
+        //TODO for now just return an empty XPathResult
+        return new XPathResult();        
+    }
+});/**
+ * @author thatcher
+ */
+$debug("Defining XPathResult");
+/*
+* XPathResult 
+*/
+$w.__defineGetter__("XPathResult", function(){
+    return XPathResult;
+});
+
+var XPathResult = function() {
+    this.snapshotLength = 0;
+    this.stringValue = '';
+};
+
+__extend__( XPathResult, {
+    ANY_TYPE:                     0,
+    NUMBER_TYPE:                  1,
+    STRING_TYPE:                  2,
+    BOOLEAN_TYPE:                 3,
+    UNORDERED_NODE_ITERATOR_TYPE: 4,
+    ORDERED_NODEITERATOR_TYPE:    5,
+    UNORDERED_NODE_SNAPSHOT_TYPE: 6,
+    ORDERED_NODE_SNAPSHOT_TYPE:   7,
+    ANY_ORDERED_NODE_TYPE:        8,
+    FIRST_ORDERED_NODE_TYPE:      9
+});
+
+__extend__(XPathResult.prototype, {
+    get booleanValue(){
+      //TODO  
+    },
+    get invalidIteration(){
+        //TODO
+    },
+    get numberValue(){
+        //TODO
+    },
+    get resultType(){
+        //TODO
+    },
+    get singleNodeValue(){
+        //TODO
+    },
+    iterateNext: function(){
+        //TODO
+    },
+    snapshotItem: function(index){
+        //TODO
+    }
+});
+
+/**
+ * @author thatcher
+ */
+
+$w.__defineGetter__("XSLTProcessor", function(){
+    return new XSLTProcessor(arguments);
+});
+
+var XSLTProcessor = function() {
+    this.__stylesheet__ = null;
+};
+__extend__(XSLTProcessor.prototype, {
+    clearParameters: function(){
+        //TODO
+    },
+    getParameter: function(nsuri, name){
+        //TODO
+    },
+    importStyleSheet: function(stylesheet){
+        this.__stylesheet__ = stylesheet;
+    },
+    removeParameter: function(nsuri, name){
+        //TODO
+    },
+    reset: function(){
+        //TODO
+    },
+    setParameter: function(nsuri, name, value){
+        //TODO
+    },
+    transformToDocument: function(sourceNode){
+        return xsltProcess(sourceNode, this.__stylesheet__);
+    },
+    transformToFragment: function(sourceNode, ownerDocument){
+        return xsltProcess(sourceNode, this.__stylesheet__).childNodes;
+    }
+});$debug("Defining Event");
 /*
 * event.js
 */
-$w.__defineGetter__("Event", function(){
-    __extend__(this,{
-        CAPTURING_PHASE : 1,
-        AT_TARGET       : 2,
-        BUBBLING_PHASE  : 3
-    });
-    if(this.__output__ == undefined) {
-        this.__output__ = function(){
-            throw new Error("Object cannot be created in this context");
-        };
-    }
-    return this.__output__;
-});
-
 var Event = function(options){
   if(options === undefined){
       options={target:window,currentTarget:window};
@@ -7214,6 +7422,7 @@ var Event = function(options){
   });
 };
 
+$w.Event = Event;
 $debug("Defining MouseEvent");
 /*
 *	mouseevent.js
@@ -7228,13 +7437,6 @@ var $onblur,
     $onresize;/*
 * CSS2Properties - DOM Level 2 CSS
 */
-$w.__defineGetter__("CSS2Properties", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
-
 var CSS2Properties = function(options){
     __extend__(this, __supportedStyles__);
     __cssTextToStyles__(this, options.cssText?options.cssText:"");
@@ -7439,15 +7641,11 @@ var __supportedStyles__ = {
     width:	"",
     wordSpacing:	"",
     zIndex:	""
-};/* 
+};
+
+$w.CSS2Properties = CSS2Properties;/* 
 * CSSRule - DOM Level 2
 */
-$w.__defineGetter__("CSSRule", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
 var CSSRule = function(options){
   var $style, 
       $selectorText = options.selectorText?options.selectorText:"";
@@ -7466,15 +7664,10 @@ var CSSRule = function(options){
       }
     });
 };
+$w.CSSRule = CSSRule;
 /* 
 * CSSStyleSheet - DOM Level 2
 */
-$w.__defineGetter__("CSSStyleSheet", function(){
-  return function(){
-    throw new Error("Object cannot be created in this context");
-  };
-});
-
 var CSSStyleSheet = function(options){
     var $cssRules, 
         $disabled = options.disabled?options.disabled:false,
@@ -7522,6 +7715,8 @@ var CSSStyleSheet = function(options){
       removeRule: function(index){this.deleteRule(index);}//IE - may be deprecated
     });
 };
+
+$w.CSSStyleSheet = CSSStyleSheet;
 /*
 *	location.js
 *   - requires env
@@ -7745,7 +7940,7 @@ $w.setTimeout = function(fn, time){
 };
 
 window.setInterval = function(fn, time){
-	var num = $timers.length;
+	var num = $timers.length+1;
 	
     if (typeof fn == 'string') {
         var fnstr = fn; 
@@ -7756,8 +7951,8 @@ window.setInterval = function(fn, time){
 	if(time===0){
 	    fn();
 	}else{
-	    $log("Creating timer number "+num);
-    	$timers[num] = $env.timer(fn, time);
+	    $debug("Creating timer number "+num);
+    	$timers[num] = new $env.timer(fn, time);
     	$timers[num].start();
 	}
 	return num;
@@ -7810,21 +8005,26 @@ $w.removeEventListener = function(type, fn){
 };
 
 $w.dispatchEvent = function(event){
-    //$log("dispatching event " + event.type);
+    $debug("dispatching event " + event.type);
     //the window scope defines the $event object, for IE(^^^) compatibility;
     $event = event;
-    if(!event.target)
+    if (!event.target) {
         event.target = this;
+    }
+    $debug("event target: " + event.target);
     if ( event.type ) {
         if ( this.uuid && $events[this.uuid][event.type] ) {
             var _this = this;
             $events[this.uuid][event.type].forEach(function(fn){
+                $debug('calling event handler '+fn+' on target '+_this);
                 fn.call( _this, event );
             });
         }
     
-        if ( this["on" + event.type] )
-            this["on" + event.type].call( _this, event );
+        if (this["on" + event.type]) {
+            $debug('calling event handler '+event.type+' on target '+this);
+            this["on" + event.type].call(_this, event);
+        }
     }
     if(this.parentNode){
         this.parentNode.dispatchEvent.call(this.parentNode,event);
@@ -7907,7 +8107,7 @@ XMLHttpRequest.prototype = {
       					}
       				}else{return null;}
       			});
-			});
+			}, data);
 			_this.onreadystatechange();
 		}
 		if (this.async){
@@ -8021,7 +8221,7 @@ $w.scrollTo = function(x,y){
 */
 $debug("Initializing Window Dialogs.");
 $w.alert = function(message){
- //TODO 
+     $env.warn(message);
 };
 
 $w.confirm = function(question){
@@ -8311,7 +8511,7 @@ window.$profiler.stats = function(raw){
     };
 };
 
-if(__env__.profile){
+if(Envjs.profile){
     /**
     *   CSS2Properties
     */
@@ -8834,8 +9034,8 @@ try{
 *	outro.js
 */
 
-})(window, __env__, __policy__); 
+})(window, Envjs); 
 
 }catch(e){
-    __env__.error("ERROR LOADING ENV : " + e + "\nLINE SOURCE:\n" +__env__.lineSource(e));
+    Envjs.error("ERROR LOADING ENV : " + e + "\nLINE SOURCE:\n" + Envjs.lineSource(e));
 }
