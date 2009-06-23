@@ -17,7 +17,7 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<% form_tag "/temporary-login/verify", :method => "post" do %>
+<% form_tag "/temporary-login/verify", :method => "post", :id => "loginform" do %>
   <%= label_tag :token1, "ID Token 1:" %>
   <%= text_field_tag :token1 %>
   <%= label_tag :token2, "ID Token 2:" %>

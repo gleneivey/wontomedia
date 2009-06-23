@@ -25,7 +25,7 @@ When /^I type the "(.+)" special key/ do |key_string|
   key = case key_string
         when /^Back$/     then   8
         when /^Tab$/      then   9
-        when /^Enter$/    then  10
+        when /^Enter$/    then  10    # Note: Firefox ignores, grrr...
         when /^Escape$/   then  27
         when /^Delete$/   then 127
         when /^Up$/       then 224
@@ -38,12 +38,31 @@ When /^I type the "(.+)" special key/ do |key_string|
 end
 
 
-When /^the focus is on the "([^\"]+)" control/ do |control_name|
-  assert selenium.is_element_present(control_name),
-    "No such element as '#{control_name}'."
+When /^I put the focus on the "([^\"]+)" element/ do |element_name|
+  selenium.focus(element_name)
+end
+
+
+When /^the focus is on the "([^\"]+)" element/ do |element_name|
+  assert selenium.is_element_present(element_name),
+    "No such element as '#{element_name}'."
   result = selenium.get_eval "" +
     "window.document.activeElement == " +
-    "window.document.getElementById('#{control_name}');"
+    "window.document.getElementById('#{element_name}');"
   assert "true" == result,
-    "Element '#{control_name}' doesn't currently have focus."
+    "Element '#{element_name}' doesn't currently have focus."
+end
+
+
+When /^the element "([^\"]+)" has the format "([^\"]+)"/ do |selector, fmt|
+  style_keyword, style_value = fmt.split( /=/ )
+  result = selenium.get_eval(
+    "e = window.document.getElementById('#{selector}'); " +
+    "e = Element.extend(e); " +
+    "e.getStyle('#{style_keyword}');" )
+  assert result == style_value
+end
+
+When /^a debug alert "([^\"]+)"/ do |alert_text|
+  selenium.get_eval "alert('#{alert_text}');"
 end

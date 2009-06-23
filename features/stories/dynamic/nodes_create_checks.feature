@@ -9,7 +9,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #
 #  - focus is automatically on first form control when page is loaded
 #  - form tab-order is: Type, Title, Name, Description
-#  - form is submitted on "Enter" typed when a control has focus
 #
 #  - node.sti_type choice feedback: emphasize type name in descriptive/help
 #     text to match the type currently selected in the control
@@ -53,29 +52,29 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
   Scenario: nodes/new form defaults focus to Type "select" control
     When I am on the new nodes page
-    Then the focus is on the "node_sti_type" control
+    Then the focus is on the "node_sti_type" element
 
 
   Scenario: nodes/new form has correct Tab order to controls
     Given I am on the new nodes page
     When I type the "Tab" special key
-    Then the focus is on the "node_title" control
+    Then the focus is on the "node_title" element
     When I type the "Tab" special key
-    Then the focus is on the "node_name" control
+    Then the focus is on the "node_name" element
     When I type the "Tab" special key
-    Then the focus is on the "node_description" control
+    Then the focus is on the "node_description" element
+    When I type the "Tab" special key
+    Then the focus is on the "node_submit" element
 
 
   @unfinished
-  Scenario: the nodes/new form is submitted by the Enter key
+  Scenario: selection of node.sti_type should highlight matching descr. text
     Given I am on the new nodes page
-    And I fill in "Name" with "MyCategory"
-    And I fill in "Title" with "A subcategory"
-    And I fill in "Description" with "The root category in the C topic"
-    And I select "Category" from "Type"
-    And the focus is on the "Title" control
-    When I type the "ENTER" key
-    Then I should see "MyCategory"
+    When I select "Category" from "Type"
+    Then the element "category_title" has the format "font-weight=bold"
+    Then the element "category_title" has the format "text-decoration=underline"
+    Then the element "category_desc" has the format "font-weight=bold"
+
 
 
 # WontoMedia - a wontology web application

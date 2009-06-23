@@ -16,10 +16,23 @@
 // see <http://www.gnu.org/licenses/>.
 
 
+require("spec_helper.js");
 
 
-jQuery.noConflict();
-require("../../public/javascripts/prototype.js", {onload: function(){
-    require("../../public/javascripts/application.js");
-}});
+Screw.Unit(function(){
+  describe( "Dynamic input checks in nodes/new page", function(){
+    describe( "Visual feedback for Type selection", function(){
+      it( "Category selection highlights Category text", function(){
+        var d = document.getElementById('test_frame').contentDocument;
+        d.getElementById('node_sti_type').value = "ClassNode";
+
+	var e = Element.extend(d.getElementById('category_title'));
+	expect(e.getStyle('text-decoration')).to(equal, "none");
+
+	e =     Element.extend(d.getElementById('category_desc'));
+	expect(e.getStyle('font-weight')).to(equal, "400");
+      });
+    });
+  });
+});
 
