@@ -62,6 +62,7 @@ var Envjs = function(){
     //For Java the window.timer is created using the java.lang.Thread in combination
     //with the java.lang.Runnable
     $env.timer = function(fn, time){};	
+    $env.wait = function(wait){};
     
     $env.javaEnabled = false;	
     
@@ -195,27 +196,65 @@ var Envjs = function(){
         }
     };
     
-    //For Java the window.timer is created using the java.lang.Thread in combination
-    //with the java.lang.Runnable
-    $env.timer = function(fn, time){
-        var running = true;
-        var thread = new java.lang.Thread(new java.lang.Runnable({
-            run: function(){
-                while (running){
-                    java.lang.Thread.currentThread().sleep(time);
-                    //$env.debug("calling in timer "+time);
-                    fn();
-                }
-            }
-        }));
-        this.start = function(){ 
-            thread.start(); 
-        };
-        this.stop = function(){
-            running = false;
-        }
+    var timers = [];
+
+    $env.timer = function(fn, interval){
+	this.fn = fn;
+	this.interval = interval;
+	this.at = Date.now() + interval;
+	this.index = timers.length;
+	timers[this.index] = this;
     };	
-    
+
+    $env.timer.prototype.start = function(){};
+    $env.timer.prototype.stop = function(){
+	delete timers[this.index];
+    };
+
+    // wait === null: execute any immediately runnable timers and return
+    // wait(n) (n > 0): execute any timers as they fire but no longer than n ms
+    // wait(0): execute any timers as they fire, waiting until there are none left
+    $env.wait = function(wait) {
+	var i;
+	var empty;
+	var after;
+	var now;
+	var timer;
+	var sleep;
+	if (wait !== 0 && wait !== null && wait !== undefined){
+	    wait += Date.now();
+	}
+	for (;;) {
+	    for (i in timers){
+		timer = timers[i];
+		now = Date.now();
+		if (timer.at <= now){
+		    f = timer.fn;
+		    f();
+		    timer.at += timer.interval;
+		}
+	    }
+	    empty = true;
+	    sleep = null;
+	    now = Date.now();
+	    for (i in timers){
+		empty = false;
+		timer = timers[i];
+		after = timer.at - now
+		sleep = (sleep === null || after < sleep) ? after : sleep;
+	    }
+	    sleep = sleep < 0 ? 0 : sleep;
+	    if (empty ||
+                ( wait !== 0 ) &&
+                 ( ( sleep > 0 && !wait ) || ( Date.now() + sleep > wait ) ) ) {
+		break;
+	    }
+	    if (sleep) {
+		java.lang.Thread.currentThread().sleep(sleep);
+	    }
+	}
+    };
+
     //Since we're running in rhino I guess we can safely assume
     //java is 'enabled'.  I'm sure this requires more thought
     //than I've given it here
@@ -288,7 +327,7 @@ var Envjs = function(){
 			
 			//write data to output stream if required
             if(data&&data.length&&data.length>0){
-				 if ( xhr.method == "PUT" ) {
+				 if ( xhr.method == "PUT" || xhr.method == "POST" ) {
                 	connection.setDoOutput(true);
 					var outstream = connection.getOutputStream(),
 						outbuffer = new java.lang.String(data).getBytes('UTF-8');
@@ -316,14 +355,21 @@ var Envjs = function(){
                 xhr.statusText = connection.responseMessage || "";
                 
                 var contentEncoding = connection.getContentEncoding() || "utf-8",
-                    stream = (contentEncoding.equalsIgnoreCase("gzip") || contentEncoding.equalsIgnoreCase("decompress") )?
-                            new java.util.zip.GZIPInputStream(connection.getInputStream()) :
-                            connection.getInputStream(),
                     baos = new java.io.ByteArrayOutputStream(),
-                buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024),
+                    buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024),
                     length,
+                    stream = null,
                     responseXML = null;
 
+                try{
+                    stream = (contentEncoding.equalsIgnoreCase("gzip") || contentEncoding.equalsIgnoreCase("decompress") )?
+                            new java.util.zip.GZIPInputStream(connection.getInputStream()) :
+                            connection.getInputStream();
+                }catch(e){
+                    $env.error('failed to open connection stream \n'+e.toString(), e);
+                    stream = connection.getErrorStream();
+                }
+                
                 while ((length = stream.read(buffer)) != -1) {
                     baos.write(buffer, 0, length);
                 }
@@ -398,15 +444,20 @@ var Envjs = function(){
  */
 
 
-// The Window Object
-var __this__ = this;
-this.__defineGetter__('window', function(){
-  return __this__;
-});
+try {
+        // this goes into the global namespace, but less likely to collide with
+        //   client JS code than methods in Rhino shell (load, print, etc.)
+    this.__proto__._$envjs$makeObjectIntoWindow$_ = function($w, $env,
+                                                             $parentWindow,
+                                                             $initTop){
 
-try{
-(function($w, $env){
-        /*
+        // The Window Object
+        var __this__ = $w;
+        $w.__defineGetter__('window', function(){
+            return __this__;
+        });
+
+/*
 *	window.js
 *   - this file will be wrapped in a closure providing the window object as $w
 */
@@ -439,7 +490,8 @@ var $defaultStatus = "Done";
 var $event = null;
 
 //A read-only array of window objects
-var $frames = [];
+//var $frames = [];    // TODO: since window.frames can be accessed like a
+                       //   hash, will need an object to really implement
 
 // a read-only reference to the History object
 /**>  $history - see location.js <**/
@@ -450,9 +502,9 @@ var $innerHeight = 600, $innerWidth = 800;
 // a read-only reference to the Location object.  the location object does expose read/write properties
 /**> $location - see location.js <**/
 
-// a read only property specifying the name of the window.  Can be set when using open()
-// and may be used when specifying the target attribute of links
-var $name = 'Resig Env Browser';
+// The name of window/frame.  Set directly, when using open(), or in frameset.
+// May be used when specifying the target attribute of links
+var $name;
 
 // a read-only reference to the Navigator object
 /**> $navigator - see navigator.js <**/
@@ -474,18 +526,14 @@ var $pageXOffset = 0, $pageYOffset = 0;
 //A read-only reference to the Window object that contains this window or frame.  If the window is
 // a top-level window, parent refers to the window itself.  If this window is a frame, this property
 // refers to the window or frame that conatins it.
-var $parent;
+var $parent = $parentWindow;
 
 // a read-only refernce to the Screen object that specifies information about the screen: 
 // the number of available pixels and the number of available colors.
 /**> $screen - see screen.js <**/
-
 // read only properties that specify the coordinates of the upper-left corner of the screen.
 var $screenX = 0, $screenY = 0;
 var $screenLeft = $screenX, $screenTop = $screenY;
-
-// a read-only refernce to this window itself.
-var $self;
 
 // a read/write string that specifies the current contents of the status line.
 var $status = '';
@@ -493,9 +541,9 @@ var $status = '';
 // a read-only reference to the top-level window that contains this window.  If this
 // window is a top-level window it is simply a refernce to itself.  If this window 
 // is a frame, the top property refers to the top-level window that contains the frame.
-var $top;
+var $top = $initTop;
 
-// the window property is identical to the self property.
+// the window property is identical to the self property and to this obj
 var $window = $w;
 
 $debug("Initializing Window.");
@@ -505,7 +553,10 @@ __extend__($w,{
   set defaultStatus(_defaultStatus){$defaultStatus = _defaultStatus;},
   //get document(){return $document;}, - see document.js
   get event(){return $event;},
-  get frames(){return $frames;},
+
+  get frames(){return undefined;}, // TODO: not yet any code to maintain list
+  get length(){return undefined;}, //   should be frames.length, but.... TODO
+
   //get history(){return $history;}, - see location.js
   get innerHeight(){return $innerHeight;},
   get innerWidth(){return $innerWidth;},
@@ -513,6 +564,7 @@ __extend__($w,{
   get clientWidth(){return $innerWidth;},
   //get location(){return $location;}, see location.js
   get name(){return $name;},
+  set name(newName){ $name = newName; },
   //get navigator(){return $navigator;}, see navigator.js
   get opener(){return $opener;},
   get outerHeight(){return $outerHeight;},
@@ -525,7 +577,7 @@ __extend__($w,{
   get screenTop(){return $screenTop;},
   get screenX(){return $screenX;},
   get screenY(){return $screenY;},
-  get self(){return $self;},
+  get self(){return $window;},
   get status(){return $status;},
   set status(_status){$status = _status;},
   get top(){return $top || $window;},
@@ -533,11 +585,11 @@ __extend__($w,{
 });
 
 $w.open = function(url, name, features, replace){
-  //TODO
+  //TODO.  Remember to set $opener, $name
 };
 
 $w.close = function(){
-  //TODO
+  //TODO.  Remember to set $closed
 };     
   
 /* Time related functions - see timer.js
@@ -3107,6 +3159,7 @@ XMLP.prototype._replaceEntity = function(strD, iB, iE) {
     iB = iB || 0;
     iE = iE || strD.length;
 
+
     ent = strD.substring(iB, iE);
     strEnt = $w.$entityDefinitions[ent];
     if (!strEnt)  // special case for entity name==JS reserved keyword
@@ -3913,6 +3966,104 @@ var DOMImplementation = function() {
     this.namespaceAware = true;       // by default, handle namespaces
     this.errorChecking  = true;       // by default, test for exceptions
 };
+
+var $handleEndOfNormalOrEmptyElement = function(node, doc, p){
+    if(node.nodeName.toLowerCase() == 'script'){
+        p.replaceEntities = true;
+        $env.loadLocalScript(node, p);
+
+        // only fire event if we actually had something to load
+        if (node.src && node.src.length > 0){
+            var event = doc.createEvent();
+            event.initEvent("load");
+            node.dispatchEvent( event, false );
+        }
+    }
+    else if (node.nodeName.toLowerCase() == 'frame' ||
+             node.nodeName.toLowerCase() == 'iframe'   ){
+
+        if (node.src && node.src.length > 0){
+            $debug("getting content document for (i)frame from " + node.src);
+
+            // create a new global/window object, such that its methods and
+            //   objects are defined within the scope of the new global.
+            //   Then load content from .src into it
+            try {
+
+        /* this code semi-duplicated in html/frame.js -- sorry */
+                // a blank object, pre-configured to inherit original global
+                //                   vvvv from EnvjsRhinoSupraGlobal.java
+                var frameWindow = createAGlobalObject();
+
+                // define local variables with content of things that are
+                //   in current global/window, because when the following
+                //   function executes we'll have a new/blank
+                //   global/window and won't be able to get at them....
+                var localCopy_mkWinFn    = _$envjs$makeObjectIntoWindow$_;
+                var localCopy_$env       = $env;
+                var localCopy_window     = window;
+
+                // a local function gives us a scope that's easy to change
+                var mkAndLoadNewWindow   = function(){
+                  localCopy_mkWinFn(frameWindow, localCopy_$env,
+                                    localCopy_window, localCopy_window.top);
+                  node._content = frameWindow;
+                  frameWindow.location = node.src;
+                }
+
+
+
+                // change scope of window object creation functions, so that
+                //   functions/code they create will be scoped to new window
+                    // *FunctionObjectsScope() from EnvjsRhinoSupraGlobal.java
+                var oldMalnwScope      = getFunctionObjectsScope(
+                  mkAndLoadNewWindow);
+                var oldMkWinScope      = getFunctionObjectsScope(
+                  localCopy_mkWinFn);
+                var oldLoadScope       = getFunctionObjectsScope(load);
+                var oldLoadScriptScope = getFunctionObjectsScope(
+                  $env.loadLocalScript);
+
+                setFunctionObjectsScope(mkAndLoadNewWindow,    frameWindow);
+                setFunctionObjectsScope(localCopy_mkWinFn,     frameWindow);
+                setFunctionObjectsScope(load,                  frameWindow);
+                setFunctionObjectsScope($env.loadLocalScript,  frameWindow);
+
+                mkAndLoadNewWindow();
+
+                // now restore the scope
+                setFunctionObjectsScope(mkAndLoadNewWindow, oldMalnwScope);
+                setFunctionObjectsScope(localCopy_mkWinFn, oldMkWinScope);
+                setFunctionObjectsScope(load, oldLoadScope);
+                setFunctionObjectsScope($env.loadLocalScript,
+                                        oldLoadScriptScope);
+            } catch(e){
+                $error("failed to load frame content: from " + node.src, e);
+            }
+
+            var event = doc.createEvent();
+            event.initEvent("load");
+            node.dispatchEvent( event, false );
+        }
+    }
+    else if (node.nodeName.toLowerCase() == 'link'){
+        if (node.href && node.href.length > 0){
+            // don't actually load anything, so we're "done" immediately:
+            var event = doc.createEvent();
+            event.initEvent("load");
+            node.dispatchEvent( event, false );
+        }
+    }
+    else if (node.nodeName.toLowerCase() == 'img'){
+        if (node.src && node.src.length > 0){
+            // don't actually load anything, so we're "done" immediately:
+            var event = doc.createEvent();
+            event.initEvent("load");
+            node.dispatchEvent( event, false );
+        }
+    }
+}
+
 __extend__(DOMImplementation.prototype,{
     // @param  feature : string - The package name of the feature to test.
     //      the legal only values are "XML" and "CORE" (case-insensitive).
@@ -3935,7 +4086,7 @@ __extend__(DOMImplementation.prototype,{
     createDocument : function(nsuri, qname, doctype){
       //TODO - this currently returns an empty doc
       //but needs to handle the args
-        return new HTMLDocument($implementation);
+        return new HTMLDocument($implementation, null);
     },
     translateErrCode : function(code) {
         //convert DOMException Code to human readable error message;
@@ -4131,7 +4282,7 @@ function __parseLoop__(impl, doc, p) {
 
       // if this is the Root Element
       if (iNodeParent.nodeType == DOMNode.DOCUMENT_NODE) {
-        iNodeParent.documentElement = iNode;        // register this Element as the Document.documentElement
+        iNodeParent._documentElement = iNode;        // register this Element as the Document.documentElement
       }
 
       iNodeParent.appendChild(iNode);               // attach Element to parentNode
@@ -4139,13 +4290,8 @@ function __parseLoop__(impl, doc, p) {
     }
 
     else if(iEvt == XMLP._ELM_E) {                  // End-Element Event
-      //handle script tag
-      if(iNodeParent.nodeName.toLowerCase() == 'script'){
-         p.replaceEntities = true;
-         $env.loadLocalScript(iNodeParent, p);
-      }
+      $handleEndOfNormalOrEmptyElement(iNodeParent, doc, p);
       iNodeParent = iNodeParent.parentNode;         // ascend one level of the DOM Tree
-
     }
 
     else if(iEvt == XMLP._ELM_EMP) {                // Empty Element Event
@@ -4228,9 +4374,11 @@ function __parseLoop__(impl, doc, p) {
 
       // if this is the Root Element
       if (iNodeParent.nodeType == DOMNode.DOCUMENT_NODE) {
-        iNodeParent.documentElement = iNode;        // register this Element as the Document.documentElement
+        iNodeParent._documentElement = iNode;        // register this Element as the Document.documentElement
       }
 
+
+      $handleEndOfNormalOrEmptyElement(iNode, doc, p);
       iNodeParent.appendChild(iNode);               // attach Element to parentNode
     }
     else if(iEvt == XMLP._TEXT || iEvt == XMLP._ENTITY) {                   // TextNode and entity Events
@@ -4481,14 +4629,15 @@ $implementation.errorChecking = false;$debug("Defining Document");
  * @author Jon van Noort (jon@webarcana.com.au)
  * @param  implementation : DOMImplementation - the creator Implementation
  */
-var DOMDocument = function(implementation) {
+var DOMDocument = function(implementation, docParentWindow) {
     //$log("\tcreating dom document");
     this.DOMNode = DOMNode;
     this.DOMNode(this);
     
     this.doctype = null;                  // The Document Type Declaration (see DocumentType) associated with this document
     this.implementation = implementation; // The DOMImplementation object that handles this document.
-    this.documentElement = null;          // This is a convenience attribute that allows direct access to the child node that is the root element of the document
+    this._documentElement = null;         // "private" variable providing the read-only document.documentElement property
+    this._parentWindow = docParentWindow; // "private" variable providing the read-only document.parentWindow property
     
     this.nodeName  = "#document";
     this._id = 0;
@@ -4515,6 +4664,12 @@ __extend__(DOMDocument.prototype, {
     get all(){
         return this.getElementsByTagName("*");
     },
+    get documentElement(){
+        return this._documentElement;
+    },
+    get parentWindow(){
+        return this._parentWindow;
+    },
     loadXML : function(xmlStr) {
         // create SAX Parser
         var parser = new XMLP(xmlStr+'');
@@ -4526,6 +4681,14 @@ __extend__(DOMDocument.prototype, {
         }
         // populate Document with Parsed Nodes
         try {
+            // make sure thid document object is empty before we try to load ...
+            this.childNodes      = new DOMNodeList(this, this);
+            this.firstChild      = null;
+            this.lastChild       = null;
+            this.attributes      = new DOMNamedNodeMap(this, this);
+            this._namespaces     = new DOMNamespaceNodeMap(this, this);
+            this._readonly = false;
+
             __parseLoop__(this.implementation, this, parser);
             //doc = html2dom(xmlStr+"", doc);
         	//$log("\nhtml2xml\n" + doc.xml);
@@ -4557,9 +4720,19 @@ __extend__(DOMDocument.prototype, {
             _this._url = url;
             
         	$info("Sucessfully loaded document at "+url);
-        	var event = document.createEvent();
-        	event.initEvent("load");
-        	$w.dispatchEvent( event );
+
+                // first fire body-onload event
+            var event = document.createEvent();
+            event.initEvent("load");
+            try {  // assume <body> element, but just in case....
+                $w.document.getElementsByTagName('body')[0].
+                  dispatchEvent( event, false );
+            } catch (e){;}
+
+                // then fire window-onload event
+            event = document.createEvent();
+            event.initEvent("load");
+            $w.dispatchEvent( event, false );
         };
         xhr.send();
     },
@@ -4761,9 +4934,9 @@ __extend__(DOMDocument.prototype, {
           var all = this.all;
           for (var i=0; i < all.length; i++) {
             node = all[i];
-            // if id matches & node is alive (ie, connected (in)directly to the documentElement)
+            // if id matches & node is alive (ie, connected (in)directly to the _documentElement)
             if (node.id == elementId) {
-                if((__ownerDocument__(node).documentElement._id == this.documentElement._id)){
+                if((__ownerDocument__(node)._documentElement._id == this._documentElement._id)){
                     retNode = node;
                     //$log("Found node with id = " + node.id);
                     break;
@@ -4775,14 +4948,14 @@ __extend__(DOMDocument.prototype, {
           return retNode;
     },
     normalizeDocument: function(){
-	    this.documentElement.normalize();
+	    this._documentElement.normalize();
     },
     get nodeType(){
         return DOMNode.DOCUMENT_NODE;
     },
     get xml(){
         //$log("Serializing " + this);
-        return this.documentElement.xml;
+        return this._documentElement.xml;
     },
 	toString: function(){ 
 	    return "Document" +  (typeof this._url == "string" ? ": " + this._url : ""); 
@@ -5199,11 +5372,10 @@ $debug("Defining HTMLDocument");
  *
  * @extends DOMDocument
  */
-var HTMLDocument = function(implementation) {
+var HTMLDocument = function(implementation, docParentWindow) {
   this.DOMDocument = DOMDocument;
-  this.DOMDocument(implementation);
+  this.DOMDocument(implementation, docParentWindow);
 
-  this.title = "";
   this._refferer = "";
   this._domain;
   this._open = false;
@@ -5223,13 +5395,13 @@ __extend__(HTMLDocument.prototype, {
           else if(tagName.match(/AREA/))                {node = new HTMLAreaElement(this);}
           else if(tagName.match(/BASE/))                {node = new HTMLBaseElement(this);}
           else if(tagName.match(/BLOCKQUOTE|Q/))        {node = new HTMLQuoteElement(this);}
-          else if(tagName.match(/BODY/))                {node = new HTMLElement(this);}
+          else if(tagName.match(/BODY/))                {node = new HTMLBodyElement(this);}
           else if(tagName.match(/BR/))                  {node = new HTMLElement(this);}
           else if(tagName.match(/BUTTON/))              {node = new HTMLButtonElement(this);}
           else if(tagName.match(/CAPTION/))             {node = new HTMLElement(this);}
           else if(tagName.match(/COL|COLGROUP/))        {node = new HTMLTableColElement(this);}
           else if(tagName.match(/DEL|INS/))             {node = new HTMLModElement(this);}
-          else if(tagName.match(/DIV/))                 {node = new HTMLElement(this);}
+          else if(tagName.match(/DIV/))                 {node = new HTMLDivElement(this);}
           else if(tagName.match(/DL/))                  {node = new HTMLElement(this);}
           else if(tagName.match(/FIELDSET/))            {node = new HTMLFieldSetElement(this);}
           else if(tagName.match(/FORM/))                {node = new HTMLFormElement(this);}
@@ -5262,7 +5434,7 @@ __extend__(HTMLDocument.prototype, {
           else if(tagName.match(/TBODY|TFOOT|THEAD/))   {node = new HTMLSectionElement(this);}
           else if(tagName.match(/TD|TH/))               {node = new HTMLTableCellElement(this);}
           else if(tagName.match(/TEXTAREA/))            {node = new HTMLElement(this);}
-          else if(tagName.match(/TITLE/))               {node = new HTMLElement(this);}
+          else if(tagName.match(/TITLE/))               {node = new HTMLTitleElement(this);}
           else if(tagName.match(/TR/))                  {node = new HTMLTableRowElement(this);}
           else if(tagName.match(/UL/))                  {node = new HTMLElement(this);}
           else{
@@ -5290,6 +5462,29 @@ __extend__(HTMLDocument.prototype, {
         return this.replaceNode(this.body,html);
         
     },
+
+    get title(){
+        var titleArray = this.getElementsByTagName('title');
+        if (titleArray.length < 1)
+            return "";
+        return titleArray[0].text;
+    },
+    set title(titleStr){
+        titleArray = this.getElementsByTagName('title');
+        if (titleArray.length < 1){
+            // need to make a new element and add it to "head"
+            var titleElem = new HTMLTitleElement(this);
+            titleElem.text = titleStr;
+            var headArray = this.getElementsByTagName('head');
+	    if (headArray.length < 1)
+                return;  // ill-formed, just give up.....
+            headArray[0].appendChild(titleElem);
+        }
+        else {
+            titleArray[0].text = titleStr;
+        }
+    },
+
     //set/get cookie see cookie.js
     get domain(){
         return this._domain||window.location.domain;
@@ -5461,11 +5656,24 @@ __extend__(HTMLElement.prototype, {
 		scrollRight: 0,
 		get style(){
 		    if(this.$css2props === null){
-		        this.$css2props = new CSS2Properties({
-    		        cssText:this.getAttribute("style")
-    	        });
+		        this.updateCss2Props();
 	        }
 	        return this.$css2props
+		},
+		updateCss2Props: function() {
+			this.$css2props = new CSS2Properties({
+				onSet: (function(that) {
+					return function() { that.__setAttribute("style", this.cssText); }
+				})(this),
+				cssText:this.getAttribute("style")
+			});
+		},
+		__setAttribute: HTMLElement.prototype.setAttribute,
+		setAttribute: function (name, value) {
+		    this.__setAttribute(name, value);
+		    if (name === "style") {
+		        this.updateCss2Props();
+		    }
 		},
 		get title() { 
 		    return this.getAttribute("title")||""; 
@@ -5485,41 +5693,72 @@ __extend__(HTMLElement.prototype, {
 	        return;
 	    
         },
+
 		onclick: function(event){
-		    __eval__(this.getAttribute('onclick')||'')
+		    __eval__(this.getAttribute('onclick')||'', this)
 	    },
+        // non-ECMA function, but no other way for click events to enter env.js
+        __click__: function(element){
+            var event = new Event({
+              target:element,
+              currentTarget:element
+            });
+            event.initEvent("click");
+            element.dispatchEvent(event);
+        },
+
 		ondblclick: function(event){
-            __eval__(this.getAttribute('ondblclick')||'');
+            __eval__(this.getAttribute('ondblclick')||'', this);
 	    },
 		onkeydown: function(event){
-            __eval__(this.getAttribute('onkeydown')||'');
+            __eval__(this.getAttribute('onkeydown')||'', this);
 	    },
 		onkeypress: function(event){
-            __eval__(this.getAttribute('onkeypress')||'');
+            __eval__(this.getAttribute('onkeypress')||'', this);
 	    },
 		onkeyup: function(event){
-            __eval__(this.getAttribute('onkeyup')||'');
+            __eval__(this.getAttribute('onkeyup')||'', this);
 	    },
 		onmousedown: function(event){
-            __eval__(this.getAttribute('onmousedown')||'');
+            __eval__(this.getAttribute('onmousedown')||'', this);
 	    },
 		onmousemove: function(event){
-            __eval__(this.getAttribute('onmousemove')||'');
+            __eval__(this.getAttribute('onmousemove')||'', this);
 	    },
 		onmouseout: function(event){
-            __eval__(this.getAttribute('onmouseout')||'');
+            __eval__(this.getAttribute('onmouseout')||'', this);
 	    },
 		onmouseover: function(event){
-            __eval__(this.getAttribute('onmouseover')||'');
+            __eval__(this.getAttribute('onmouseover')||'', this);
 	    },
 		onmouseup: function(event){
-            __eval__(this.getAttribute('onmouseup')||'');
+            __eval__(this.getAttribute('onmouseup')||'', this);
 	    }
 });
 
-var __eval__ = function(script){
+var __eval__ = function(script, startingNode){
+    if (script == "")
+        return;                    // don't assemble environment if no script...
+
     try{
-        eval(script);
+        var doEval = function(scriptText){
+            eval(scriptText);
+        }
+
+        var listOfScopes = [];
+        for (var node = startingNode; node != null; node = node.parentNode)
+            listOfScopes.push(node);
+        listOfScopes.push(window);
+
+
+        var oldScopesArray = configureFunctionObjectsScopeChain(
+          doEval,        // the function whose scope chain to change
+          listOfScopes); // last array element is "head" of new chain
+        doEval.call(startingNode, script);
+        restoreScopeOfSetOfObjects(oldScopesArray);
+                         // oldScopesArray is N-element array of two-element
+                         // arrays.  First element is JS object whose scope
+                         // was modified, second is original value to restore.
     }catch(e){
         $error(e);
     }
@@ -5559,14 +5798,6 @@ var __registerEventAttrs__ = function(elm){
     return elm;
 };
 	
-var __click__ = function(element){
-	var event = new Event({
-	  target:element,
-	  currentTarget:element
-	});
-	event.initEvent("click");
-	element.dispatchEvent(event);
-};
 var __submit__ = function(element){
 	var event = new Event({
 	  target:element,
@@ -5960,7 +6191,23 @@ __extend__(HTMLQuoteElement.prototype, {
     }
 });
 
-$w.HTMLQuoteElement = HTMLQuoteElement;		$debug("Defining HTMLButtonElement");
+$w.HTMLQuoteElement = HTMLQuoteElement;		$debug("Defining HTMLBodyElement");
+/*
+* HTMLBodyElement - DOM Level 2
+*/
+var HTMLBodyElement = function(ownerDocument) {
+    this.HTMLElement = HTMLElement;
+    this.HTMLElement(ownerDocument);
+};
+HTMLBodyElement.prototype = new HTMLElement;
+__extend__(HTMLBodyElement.prototype, {
+    onload: function(event){
+        __eval__(this.getAttribute('onload')||'', this)
+    }
+});
+
+$w.HTMLBodyElement = HTMLBodyElement;
+$debug("Defining HTMLButtonElement");
 /* 
 * HTMLButtonElement - DOM Level 2
 */
@@ -6076,7 +6323,34 @@ __extend__(HTMLModElement.prototype, {
     }
 });
 
-$w.HTMLModElement = HTMLModElement;	$debug("Defining HTMLFieldSetElement");
+$w.HTMLModElement = HTMLModElement;	/*
+ * This file is a component of env.js,
+ *     http://github.com/gleneivey/env-js/commits/master/README
+ * a Pure JavaScript Browser Environment
+ * Copyright 2009 John Resig, licensed under the MIT License
+ *     http://www.opensource.org/licenses/mit-license.php
+ */
+
+
+$debug("Defining HTMLTextAreaElement");
+/*
+* HTMLDivElement - DOM Level 2
+*/
+var HTMLDivElement = function(ownerDocument) {
+    this.HTMLElement = HTMLElement;
+    this.HTMLElement(ownerDocument);
+};
+HTMLDivElement.prototype = new HTMLElement;
+__extend__(HTMLDivElement.prototype, {
+    get align(){
+        return this.getAttribute('align') || 'left';
+    },
+    set align(value){
+        this.setAttribute('align', value);
+    }
+});
+
+$w.HTMLDivElement = HTMLDivElement;$debug("Defining HTMLFieldSetElement");
 /* 
 * HTMLFieldSetElement - DOM Level 2
 */
@@ -6228,21 +6502,87 @@ __extend__(HTMLFrameElement.prototype, {
     },
     set src(value){
         this.setAttribute('src', value);
+
+        if (value && value.length > 0){
+            try {
+
+        /* this code semi-duplicated in dom/implementation.js -- sorry */
+                var frameWindow;
+                var makingNewWinFlag = !(this._content);
+                if (makingNewWinFlag)
+                            // a blank object, inherits from original global
+                                  //  v EnvjsRhinoSupraGlobal.java
+                    frameWindow = createAGlobalObject();
+                else
+                    frameWindow = this._content;
+
+
+                // define local variables with content of things that are
+                //   in current global/window, because when the following
+                //   function executes we'll have a new/blank
+                //   global/window and won't be able to get at them....
+                var localCopy_mkWinFn    = _$envjs$makeObjectIntoWindow$_;
+                var localCopy_$env       = $env;
+                var localCopy_window     = window;
+
+                // a local function gives us something whose scope
+                //   is easy to change
+                var mkAndLoadNewWindow   = function(){
+                    if (makingNewWinFlag){
+                        localCopy_mkWinFn(frameWindow, localCopy_$env,
+                                          localCopy_window,
+                                          localCopy_window.top);
+                    }
+
+                    frameWindow.location = value;
+                }
+
+
+                // change scope of window object creation
+                //   functions, so that functions/code they create
+                //   will be scoped to new window object
+        // *FunctionObjectsScope() from EnvjsRhinoSupraGlobal.java
+                var oldMalnwScope      = getFunctionObjectsScope(
+                  mkAndLoadNewWindow);
+                var oldMkWinScope      = getFunctionObjectsScope(
+                  localCopy_mkWinFn);
+                var oldLoadScope       = getFunctionObjectsScope(load);
+                var oldLoadScriptScope = getFunctionObjectsScope(
+                  $env.loadLocalScript);
+
+                setFunctionObjectsScope(mkAndLoadNewWindow,    frameWindow);
+                setFunctionObjectsScope(localCopy_mkWinFn,     frameWindow);
+                setFunctionObjectsScope(load,                  frameWindow);
+                setFunctionObjectsScope($env.loadLocalScript,  frameWindow);
+
+                mkAndLoadNewWindow();
+                this._content = frameWindow;
+
+                // now restore the scope
+                setFunctionObjectsScope(mkAndLoadNewWindow, oldMalnwScope);
+                setFunctionObjectsScope(localCopy_mkWinFn, oldMkWinScope);
+                setFunctionObjectsScope(load, oldLoadScope);
+                setFunctionObjectsScope($env.loadLocalScript,
+                  oldLoadScriptScope);
+            } catch(e){
+                $error("failed to load frame content: from " + value, e);
+            }
+
+            var event = document.createEvent();
+            event.initEvent("load");
+            this.dispatchEvent( event, false );
+        }
     },
     get contentDocument(){
-        $debug("getting content document for (i)frame");
-        if(!this._content){
-            this._content = new HTMLDocument($implementation);
-            if(this.src.length > 0){
-                $info("Loading frame content from " + this.src);
-                try{
-                    this._content.load(this.src);
-                }catch(e){
-                    $error("failed to load frame content: from " + this.src, e);
-                }
-            }
-        }
+        if (!this._content)
+            return null;
+        return this._content.document;
+    },
+    get contentWindow(){
         return this._content;
+    },
+    onload: function(event){
+        __eval__(this.getAttribute('onload')||'', this)
     }
 });
 
@@ -6385,12 +6725,19 @@ __extend__(HTMLImageElement.prototype, {
     },
     set src(value){
         this.setAttribute('src', value);
+
+        var event = document.createEvent();
+        event.initEvent("load");
+        this.dispatchEvent( event, false );
     },
     get width(){
         return this.getAttribute('width');
     },
     set width(value){
         this.setAttribute('width', value);
+    },
+    onload: function(event){
+        __eval__(this.getAttribute('onload')||'', this)
     }
 });
 
@@ -6401,6 +6748,8 @@ $w.HTMLImageElement = HTMLImageElement;$debug("Defining HTMLInputElement");
 var HTMLInputElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
+
+    this._oldValue = "";
 };
 HTMLInputElement.prototype = new HTMLElement;
 __extend__(HTMLInputElement.prototype, {
@@ -6501,13 +6850,18 @@ __extend__(HTMLInputElement.prototype, {
     set value(value){
         this.setAttribute('value',value);
     },
-	blur:function(){
-	    __blur__(this);
-	    
+    blur:function(){
+        __blur__(this);
+
+        if (this._oldValue != this.getAttribute('value')){
+            var event = document.createEvent();
+            event.initEvent("change");
+            this.dispatchEvent( event );
+        }
     },
-	focus:function(){
-	    __focus__(this);
-	    
+    focus:function(){
+        __focus__(this);
+        this._oldValue = this.getAttribute('value');
     },
 	select:function(){
 	    __select__(this);
@@ -6516,6 +6870,9 @@ __extend__(HTMLInputElement.prototype, {
 	click:function(){
 	    __click__(this);
 	    
+    },
+    onchange: function(event){
+        __eval__(this.getAttribute('onchange')||'', this)
     }
 });
 
@@ -6648,6 +7005,9 @@ __extend__(HTMLLinkElement.prototype, {
     },
     set type(value){
         this.setAttribute('type',value);
+    },
+    onload: function(event){
+        __eval__(this.getAttribute('onload')||'', this)
     }
 });
 
@@ -6984,16 +7344,21 @@ __extend__(HTMLScriptElement.prototype, {
     },
     set type(value){
         this.setAttribute('type',value);
+    },
+    onload: function(event){
+        __eval__(this.getAttribute('onload')||'', this)
     }
 });
 
 $w.HTMLScriptElement = HTMLScriptElement;$debug("Defining HTMLSelectElement");
-/* 
+/*
 * HTMLSelectElement - DOM Level 2
 */
 var HTMLSelectElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
+
+    this._oldIndex = -1;
 };
 HTMLSelectElement.prototype = new HTMLElement;
 __extend__(HTMLSelectElement.prototype, {
@@ -7086,9 +7451,19 @@ __extend__(HTMLSelectElement.prototype, {
     },
     blur: function(){
         __blur__(this);
+
+        if (this._oldIndex != this.selectedIndex){
+            var event = document.createEvent();
+            event.initEvent("change");
+            this.dispatchEvent( event );
+        }
     },
     focus: function(){
         __focus__(this);
+        this._oldIndex = this.selectedIndex;
+    },
+    onchange: function(event){
+        __eval__(this.getAttribute('onchange')||'', this)
     }
 });
 
@@ -7423,7 +7798,40 @@ __extend__(HTMLTableCellElement.prototype, {
     
 });
 
-$w.HTMLTableCellElement	= HTMLTableCellElement;$debug("Defining HTMLTableRowElement");
+$w.HTMLTableCellElement	= HTMLTableCellElement;$debug("Defining HTMLTitleElement");
+/* 
+* HTMLTitleElement - DOM Level 2
+*/
+var HTMLTitleElement = function(ownerDocument) {
+    this.HTMLElement = HTMLElement;
+    this.HTMLElement(ownerDocument);
+};
+HTMLTitleElement.prototype = new HTMLElement;
+__extend__(HTMLTitleElement.prototype, {
+    $recursivelyGatherTextFromNodeTree: function(aNode) {
+        var accumulateText = "";
+        var idx; var n;
+        for (idx=0;idx < aNode.childNodes.length;idx++){
+            n = aNode.childNodes.item(idx);
+	    if      (n.nodeType == DOMNode.TEXT_NODE)
+                accumulateText += n.data;
+            else
+                accumulateText += this.$recursivelyGatherTextFromNodeTree(n);
+        }
+
+        return accumulateText;
+    },
+    get text() {
+        return this.$recursivelyGatherTextFromNodeTree(this);
+    },
+
+    set text(titleStr) {
+        this.innerHTML = titleStr; // if paranoid, would error on embedded HTML
+    }
+});
+
+$w.HTMLTitleElement = HTMLTitleElement;
+$debug("Defining HTMLTableRowElement");
 /* 
 * HTMLRowElement - DOM Level 2
 * Implementation Provided by Steven Wood
@@ -7696,7 +8104,7 @@ $debug("Defining MouseEvent");
 /*
 *	mouseevent.js
 */
-$debug("Defining MouseEvent");
+$debug("Defining UiEvent");
 /*
 *	uievent.js
 */
@@ -7708,11 +8116,13 @@ var $onblur,
 */
 var CSS2Properties = function(options){
     __extend__(this, __supportedStyles__);
+    this.onSetCallback = options.onSet?options.onSet:(function(){});
+    this.styleIndices = {};
     __cssTextToStyles__(this, options.cssText?options.cssText:"");
 };
 __extend__(CSS2Properties.prototype, {
     get cssText(){
-        return Array.prototype.apply.join(this,[';\n']);
+        return Array.prototype.join.apply(this,[';\n']);
     },
     set cssText(cssText){ 
         __cssTextToStyles__(this, cssText); 
@@ -7752,29 +8162,45 @@ __extend__(CSS2Properties.prototype, {
         }else{
             return '';
         }
-    }
+    },
+    onSet:function(camelCaseName, value){
+        var dashedName = camelCaseName.replace(/[A-Z]/g, function(all) {
+            return "-" + all.toLowerCase();
+        });
+        var definition = dashedName + ": " + value;
+        if (this.styleIndices[camelCaseName] !== undefined)
+            this[this.styleIndices[camelCaseName]] = definition;
+        else {
+            Array.prototype.push.apply(this, [definition]);
+            this.styleIndices[camelCaseName] = this.length - 1;
+        }
+        this.onSetCallback();
+    },
 });
 
 var __cssTextToStyles__ = function(css2props, cssText){
     var styleArray=[];
     var style, name, value, camelCaseName, w3cName, styles = cssText.split(';');
+    this.styleIndices = {};
     for ( var i = 0; i < styles.length; i++ ) {
         //$log("Adding style property " + styles[i]);
     	style = styles[i].split(':');
     	if ( style.length == 2 ){
     	    //keep a reference to the original name of the style which was set
     	    //this is the w3c style setting method.
-    	    styleArray[styleArray.length] = w3cName = styles[i];
+    	    var idx = styleArray.length;
+    	    styleArray[idx] = w3cName = styles[i];
             //camel case for dash case
     	    value = trim(style[1]);
             camelCaseName = trim(style[0].replace(/\-(\w)/g, function(all, letter){
 				return letter.toUpperCase();
 			}));
+            this.styleIndices[camelCaseName] = idx;
             $debug('CSS Style Name:  ' + camelCaseName);
-            if(css2props[camelCaseName]!==undefined){
+            if(css2props["_" + camelCaseName]!==undefined){
                 //set the value internally with camelcase name 
                 $debug('Setting css ' + camelCaseName + ' to ' + value);
-                css2props[camelCaseName] = value;
+                css2props["_" + camelCaseName] = value;
             };
     	}
     }
@@ -7782,135 +8208,1012 @@ var __cssTextToStyles__ = function(css2props, cssText){
 };
 //Obviously these arent all supported but by commenting out various sections
 //this provides a single location to configure what is exposed as supported.
-//These will likely need to be functional getters/setters in the future to deal with
+//These getters/setters will need to get fine-tuned in the future to deal with
 //the variation on input formulations
-var __supportedStyles__ = {
-    azimuth: "",
-    background:	"",
-    backgroundAttachment:	"",
-    backgroundColor:	"",
-    backgroundImage:	"",
-    backgroundPosition:	"",
-    backgroundRepeat:	"",
-    border:	"",
-    borderBottom:	"",
-    borderBottomColor:	"",
-    borderBottomStyle:	"",
-    borderBottomWidth:	"",
-    borderCollapse:	"",
-    borderColor:	"",
-    borderLeft:	"",
-    borderLeftColor:	"",
-    borderLeftStyle:	"",
-    borderLeftWidth:	"",
-    borderRight:	"",
-    borderRightColor:	"",
-    borderRightStyle:	"",
-    borderRightWidth:	"",
-    borderSpacing:	"",
-    borderStyle:	"",
-    borderTop:	"",
-    borderTopColor:	"",
-    borderTopStyle:	"",
-    borderTopWidth:	"",
-    borderWidth:	"",
-    bottom:	"",
-    captionSide:	"",
-    clear:	"",
-    clip:	"",
-    color:	"",
-    content:	"",
-    counterIncrement:	"",
-    counterReset:	"",
-    cssFloat:	"",
-    cue:	"",
-    cueAfter:	"",
-    cueBefore:	"",
-    cursor:	"",
-    direction:	"",
-    display:	"",
-    elevation:	"",
-    emptyCells:	"",
-    font:	"",
-    fontFamily:	"",
-    fontSize:	"",
-    fontSizeAdjust:	"",
-    fontStretch:	"",
-    fontStyle:	"",
-    fontVariant:	"",
-    fontWeight:	"",
-    height:	"",
-    left:	"",
-    letterSpacing:	"",
-    lineHeight:	"",
-    listStyle:	"",
-    listStyleImage:	"",
-    listStylePosition:	"",
-    listStyleType:	"",
-    margin:	"",
-    marginBottom:	"",
-    marginLeft:	"",
-    marginRight:	"",
-    marginTop:	"",
-    markerOffset:	"",
-    marks:	"",
-    maxHeight:	"",
-    maxWidth:	"",
-    minHeight:	"",
-    minWidth:	"",
-    opacity:	1,
-    orphans:	"",
-    outline:	"",
-    outlineColor:	"",
-    outlineOffset:	"",
-    outlineStyle:	"",
-    outlineWidth:	"",
-    overflow:	"",
-    overflowX:	"",
-    overflowY:	"",
-    padding:	"",
-    paddingBottom:	"",
-    paddingLeft:	"",
-    paddingRight:	"",
-    paddingTop:	"",
-    page:	"",
-    pageBreakAfter:	"",
-    pageBreakBefore:	"",
-    pageBreakInside:	"",
-    pause:	"",
-    pauseAfter:	"",
-    pauseBefore:	"",
-    pitch:	"",
-    pitchRange:	"",
-    position:	"",
-    quotes:	"",
-    richness:	"",
-    right:	"",
-    size:	"",
-    speak:	"",
-    speakHeader:	"",
-    speakNumeral:	"",
-    speakPunctuation:	"",
-    speechRate:	"",
-    stress:	"",
-    tableLayout:	"",
-    textAlign:	"",
-    textDecoration:	"",
-    textIndent:	"",
-    textShadow:	"",
-    textTransform:	"",
-    top:	"",
-    unicodeBidi:	"",
-    verticalAlign:	"",
-    visibility:	"",
-    voiceFamily:	"",
-    volume:	"",
-    whiteSpace:	"",
-    widows:	"",
-    width:	"",
-    wordSpacing:	"",
-    zIndex:	""
-};
+var __supportedStyles__ = (function(){
+    return{
+        _azimuth: "",
+        get azimuth() {
+            return this._azimuth;
+        },
+        set azimuth(val) {
+            this._azimuth = val;
+            this.onSet("azimuth", val);
+        },
+        _background:	"",
+        get background() {
+            return this._background;
+        },
+        set background(val) {
+            this._background = val;
+            this.onSet("background", val);
+        },
+        _backgroundAttachment:	"",
+        get backgroundAttachment() {
+            return this._backgroundAttachment;
+        },
+        set backgroundAttachment(val) {
+            this._backgroundAttachment = val;
+            this.onSet("backgroundAttachment", val);
+        },
+        _backgroundColor:	"",
+        get backgroundColor() {
+            return this._backgroundColor;
+        },
+        set backgroundColor(val) {
+            this._backgroundColor = val;
+            this.onSet("backgroundColor", val);
+        },
+        _backgroundImage:	"",
+        get backgroundImage() {
+            return this._backgroundImage;
+        },
+        set backgroundImage(val) {
+            this._backgroundImage = val;
+            this.onSet("backgroundImage", val);
+        },
+        _backgroundPosition:	"",
+        get backgroundPosition() {
+            return this._backgroundPosition;
+        },
+        set backgroundPosition(val) {
+            this._backgroundPosition = val;
+            this.onSet("backgroundPosition", val);
+        },
+        _backgroundRepeat:	"",
+        get backgroundRepeat() {
+            return this._backgroundRepeat;
+        },
+        set backgroundRepeat(val) {
+            this._backgroundRepeat = val;
+            this.onSet("backgroundRepeat", val);
+        },
+        _border:	"",
+        get border() {
+            return this._border;
+        },
+        set border(val) {
+            this._border = val;
+            this.onSet("border", val);
+        },
+        _borderBottom:	"",
+        get borderBottom() {
+            return this._borderBottom;
+        },
+        set borderBottom(val) {
+            this._borderBottom = val;
+            this.onSet("borderBottom", val);
+        },
+        _borderBottomColor:	"",
+        get borderBottomColor() {
+            return this._borderBottomColor;
+        },
+        set borderBottomColor(val) {
+            this._borderBottomColor = val;
+            this.onSet("borderBottomColor", val);
+        },
+        _borderBottomStyle:	"",
+        get borderBottomStyle() {
+            return this._borderBottomStyle;
+        },
+        set borderBottomStyle(val) {
+            this._borderBottomStyle = val;
+            this.onSet("borderBottomStyle", val);
+        },
+        _borderBottomWidth:	"",
+        get borderBottomWidth() {
+            return this._borderBottomWidth;
+        },
+        set borderBottomWidth(val) {
+            this._borderBottomWidth = val;
+            this.onSet("borderBottomWidth", val);
+        },
+        _borderCollapse:	"",
+        get borderCollapse() {
+            return this._borderCollapse;
+        },
+        set borderCollapse(val) {
+            this._borderCollapse = val;
+            this.onSet("borderCollapse", val);
+        },
+        _borderColor:	"",
+        get borderColor() {
+            return this._borderColor;
+        },
+        set borderColor(val) {
+            this._borderColor = val;
+            this.onSet("borderColor", val);
+        },
+        _borderLeft:	"",
+        get borderLeft() {
+            return this._borderLeft;
+        },
+        set borderLeft(val) {
+            this._borderLeft = val;
+            this.onSet("borderLeft", val);
+        },
+        _borderLeftColor:	"",
+        get borderLeftColor() {
+            return this._borderLeftColor;
+        },
+        set borderLeftColor(val) {
+            this._borderLeftColor = val;
+            this.onSet("borderLeftColor", val);
+        },
+        _borderLeftStyle:	"",
+        get borderLeftStyle() {
+            return this._borderLeftStyle;
+        },
+        set borderLeftStyle(val) {
+            this._borderLeftStyle = val;
+            this.onSet("borderLeftStyle", val);
+        },
+        _borderLeftWidth:	"",
+        get borderLeftWidth() {
+            return this._borderLeftWidth;
+        },
+        set borderLeftWidth(val) {
+            this._borderLeftWidth = val;
+            this.onSet("borderLeftWidth", val);
+        },
+        _borderRight:	"",
+        get borderRight() {
+            return this._borderRight;
+        },
+        set borderRight(val) {
+            this._borderRight = val;
+            this.onSet("borderRight", val);
+        },
+        _borderRightColor:	"",
+        get borderRightColor() {
+            return this._borderRightColor;
+        },
+        set borderRightColor(val) {
+            this._borderRightColor = val;
+            this.onSet("borderRightColor", val);
+        },
+        _borderRightStyle:	"",
+        get borderRightStyle() {
+            return this._borderRightStyle;
+        },
+        set borderRightStyle(val) {
+            this._borderRightStyle = val;
+            this.onSet("borderRightStyle", val);
+        },
+        _borderRightWidth:	"",
+        get borderRightWidth() {
+            return this._borderRightWidth;
+        },
+        set borderRightWidth(val) {
+            this._borderRightWidth = val;
+            this.onSet("borderRightWidth", val);
+        },
+        _borderSpacing:	"",
+        get borderSpacing() {
+            return this._borderSpacing;
+        },
+        set borderSpacing(val) {
+            this._borderSpacing = val;
+            this.onSet("borderSpacing", val);
+        },
+        _borderStyle:	"",
+        get borderStyle() {
+            return this._borderStyle;
+        },
+        set borderStyle(val) {
+            this._borderStyle = val;
+            this.onSet("borderStyle", val);
+        },
+        _borderTop:	"",
+        get borderTop() {
+            return this._borderTop;
+        },
+        set borderTop(val) {
+            this._borderTop = val;
+            this.onSet("borderTop", val);
+        },
+        _borderTopColor:	"",
+        get borderTopColor() {
+            return this._borderTopColor;
+        },
+        set borderTopColor(val) {
+            this._borderTopColor = val;
+            this.onSet("borderTopColor", val);
+        },
+        _borderTopStyle:	"",
+        get borderTopStyle() {
+            return this._borderTopStyle;
+        },
+        set borderTopStyle(val) {
+            this._borderTopStyle = val;
+            this.onSet("borderTopStyle", val);
+        },
+        _borderTopWidth:	"",
+        get borderTopWidth() {
+            return this._borderTopWidth;
+        },
+        set borderTopWidth(val) {
+            this._borderTopWidth = val;
+            this.onSet("borderTopWidth", val);
+        },
+        _borderWidth:	"",
+        get borderWidth() {
+            return this._borderWidth;
+        },
+        set borderWidth(val) {
+            this._borderWidth = val;
+            this.onSet("borderWidth", val);
+        },
+        _bottom:	"",
+        get bottom() {
+            return this._bottom;
+        },
+        set bottom(val) {
+            this._bottom = val;
+            this.onSet("bottom", val);
+        },
+        _captionSide:	"",
+        get captionSide() {
+            return this._captionSide;
+        },
+        set captionSide(val) {
+            this._captionSide = val;
+            this.onSet("captionSide", val);
+        },
+        _clear:	"",
+        get clear() {
+            return this._clear;
+        },
+        set clear(val) {
+            this._clear = val;
+            this.onSet("clear", val);
+        },
+        _clip:	"",
+        get clip() {
+            return this._clip;
+        },
+        set clip(val) {
+            this._clip = val;
+            this.onSet("clip", val);
+        },
+        _color:	"",
+        get color() {
+            return this._color;
+        },
+        set color(val) {
+            this._color = val;
+            this.onSet("color", val);
+        },
+        _content:	"",
+        get content() {
+            return this._content;
+        },
+        set content(val) {
+            this._content = val;
+            this.onSet("content", val);
+        },
+        _counterIncrement:	"",
+        get counterIncrement() {
+            return this._counterIncrement;
+        },
+        set counterIncrement(val) {
+            this._counterIncrement = val;
+            this.onSet("counterIncrement", val);
+        },
+        _counterReset:	"",
+        get counterReset() {
+            return this._counterReset;
+        },
+        set counterReset(val) {
+            this._counterReset = val;
+            this.onSet("counterReset", val);
+        },
+        _cssFloat:	"",
+        get cssFloat() {
+            return this._cssFloat;
+        },
+        set cssFloat(val) {
+            this._cssFloat = val;
+            this.onSet("cssFloat", val);
+        },
+        _cue:	"",
+        get cue() {
+            return this._cue;
+        },
+        set cue(val) {
+            this._cue = val;
+            this.onSet("cue", val);
+        },
+        _cueAfter:	"",
+        get cueAfter() {
+            return this._cueAfter;
+        },
+        set cueAfter(val) {
+            this._cueAfter = val;
+            this.onSet("cueAfter", val);
+        },
+        _cueBefore:	"",
+        get cueBefore() {
+            return this._cueBefore;
+        },
+        set cueBefore(val) {
+            this._cueBefore = val;
+            this.onSet("cueBefore", val);
+        },
+        _cursor:	"",
+        get cursor() {
+            return this._cursor;
+        },
+        set cursor(val) {
+            this._cursor = val;
+            this.onSet("cursor", val);
+        },
+        _direction:	"",
+        get direction() {
+            return this._direction;
+        },
+        set direction(val) {
+            this._direction = val;
+            this.onSet("direction", val);
+        },
+        _display:	"",
+        get display() {
+            return this._display;
+        },
+        set display(val) {
+            this._display = val;
+            this.onSet("display", val);
+        },
+        _elevation:	"",
+        get elevation() {
+            return this._elevation;
+        },
+        set elevation(val) {
+            this._elevation = val;
+            this.onSet("elevation", val);
+        },
+        _emptyCells:	"",
+        get emptyCells() {
+            return this._emptyCells;
+        },
+        set emptyCells(val) {
+            this._emptyCells = val;
+            this.onSet("emptyCells", val);
+        },
+        _font:	"",
+        get font() {
+            return this._font;
+        },
+        set font(val) {
+            this._font = val;
+            this.onSet("font", val);
+        },
+        _fontFamily:	"",
+        get fontFamily() {
+            return this._fontFamily;
+        },
+        set fontFamily(val) {
+            this._fontFamily = val;
+            this.onSet("fontFamily", val);
+        },
+        _fontSize:	"",
+        get fontSize() {
+            return this._fontSize;
+        },
+        set fontSize(val) {
+            this._fontSize = val;
+            this.onSet("fontSize", val);
+        },
+        _fontSizeAdjust:	"",
+        get fontSizeAdjust() {
+            return this._fontSizeAdjust;
+        },
+        set fontSizeAdjust(val) {
+            this._fontSizeAdjust = val;
+            this.onSet("fontSizeAdjust", val);
+        },
+        _fontStretch:	"",
+        get fontStretch() {
+            return this._fontStretch;
+        },
+        set fontStretch(val) {
+            this._fontStretch = val;
+            this.onSet("fontStretch", val);
+        },
+        _fontStyle:	"",
+        get fontStyle() {
+            return this._fontStyle;
+        },
+        set fontStyle(val) {
+            this._fontStyle = val;
+            this.onSet("fontStyle", val);
+        },
+        _fontVariant:	"",
+        get fontVariant() {
+            return this._fontVariant;
+        },
+        set fontVariant(val) {
+            this._fontVariant = val;
+            this.onSet("fontVariant", val);
+        },
+        _fontWeight:	"",
+        get fontWeight() {
+            return this._fontWeight;
+        },
+        set fontWeight(val) {
+            this._fontWeight = val;
+            this.onSet("fontWeight", val);
+        },
+        _height:	"",
+        get height() {
+            return this._height;
+        },
+        set height(val) {
+            this._height = val;
+            this.onSet("height", val);
+        },
+        _left:	"",
+        get left() {
+            return this._left;
+        },
+        set left(val) {
+            this._left = val;
+            this.onSet("left", val);
+        },
+        _letterSpacing:	"",
+        get letterSpacing() {
+            return this._letterSpacing;
+        },
+        set letterSpacing(val) {
+            this._letterSpacing = val;
+            this.onSet("letterSpacing", val);
+        },
+        _lineHeight:	"",
+        get lineHeight() {
+            return this._lineHeight;
+        },
+        set lineHeight(val) {
+            this._lineHeight = val;
+            this.onSet("lineHeight", val);
+        },
+        _listStyle:	"",
+        get listStyle() {
+            return this._listStyle;
+        },
+        set listStyle(val) {
+            this._listStyle = val;
+            this.onSet("listStyle", val);
+        },
+        _listStyleImage:	"",
+        get listStyleImage() {
+            return this._listStyleImage;
+        },
+        set listStyleImage(val) {
+            this._listStyleImage = val;
+            this.onSet("listStyleImage", val);
+        },
+        _listStylePosition:	"",
+        get listStylePosition() {
+            return this._listStylePosition;
+        },
+        set listStylePosition(val) {
+            this._listStylePosition = val;
+            this.onSet("listStylePosition", val);
+        },
+        _listStyleType:	"",
+        get listStyleType() {
+            return this._listStyleType;
+        },
+        set listStyleType(val) {
+            this._listStyleType = val;
+            this.onSet("listStyleType", val);
+        },
+        _margin:	"",
+        get margin() {
+            return this._margin;
+        },
+        set margin(val) {
+            this._margin = val;
+            this.onSet("margin", val);
+        },
+        _marginBottom:	"",
+        get marginBottom() {
+            return this._marginBottom;
+        },
+        set marginBottom(val) {
+            this._marginBottom = val;
+            this.onSet("marginBottom", val);
+        },
+        _marginLeft:	"",
+        get marginLeft() {
+            return this._marginLeft;
+        },
+        set marginLeft(val) {
+            this._marginLeft = val;
+            this.onSet("marginLeft", val);
+        },
+        _marginRight:	"",
+        get marginRight() {
+            return this._marginRight;
+        },
+        set marginRight(val) {
+            this._marginRight = val;
+            this.onSet("marginRight", val);
+        },
+        _marginTop:	"",
+        get marginTop() {
+            return this._marginTop;
+        },
+        set marginTop(val) {
+            this._marginTop = val;
+            this.onSet("marginTop", val);
+        },
+        _markerOffset:	"",
+        get markerOffset() {
+            return this._markerOffset;
+        },
+        set markerOffset(val) {
+            this._markerOffset = val;
+            this.onSet("markerOffset", val);
+        },
+        _marks:	"",
+        get marks() {
+            return this._marks;
+        },
+        set marks(val) {
+            this._marks = val;
+            this.onSet("marks", val);
+        },
+        _maxHeight:	"",
+        get maxHeight() {
+            return this._maxHeight;
+        },
+        set maxHeight(val) {
+            this._maxHeight = val;
+            this.onSet("maxHeight", val);
+        },
+        _maxWidth:	"",
+        get maxWidth() {
+            return this._maxWidth;
+        },
+        set maxWidth(val) {
+            this._maxWidth = val;
+            this.onSet("maxWidth", val);
+        },
+        _minHeight:	"",
+        get minHeight() {
+            return this._minHeight;
+        },
+        set minHeight(val) {
+            this._minHeight = val;
+            this.onSet("minHeight", val);
+        },
+        _minWidth:	"",
+        get minWidth() {
+            return this._minWidth;
+        },
+        set minWidth(val) {
+            this._minWidth = val;
+            this.onSet("minWidth", val);
+        },
+        _opacity:	1,
+        get opacity() {
+            return this._opacity;
+        },
+        set opacity(val) {
+            this._opacity = val;
+            this.onSet("opacity", val);
+        },
+        _orphans:	"",
+        get orphans() {
+            return this._orphans;
+        },
+        set orphans(val) {
+            this._orphans = val;
+            this.onSet("orphans", val);
+        },
+        _outline:	"",
+        get outline() {
+            return this._outline;
+        },
+        set outline(val) {
+            this._outline = val;
+            this.onSet("outline", val);
+        },
+        _outlineColor:	"",
+        get outlineColor() {
+            return this._outlineColor;
+        },
+        set outlineColor(val) {
+            this._outlineColor = val;
+            this.onSet("outlineColor", val);
+        },
+        _outlineOffset:	"",
+        get outlineOffset() {
+            return this._outlineOffset;
+        },
+        set outlineOffset(val) {
+            this._outlineOffset = val;
+            this.onSet("outlineOffset", val);
+        },
+        _outlineStyle:	"",
+        get outlineStyle() {
+            return this._outlineStyle;
+        },
+        set outlineStyle(val) {
+            this._outlineStyle = val;
+            this.onSet("outlineStyle", val);
+        },
+        _outlineWidth:	"",
+        get outlineWidth() {
+            return this._outlineWidth;
+        },
+        set outlineWidth(val) {
+            this._outlineWidth = val;
+            this.onSet("outlineWidth", val);
+        },
+        _overflow:	"",
+        get overflow() {
+            return this._overflow;
+        },
+        set overflow(val) {
+            this._overflow = val;
+            this.onSet("overflow", val);
+        },
+        _overflowX:	"",
+        get overflowX() {
+            return this._overflowX;
+        },
+        set overflowX(val) {
+            this._overflowX = val;
+            this.onSet("overflowX", val);
+        },
+        _overflowY:	"",
+        get overflowY() {
+            return this._overflowY;
+        },
+        set overflowY(val) {
+            this._overflowY = val;
+            this.onSet("overflowY", val);
+        },
+        _padding:	"",
+        get padding() {
+            return this._padding;
+        },
+        set padding(val) {
+            this._padding = val;
+            this.onSet("padding", val);
+        },
+        _paddingBottom:	"",
+        get paddingBottom() {
+            return this._paddingBottom;
+        },
+        set paddingBottom(val) {
+            this._paddingBottom = val;
+            this.onSet("paddingBottom", val);
+        },
+        _paddingLeft:	"",
+        get paddingLeft() {
+            return this._paddingLeft;
+        },
+        set paddingLeft(val) {
+            this._paddingLeft = val;
+            this.onSet("paddingLeft", val);
+        },
+        _paddingRight:	"",
+        get paddingRight() {
+            return this._paddingRight;
+        },
+        set paddingRight(val) {
+            this._paddingRight = val;
+            this.onSet("paddingRight", val);
+        },
+        _paddingTop:	"",
+        get paddingTop() {
+            return this._paddingTop;
+        },
+        set paddingTop(val) {
+            this._paddingTop = val;
+            this.onSet("paddingTop", val);
+        },
+        _page:	"",
+        get page() {
+            return this._page;
+        },
+        set page(val) {
+            this._page = val;
+            this.onSet("page", val);
+        },
+        _pageBreakAfter:	"",
+        get pageBreakAfter() {
+            return this._pageBreakAfter;
+        },
+        set pageBreakAfter(val) {
+            this._pageBreakAfter = val;
+            this.onSet("pageBreakAfter", val);
+        },
+        _pageBreakBefore:	"",
+        get pageBreakBefore() {
+            return this._pageBreakBefore;
+        },
+        set pageBreakBefore(val) {
+            this._pageBreakBefore = val;
+            this.onSet("pageBreakBefore", val);
+        },
+        _pageBreakInside:	"",
+        get pageBreakInside() {
+            return this._pageBreakInside;
+        },
+        set pageBreakInside(val) {
+            this._pageBreakInside = val;
+            this.onSet("pageBreakInside", val);
+        },
+        _pause:	"",
+        get pause() {
+            return this._pause;
+        },
+        set pause(val) {
+            this._pause = val;
+            this.onSet("pause", val);
+        },
+        _pauseAfter:	"",
+        get pauseAfter() {
+            return this._pauseAfter;
+        },
+        set pauseAfter(val) {
+            this._pauseAfter = val;
+            this.onSet("pauseAfter", val);
+        },
+        _pauseBefore:	"",
+        get pauseBefore() {
+            return this._pauseBefore;
+        },
+        set pauseBefore(val) {
+            this._pauseBefore = val;
+            this.onSet("pauseBefore", val);
+        },
+        _pitch:	"",
+        get pitch() {
+            return this._pitch;
+        },
+        set pitch(val) {
+            this._pitch = val;
+            this.onSet("pitch", val);
+        },
+        _pitchRange:	"",
+        get pitchRange() {
+            return this._pitchRange;
+        },
+        set pitchRange(val) {
+            this._pitchRange = val;
+            this.onSet("pitchRange", val);
+        },
+        _position:	"",
+        get position() {
+            return this._position;
+        },
+        set position(val) {
+            this._position = val;
+            this.onSet("position", val);
+        },
+        _quotes:	"",
+        get quotes() {
+            return this._quotes;
+        },
+        set quotes(val) {
+            this._quotes = val;
+            this.onSet("quotes", val);
+        },
+        _richness:	"",
+        get richness() {
+            return this._richness;
+        },
+        set richness(val) {
+            this._richness = val;
+            this.onSet("richness", val);
+        },
+        _right:	"",
+        get right() {
+            return this._right;
+        },
+        set right(val) {
+            this._right = val;
+            this.onSet("right", val);
+        },
+        _size:	"",
+        get size() {
+            return this._size;
+        },
+        set size(val) {
+            this._size = val;
+            this.onSet("size", val);
+        },
+        _speak:	"",
+        get speak() {
+            return this._speak;
+        },
+        set speak(val) {
+            this._speak = val;
+            this.onSet("speak", val);
+        },
+        _speakHeader:	"",
+        get speakHeader() {
+            return this._speakHeader;
+        },
+        set speakHeader(val) {
+            this._speakHeader = val;
+            this.onSet("speakHeader", val);
+        },
+        _speakNumeral:	"",
+        get speakNumeral() {
+            return this._speakNumeral;
+        },
+        set speakNumeral(val) {
+            this._speakNumeral = val;
+            this.onSet("speakNumeral", val);
+        },
+        _speakPunctuation:	"",
+        get speakPunctuation() {
+            return this._speakPunctuation;
+        },
+        set speakPunctuation(val) {
+            this._speakPunctuation = val;
+            this.onSet("speakPunctuation", val);
+        },
+        _speechRate:	"",
+        get speechRate() {
+            return this._speechRate;
+        },
+        set speechRate(val) {
+            this._speechRate = val;
+            this.onSet("speechRate", val);
+        },
+        _stress:	"",
+        get stress() {
+            return this._stress;
+        },
+        set stress(val) {
+            this._stress = val;
+            this.onSet("stress", val);
+        },
+        _tableLayout:	"",
+        get tableLayout() {
+            return this._tableLayout;
+        },
+        set tableLayout(val) {
+            this._tableLayout = val;
+            this.onSet("tableLayout", val);
+        },
+        _textAlign:	"",
+        get textAlign() {
+            return this._textAlign;
+        },
+        set textAlign(val) {
+            this._textAlign = val;
+            this.onSet("textAlign", val);
+        },
+        _textDecoration:	"",
+        get textDecoration() {
+            return this._textDecoration;
+        },
+        set textDecoration(val) {
+            this._textDecoration = val;
+            this.onSet("textDecoration", val);
+        },
+        _textIndent:	"",
+        get textIndent() {
+            return this._textIndent;
+        },
+        set textIndent(val) {
+            this._textIndent = val;
+            this.onSet("textIndent", val);
+        },
+        _textShadow:	"",
+        get textShadow() {
+            return this._textShadow;
+        },
+        set textShadow(val) {
+            this._textShadow = val;
+            this.onSet("textShadow", val);
+        },
+        _textTransform:	"",
+        get textTransform() {
+            return this._textTransform;
+        },
+        set textTransform(val) {
+            this._textTransform = val;
+            this.onSet("textTransform", val);
+        },
+        _top:	"",
+        get top() {
+            return this._top;
+        },
+        set top(val) {
+            this._top = val;
+            this.onSet("top", val);
+        },
+        _unicodeBidi:	"",
+        get unicodeBidi() {
+            return this._unicodeBidi;
+        },
+        set unicodeBidi(val) {
+            this._unicodeBidi = val;
+            this.onSet("unicodeBidi", val);
+        },
+        _verticalAlign:	"",
+        get verticalAlign() {
+            return this._verticalAlign;
+        },
+        set verticalAlign(val) {
+            this._verticalAlign = val;
+            this.onSet("verticalAlign", val);
+        },
+        _visibility:	"",
+        get visibility() {
+            return this._visibility;
+        },
+        set visibility(val) {
+            this._visibility = val;
+            this.onSet("visibility", val);
+        },
+        _voiceFamily:	"",
+        get voiceFamily() {
+            return this._voiceFamily;
+        },
+        set voiceFamily(val) {
+            this._voiceFamily = val;
+            this.onSet("voiceFamily", val);
+        },
+        _volume:	"",
+        get volume() {
+            return this._volume;
+        },
+        set volume(val) {
+            this._volume = val;
+            this.onSet("volume", val);
+        },
+        _whiteSpace:	"",
+        get whiteSpace() {
+            return this._whiteSpace;
+        },
+        set whiteSpace(val) {
+            this._whiteSpace = val;
+            this.onSet("whiteSpace", val);
+        },
+        _widows:	"",
+        get widows() {
+            return this._widows;
+        },
+        set widows(val) {
+            this._widows = val;
+            this.onSet("widows", val);
+        },
+        _width:	"",
+        get width() {
+            return this._width;
+        },
+        set width(val) {
+            this._width = val;
+            this.onSet("width", val);
+        },
+        _wordSpacing:	"",
+        get wordSpacing() {
+            return this._wordSpacing;
+        },
+        set wordSpacing(val) {
+            this._wordSpacing = val;
+            this.onSet("wordSpacing", val);
+        },
+        _zIndex:	"",
+        get zIndex() {
+            return this._zIndex;
+        },
+        set zIndex(val) {
+            this._zIndex = val;
+            this.onSet("zIndex", val);
+        }
+    };
+})()
 
 $w.CSS2Properties = CSS2Properties;/* 
 * CSSRule - DOM Level 2
@@ -8200,16 +9503,29 @@ $debug("Initializing Window Timer.");
 //private
 var $timers = [];
 
-$w.setTimeout = function(fn, time){
-	var num;
-	return num = window.setInterval(function(){
-		fn();
-		window.clearInterval(num);
-	}, time);
+window.setTimeout = function(fn, time){
+	var num = $timers.length;
+	var tfn;
+	
+    if (typeof fn == 'string') {
+        tfn = function() { 
+            eval(fn); 
+			window.clearInterval(num);
+        }; 
+    } else {
+		tfn = function() {
+			fn();
+			window.clearInterval(num);
+		}
+	}
+	$debug("Creating timer number "+num);
+    $timers[num] = new $env.timer(tfn, time);
+    $timers[num].start();
+	return num;
 };
 
 window.setInterval = function(fn, time){
-	var num = $timers.length+1;
+	var num = $timers.length;
 	
     if (typeof fn == 'string') {
         var fnstr = fn; 
@@ -8235,7 +9551,8 @@ window.clearInterval = window.clearTimeout = function(num){
 		delete $timers[num];
 	}
 };	
-	/*
+	
+window.$wait = function(wait){ $env.wait(wait); }/*
 * event.js
 */
 // Window Events
@@ -8273,10 +9590,15 @@ $w.removeEventListener = function(type, fn){
 		});
 };
 
-$w.dispatchEvent = function(event){
+$w.dispatchEvent = function(event, bubbles){
     $debug("dispatching event " + event.type);
+
     //the window scope defines the $event object, for IE(^^^) compatibility;
     $event = event;
+
+    if (bubbles == undefined || bubbles == null)
+        bubbles = true;
+
     if (!event.target) {
         event.target = this;
     }
@@ -8292,10 +9614,10 @@ $w.dispatchEvent = function(event){
     
         if (this["on" + event.type]) {
             $debug('calling event handler '+event.type+' on target '+this);
-            this["on" + event.type].call(_this, event);
+            this["on" + event.type].call(this, event);
         }
     }
-    if(this.parentNode){
+    if (bubbles && this.parentNode){
         this.parentNode.dispatchEvent.call(this.parentNode,event);
     }
 };
@@ -8780,7 +10102,7 @@ window.$profiler.stats = function(raw){
     };
 };
 
-if(Envjs.profile){
+if($env.profile){
     /**
     *   CSS2Properties
     */
@@ -9162,7 +10484,7 @@ __extend__(HTMLDocument.prototype, {
 	
 
 
-var $document =  new HTMLDocument($implementation);
+var $document =  new HTMLDocument($implementation, $w);
 $w.__defineGetter__("document", function(){
 	return $document;
 });
@@ -9303,8 +10625,15 @@ try{
 *	outro.js
 */
 
-})(window, Envjs); 
 
-}catch(e){
-    Envjs.error("ERROR LOADING ENV : " + e + "\nLINE SOURCE:\n" + Envjs.lineSource(e));
+    };        // close function definition begun in 'intro.js'
+
+
+        // turn "original" JS interpreter global object into the
+        //   "root" window object; third param value for new window's "parent"
+    _$envjs$makeObjectIntoWindow$_(this, Envjs, null, this);
+
+} catch(e){
+    Envjs.error("ERROR LOADING ENV : " + e + "\nLINE SOURCE:\n" +
+        Envjs.lineSource(e));
 }
