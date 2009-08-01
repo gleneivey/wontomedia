@@ -50,11 +50,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #       the "recommended" instruction text.
 
 
-  Scenario: nodes/new form defaults focus to Type "select" control
-    When I am on the new nodes page
-    Then the focus is on the "node_sti_type" element
-
-
   Scenario: nodes/new form has correct Tab order to controls
     Given I am on the new nodes page
     When I type the "Tab" special key
@@ -65,6 +60,12 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Then the focus is on the "node_description" element
     When I type the "Tab" special key
     Then the focus is on the "node_submit" element
+
+
+# this was written first, but running it before above breaks Selenium (????)
+  Scenario: nodes/new form defaults focus to Type "select" control
+    When I am on the new nodes page
+    Then the focus is on the "node_sti_type" element
 
 
   @unfinished

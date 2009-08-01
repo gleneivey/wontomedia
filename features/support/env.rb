@@ -22,14 +22,8 @@ $KCODE = "u"
 require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 require 'cucumber/rails/world'
 require 'cucumber/formatter/unicode'
-
 require 'webrat/rails'
-Webrat.configure do |config|
-  config.mode = :rails
-end
-
 require 'cucumber/rails/rspec'
-
 
 require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
 load_wontomedia_app_seed_data

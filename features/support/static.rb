@@ -16,4 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+Webrat.configure do |config|
+  config.mode = :rails
+end
 Cucumber::Rails.use_transactional_fixtures

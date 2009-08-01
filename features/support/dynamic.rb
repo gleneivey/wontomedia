@@ -31,7 +31,6 @@ browser = Selenium::SeleniumDriver.new("localhost", 4444, "*chrome",
                                        "http://localhost", 15000)
 
 
-
 Before do
   c = ActiveRecord::Base.connection
   flag = Node::DATA_IS_UNALTERABLE
