@@ -25,6 +25,10 @@
   <head>
     <title>Application | JavaScript Testing Results</title>
     <link rel="stylesheet" href="screw.css" type="text/css" charset="utf-8" /> 
+    <script>
+      // make sure that env.js (w/in Blue Ridge) loads JS scripts:
+      Envjs.scriptTypes["text/javascript"] = true;
+    </script>
     <script type="text/javascript"
             src="../../../vendor/plugins/blue-ridge/lib/blue-ridge.js"></script>
   </head>

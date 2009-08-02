@@ -46,8 +46,14 @@
 
 
 plugin_prefix = "#{RAILS_ROOT}/vendor/plugins/blue-ridge"
-rhino_command = "java -cp #{plugin_prefix}/lib/js.jar:#{plugin_prefix}/lib/mainForEnvjs.jar org.wontology.floss.rhino.envjs.EnvjsRhinoMain -w -debug"
+rhino_command = "java -cp #{plugin_prefix}/lib/js.jar:" +
+                         "#{plugin_prefix}/lib/mainForEnvjs.jar " +
+                "org.wontology.floss.rhino.envjs.EnvjsRhinoMain -w -debug"
 test_runner_command = "#{rhino_command} #{plugin_prefix}/lib/test_runner.js"
+
+
+@link_root = "js-test-files"
+@test_path = "test/javascript/fixtures"
 
 
 # Support Test::Unit & Test/Spec style
@@ -56,13 +62,22 @@ namespace :test do
   task :javascripts do
     Dir.chdir("#{RAILS_ROOT}/test/javascript") do
       all_fine = true
-      if ENV["TEST"]
-        all_fine = false unless system("#{test_runner_command} #{ENV["TEST"]}_spec.js")
-      else
-        Dir.glob("**/*_spec.js").each do |file|
-          all_fine = false unless system("#{test_runner_command} #{file}")
-        end
+
+      begin
+        setup_for_js_testing
+
+	if ENV["TEST"]
+	  all_fine = false unless
+            system("#{test_runner_command} #{ENV["TEST"]}_spec.js")
+	else
+	  Dir.glob("**/*_spec.js").each do |file|
+	    all_fine = false unless system("#{test_runner_command} #{file}")
+	  end
+	end
+      ensure
+        cleanup_after_js_testing
       end
+
       raise "JavaScript test failures" unless all_fine
     end
   end
@@ -79,31 +94,23 @@ require 'webrat/selenium/application_server'            # webrat 0.4.4
 
 namespace :js do
   task :fixtures do
-    link_root = "js-test-files"
-    test_path = "test/javascript/fixtures"
-
     begin
-      # Link the JavaScript test folder under /public to avoid "same
-      # origin policy" (DEVELOPTMENT ONLY!).  Create an "index.html"
-      # file listing JS test fixtures because Rails won't
-      # automatically index accesses to directories under /public.
-      # Start a test web server
+      setup_for_js_testing
 
-      system("ln -s #{RAILS_ROOT} #{RAILS_ROOT}/public/#{link_root}")
-      # don't need to "undo"--cleans up itself at_exit
-#      Webrat::Selenium::ApplicationServerFactory.app_server_instance.boot#git
-      Webrat::Selenium::ApplicationServer.boot#0.4.4
+      # Create an "index.html" file listing JS test fixtures because
+      # Rails won't automatically index accesses to directories under
+      # /public.
+      #### TODO
 
-      fixture_dir = "http://localhost:3001/#{link_root}/#{test_path}/index.html"
+      fixture_dir =
+        "http://localhost:3001/#{@link_root}/#{@test_path}/index.html"
       if PLATFORM[/darwin/]
         system("open #{fixture_dir}")
       elsif PLATFORM[/linux/]
         system("firefox #{fixture_dir}")
-      else
-        puts "You can run your in-browser fixtures from #{fixture_dir}."
       end
     ensure
-      system("rm #{RAILS_ROOT}/public/#{link_root}")
+      cleanup_after_js_testing
     end
   end
   
@@ -113,3 +120,19 @@ namespace :js do
   end
 end
 
+
+private
+
+def setup_for_js_testing
+  # Link the JavaScript test folder under /public to avoid "same
+  # origin policy" (DEVELOPTMENT ONLY!).  Start a test web server
+
+  system("ln -s #{RAILS_ROOT} #{RAILS_ROOT}/public/#{@link_root}")
+  # don't need to "undo"--cleans up itself at_exit
+#  Webrat::Selenium::ApplicationServerFactory.app_server_instance.boot   #github
+  Webrat::Selenium::ApplicationServer.boot                              #0.4.4
+end
+
+def cleanup_after_js_testing
+  system("rm #{RAILS_ROOT}/public/#{@link_root}")
+end
