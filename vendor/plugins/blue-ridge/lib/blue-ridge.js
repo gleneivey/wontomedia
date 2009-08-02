@@ -1,43 +1,50 @@
-function require(url, options) {
-  //this function expects to be ran from the context of the spec/javascripts/fixtures or test/javascript/fixtures
-  //directory, so add a '../' prefix to all Javascript paths
-  url = "../" + url;
+var BLUE_RIDGE_LIB_PREFIX = BLUE_RIDGE_LIB_PREFIX || "../../vendor/plugins/blue-ridge/lib/";
+
+var BlueRidge = {
+  require: function(url, options){
+    // add a '../' prefix to all JavaScript paths because we expect to be ran from one of:
+    // * test/javascript/fixtures
+    // * specs/javascripts/fixtures
+    // * examples/javascripts/fixtures
+    url = "../" + url;
   
-  var head = document.getElementsByTagName("head")[0];
-  var script = document.createElement("script");
-  script.src = url;
+    var head = document.getElementsByTagName("head")[0];
+    var script = document.createElement("script");
+    script.src = url;
   
-  options = options || {};
+    options = options || {};
   
-  if (options['onload']) {
-    // Attach handlers for all browsers
-    script.onload = script.onreadystatechange = options['onload'];
+    if(options['onload']) {
+      // Attach handlers for all browsers
+      script.onload = script.onreadystatechange = options['onload'];
+    }
+  
+    head.appendChild(script);
+  },
+  
+  debug: function(message){
+    document.writeln(message + " <br/>");
+  },
+  
+  deriveSpecNameFromCurrentFile: function(){
+    var file_prefix = new String(window.location).match(/.*\/(.*?)\.html/)[1];
+    return file_prefix + "_spec.js";
   }
-  
-  head.appendChild(script);
-}
+};
 
-function debug(message) {
-  document.writeln(message + " <br/>");
-}
+var require = require || BlueRidge.require;
+var debug   = debug   || BlueRidge.debug;
 
-function derive_spec_name_from_current_file() {
-  var file_prefix = new String(window.location).match(/.*\/(.*?)\.html/)[1];
-  return file_prefix + "_spec.js";
-}
+require(BLUE_RIDGE_LIB_PREFIX + "jquery-1.3.2.js");
+require(BLUE_RIDGE_LIB_PREFIX + "jquery.fn.js");
+require(BLUE_RIDGE_LIB_PREFIX + "jquery.print.js");
+require(BLUE_RIDGE_LIB_PREFIX + "screw.builder.js");
+require(BLUE_RIDGE_LIB_PREFIX + "screw.matchers.js");
+require(BLUE_RIDGE_LIB_PREFIX + "screw.events.js");
+require(BLUE_RIDGE_LIB_PREFIX + "screw.behaviors.js");
+require(BLUE_RIDGE_LIB_PREFIX + "smoke.core.js");
+require(BLUE_RIDGE_LIB_PREFIX + "smoke.mock.js");
+require(BLUE_RIDGE_LIB_PREFIX + "smoke.stub.js");
+require(BLUE_RIDGE_LIB_PREFIX + "screw.mocking.js");
 
-// require("../../vendor/plugins/blue-ridge/lib/jquery-1.2.6.js");
-require("../../vendor/plugins/blue-ridge/lib/jquery-1.3.2.js");
-
-require("../../vendor/plugins/blue-ridge/lib/jquery.fn.js");
-require("../../vendor/plugins/blue-ridge/lib/jquery.print.js");
-require("../../vendor/plugins/blue-ridge/lib/screw.builder.js");
-require("../../vendor/plugins/blue-ridge/lib/screw.matchers.js");
-require("../../vendor/plugins/blue-ridge/lib/screw.events.js");
-require("../../vendor/plugins/blue-ridge/lib/screw.behaviors.js");
-require("../../vendor/plugins/blue-ridge/lib/smoke.core.js");
-require("../../vendor/plugins/blue-ridge/lib/smoke.mock.js");
-require("../../vendor/plugins/blue-ridge/lib/smoke.stub.js");
-require("../../vendor/plugins/blue-ridge/lib/screw.mocking.js");
-
-require(derive_spec_name_from_current_file());
+require(BlueRidge.deriveSpecNameFromCurrentFile());
