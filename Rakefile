@@ -159,8 +159,8 @@ end # namespace :test
 Rake::Task[:test].clear!
 desc 'Run all unit, functional and integration tests'
 task :test do
-  errors = %w(test:dev test:dbmigrations test:functionals test:integration
-              features:acceptance).
+  errors = %w(test:dev test:dbmigrations test:functionals test:javascripts
+              test:integration features:acceptance).
       collect do |task|
 
     begin

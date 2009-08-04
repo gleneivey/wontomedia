@@ -68,7 +68,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Then the focus is on the "node_sti_type" element
 
 
-  @unfinished
   Scenario: selection of node.sti_type should highlight matching descr. text
     Given I am on the new nodes page
     When I select "Category" from "Type"

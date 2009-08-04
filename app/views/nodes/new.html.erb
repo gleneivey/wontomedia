@@ -29,15 +29,41 @@
   <div style="width: 40%; float: left;">
     <%= f.label :sti_type, "Type" %>
     <%= select_tag "node[sti_type]",
-	  options_for_select( [
-	    [ "- type of node -",          "" ],
-	    [ "Category",         "ClassNode" ],
-	    [ "Item",              "ItemNode" ],
-	    [ "Property",      "PropertyNode" ] ],
-            @node.sti_type.nil? ? "" : @node.sti_type )
+          options_for_select( [ [ "- type of node -",          "" ],
+                                [ "Category",         "ClassNode" ],
+                                [ "Item",              "ItemNode" ],
+                                [ "Property",      "PropertyNode" ] ],
+                              @node.sti_type.nil? ? "" : @node.sti_type )
      %>
     <script type="text/javascript">
-      $('node_sti_type').focus();
+      var sel = $('node_sti_type');
+      sel.focus();
+      sel.onchange = function(){
+        var tags = [ "category_title", "category_desc",
+                     "item_title",     "item_desc",
+                     "property_title", "property_desc" ];
+        for (var c=0; c != tags.length; c++)
+          document.getElementById(tags[c]).className = "";
+
+        if (sel.value == "ClassNode"){
+          document.getElementById("category_title").className =
+            "titleSelectedItemDescription";
+          document.getElementById("category_desc").className =
+            "bodySelectedItemDescription";
+        }
+        else if (sel.value == "ItemNode"){
+          document.getElementById("item_title").className =
+            "titleSelectedItemDescription";
+          document.getElementById("item_desc").className =
+            "bodySelectedItemDescription";
+        }
+        else if (sel.value == "PropertyNode"){
+          document.getElementById("property_title").className =
+            "titleSelectedItemDescription";
+          document.getElementById("property_desc").className =
+            "bodySelectedItemDescription";
+        }
+      }
     </script>
 
     <%= render :partial => "form_fields", :locals => { :f => f } %>

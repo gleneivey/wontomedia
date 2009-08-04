@@ -66,14 +66,14 @@ namespace :test do
       begin
         setup_for_js_testing
 
-	if ENV["TEST"]
-	  all_fine = false unless
-            system("#{test_runner_command} #{ENV["TEST"]}_spec.js")
-	else
-	  Dir.glob("**/*_spec.js").each do |file|
-	    all_fine = false unless system("#{test_runner_command} #{file}")
-	  end
-	end
+        if ENV["TEST"]
+          all_fine = false unless
+            system "#{test_runner_command} #{ENV["TEST"]}_spec.js"
+        else
+          Dir.glob("**/*_spec.js").each do |file|
+            all_fine = false unless system "#{test_runner_command} #{file}"
+          end
+        end
       ensure
         cleanup_after_js_testing
       end
@@ -88,9 +88,8 @@ end
 require 'webrat'
 require 'webrat/selenium'
 require 'webrat/selenium/selenium_session'
+require 'webrat/selenium/rails_application_server'
 
-#require 'webrat/selenium/application_server_factory'   # github 6/18/09
-require 'webrat/selenium/application_server'            # webrat 0.4.4
 
 namespace :js do
   task :fixtures do
@@ -105,9 +104,9 @@ namespace :js do
       fixture_dir =
         "http://localhost:3001/#{@link_root}/#{@test_path}/index.html"
       if PLATFORM[/darwin/]
-        system("open #{fixture_dir}")
+        system "open #{fixture_dir}"
       elsif PLATFORM[/linux/]
-        system("firefox #{fixture_dir}")
+        system "firefox #{fixture_dir}"
       end
     ensure
       cleanup_after_js_testing
@@ -116,7 +115,7 @@ namespace :js do
   
   task :shell do
     rlwrap = `which rlwrap`.chomp
-    system("#{rlwrap} #{rhino_command} -f #{plugin_prefix}/lib/shell.js -f -")
+    system "#{rlwrap} #{rhino_command} -f #{plugin_prefix}/lib/shell.js -f -"
   end
 end
 
@@ -125,14 +124,27 @@ private
 
 def setup_for_js_testing
   # Link the JavaScript test folder under /public to avoid "same
-  # origin policy" (DEVELOPTMENT ONLY!).  Start a test web server
+  # origin policy" (DEVELOPTMENT ONLY!).
+  system "ln -s #{RAILS_ROOT} #{RAILS_ROOT}/public/#{@link_root}"
 
-  system("ln -s #{RAILS_ROOT} #{RAILS_ROOT}/public/#{@link_root}")
-  # don't need to "undo"--cleans up itself at_exit
-#  Webrat::Selenium::ApplicationServerFactory.app_server_instance.boot   #github
-  Webrat::Selenium::ApplicationServer.boot                              #0.4.4
+  # Start a test web server.  (Note, originally tried the Webrat::Selenium
+  # classes to do this, but found that their automatically calling
+  # server stop() at_exit caused Rake to fail when multiple attempts
+  # to stop the same server occurred.  Making ApplicationServer.start()
+  # and .stop() internally veryify the absence/presence of the Mongrel
+  # pid also solved the problem, but I didn't want to have to patch Webrat.
+
+  system "mongrel_rails start -d --chdir='#{RAILS_ROOT}' " +
+         "--port=#{Webrat.configuration.application_port} " +
+         "--environment=#{Webrat.configuration.application_environment} " +
+         "--pid #{Webrat::Selenium::RailsApplicationServer.new.pid_file} &"
 end
 
 def cleanup_after_js_testing
-  system("rm #{RAILS_ROOT}/public/#{@link_root}")
+  STDOUT.puts                    # Blue Ridge doesn't put a \n after last "."
+  system "rm #{RAILS_ROOT}/public/#{@link_root}"
+  silence_stream(STDOUT) do
+    system "mongrel_rails stop -c #{RAILS_ROOT} " +
+           "--pid #{Webrat::Selenium::RailsApplicationServer.new.pid_file}"
+  end
 end

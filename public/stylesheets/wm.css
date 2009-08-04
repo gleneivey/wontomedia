@@ -1,4 +1,7 @@
 
+
+        /* styles first intended for node & edge info tables:
+         *   app/views/ ** /index, home, show                                 */
 table {
   border-collapse: collapse;
 }
@@ -19,3 +22,15 @@ td {
   border-color: black;
   border-style: none solid;
 }
+
+
+        /* used for informative-text highlighting in app/views/nodes/new      */
+.titleSelectedItemDescription {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.bodySelectedItemDescription {
+  font-weight: bold;
+}
+
