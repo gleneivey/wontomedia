@@ -1,4 +1,5 @@
 Feature:  Verify inputs for creation of new node dynamically within the page
+  (set focus on Type onload; highlight descriptive text matching Type selection)
   In order to create a wontology,
   as a contributor, I want
   to be told about bad inputs before I submit a page.
@@ -36,18 +37,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #
 #  - node.description content checks:
 #     - not too long
-#
-#  - field requirement checks:
-#     - required: Type, Title, Name
-#     - when a control gains focus, check all controls *prior* to it
-#       in the tab order.  Mark any preceding, required control that
-#       has not yet been given a value with an icon and emphasis of
-#       the "required" instruction text.
-#     - recomended: Description
-#     - when a control gains focus, check all controls *prior* to it
-#       in the tab order.  Mark any preceding, recommended control that
-#       has not yet been given a value with an icon and emphasis of
-#       the "recommended" instruction text.
 
 
   Scenario: nodes/new form has correct Tab order to controls

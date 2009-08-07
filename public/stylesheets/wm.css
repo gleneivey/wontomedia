@@ -24,6 +24,19 @@ td {
 }
 
 
+        /* used for input controls & matching instruction text                */
+p.inputpara {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+p.directions {
+  padding-top: 0;
+  margin-top: 0;
+  padding-bottom: 2ex;
+  font-size: 80%;
+}
+
+
         /* used for informative-text highlighting in app/views/nodes/new      */
 .titleSelectedItemDescription {
   font-weight: bold;

@@ -63,6 +63,40 @@ When /^the element "([^\"]+)" has the format "([^\"]+)"/ do |selector, fmt|
   assert result == style_value
 end
 
+
 When /^a debug alert "([^\"]+)"/ do |alert_text|
   selenium.get_eval "alert('#{alert_text}');"
 end
+
+
+Then /^the "([^\"]+)" element should(.*)match "([^\"]+)"$/ do |
+    elemId, sense, re|
+  assert_have_selector ".#{elemId}"
+  result = selenium.get_eval(
+    "window.document.getElementById('#{elemId}').innerHTML.search(/#{re}/)" )
+  if     sense == " "
+    assert result >= 0, "Pattern not present"
+  elseif sense == " not "
+    assert result == -1, "Unwanted pattern was present"
+  else
+    assert false, "Bad step string."
+  end
+end
+
+
+Then /^the image "([^\"]+)" is "([^\"]+)"$/ do |imgId, srcSubstr|
+  assert_have_selector "img##{imgId}"
+  imgSrc = selenium.get_eval( "window.document.getElementById('#{imgId}').src" )
+  result = /^#{srcSubstr}$/ =~ imgSrc                       ||
+           /\/#{srcSubstr}$/ =~ imgSrc                      ||
+           /^#{srcSubstr}\.[a-zA-Z]+$/ =~ imgSrc            ||
+           /^\/#{srcSubstr}\.[a-zA-Z]+$/ =~ imgSrc
+  assert result, "Image source didn't match substring"
+end
+
+
+Then /^the element "([^\"]+)"s "([^\"]+)" attribute is "([^\"]+)"$/ do |
+    elemId, attrName, attrValue|
+  assert false, "Not yet implemented"
+end
+
