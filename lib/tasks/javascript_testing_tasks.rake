@@ -46,7 +46,8 @@
 
 
 plugin_prefix = "#{RAILS_ROOT}/vendor/plugins/blue-ridge"
-rhino_command = "java -cp #{plugin_prefix}/lib/js.jar:" +
+rhino_command = "java -Dblue.ridge.prefix=\"#{plugin_prefix}\" " +
+                    " -cp #{plugin_prefix}/lib/js.jar:" +
                          "#{plugin_prefix}/lib/mainForEnvjs.jar " +
                 "org.wontology.floss.rhino.envjs.EnvjsRhinoMain -w -debug"
 test_runner_command = "#{rhino_command} #{plugin_prefix}/lib/test_runner.js"
