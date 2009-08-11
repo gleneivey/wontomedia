@@ -15,13 +15,13 @@ you can find additional, general information in the following places:
 
   http://wontomedia.rubyforge.org/
   http://rubyforge.org/projects/wontomedia/
-  http://www.wontology.org/wiki/
+  http://wiki.wontology.org/Main_Page
 
 In particular, simple installation instuctions are on the last page
 above, with more details at:
 
-  http://www.wontology.org/wiki/InstallFromScratch
-  http://www.wontology.org/wiki/SettingUpYourDevelopmentEnvironment
+  http://wiki.wontology.org/InstallFromScratch
+  http://wiki.wontology.org/SettingUpYourDevelopmentEnvironment
 
 And if you have any questions or feedback about the projet, there are
 our:
