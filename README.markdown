@@ -3,7 +3,7 @@ Copyright (C) 2009 - Glen E. Ivey
   (see the end of this file for copyright/licensing information)
 
 
-== This is WontoMedia
+## This is WontoMedia ##
 
 WontoMedia is a Ruby-on-Rails web app for community creation of an
 information classification scheme.  WontoMedia is free software
@@ -13,31 +13,31 @@ volunteer team using agile methods.
 This README will be expanded as the project matures.  Until that time,
 you can find additional, general information in the following places:
 
-  http://wontomedia.rubyforge.org/
-  http://rubyforge.org/projects/wontomedia/
-  http://wiki.wontology.org/Main_Page
+    http://wontomedia.rubyforge.org/
+    http://rubyforge.org/projects/wontomedia/
+    http://wiki.wontology.org/Main_Page
 
 In particular, simple installation instuctions are on the last page
 above, with more details at:
 
-  http://wiki.wontology.org/InstallFromScratch
-  http://wiki.wontology.org/SettingUpYourDevelopmentEnvironment
+    http://wiki.wontology.org/InstallFromScratch
+    http://wiki.wontology.org/SettingUpYourDevelopmentEnvironment
 
 And if you have any questions or feedback about the projet, there are
 our:
 
-  forum        http://rubyforge.org/forum/?group_id=7903
-  email list   wontomedia-development at rubyforge dot org
-               http://rubyforge.org/mail/?group_id=7903
-  bug tracker  http://rubyforge.org/tracker/?group_id=7903
+    forum        http://rubyforge.org/forum/?group_id=7903
+    email list   wontomedia-development at rubyforge dot org
+		 http://rubyforge.org/mail/?group_id=7903
+    bug tracker  http://rubyforge.org/tracker/?group_id=7903
 
 
 Finally, you can also find us at:
 
-  http://github.com/gleneivey/wontomedia/tree/master
-  https://www.pivotaltracker.com/projects/9280/stories
+    http://github.com/gleneivey/wontomedia/tree/master
+    https://www.pivotaltracker.com/projects/9280/stories
 
-        ----------------------------------------------------------------
+----------------------------------------------------------------
 
     Permission is granted to copy, distribute and/or modify this
     document under the terms of the GNU Free Documentation License,
