@@ -5433,7 +5433,7 @@ __extend__(HTMLDocument.prototype, {
           else if(tagName.match(/TABLE/))               {node = new HTMLTableElement(this);}
           else if(tagName.match(/TBODY|TFOOT|THEAD/))   {node = new HTMLSectionElement(this);}
           else if(tagName.match(/TD|TH/))               {node = new HTMLTableCellElement(this);}
-          else if(tagName.match(/TEXTAREA/))            {node = new HTMLElement(this);}
+          else if(tagName.match(/TEXTAREA/))            {node = new HTMLTextAreaElement(this);}
           else if(tagName.match(/TITLE/))               {node = new HTMLTitleElement(this);}
           else if(tagName.match(/TR/))                  {node = new HTMLTableRowElement(this);}
           else if(tagName.match(/UL/))                  {node = new HTMLElement(this);}
@@ -6332,7 +6332,7 @@ $w.HTMLModElement = HTMLModElement;	/*
  */
 
 
-$debug("Defining HTMLTextAreaElement");
+$debug("Defining HTMLDivElement");
 /*
 * HTMLDivElement - DOM Level 2
 */
@@ -6350,7 +6350,8 @@ __extend__(HTMLDivElement.prototype, {
     }
 });
 
-$w.HTMLDivElement = HTMLDivElement;$debug("Defining HTMLFieldSetElement");
+$w.HTMLDivElement = HTMLDivElement;
+$debug("Defining HTMLFieldSetElement");
 /* 
 * HTMLFieldSetElement - DOM Level 2
 */
@@ -9516,12 +9517,21 @@ window.setTimeout = function(fn, time){
 		tfn = function() {
 			fn();
 			window.clearInterval(num);
-		}
+        };
 	}
-	$debug("Creating timer number "+num);
-    $timers[num] = new $env.timer(tfn, time);
-    $timers[num].start();
-	return num;
+
+    if (time === 0){
+        if (typeof fn == 'string')
+            eval(fn);
+        else
+            fn();
+    }
+    else {
+        $debug("Creating timer number "+num);
+        $timers[num] = new $env.timer(tfn, time);
+        $timers[num].start();
+        return num;
+    }
 };
 
 window.setInterval = function(fn, time){
