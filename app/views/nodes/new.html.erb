@@ -36,10 +36,10 @@
                                   [ "Property",      "PropertyNode" ] ],
                                 @node.sti_type.nil? ? "" : @node.sti_type )
        %>
-      <%= image_tag "blank_error_icon.png", :id=>"type_error_icon",
+      <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
                     :alt=>"", :size=>"16x16" %>
     </p><p class="directions">
-      <span id="type_required">Selection of a type is required.</span>
+      <span id="sti_type_required">Selection of a type is required.</span>
     </p>
     <script type="text/javascript">
       var sel = $('node_sti_type');
@@ -116,5 +116,6 @@
       <%= link_to 'Cancel, goto edge list', edges_path %>
     </p>
   </div>
-<% end %>
+<% end %>  <!-- of form_for -->
 
+<%= javascript_include_tag "requiredFields" %>

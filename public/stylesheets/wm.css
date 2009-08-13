@@ -49,5 +49,6 @@ p.directions {
 
 .helpTextFlagged {
   font-weight: bold;
+  color: red;
 }
 

@@ -89,8 +89,12 @@ Then /^the image "([^\"]+)" is "([^\"]+)"$/ do |imgId, srcSubstr|
   imgSrc = selenium.get_eval( "window.document.getElementById('#{imgId}').src" )
   result = /^#{srcSubstr}$/ =~ imgSrc                       ||
            /\/#{srcSubstr}$/ =~ imgSrc                      ||
+           /^#{srcSubstr}\?/ =~ imgSrc                      ||
+           /\/#{srcSubstr}\?/ =~ imgSrc                     ||
            /^#{srcSubstr}\.[a-zA-Z]+$/ =~ imgSrc            ||
-           /^\/#{srcSubstr}\.[a-zA-Z]+$/ =~ imgSrc
+           /\/#{srcSubstr}\.[a-zA-Z]+$/ =~ imgSrc           ||
+           /^#{srcSubstr}\.[a-zA-Z]+\?/ =~ imgSrc           ||
+           /\/#{srcSubstr}\.[a-zA-Z]+\?/ =~ imgSrc
   assert result, "Image source didn't match substring"
 end
 

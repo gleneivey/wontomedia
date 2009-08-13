@@ -20,14 +20,14 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  var flagTextIds = [ "type_required", "title_required", "name_required",
+  var flagTextIds = [ "sti_type_required", "title_required", "name_required",
                       "description_recommended" ];
-  var flagIconIds = [ "type_error_icon", "title_error_icon", "name_error_icon",
-                      "description_error_icon" ];
+  var flagIconIds = [ "sti_type_error_icon", "title_error_icon",
+                      "name_error_icon", "description_error_icon" ];
   var flagIconSrc = [ "error_error_icon", "error_error_icon",
                       "error_error_icon", "warn_error_icon" ];
   var inputIds    = [ "node_sti_type", "node_title", "node_name",
-                      "node_description", "node_create" ];
+                      "node_description", "node_submit" ];
 
   describe( "Dynamic required input field checks in nodes/new page", function(){
     describe( "Check results with no user input", function(){
@@ -42,7 +42,6 @@ Screw.Unit(function(){
         }
       });
 
-/*
       it( "Flags blank inputs when input focus passes them", function(){
         var d = document.getElementById('test_frame').contentDocument;
 
@@ -54,7 +53,7 @@ Screw.Unit(function(){
             expect(d.getElementById(flagTextIds[cn]).className).
               to(match, /helpTextFlagged/);
             expect(d.getElementById(flagIconIds[cn]).src).to(match,
-              /#{flagIconSrc[cn]}\.png/);
+              new RegExp(flagIconSrc[cn] + "\\.png"));
           }
           for (;cn < flagTextIds.length; cn++){
             expect(d.getElementById(flagTextIds[cn]).className).
@@ -65,6 +64,7 @@ Screw.Unit(function(){
         }
       });
 
+/*
       it( "", function(){
 
       });

@@ -6,17 +6,14 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-08-07}
+  s.date = %q{2009-08-13}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
-  s.extra_rdoc_files = [
-    "README"
-  ]
   s.files = [
     "COPYING",
      "COPYING.DOCUMENTATION",
      "LICENSE",
-     "README",
+     "README.markdown",
      "Rakefile",
      "VERSION.yml",
      "app/controllers/admin_controller.rb",
@@ -93,6 +90,7 @@ Gem::Specification.new do |s|
      "public/javascripts/dragdrop.js",
      "public/javascripts/effects.js",
      "public/javascripts/prototype.js",
+     "public/javascripts/requiredFields.js",
      "public/not_logged_in.html",
      "public/robots.txt",
      "public/stylesheets/scaffold.css",

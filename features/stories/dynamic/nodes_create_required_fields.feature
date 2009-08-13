@@ -26,62 +26,61 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #       the "recommended" instruction text.
 
 
-  @unfinished
   Scenario: Empty form incrementally displays "required" flags
-    # new page: focus on Type, all blank, no flags
+    # new page: focus on Type, all inputs blank, none flagged
     When I am on the new nodes page
-    Then the element "type_required" has the format "font-weight=400"
-    Then the element "title_required" has the format "font-weight=400"
-    Then the element "name_required" has the format "font-weight=400"
-    Then the element "description_recommended" has the format "font-weight=400"
-    Then the image "type_error_icon" is "blank_error_icon"
-    Then the image "title_error_icon" is "blank_error_icon"
-    Then the image "name_error_icon" is "blank_error_icon"
-    Then the image "description_error_icon" is "blank_error_icon"
+    Then the element "sti_type_required" has the format "font-weight=400"
+    And the element "title_required" has the format "font-weight=400"
+    And the element "name_required" has the format "font-weight=400"
+    And the element "description_recommended" has the format "font-weight=400"
+    And the image "sti_type_error_icon" is "blank_error_icon"
+    And the image "title_error_icon" is "blank_error_icon"
+    And the image "name_error_icon" is "blank_error_icon"
+    And the image "description_error_icon" is "blank_error_icon"
 
-    # focus from Type to Title
+    # focus from Type to Title -> Type gets flagges as "required"
     When I type the "Tab" special key
-    Then the element "type_required" has the format "font-weight=bold"
-    Then the element "title_required" has the format "font-weight=400"
-    Then the element "name_required" has the format "font-weight=400"
-    Then the element "description_recommended" has the format "font-weight=400"
-    Then the image "type_error_icon" is "error_error_icon"
-    Then the image "title_error_icon" is "blank_error_icon"
-    Then the image "name_error_icon" is "blank_error_icon"
-    Then the image "description_error_icon" is "blank_error_icon"
+    Then the element "sti_type_required" has the format "font-weight=bold"
+    And the element "title_required" has the format "font-weight=400"
+    And the element "name_required" has the format "font-weight=400"
+    And the element "description_recommended" has the format "font-weight=400"
+    And the image "sti_type_error_icon" is "error_error_icon"
+    And the image "title_error_icon" is "blank_error_icon"
+    And the image "name_error_icon" is "blank_error_icon"
+    And the image "description_error_icon" is "blank_error_icon"
 
-    # focus from Title to Name
+    # focus from Title to Name -> Title also flagged as "required"
     When I type the "Tab" special key
-    Then the element "type_required" has the format "font-weight=bold"
-    Then the element "title_required" has the format "font-weight=bold"
-    Then the element "name_required" has the format "font-weight=400"
-    Then the element "description_recommended" has the format "font-weight=400"
-    Then the image "type_error_icon" is "error_error_icon"
-    Then the image "title_error_icon" is "error_error_icon"
-    Then the image "name_error_icon" is "blank_error_icon"
-    Then the image "description_error_icon" is "blank_error_icon"
+    Then the element "sti_type_required" has the format "font-weight=bold"
+    And the element "title_required" has the format "font-weight=bold"
+    And the element "name_required" has the format "font-weight=400"
+    And the element "description_recommended" has the format "font-weight=400"
+    And the image "sti_type_error_icon" is "error_error_icon"
+    And the image "title_error_icon" is "error_error_icon"
+    And the image "name_error_icon" is "blank_error_icon"
+    And the image "description_error_icon" is "blank_error_icon"
 
-    # focus from Name to Description
+    # focus from Name to Description -> now Name flagged as "required" too
     When I type the "Tab" special key
-    Then the element "type_required" has the format "font-weight=bold"
-    Then the element "title_required" has the format "font-weight=bold"
-    Then the element "name_required" has the format "font-weight=bold"
-    Then the element "description_recommended" has the format "font-weight=400"
-    Then the image "type_error_icon" is "error_error_icon"
-    Then the image "title_error_icon" is "error_error_icon"
-    Then the image "name_error_icon" is "error_error_icon"
-    Then the image "description_error_icon" is "blank_error_icon"
+    Then the element "sti_type_required" has the format "font-weight=bold"
+    And the element "title_required" has the format "font-weight=bold"
+    And the element "name_required" has the format "font-weight=bold"
+    And the element "description_recommended" has the format "font-weight=400"
+    And the image "sti_type_error_icon" is "error_error_icon"
+    And the image "title_error_icon" is "error_error_icon"
+    And the image "name_error_icon" is "error_error_icon"
+    And the image "description_error_icon" is "blank_error_icon"
 
-    # focus from Description to Create button
+    # focus from Description to Create button -> plus Description flagged
     When I type the "Tab" special key
-    Then the element "type_required" has the format "font-weight=bold"
-    Then the element "title_required" has the format "font-weight=bold"
-    Then the element "name_required" has the format "font-weight=bold"
-    Then the element "description_recommended" has the format "font-weight=bold"
-    Then the image "type_error_icon" is "error_error_icon"
-    Then the image "title_error_icon" is "error_error_icon"
-    Then the image "name_error_icon" is "error_error_icon"
-    Then the image "description_error_icon" is "warn_error_icon"
+    Then the element "sti_type_required" has the format "font-weight=bold"
+    And the element "title_required" has the format "font-weight=bold"
+    And the element "name_required" has the format "font-weight=bold"
+    And the element "description_recommended" has the format "font-weight=bold"
+    And the image "sti_type_error_icon" is "error_error_icon"
+    And the image "title_error_icon" is "error_error_icon"
+    And the image "name_error_icon" is "error_error_icon"
+    And the image "description_error_icon" is "warn_error_icon"
 
 
   @unfinished
@@ -95,19 +94,19 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
     # after clicking "Create", everything should be flagged...
     When I press "Create"
-    Then the element "type_required" has the format "font-weight=bold"
-    Then the element "title_required" has the format "font-weight=bold"
-    Then the element "name_required" has the format "font-weight=bold"
-    Then the element "description_recommended" has the format "font-weight=bold"
-    Then the image "type_error_icon" is "error_error_icon"
-    Then the image "title_error_icon" is "error_error_icon"
-    Then the image "name_error_icon" is "error_error_icon"
-    Then the image "description_error_icon" is "warn_error_icon"
+    Then the element "sti_type_required" has the format "font-weight=bold"
+    And the element "title_required" has the format "font-weight=bold"
+    And the element "name_required" has the format "font-weight=bold"
+    And the element "description_recommended" has the format "font-weight=bold"
+    And the image "sti_type_error_icon" is "error_error_icon"
+    And the image "title_error_icon" is "error_error_icon"
+    And the image "name_error_icon" is "error_error_icon"
+    And the image "description_error_icon" is "warn_error_icon"
 
     # ...and there should be a dialog reporting the problems
-    Then the "dialogDiv" element should match "Type[^\.]+required"
-    Then the "dialogDiv" element should match "Title[^\.]+required"
-    Then the "dialogDiv" element should match "Name[^\.]+required"
+    And the "dialogDiv" element should match "Type[^\.]+required"
+    And the "dialogDiv" element should match "Title[^\.]+required"
+    And the "dialogDiv" element should match "Name[^\.]+required"
 
 
 # Fill in fields one at a time; observe removal of "required" flag as each is changed.
