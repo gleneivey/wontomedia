@@ -40,6 +40,9 @@ Before do
 
   @browser = browser
   @browser.start rescue nil
+
+    # test window must be on top for Tab key to advance focus "normally"
+  selenium.get_eval( "window.focus();" )
 end
 
 After do

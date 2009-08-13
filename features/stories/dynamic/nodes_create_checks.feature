@@ -39,6 +39,11 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #     - not too long
 
 
+  Scenario: nodes/new form defaults focus to Type "select" control
+    When I am on the new nodes page
+    Then the focus is on the "node_sti_type" element
+
+
   Scenario: nodes/new form has correct Tab order to controls
     Given I am on the new nodes page
     When I type the "Tab" special key
@@ -51,18 +56,12 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Then the focus is on the "node_submit" element
 
 
-# this was written first, but running it before above breaks Selenium (????)
-  Scenario: nodes/new form defaults focus to Type "select" control
-    When I am on the new nodes page
-    Then the focus is on the "node_sti_type" element
-
-
   Scenario: selection of node.sti_type should highlight matching descr. text
     Given I am on the new nodes page
     When I select "Category" from "Type"
     Then the element "category_title" has the format "font-weight=bold"
-    Then the element "category_title" has the format "text-decoration=underline"
-    Then the element "category_desc" has the format "font-weight=bold"
+    And the element "category_title" has the format "text-decoration=underline"
+    And the element "category_desc" has the format "font-weight=bold"
 
 
 
