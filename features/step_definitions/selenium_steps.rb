@@ -60,7 +60,9 @@ When /^the element "([^\"]+)" has the format "([^\"]+)"$/ do |selector, fmt|
     "e = window.document.getElementById('#{selector}'); " +
     "e = Element.extend(e); " +
     "e.getStyle('#{style_keyword}');" )
-  assert result == style_value
+  assert result == style_value,
+    "'#{selector}' element should have had the format '#{fmt}', " +
+      "but was '#{result}'"
 end
 
 
@@ -71,12 +73,13 @@ end
 
 Then /^the "([^\"]+)" element should(.*)match "([^\"]+)"$/ do |
     elemId, sense, re|
-  assert_have_selector ".#{elemId}"
   result = selenium.get_eval(
-    "window.document.getElementById('#{elemId}').innerHTML.search(/#{re}/)" )
+    "window.document.getElementById('#{elemId}').innerHTML.search(/#{re}/)" ).
+      to_i
+
   if     sense == " "
     assert result >= 0, "Pattern not present"
-  elseif sense == " not "
+  elsif sense == " not "
     assert result == -1, "Unwanted pattern was present"
   else
     assert false, "Bad step string."
@@ -99,11 +102,11 @@ Then /^the image "([^\"]+)" is "([^\"]+)"$/ do |imgId, srcSubstr|
 end
 
 
-Then /^the "([^\"]+)" element's "([^\"]+)" attribute is "([^\"]+)"$/ do |
+Then /^the "([^\"]+)" element's "([^\"]+)" attribute is "([^\"]*)"$/ do |
     elemId, attrName, attrValue|
   result = selenium.get_eval(
     "window.document.getElementById('#{elemId}').#{attrName};")
   assert result == attrValue,
-    "$(#{elemId}).#{attrName} should have been #{attrValue}"
+    "$(#{elemId}).#{attrName} should have been #{attrValue}, was '#{result}'"
 end
 

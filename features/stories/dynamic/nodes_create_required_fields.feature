@@ -83,11 +83,10 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "description_error_icon" is "warn_error_icon"
 
 
-  @unfinished
   Scenario: Empty form displays all blank flags on (disabled) Create click
     # by default, a new/empty form can't be submitted
     When I am on the new nodes page
-    Then the element "node_submit"s "disabled" attribute is "true"
+    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
 
     # all the messages/icons should be in "unflagged" state, but rely
     # on the preceding case for that
@@ -104,9 +103,9 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "description_error_icon" is "warn_error_icon"
 
     # ...and there should be a dialog reporting the problems
-    And the "dialogDiv" element should match "Type[^\.]+required"
-    And the "dialogDiv" element should match "Title[^\.]+required"
-    And the "dialogDiv" element should match "Name[^\.]+required"
+    And the "MB_content" element should match "Type[^\.]+required"
+    And the "MB_content" element should match "Title[^\.]+required"
+    And the "MB_content" element should match "Name[^\.]+required"
 
 
 # Fill in fields one at a time; observe removal of "required" flag as each is changed.
@@ -114,13 +113,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 # Fill in each field in correct order, tab between them, observe no "required" flags displayed.
 
 # Fill in form in reverse tab-order. Observe removal of "required" flags as changes are made. Empty each input field in random order, observing appearance of "required" flags. Rotate focus through all fields after each change.
-
-
-  @unfinished
-  Scenario:
-    Given 
-    When 
-    Then 
 
 
 # WontoMedia - a wontology web application

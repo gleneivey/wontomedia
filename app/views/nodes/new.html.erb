@@ -110,7 +110,10 @@
 
     </dd></dl>
 
-    <p style="text-align: center"> <%= f.submit "Create" %> </p>
+    <p id="create_button_container" style="text-align: center">
+      <%= f.submit "Create" %>
+    </p>
+
     <p style="text-align: center">
       <%= link_to 'Cancel, goto node list', nodes_path %> &mdash;
       <%= link_to 'Cancel, goto edge list', edges_path %>
@@ -118,4 +121,5 @@
   </div>
 <% end %>  <!-- of form_for -->
 
+<%= javascript_include_tag "modalbox" %>
 <%= javascript_include_tag "requiredFields" %>

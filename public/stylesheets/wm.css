@@ -52,3 +52,11 @@ p.directions {
   color: red;
 }
 
+.activeButton {
+  color: black;
+  background-color: #c0c0ff;
+}
+.inactiveButton {
+  color: #d0d0d0;
+  background-color: #ffffff;
+}
