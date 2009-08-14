@@ -21,7 +21,7 @@ When /^I type "([^\"]*)" into "([^\"]*)"$/ do |value, field|
 end
 
 
-When /^I type the "(.+)" special key/ do |key_string|
+When /^I type the "(.+)" special key$/ do |key_string|
   key = case key_string
         when /^Back$/     then   8
         when /^Tab$/      then   9
@@ -38,12 +38,12 @@ When /^I type the "(.+)" special key/ do |key_string|
 end
 
 
-When /^I put the focus on the "([^\"]+)" element/ do |element_name|
+When /^I put the focus on the "([^\"]+)" element$/ do |element_name|
   selenium.focus(element_name)
 end
 
 
-When /^the focus is on the "([^\"]+)" element/ do |element_name|
+When /^the focus is on the "([^\"]+)" element$/ do |element_name|
   assert selenium.is_element_present(element_name),
     "No such element as '#{element_name}'."
   result = selenium.get_eval "" +
@@ -54,7 +54,7 @@ When /^the focus is on the "([^\"]+)" element/ do |element_name|
 end
 
 
-When /^the element "([^\"]+)" has the format "([^\"]+)"/ do |selector, fmt|
+When /^the element "([^\"]+)" has the format "([^\"]+)"$/ do |selector, fmt|
   style_keyword, style_value = fmt.split( /=/ )
   result = selenium.get_eval(
     "e = window.document.getElementById('#{selector}'); " +
@@ -64,7 +64,7 @@ When /^the element "([^\"]+)" has the format "([^\"]+)"/ do |selector, fmt|
 end
 
 
-When /^a debug alert "([^\"]+)"/ do |alert_text|
+When /^a debug alert "([^\"]+)"$/ do |alert_text|
   selenium.get_eval "alert('#{alert_text}');"
 end
 
@@ -99,8 +99,11 @@ Then /^the image "([^\"]+)" is "([^\"]+)"$/ do |imgId, srcSubstr|
 end
 
 
-Then /^the element "([^\"]+)"s "([^\"]+)" attribute is "([^\"]+)"$/ do |
+Then /^the "([^\"]+)" element's "([^\"]+)" attribute is "([^\"]+)"$/ do |
     elemId, attrName, attrValue|
-  assert false, "Not yet implemented"
+  result = selenium.get_eval(
+    "window.document.getElementById('#{elemId}').#{attrName};")
+  assert result == attrValue,
+    "$(#{elemId}).#{attrName} should have been #{attrValue}"
 end
 
