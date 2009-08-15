@@ -44,10 +44,11 @@
 </p>
 
 <p class="inputpara">
-  <%= f.label :description %><br />
-  <%= f.text_area :description %>
+  <%= f.label :description %>
   <%= image_tag "blank_error_icon.png", :id=>"description_error_icon", :alt=>"",
                 :size=>"16x16" %>
+  <br />
+  <%= f.text_area :description %>
 </p><p class="directions">
   Describe what this node represents.
   <span id="description_recommended">Recommended.</span>

@@ -154,10 +154,67 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
 
 
+  Scenario: Re-empty fields in filled-out form
+    When I am on the new nodes page
+    Then the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
 
-# Fill in fields one at a time; observe removal of "required" flag as each is changed.
+    When I select "Category" from "Type"
+    And I type the "Tab" special key
+    Then the element "sti_type_required" has the format "font-weight=400"
+    And the image "sti_type_error_icon" is "blank_error_icon"
+    And the element "title_required" has the format "font-weight=400"
+    And the image "title_error_icon" is "blank_error_icon"
 
-# Fill in form in reverse tab-order. Observe removal of "required" flags as changes are made. Empty each input field in random order, observing appearance of "required" flags.
+    When I type "This is a Title"
+    And I type the "Tab" special key
+    Then the element "title_required" has the format "font-weight=400"
+    And the image "title_error_icon" is "blank_error_icon"
+    And the element "name_required" has the format "font-weight=400"
+    And the image "name_error_icon" is "blank_error_icon"
+    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+
+    When I type "NodeName"
+    And I type the "Tab" special key
+    Then the element "name_required" has the format "font-weight=400"
+    And the image "name_error_icon" is "blank_error_icon"
+    And the element "description_recommended" has the format "font-weight=400"
+    And the image "description_error_icon" is "blank_error_icon"
+    And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+
+    When I type the "Tab" special key
+    Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "description_recommended" has the format "font-weight=bold"
+    And the image "description_error_icon" is "warn_error_icon"
+
+    When I put the focus on the "node_description" element
+    And I type "Here is a very simple description."
+    Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "description_recommended" has the format "font-weight=400"
+    And the image "description_error_icon" is "blank_error_icon"
+
+    When I fill in "Name" with ""
+    Then the element "name_required" has the format "font-weight=bold"
+    And the image "name_error_icon" is "error_error_icon"
+    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "title_required" has the format "font-weight=400"
+    And the image "title_error_icon" is "blank_error_icon"
+
+    When I fill in "Title" with ""
+    Then the element "title_required" has the format "font-weight=bold"
+    And the image "title_error_icon" is "error_error_icon"
+    And the element "description_recommended" has the format "font-weight=400"
+    And the image "description_error_icon" is "blank_error_icon"
+
+    When I fill in "Description" with ""
+    Then the element "description_recommended" has the format "font-weight=bold"
+    And the image "description_error_icon" is "warn_error_icon"
+    And the element "sti_type_required" has the format "font-weight=400"
+    And the image "sti_type_error_icon" is "blank_error_icon"
+
+    When I select "- type of node -" from "Type"
+    And the element "sti_type_required" has the format "font-weight=bold"
+    And the image "sti_type_error_icon" is "error_error_icon"
+    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
 
 
 # WontoMedia - a wontology web application

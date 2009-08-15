@@ -21,6 +21,21 @@ When /^I type "([^\"]*)" into "([^\"]*)"$/ do |value, field|
 end
 
 
+When /^I type "([^\"]*)"$/ do |value|
+  value.each_byte{ |key|              # probably not good for anything but ASCII
+    if key >= 0x41 && key <= 0x5a
+      selenium.key_down_native(16)    # SHIFT key down for cap alphas
+      selenium.key_press_native(key)
+      selenium.key_up_native(16)
+    elsif key > 0x61 && key <= 0x7a
+      selenium.key_press_native(key - 0x20)
+    else
+      selenium.key_press_native(key)
+    end
+  }
+end
+
+
 When /^I type the "(.+)" special key$/ do |key_string|
   key = case key_string
         when /^Back$/     then   8

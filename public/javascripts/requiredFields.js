@@ -85,7 +85,7 @@ function clearFlag(elemName){
 
     // validation function
 function checkRequiredFields(e){
-  var anyErrors = false;
+  var errFlag = false;
   var eId = e.id;
   var c;
   for (c=0; c   <  requiredInputElements.length &&
@@ -101,16 +101,25 @@ function checkRequiredFields(e){
     if (ck.value == null || ck.value == ""){
 
       inputRequiredErrors["node_" + requiredInputElements[c]] = true;
-      anyErrors = true;
       flagAsRequired(requiredInputElements[c]);
+
+      if (c < requiredInputElements.length-2)
+        errFlag = true;
     }
     else {
       inputRequiredErrors["node_" + requiredInputElements[c]] = false;
     }
   }
 
-  if (anyErrors)
+  if (errFlag)
     makeButtonSeemDisabled($('node_submit'));
+}
+
+function anyErrors(){
+  for (var c=0; c < requiredInputElements.length-2; c++)
+    if (inputRequiredErrors["node_" + requiredInputElements[c]])
+      return true;
+  return false;
 }
 
 function checkAField(f){
@@ -121,20 +130,15 @@ function checkAField(f){
   if (f.value == null || f.value == ""){
     flagAsRequired(name);
     inputRequiredErrors[f.id] = true;
+    if (anyErrors())
+      makeButtonSeemDisabled($('node_submit'));
   }
   else {
     clearFlag(name);
     var oldErr = inputRequiredErrors[f.id];
     inputRequiredErrors[f.id] = false;
-    if (oldErr){
-      var c;
-      for (c=0; c < requiredInputElements.length-2 &&
-                !inputRequiredErrors["node_" + requiredInputElements[c]];
-           c++)
-        ;
-      if (c == requiredInputElements.length-2)  // no errors, yeah!
-        makeButtonSeemEnabled($('node_submit'));
-    }
+    if (oldErr && !anyErrors())
+      makeButtonSeemEnabled($('node_submit'));
   }
 }
 
@@ -172,7 +176,6 @@ function makeButtonSeemDisabled(button){
 var a = $('node_sti_type');
 a.onfocus=  function(){checkRequiredFields(a);};
 a.onkeypress= function(){setTimeout(checkAField, 50, a);};
-a.onclick   = function(){setTimeout(checkAField, 50, a);};
 a.onchange= function(){
   typeSelectOnchange();
   checkAField(a);
