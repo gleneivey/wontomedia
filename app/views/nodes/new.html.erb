@@ -42,34 +42,7 @@
       <span id="sti_type_required">Selection of a type is required.</span>
     </p>
     <script type="text/javascript">
-      var sel = $('node_sti_type');
-      sel.focus();
-      sel.onchange = function(){
-        var tags = [ "category_title", "category_desc",
-                     "item_title",     "item_desc",
-                     "property_title", "property_desc" ];
-        for (var c=0; c != tags.length; c++)
-          document.getElementById(tags[c]).className = "";
-
-        if (sel.value == "ClassNode"){
-          document.getElementById("category_title").className =
-            "titleSelectedItemDescription";
-          document.getElementById("category_desc").className =
-            "bodySelectedItemDescription";
-        }
-        else if (sel.value == "ItemNode"){
-          document.getElementById("item_title").className =
-            "titleSelectedItemDescription";
-          document.getElementById("item_desc").className =
-            "bodySelectedItemDescription";
-        }
-        else if (sel.value == "PropertyNode"){
-          document.getElementById("property_title").className =
-            "titleSelectedItemDescription";
-          document.getElementById("property_desc").className =
-            "bodySelectedItemDescription";
-        }
-      }
+      $('node_sti_type').focus();
     </script>
 
     <%= render :partial => "form_fields", :locals => { :f => f } %>

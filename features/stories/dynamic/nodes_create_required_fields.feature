@@ -26,7 +26,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #       the "recommended" instruction text.
 
 
-  Scenario: Empty form incrementally displays "required" flags
+  Scenario: Empty form incrementally displays flag text/icons
     # new page: focus on Type, all inputs blank, none flagged
     When I am on the new nodes page
     Then the element "sti_type_required" has the format "font-weight=400"
@@ -83,7 +83,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "description_error_icon" is "warn_error_icon"
 
 
-  Scenario: Empty form displays all blank flags on (disabled) Create click
+  Scenario: Empty form displays flags & dialog on (disabled) Create click
     # by default, a new/empty form can't be submitted
     When I am on the new nodes page
     And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
@@ -110,9 +110,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
 # Fill in fields one at a time; observe removal of "required" flag as each is changed.
 
-# Fill in each field in correct order, tab between them, observe no "required" flags displayed.
-
-# Fill in form in reverse tab-order. Observe removal of "required" flags as changes are made. Empty each input field in random order, observing appearance of "required" flags. Rotate focus through all fields after each change.
+# Fill in form in reverse tab-order. Observe removal of "required" flags as changes are made. Empty each input field in random order, observing appearance of "required" flags.
 
 
 # WontoMedia - a wontology web application

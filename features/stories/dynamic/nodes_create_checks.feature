@@ -9,7 +9,8 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 # may be validated in development tests)
 #
 #  - focus is automatically on first form control when page is loaded
-#  - form tab-order is: Type, Title, Name, Description
+#  - form tab-order is: Type, Title, Name, Description, Create(button)
+#  - see "nodes_create_checks_required_fields" for "required input" behaviors
 #
 #  - node.sti_type choice feedback: emphasize type name in descriptive/help
 #     text to match the type currently selected in the control

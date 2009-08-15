@@ -66,6 +66,10 @@ begin    # don't force Cucumber dependency on non-developers
                           "features:dynamic_acceptance"   ]
     task :unfinished => [ "features:static_unfinished",
                           "features:dynamic_unfinished"   ]
+    task :static     => [ "features:static_acceptance",
+                          "features:static_unfinished"   ]
+    task :dynamic    => [ "features:dynamic_acceptance",
+                          "features:dynamic_unfinished"   ]
   end
 
   task :features => [ "features:acceptance",

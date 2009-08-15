@@ -20,6 +20,7 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
+  var submitId = "node_submit";
   var flagTextIds = [ "sti_type_required", "title_required", "name_required",
                       "description_recommended" ];
   var flagIconIds = [ "sti_type_error_icon", "title_error_icon",
@@ -27,7 +28,7 @@ Screw.Unit(function(){
   var flagIconSrc = [ "error_error_icon", "error_error_icon",
                       "error_error_icon", "warn_error_icon" ];
   var inputIds    = [ "node_sti_type", "node_title", "node_name",
-                      "node_description", "node_submit" ];
+                      "node_description", submitId ];
 
   describe( "Dynamic required input field checks in nodes/new page", function(){
     describe( "Check results with no user input", function(){
@@ -64,8 +65,59 @@ Screw.Unit(function(){
         }
       });
 
+      it( "Clears input-required flags on input", function(){
+        var tf = document.getElementById('test_frame');
+        var d = tf.contentDocument;
+
+        // first set inputs from bottom, then start over from top
+        var letters = [ "ClassNode", "G", "K", "q" ];
+        var innerLoopStart = [ inputIds.length-2, 0 ];
+        var innerLoopEnd   = [ -1,                inputIds.length-1 ];
+        var innerLoopDelta = [ -1,                1 ];
+        for (var c=0; c < 2; c++){
+
+          d.getElementById(submitId).focus();     // all inputs flagged
+
+          for (var cn=innerLoopStart[c];
+               cn != innerLoopEnd[c];
+               cn += innerLoopDelta[c]){
+
+            var elem = d.getElementById(inputIds[cn]);
+            elem.focus();
+            elem.value = letters[cn];
+            elem.blur();
+
+            var ct;
+            for (ct = innerLoopStart[c];
+                 ct != cn + innerLoopDelta[c];
+                 ct += innerLoopDelta[c]){
+              expect(d.getElementById(flagTextIds[ct]).className).
+                to_not(match, /helpTextFlagged/);
+              expect(d.getElementById(flagIconIds[ct]).src).to(match,
+                /blank_error_icon\.png/);
+            }
+            for (;ct != innerLoopEnd[c];
+                 ct += innerLoopDelta[c]){
+              expect(d.getElementById(flagTextIds[ct]).className).
+                to(match, /helpTextFlagged/);
+              expect(d.getElementById(flagIconIds[ct]).src).to(match,
+                new RegExp(flagIconSrc[ct] + "\\.png"));
+            }
+          }
+
+          // setup for next pass
+          var src = tf.src;
+          tf.src = src;
+          letters = [ "PropertyNode", "p", "t", "Z" ];
+        }
+      });
+
 /*
-      it( "", function(){
+      it( "Sets input-required flags when input changed to blank", function(){
+
+      });
+
+      it( "Enables 'Create' button if required input provided", function(){
 
       });
 */
