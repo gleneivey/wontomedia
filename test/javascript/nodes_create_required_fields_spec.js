@@ -32,6 +32,13 @@ Screw.Unit(function(){
 
   describe( "Dynamic required input field checks in nodes/new page", function(){
     describe( "Check results with no user input", function(){
+      it( "Shows 'Create' button inactive when blank page first loaded",
+          function(){
+        var d = document.getElementById('test_frame').contentDocument;
+        expect(d.getElementById('node_submit').className).
+          to(match, /inactiveButton/);
+      });
+
       it( "Doesn't display flags when blank page first loaded", function(){
         var d = document.getElementById('test_frame').contentDocument;
 
@@ -105,6 +112,10 @@ Screw.Unit(function(){
             }
           }
 
+          // and check that "Create" button is now enabled
+          expect(d.getElementById('node_submit').className).
+            to(match, /^activeButton/);
+
           // setup for next pass
           var src = tf.src;
           tf.src = src;
@@ -114,10 +125,6 @@ Screw.Unit(function(){
 
 /*
       it( "Sets input-required flags when input changed to blank", function(){
-
-      });
-
-      it( "Enables 'Create' button if required input provided", function(){
 
       });
 */

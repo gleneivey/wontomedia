@@ -21,8 +21,8 @@
 function typeSelectOnchange(){
   var sel = $('node_sti_type');
   var tags = [ "category_title", "category_desc",
-	       "item_title",     "item_desc",
-	       "property_title", "property_desc" ];
+               "item_title",     "item_desc",
+               "property_title", "property_desc" ];
 
   for (var c=0; c != tags.length; c++)
     $(tags[c]).className = "";
@@ -58,7 +58,7 @@ var inputElementNames = [ "Type selector", "Title field", "Name field",
     //           true  -> required field not filled
 var inputRequiredErrors = {};
 for (var c=0; c < requiredInputElements.length-2; c++)
-  inputRequiredErrors[requiredInputElements[c]];
+  inputRequiredErrors["node_" + requiredInputElements[c]] = -1;
 
 
 function flagAsRequired(elemName){
@@ -100,12 +100,12 @@ function checkRequiredFields(e){
     ck = $("node_" + requiredInputElements[c]);
     if (ck.value == null || ck.value == ""){
 
-      inputRequiredErrors[requiredInputElements[c]] = true;
+      inputRequiredErrors["node_" + requiredInputElements[c]] = true;
       anyErrors = true;
       flagAsRequired(requiredInputElements[c]);
     }
     else {
-      inputRequiredErrors[requiredInputElements[c]] = false;
+      inputRequiredErrors["node_" + requiredInputElements[c]] = false;
     }
   }
 
@@ -119,12 +119,22 @@ function checkAField(f){
   var name = idAry[1];
 
   if (f.value == null || f.value == ""){
-    inputRequiredErrors[f.id] = true;
     flagAsRequired(name);
+    inputRequiredErrors[f.id] = true;
   }
   else {
-    inputRequiredErrors[f.id] = false;
     clearFlag(name);
+    var oldErr = inputRequiredErrors[f.id];
+    inputRequiredErrors[f.id] = false;
+    if (oldErr){
+      var c;
+      for (c=0; c < requiredInputElements.length-2 &&
+                !inputRequiredErrors["node_" + requiredInputElements[c]];
+           c++)
+        ;
+      if (c == requiredInputElements.length-2)  // no errors, yeah!
+        makeButtonSeemEnabled($('node_submit'));
+    }
   }
 }
 
@@ -134,7 +144,7 @@ function genDialog(){
   var accum = false;
 
   for (var c=0; c < requiredInputElements.length-2; c++){
-    if (inputRequiredErrors[requiredInputElements[c]]){
+    if (inputRequiredErrors["node_" + requiredInputElements[c]]){
       accum = true;
       newDialogText += "The " + inputElementNames[c] + " is required. ";
     }
@@ -161,6 +171,8 @@ function makeButtonSeemDisabled(button){
     // plumb validation function to relevant elements
 var a = $('node_sti_type');
 a.onfocus=  function(){checkRequiredFields(a);};
+a.onkeypress= function(){setTimeout(checkAField, 50, a);};
+a.onclick   = function(){setTimeout(checkAField, 50, a);};
 a.onchange= function(){
   typeSelectOnchange();
   checkAField(a);
@@ -169,16 +181,18 @@ a.onchange= function(){
 var b = $('node_title');
 b.onfocus= function(){checkRequiredFields(b);};
 b.onchange= function(){checkAField(b);};
+b.onkeypress= function(){setTimeout(checkAField, 50, b);};
 var c = $('node_name');
 c.onfocus= function(){checkRequiredFields(c);};
 c.onchange= function(){checkAField(c);};
+c.onkeypress= function(){setTimeout(checkAField, 50, c);};
 var d = $('node_description');
 d.onfocus= function(){checkRequiredFields(d);};
 d.onchange= function(){checkAField(d);};
+d.onkeypress= function(){setTimeout(checkAField, 50, d);};
 
 var e = $('node_submit');
 e.onfocus= function(){checkRequiredFields(e);};
-e.onchange= function(){checkAField(e);};
 makeButtonSeemDisabled(e);
 e.onclick = function(){
   checkRequiredFields(e);
