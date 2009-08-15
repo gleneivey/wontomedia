@@ -10,6 +10,9 @@ providers, etc.
 
 In short, the deployment procedure is as follows:
 
+ * from any web browser, back up the current database content by fetching
+   both a 'nodes.yaml' and an 'edges.n3' file from http://wontology.org/admin
+
  * from the root of a wontomedia directory tree:
       $ rake                                   # which will build a release gem
       $ ./deploy/wontology-on-a2hosting/deploy-to-a2.sh
@@ -17,7 +20,8 @@ In short, the deployment procedure is as follows:
  * from the root of the A2 user account:
      [  shutdown WontoMedia via cPanel RoR widget ]
       $ ./install-wontomedia.sh
-     [  rake db:<whatever> if necessary ]
+      $ cd etc/rails_apps/WontoMedia
+      $ RAILS_ENV=production rake db:reseed            # if necessary
      [  start WontoMedia via cPanel RoR widget ]
 
 

@@ -45,107 +45,114 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-plugin_prefix = "#{RAILS_ROOT}/vendor/plugins/blue-ridge"
-rhino_command = "java -Dblue.ridge.prefix=\"#{plugin_prefix}\" " +
-                    " -cp #{plugin_prefix}/lib/js.jar:" +
-                         "#{plugin_prefix}/lib/mainForEnvjs.jar " +
-                "org.wontology.floss.rhino.envjs.EnvjsRhinoMain -w -debug"
-test_runner_command = "#{rhino_command} #{plugin_prefix}/lib/test_runner.js"
+begin   # don't force Blue Ridge dependency on non-developers
+
+  plugin_prefix = "#{RAILS_ROOT}/vendor/plugins/blue-ridge"
+  rhino_command = "java -Dblue.ridge.prefix=\"#{plugin_prefix}\" " +
+                      " -cp #{plugin_prefix}/lib/js.jar:" +
+                           "#{plugin_prefix}/lib/mainForEnvjs.jar " +
+                  "org.wontology.floss.rhino.envjs.EnvjsRhinoMain -w -debug"
+  test_runner_command = "#{rhino_command} #{plugin_prefix}/lib/test_runner.js"
 
 
-@link_root = "js-test-files"
-@test_path = "test/javascript/fixtures"
+  @link_root = "js-test-files"
+  @test_path = "test/javascript/fixtures"
 
 
-# Support Test::Unit & Test/Spec style
-namespace :test do
-  desc "Runs all the JavaScript tests and outputs the results"
-  task :javascripts do
-    Dir.chdir("#{RAILS_ROOT}/test/javascript") do
-      all_fine = true
+  # Support Test::Unit & Test/Spec style
+  namespace :test do
+    desc "Runs all the JavaScript tests and outputs the results"
+    task :javascripts do
+      Dir.chdir("#{RAILS_ROOT}/test/javascript") do
+        all_fine = true
 
+        begin
+          setup_for_js_testing
+
+          if ENV["TEST"]
+            all_fine = false unless
+              system "#{test_runner_command} #{ENV["TEST"]}_spec.js"
+          else
+            Dir.glob("**/*_spec.js").each do |file|
+              all_fine = false unless system "#{test_runner_command} #{file}"
+            end
+          end
+        ensure
+          cleanup_after_js_testing
+        end
+
+        raise "JavaScript test failures" unless all_fine
+      end
+    end
+  end
+
+
+  # use webrat's machinery for starting up a test server running our app
+  require 'webrat'
+  require 'webrat/selenium'
+  require 'webrat/selenium/selenium_session'
+  require 'webrat/selenium/rails_application_server'
+
+
+  namespace :js do
+    task :fixtures do
       begin
         setup_for_js_testing
 
-        if ENV["TEST"]
-          all_fine = false unless
-            system "#{test_runner_command} #{ENV["TEST"]}_spec.js"
-        else
-          Dir.glob("**/*_spec.js").each do |file|
-            all_fine = false unless system "#{test_runner_command} #{file}"
-          end
+        # Create an "index.html" file listing JS test fixtures because
+        # Rails won't automatically index accesses to directories under
+        # /public.
+        #### TODO
+
+        fixture_dir =
+          "http://localhost:3001/#{@link_root}/#{@test_path}/index.html"
+        if PLATFORM[/darwin/]
+          system "open #{fixture_dir}"
+        elsif PLATFORM[/linux/]
+          system "firefox #{fixture_dir}"
         end
       ensure
         cleanup_after_js_testing
       end
+    end
 
-      raise "JavaScript test failures" unless all_fine
+    task :shell do
+      rlwrap = `which rlwrap`.chomp
+      system "#{rlwrap} #{rhino_command} -f #{plugin_prefix}/lib/shell.js -f -"
     end
   end
-end
 
 
-# use webrat's machinery for starting up a test server running our app
-require 'webrat'
-require 'webrat/selenium'
-require 'webrat/selenium/selenium_session'
-require 'webrat/selenium/rails_application_server'
+  private
 
+  def setup_for_js_testing
+    # Link the JavaScript test folder under /public to avoid "same
+    # origin policy" (DEVELOPTMENT ONLY!).
+    system "ln -s #{RAILS_ROOT} #{RAILS_ROOT}/public/#{@link_root}"
 
-namespace :js do
-  task :fixtures do
-    begin
-      setup_for_js_testing
+    # Start a test web server.  (Note, originally tried the Webrat::Selenium
+    # classes to do this, but found that their automatically calling
+    # server stop() at_exit caused Rake to fail when multiple attempts
+    # to stop the same server occurred.  Making ApplicationServer.start()
+    # and .stop() internally veryify the absence/presence of the Mongrel
+    # pid also solved the problem, but I didn't want to have to patch Webrat.
 
-      # Create an "index.html" file listing JS test fixtures because
-      # Rails won't automatically index accesses to directories under
-      # /public.
-      #### TODO
+    system "mongrel_rails start -d --chdir='#{RAILS_ROOT}' " +
+           "--port=#{Webrat.configuration.application_port} " +
+           "--environment=#{Webrat.configuration.application_environment} " +
+           "--pid #{Webrat::Selenium::RailsApplicationServer.new.pid_file} &"
+  end
 
-      fixture_dir =
-        "http://localhost:3001/#{@link_root}/#{@test_path}/index.html"
-      if PLATFORM[/darwin/]
-        system "open #{fixture_dir}"
-      elsif PLATFORM[/linux/]
-        system "firefox #{fixture_dir}"
-      end
-    ensure
-      cleanup_after_js_testing
+  def cleanup_after_js_testing
+    STDOUT.puts                    # Blue Ridge doesn't put a \n after last "."
+    system "rm #{RAILS_ROOT}/public/#{@link_root}"
+    silence_stream(STDOUT) do
+      system "mongrel_rails stop -c #{RAILS_ROOT} " +
+             "--pid #{Webrat::Selenium::RailsApplicationServer.new.pid_file}"
     end
   end
-  
-  task :shell do
-    rlwrap = `which rlwrap`.chomp
-    system "#{rlwrap} #{rhino_command} -f #{plugin_prefix}/lib/shell.js -f -"
-  end
+
+rescue LoadError
+  puts "WARNING: Missing development dependency.  'Blue Ridge', 'Webrat', or a dependency not available. To install, see 'http://wiki.wontology.org/SettingUpYourDevelopmentEnvironment'"
 end
 
-
-private
-
-def setup_for_js_testing
-  # Link the JavaScript test folder under /public to avoid "same
-  # origin policy" (DEVELOPTMENT ONLY!).
-  system "ln -s #{RAILS_ROOT} #{RAILS_ROOT}/public/#{@link_root}"
-
-  # Start a test web server.  (Note, originally tried the Webrat::Selenium
-  # classes to do this, but found that their automatically calling
-  # server stop() at_exit caused Rake to fail when multiple attempts
-  # to stop the same server occurred.  Making ApplicationServer.start()
-  # and .stop() internally veryify the absence/presence of the Mongrel
-  # pid also solved the problem, but I didn't want to have to patch Webrat.
-
-  system "mongrel_rails start -d --chdir='#{RAILS_ROOT}' " +
-         "--port=#{Webrat.configuration.application_port} " +
-         "--environment=#{Webrat.configuration.application_environment} " +
-         "--pid #{Webrat::Selenium::RailsApplicationServer.new.pid_file} &"
-end
-
-def cleanup_after_js_testing
-  STDOUT.puts                    # Blue Ridge doesn't put a \n after last "."
-  system "rm #{RAILS_ROOT}/public/#{@link_root}"
-  silence_stream(STDOUT) do
-    system "mongrel_rails stop -c #{RAILS_ROOT} " +
-           "--pid #{Webrat::Selenium::RailsApplicationServer.new.pid_file}"
-  end
-end
