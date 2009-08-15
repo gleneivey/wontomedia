@@ -50,12 +50,6 @@ begin    # don't force Cucumber dependency on non-developers
       t.feature_list = Dir.glob("features/**/dynamic/**/*.feature")
     end
 
-    Cucumber::Rake::Task.new(:dynamic_unfinished => 'db:test:prepare') do |t|
-      t.fork = true
-      t.cucumber_opts = "-p dynamic_unfinished"
-      t.feature_list = Dir.glob("features/**/dynamic/**/*.feature")
-    end
-
     Cucumber::Rake::Task.new(:selenium => 'db:test:prepare') do |t|
       t.fork = true
       t.cucumber_opts = "-p selenium"
