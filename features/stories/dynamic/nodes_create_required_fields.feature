@@ -123,7 +123,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "description_error_icon" is "blank_error_icon"
 
 
-  Scenario: When all fiels are filled in, submit button is enabled
+  Scenario: When all fields are filled in, submit button is enabled
     Given I am on the new nodes page
     When I put the focus on the "node_submit" element
     Then the element "sti_type_required" has the format "font-weight=bold"
