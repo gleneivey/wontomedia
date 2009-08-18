@@ -172,10 +172,14 @@ function makeButtonSeemDisabled(button){
 }
 
 
+  // after keypress events, have to wait for browser to update the input field
+  // before we check it (delay in ms)
+var dly = 80;
+
     // plumb validation function to relevant elements
 var a = $('node_sti_type');
 a.onfocus=  function(){checkRequiredFields(a);};
-a.onkeypress= function(){setTimeout(checkAField, 50, a);};
+a.onkeypress= function(){setTimeout(checkAField, dly, a);};
 a.onchange= function(){
   typeSelectOnchange();
   checkAField(a);
@@ -184,15 +188,15 @@ a.onchange= function(){
 var b = $('node_title');
 b.onfocus= function(){checkRequiredFields(b);};
 b.onchange= function(){checkAField(b);};
-b.onkeypress= function(){setTimeout(checkAField, 50, b);};
+b.onkeypress= function(){setTimeout(checkAField, dly, b);};
 var c = $('node_name');
 c.onfocus= function(){checkRequiredFields(c);};
 c.onchange= function(){checkAField(c);};
-c.onkeypress= function(){setTimeout(checkAField, 50, c);};
+c.onkeypress= function(){setTimeout(checkAField, dly, c);};
 var d = $('node_description');
 d.onfocus= function(){checkRequiredFields(d);};
 d.onchange= function(){checkAField(d);};
-d.onkeypress= function(){setTimeout(checkAField, 50, d);};
+d.onkeypress= function(){setTimeout(checkAField, dly, d);};
 
 var e = $('node_submit');
 e.onfocus= function(){checkRequiredFields(e);};
