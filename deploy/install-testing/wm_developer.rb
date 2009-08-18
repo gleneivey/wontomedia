@@ -28,18 +28,10 @@ def exc(cmd)
   exit $?.exitstatus if $?.exitstatus != 0
 end
 
-selenium_ver = "1.0.1"
-selenium_dir = "selenium-remote-control-#{selenium_ver}"
-unless File.exist?("#{selenium_dir}-dist.zip")
-  exc "wget http://release.seleniumhq.org/selenium-remote-control/" +
-    "#{selenium_ver}/#{selenium_dir}-dist.zip"
-end
-exc "unzip -o #{selenium_dir}-dist.zip"
-
 exc "apt-get -y #{apt_load_options} install libxml2-dev libxslt1-dev"
 
 
-      # don't get stuck on accepting the license dialog
+      # don't get stuck on accepting-the-license dialog
 exc "sed --in-place=.backup " +
       " -e '/^Template: shared\\/accepted-sun-dlj-v1-1/aValue: true' " +
       " -e '/^Template: shared\\/accepted-sun-dlj-v1-1/aFlags: seen' " +
@@ -50,15 +42,10 @@ exc "apt-get -y #{apt_load_options} install sun-java6-bin sun-java6-jre java-com
 exc "gem1.8 install nokogiri"
 exc "gem1.8 install rspec rspec-rails webrat cucumber"
 exc "gem1.8 install rubyforge technicalpickles-jeweler ZenTest"
-exc "gem1.8 install migration_test_helper Selenium selenium-client mongrel"
+exc "gem1.8 install migration_test_helper selenium-client mongrel"
 
-gems_dir = "/usr/lib/ruby/gems/1.8/gems"
-exc "cp #{selenium_dir}/selenium-server-#{selenium_ver}/selenium-server.jar " +
-      "#{gems_dir}/webrat-0.4.4/vendor"
-exc "cp #{selenium_dir}/selenium-server-#{selenium_ver}/selenium-server.jar " +
-      "#{gems_dir}/Selenium-1.1.14/lib/selenium/openqa/selenium-server.jar.txt"
 exc "ln -s /usr/lib/firefox-3.0.11/firefox /usr/bin/firefox-bin"
 
 puts "If you want autotest to execute Cucumber tests, remember to add 'export AUTOFEATURE=\"true autospec\"' to the bottom of your .bashrc file (or the equivalent for your shell)."
-puts "Don't forget to run 'rake db:reseed' prior to starting development."
+puts "Don't forget to run 'rake db:reseed' (for a new installation) prior to starting development."
 

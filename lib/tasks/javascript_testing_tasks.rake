@@ -91,7 +91,7 @@ begin   # don't force Blue Ridge dependency on non-developers
   require 'webrat'
   require 'webrat/selenium'
   require 'webrat/selenium/selenium_session'
-  require 'webrat/selenium/rails_application_server'
+  require 'webrat/selenium/application_servers/rails'
 
 
   namespace :js do
@@ -140,7 +140,7 @@ begin   # don't force Blue Ridge dependency on non-developers
     system "mongrel_rails start -d --chdir='#{RAILS_ROOT}' " +
            "--port=#{Webrat.configuration.application_port} " +
            "--environment=#{Webrat.configuration.application_environment} " +
-           "--pid #{Webrat::Selenium::RailsApplicationServer.new.pid_file} &"
+           "--pid #{Webrat::Selenium::ApplicationServers::Rails.new.pid_file} &"
   end
 
   def cleanup_after_js_testing
@@ -148,7 +148,7 @@ begin   # don't force Blue Ridge dependency on non-developers
     system "rm #{RAILS_ROOT}/public/#{@link_root}"
     silence_stream(STDOUT) do
       system "mongrel_rails stop -c #{RAILS_ROOT} " +
-             "--pid #{Webrat::Selenium::RailsApplicationServer.new.pid_file}"
+             "--pid #{Webrat::Selenium::ApplicationServers::Rails.new.pid_file}"
     end
   end
 
