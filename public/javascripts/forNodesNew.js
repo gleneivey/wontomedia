@@ -52,14 +52,19 @@ var requiredInputElements = [ "sti_type", "title", "name",
                               "description", "submit" ];
 var inputElementNames = [ "Type selector", "Title field", "Name field",
                           "Description box", "Create button" ];
+var indexTitle       = 1;
+var indexName        = 2;
+var indexDescription = 3;
+var maxLengths = [ 0, 255, 80, 65535 ];
 
     // encoding: -1    -> haven't checked yet
     //           false -> no error
-    //           true  -> required field not filled
-var inputRequiredErrors = {};
+    //           true  -> error condition present
+var inputErrors = {};
 for (var c=0; c < requiredInputElements.length-2; c++)
-  inputRequiredErrors["node_" + requiredInputElements[c]] = -1;
-
+  inputErrors["node_" + requiredInputElements[c]] = -1;
+for (var c=1; c < requiredInputElements.length-1; c++)
+  inputErrors["length_" + requiredInputElements[c]] = false;
 
 function flagAsRequired(elemName){
   var req = $(elemName + "_required");
@@ -79,7 +84,44 @@ function clearFlag(elemName){
     req.className = "";
   else
     $(elemName + "_recommended").className = "";
-  $(elemName + "_error_icon").src = "/images/blank_error_icon.png";
+}
+
+function maybeClearIcon(field){
+  icon = $(field + "_error_icon");
+  var mtch = icon.src.match(/blank_/);
+  if (mtch == null || mtch.length == 0){
+
+    // "recommended" is a special case....
+    var descReco = inputErrors["node_description"];
+    inputErrors["node_description"] = false;
+
+    var canClear = true;
+    for (var err in inputErrors){
+      mtch = err.match(new RegExp(field));
+      if (mtch != null && mtch.length > 0 && inputErrors[err]){
+        inputErrors["node_description"] = descReco;  // restore
+        canClear = false;
+        break;
+      }
+    }
+
+    if (canClear){
+      if (field == "description" && descReco){
+        inputErrors["node_description"] = true;
+        icon.src = "/images/warn_error_icon.png";
+      }
+      else
+        icon.src = "/images/blank_error_icon.png";
+    }
+  }
+
+
+  for (var err in inputErrors)
+    if (err != "node_description" && inputErrors[err] != false){
+      makeButtonSeemDisabled($('node_submit'));
+      return;
+    }
+  makeButtonSeemEnabled($('node_submit'));
 }
 
 
@@ -100,14 +142,14 @@ function checkRequiredFields(e){
     ck = $("node_" + requiredInputElements[c]);
     if (ck.value == null || ck.value == ""){
 
-      inputRequiredErrors["node_" + requiredInputElements[c]] = true;
+      inputErrors["node_" + requiredInputElements[c]] = true;
       flagAsRequired(requiredInputElements[c]);
 
       if (c < requiredInputElements.length-2)
         errFlag = true;
     }
     else {
-      inputRequiredErrors["node_" + requiredInputElements[c]] = false;
+      inputErrors["node_" + requiredInputElements[c]] = false;
     }
   }
 
@@ -115,30 +157,31 @@ function checkRequiredFields(e){
     makeButtonSeemDisabled($('node_submit'));
 }
 
-function anyErrors(){
-  for (var c=0; c < requiredInputElements.length-2; c++)
-    if (inputRequiredErrors["node_" + requiredInputElements[c]])
-      return true;
-  return false;
-}
-
-function checkAField(f){
+function checkFieldRequired(f){
   var idStr = f.id;
   var idAry = idStr.match(/^node_(.+)$/);
   var name = idAry[1];
 
   if (f.value == null || f.value == ""){
     flagAsRequired(name);
-    inputRequiredErrors[f.id] = true;
-    if (anyErrors())
-      makeButtonSeemDisabled($('node_submit'));
+    inputErrors[f.id] = true;
   }
   else {
     clearFlag(name);
-    var oldErr = inputRequiredErrors[f.id];
-    inputRequiredErrors[f.id] = false;
-    if (oldErr && !anyErrors())
-      makeButtonSeemEnabled($('node_submit'));
+    var oldErr = inputErrors[f.id];
+    inputErrors[f.id] = false;
+  }
+}
+
+function checkFieldLength(elem, name, index){
+  if (elem.value.length > maxLengths[index]){
+    $(name + '_too_long').className = "helpTextFlagged";
+    inputErrors['length_' + name] = true;
+    $(name + "_error_icon").src = "/images/error_error_icon.png";
+  }
+  else {
+    $(name + '_too_long').className = "";
+    inputErrors['length_' + name] = false;
   }
 }
 
@@ -148,9 +191,16 @@ function genDialog(){
   var accum = false;
 
   for (var c=0; c < requiredInputElements.length-2; c++){
-    if (inputRequiredErrors["node_" + requiredInputElements[c]]){
+    if (inputErrors["node_" + requiredInputElements[c]] == true){
       accum = true;
       newDialogText += "The " + inputElementNames[c] + " is required. ";
+    }
+  }
+  for (var c=1; c < requiredInputElements.length-1; c++){
+    if (inputErrors["length_" + requiredInputElements[c]] == true){
+      accum = true;
+      newDialogText += "The " + inputElementNames[c] + " field must be " +
+        maxLengths[c] + " or fewer characters. ";
     }
   }
 
@@ -174,29 +224,51 @@ function makeButtonSeemDisabled(button){
 
   // after keypress events, have to wait for browser to update the input field
   // before we check it (delay in ms)
-var dly = 80;
+var dly = 200;
 
     // plumb validation function to relevant elements
 var a = $('node_sti_type');
 a.onfocus=  function(){checkRequiredFields(a);};
-a.onkeypress= function(){setTimeout(checkAField, dly, a);};
+function checkType(){
+  checkFieldRequired(a);
+  maybeClearIcon('sti_type');
+}
+a.onkeypress= function(){setTimeout(checkType, dly);};
 a.onchange= function(){
   typeSelectOnchange();
-  checkAField(a);
+  checkFieldRequired(a);
+  maybeClearIcon('sti_type');
 };
 
 var b = $('node_title');
 b.onfocus= function(){checkRequiredFields(b);};
-b.onchange= function(){checkAField(b);};
-b.onkeypress= function(){setTimeout(checkAField, dly, b);};
+function checkTitle(){
+  checkFieldRequired(b);
+  checkFieldLength(b, "title", indexTitle);
+  maybeClearIcon('title');
+}
+b.onchange= function(){checkTitle();};
+b.onkeypress= function(){setTimeout(checkTitle, dly);};
+
 var c = $('node_name');
 c.onfocus= function(){checkRequiredFields(c);};
-c.onchange= function(){checkAField(c);};
-c.onkeypress= function(){setTimeout(checkAField, dly, c);};
+function checkName(){
+  checkFieldRequired(c);
+  checkFieldLength(c, "name", indexName);
+  maybeClearIcon('name');
+}
+c.onchange= function(){checkName();};
+c.onkeypress= function(){setTimeout(checkName, dly);};
+
 var d = $('node_description');
 d.onfocus= function(){checkRequiredFields(d);};
-d.onchange= function(){checkAField(d);};
-d.onkeypress= function(){setTimeout(checkAField, dly, d);};
+function checkDescription(){
+  checkFieldRequired(d);
+  checkFieldLength(d, "description", indexDescription);
+  maybeClearIcon('description');
+}
+d.onchange= function(){checkDescription();};
+d.onkeypress= function(){setTimeout(checkDescription, dly);};
 
 var e = $('node_submit');
 e.onfocus= function(){checkRequiredFields(e);};
@@ -211,5 +283,4 @@ e.onclick = function(){
     makeButtonSeemEnabled(e);
   return !errors;
 }
-
 

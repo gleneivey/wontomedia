@@ -16,7 +16,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #     text to match the type currently selected in the control
 #
 #  - node.title content checks:
-#     - not too long
 #     - only one line (doesn't contain any line-break whitespace)
 #
 #  - node.name auto-generation:
@@ -31,13 +30,9 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #       Property, upper C.C. otherwise)
 #
 #  - node.name content checks:
-#     - not too long
 #     - no unallowed characters
 #        - 1st character
 #        - 2nd+ character
-#
-#  - node.description content checks:
-#     - not too long
 
 
   Scenario: nodes/new form defaults focus to Type "select" control
@@ -63,7 +58,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Then the element "category_title" has the format "font-weight=bold"
     And the element "category_title" has the format "text-decoration=underline"
     And the element "category_desc" has the format "font-weight=bold"
-
 
 
 # WontoMedia - a wontology web application
