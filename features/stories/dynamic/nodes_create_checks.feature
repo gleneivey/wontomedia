@@ -10,13 +10,13 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #
 #  - focus is automatically on first form control when page is loaded
 #  - form tab-order is: Type, Title, Name, Description, Create(button)
-#  - see "nodes_create_checks_required_fields" for "required input" behaviors
 #
 #  - node.sti_type choice feedback: emphasize type name in descriptive/help
 #     text to match the type currently selected in the control
 #
-#  - node.title content checks:
-#     - only one line (doesn't contain any line-break whitespace)
+#  - see "nodes_create_required_fields" for required input behaviors
+#  - see "nodes_create_too_long" for text input content too long behaviors
+#  - see "nodes_create_invalid" for text input invalid behaviors
 #
 #  - node.name auto-generation:
 #     - on keys typed into node.Title control, if node.Name control is
@@ -28,11 +28,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #       node.Title control content.  New value is node.Title content,
 #       whitespace removed, converted to CamelCase (lower C.C. if a
 #       Property, upper C.C. otherwise)
-#
-#  - node.name content checks:
-#     - no unallowed characters
-#        - 1st character
-#        - 2nd+ character
 
 
   Scenario: nodes/new form defaults focus to Type "select" control

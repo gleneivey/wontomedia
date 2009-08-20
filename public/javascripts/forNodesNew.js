@@ -78,14 +78,6 @@ function flagAsRequired(elemName){
   }
 }
 
-function clearFlag(elemName){
-  var req = $(elemName + "_required");
-  if ( req != null )
-    req.className = "";
-  else
-    $(elemName + "_recommended").className = "";
-}
-
 function maybeClearIcon(field){
   icon = $(field + "_error_icon");
   var mtch = icon.src.match(/blank_/);
@@ -159,21 +151,26 @@ function checkRequiredFields(e){
 
 function checkFieldRequired(f){
   var idStr = f.id;
-  var idAry = idStr.match(/^node_(.+)$/);
-  var name = idAry[1];
+  var name = idStr.match(/^node_(.+)$/)[1];
 
   if (f.value == null || f.value == ""){
     flagAsRequired(name);
-    inputErrors[f.id] = true;
+    inputErrors[idStr] = true;
   }
   else {
-    clearFlag(name);
-    var oldErr = inputErrors[f.id];
-    inputErrors[f.id] = false;
+    var req = $(name + "_required");
+    if ( req != null )
+      req.className = "";
+    else
+      $(name + "_recommended").className = "";
+
+    inputErrors[idStr] = false;
   }
 }
 
-function checkFieldLength(elem, name, index){
+function checkFieldLength(elem, index){
+  var name = elem.id.match(/^node_(.+)$/)[1];
+
   if (elem.value.length > maxLengths[index]){
     $(name + '_too_long').className = "helpTextFlagged";
     inputErrors['length_' + name] = true;
@@ -243,8 +240,20 @@ a.onchange= function(){
 var b = $('node_title');
 b.onfocus= function(){checkRequiredFields(b);};
 function checkTitle(){
+  // this check is unique to Title, do here
+  var mtch = b.value.match(/\n|\r/m);
+  if (mtch != null && mtch.length > 0){
+    $('title_multi_line').className = "helpTextFlagged";
+    inputErrors['ml_title'] = true;
+    $('title_error_icon').src = "/images/error_error_icon.png";
+  }
+  else {
+    $('title_multi_line').className = "";
+    inputErrors['ml_title'] = false;
+  }
+
   checkFieldRequired(b);
-  checkFieldLength(b, "title", indexTitle);
+  checkFieldLength(b, indexTitle);
   maybeClearIcon('title');
 }
 b.onchange= function(){checkTitle();};
@@ -254,7 +263,7 @@ var c = $('node_name');
 c.onfocus= function(){checkRequiredFields(c);};
 function checkName(){
   checkFieldRequired(c);
-  checkFieldLength(c, "name", indexName);
+  checkFieldLength(c, indexName);
   maybeClearIcon('name');
 }
 c.onchange= function(){checkName();};
@@ -264,7 +273,7 @@ var d = $('node_description');
 d.onfocus= function(){checkRequiredFields(d);};
 function checkDescription(){
   checkFieldRequired(d);
-  checkFieldLength(d, "description", indexDescription);
+  checkFieldLength(d, indexDescription);
   maybeClearIcon('description');
 }
 d.onchange= function(){checkDescription();};

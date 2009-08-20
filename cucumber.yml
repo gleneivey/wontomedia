@@ -18,47 +18,48 @@
 
 default:            -r features/support/env.rb   -r features/support/dynamic.rb
                     -r features/step_definitions
-                       --tags ~@not_for_selenium
+                       --tags ~@not_for_selenium --tags ~@invalid
                        --format pretty             features
 
 selenium:           -r features/support/env.rb   -r features/support/dynamic.rb
                     -r features/step_definitions
-                       --tags ~@not_for_selenium
+                       --tags ~@not_for_selenium --tags ~@invalid
                        --format progress           features
 
 manual:             -r features/support/env.rb   -r features/support/dynamic.rb
                     -r features/step_definitions
-                       --tags ~@not_for_selenium
+                       --tags ~@not_for_selenium --tags ~@invalid
                        --format pretty
 
   # profiles to be used from rake
 static_acceptance:  -r features/support/env.rb   -r features/support/static.rb
                     -r features/step_definitions
-                       --tags ~@unfinished
+                       --tags ~@unfinished --tags ~@invalid
                        --format progress
 
 static_unfinished:  -r features/support/env.rb   -r features/support/static.rb
                     -r features/step_definitions
-                       --tags @unfinished
+                       --tags @unfinished --tags ~@invalid
                        --format progress
 
 dynamic_acceptance: -r features/support/env.rb   -r features/support/dynamic.rb
                     -r features/step_definitions
-                       --tags ~@unfinished
+                       --tags ~@unfinished --tags ~@invalid
                        --format progress
 
 dynamic_unfinished: -r features/support/env.rb   -r features/support/dynamic.rb
                     -r features/step_definitions
-                       --tags @unfinished
+                       --tags @unfinished --tags ~@invalid
                        --format progress
 
 
 autotest:           -r features/support/env.rb   -r features/support/static.rb
                     -r features/step_definitions -r lib
-                       --tags ~@unfinished
+                       --tags ~@unfinished --tags ~@invalid
                        --format progress
 
 autotest-all:       -r features/support/env.rb   -r features/support/static.rb
                     -r features/step_definitions -r lib
+                       --tags ~@invalid
                        --format progress
 
