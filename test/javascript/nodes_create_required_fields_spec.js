@@ -27,16 +27,19 @@ Screw.Unit(function(){
                       "name_error_icon", "description_error_icon" ];
   var flagIconSrc = [ "error_error_icon", "error_error_icon",
                       "error_error_icon", "warn_error_icon" ];
+
   var inputIds    = [ "node_sti_type", "node_title", "node_name",
                       "node_description", submitId ];
+  var descIndex   = 3;
+
 
   describe( "Dynamic required input field checks in nodes/new page", function(){
     describe( "Check results with no user input", function(){
       it( "Shows 'Create' button inactive when blank page first loaded",
           function(){
         var d = document.getElementById('test_frame').contentDocument;
-        expect(d.getElementById('node_submit').className).
-          to(match, /inactiveButton/);
+        expect(d.getElementById(submitId).className).
+          to(match, /^inactiveButton$/);
       });
 
       it( "Doesn't display flags when blank page first loaded", function(){
@@ -113,8 +116,8 @@ Screw.Unit(function(){
           }
 
           // and check that "Create" button is now enabled
-          expect(d.getElementById('node_submit').className).
-            to(match, /^activeButton/);
+          expect(d.getElementById(submitId).className).
+            to(match, /^activeButton$/);
 
           // setup for next pass
           var src = tf.src;
@@ -123,11 +126,48 @@ Screw.Unit(function(){
         }
       });
 
-/*
-      it( "Sets input-required flags when input changed to blank", function(){
+      it( "Flags input elements when changed to blank", function(){
+        var d = document.getElementById('test_frame').contentDocument;
+        var submit = d.getElementById(submitId);
 
+        // first, fill in the form
+        d.getElementById(inputIds[0]).value = "ClassNode";       // Type
+        d.getElementById(inputIds[1]).value = "A title";         // Title
+        d.getElementById(inputIds[2]).value = "ANode";           // Name
+
+        var x = d.getElementById(inputIds[3]);
+        x.focus();
+        x.value = "Cool test node";                              // Description
+        x.blur();
+
+
+        // form should be submit-able
+        expect(submit.className).to(match, /^activeButton$/);
+
+        for (var c=descIndex; c >= 0; c--){
+          // starts out unflagged
+          expect(d.getElementById(flagTextIds[c]).className).
+            to_not(match, /helpTextFlagged/);
+          expect(d.getElementById(flagIconIds[c]).src).to(match,
+            /blank_error_icon\.png/);
+
+          // make input blank
+          var elem = d.getElementById(inputIds[c]);
+          elem.focus();
+          elem.value = "";
+          elem.blur();
+
+          // check flags, whether form still submit-able
+          expect(d.getElementById(flagTextIds[c]).className).
+            to(match, /helpTextFlagged/);
+          expect(d.getElementById(flagIconIds[c]).src).to(match,
+            new RegExp(flagIconSrc[c] + "\\.png"));
+          if (c == descIndex)
+            expect(submit.className).to(match, /^activeButton$/);
+          else
+            expect(submit.className).to(match, /^inactiveButton$/);
+        }
       });
-*/
     });
   });
 });
