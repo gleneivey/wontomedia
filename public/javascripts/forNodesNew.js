@@ -264,6 +264,8 @@ c.onfocus= function(){checkRequiredFields(c);};
 function checkName(){
   // these checks are unique to Name, do here
   var mtch, val = c.value;
+  $('name_start_char').className = "";
+  inputErrors['char_1_name'] = false;
   if (val.length > 0){
     mtch = val.match(/^[a-zA-Z]/);
     if (mtch == null || mtch.length == 0){
@@ -271,22 +273,16 @@ function checkName(){
       inputErrors['char_1_name'] = true;
       $('name_error_icon').src = "/images/error_error_icon.png";
     }
-    else {
-      $('name_start_char').className = "";
-      inputErrors['char_1_name'] = false;
-    }
   }
 
+  $('name_nth_char').className = "";
+  inputErrors['char_N_name'] = false;
   if (val.length > 1){
     mtch = c.value.match(/^.[a-zA-Z0-9_-]+$/);
     if (mtch == null || mtch.length == 0){
       $('name_nth_char').className = "helpTextFlagged";
       inputErrors['char_N_name'] = true;
       $('name_error_icon').src = "/images/error_error_icon.png";
-    }
-    else {
-      $('name_nth_char').className = "";
-      inputErrors['char_N_name'] = false;
     }
   }
 
