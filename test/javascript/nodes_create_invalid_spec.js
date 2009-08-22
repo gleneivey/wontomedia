@@ -21,6 +21,18 @@ require("spec_helper.js");
 
 Screw.Unit(function(){
 
+  function doPresets(presets){
+    // make sure we trigger onchange handlers, so other error checks done
+    for (var c=0; c < presets.length; c++){
+      var d = document.getElementById('test_frame').contentDocument;
+      var elem = d.getElementById(presets[c].elem);
+      elem.focus();
+      elem.value = presets[c].value;
+      elem.blur();
+    }
+  }
+
+
   describe( "Dynamic input checks in nodes/new page", function(){
     describe( "Validation of input to Title and Name", function(){
       it( "Checks the Title field for newlines", function(){
@@ -32,14 +44,7 @@ Screw.Unit(function(){
           { elem: 'node_name',        value: "TheNode" },
           { elem: 'node_description', value: "A Description." }
         ];
-        // make sure we trigger onchange handlers, so other error checks done
-        for (var c=0; c < presets.length; c++){
-          var elem = d.getElementById(presets[c].elem);
-          elem.focus();
-          elem.value = presets[c].value;
-          elem.blur();
-        }
-
+        doPresets(presets);
 
         var titleSpan = d.getElementById('title_multi_line');
         var titleIcon = d.getElementById('title_error_icon');
@@ -88,6 +93,74 @@ Screw.Unit(function(){
           for (var cn =0; cn < otherIcons.length; cn++)
             expect(d.getElementById(otherIcons[cn]).src).
               to(match, /blank_error_icon\.png/);
+        }
+      });
+
+
+      var nameTestPresets = [
+        { elem: 'node_sti_type',    value: "ClassNode" },
+        { elem: 'node_title',       value: "The node" },
+        { elem: 'node_description', value: "A Description." }
+      ];
+
+      it( "Checks the Name field's first character for bad values", function(){
+        var d = document.getElementById('test_frame').contentDocument;
+
+        // set values for controls we're not testing
+        doPresets(nameTestPresets);
+
+        var name =     d.getElementById('node_name');
+        var nameSpan = d.getElementById('name_start_char');
+        var nameIcon = d.getElementById('name_error_icon');
+        var nodesNewSubmit = d.getElementById('node_submit');
+        for (var c=0x20; c < 0x7f; c++){
+
+          name.focus();
+          name.value = String.fromCharCode(c) + "NodeName";
+          name.blur();
+
+          if ((c >= 0x41 && c <= 0x5a) ||
+              (c >= 0x61 && c <= 0x7a)    ){     // valid character
+            expect(nameSpan.className).to_not(match, /helpTextFlagged/);
+            expect(nameIcon.src).to(match, /blank_error_icon\.png/);
+            expect(nodesNewSubmit.className).to(match, /^activeButton$/);
+          }
+          else {                                 // valid character
+            expect(nameSpan.className).to(match, /helpTextFlagged/);
+            expect(nameIcon.src).to(match, /error_error_icon\.png/);
+            expect(nodesNewSubmit.className).to(match, /^inactiveButton$/);
+          }
+        }
+      });
+
+      it( "Checks the Name field's second/subsequent characters for bad values",
+            function(){
+        var d = document.getElementById('test_frame').contentDocument;
+        doPresets(nameTestPresets);
+
+        var name =     d.getElementById('node_name');
+        var nameSpan = d.getElementById('name_nth_char');
+        var nameIcon = d.getElementById('name_error_icon');
+        var nodesNewSubmit = d.getElementById('node_submit');
+        for (var c=0x20; c < 0x7f; c++){
+
+          name.focus();
+          name.value = "Node_" + String.fromCharCode(c) + "-Name4U";
+          name.blur();
+
+          if ((c >= 0x41 && c <= 0x5a) ||
+              (c >= 0x30 && c <= 0x39) ||
+               c == 0x2d || c == 0x5f  ||
+              (c >= 0x61 && c <= 0x7a)    ){     // valid character
+            expect(nameSpan.className).to_not(match, /helpTextFlagged/);
+            expect(nameIcon.src).to(match, /blank_error_icon\.png/);
+            expect(nodesNewSubmit.className).to(match, /^activeButton$/);
+          }
+          else {                                 // valid character
+            expect(nameSpan.className).to(match, /helpTextFlagged/);
+            expect(nameIcon.src).to(match, /error_error_icon\.png/);
+            expect(nodesNewSubmit.className).to(match, /^inactiveButton$/);
+          }
         }
       });
     });

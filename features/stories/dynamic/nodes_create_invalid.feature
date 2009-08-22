@@ -7,13 +7,65 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
 # see nodes_create_checks.feature for basic/common functionality
 #
-#  - node.title content checks:
-#     - only one line (doesn't contain any line-break whitespace)
-#
 #  - node.name content checks:
 #     - only allowed characters:
 #        - 1st character [a-zA-Z]
 #        - 2nd+ character [a-zA-Z_-]
+#
+#  - node.title content checks:
+#     - only one line (doesn't contain any line-break whitespace)
+
+
+  Scenario Outline: error flagged if nodes/new's Name has bad first character
+    When I am on the new nodes page
+    Then the element "name_start_char" has the format "font-weight=400"
+    And the image "name_error_icon" is "blank_error_icon"
+
+    When I select "Property" from "Type"
+    And I fill in "Title" with "A property's title"
+    And I fill in "Name" with "temporaryGoodName0-_"
+    Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+
+    When I fill in "Name" with <badName>
+    Then the element "name_start_char" has the format "font-weight=bold"
+    And the element "name_required" has the format "font-weight=400"
+    And the element "name_nth_char" has the format "font-weight=400"
+    And the element "name_too_long" has the format "font-weight=400"
+    And the image "name_error_icon" is "error_error_icon"
+    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+
+    Examples:
+      |             badName                   |
+      | "4badNameStartsWithADigit"            |
+      | " badNameStartsWithASpace"            |
+      | "^badNameStartsWithRandomPunctuation" |
+      | ".badNameStartsWithPeriod"            |
+      | ":badNameStartsWithColon"             |
+      | "-badNameStartsWithHyphen"            |
+      | "_badNameStartsWithUnderscore"        |
+
+
+
+  Scenario Outline: error flagged if nodes/new's Name has bad 2nd+ character
+    When I am on the new nodes page
+    Then the element "name_start_char" has the format "font-weight=400"
+    And the image "name_error_icon" is "blank_error_icon"
+
+    Given I select "Property" from "Type"
+    And I fill in "Title" with "A property's title"
+    When I fill in "Name" with <badName>
+    Then the element "name_nth_char" has the format "font-weight=bold"
+    And the element "name_start_char" has the format "font-weight=400"
+    And the element "name_required" has the format "font-weight=400"
+    And the element "name_too_long" has the format "font-weight=400"
+    And the image "name_error_icon" is "error_error_icon"
+    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+
+    Examples:
+      |             badName             |
+      | "badNameHasA Space"             |
+      | "badNameHasSome&!^Punctuation"  |
+      | "badNameHasMore<[+}Punctuation" |
 
 
   # Currently testing with FireFox only.  FF automatically maps invalid
@@ -73,6 +125,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "error_error_icon"
     And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+
 
 
 # WontoMedia - a wontology web application
