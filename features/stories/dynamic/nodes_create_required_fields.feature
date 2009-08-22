@@ -86,7 +86,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
   Scenario: Empty form displays flags & dialog on (disabled) Create click
     # by default, a new/empty form can't be submitted
     When I am on the new nodes page
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    Then the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
 
     # all the messages/icons should be in "unflagged" state, but rely
     # on the preceding case for that
