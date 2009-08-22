@@ -49,7 +49,7 @@ p.directions {
 
 .helpTextFlagged {
   font-weight: bold;
-  color: red;
+  color: #e80000;
 }
 
 .activeButton {
