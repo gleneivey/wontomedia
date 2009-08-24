@@ -226,11 +226,10 @@ var dly = 200;
     // plumb validation function to relevant elements
 var a = $('node_sti_type');
 a.onfocus=  function(){checkRequiredFields(a);};
-function checkType(){
+a.onkeypress= function(){setTimeout(function(){
   checkFieldRequired(a);
   maybeClearIcon('sti_type');
-}
-a.onkeypress= function(){setTimeout(checkType, dly);};
+                                    } , dly);};
 a.onchange= function(){
   typeSelectOnchange();
   checkFieldRequired(a);
@@ -238,6 +237,7 @@ a.onchange= function(){
 };
 
 var b = $('node_title');
+var c = $('node_name');
 b.onfocus= function(){checkRequiredFields(b);};
 function checkTitle(){
   // this check is unique to Title, do here
@@ -255,11 +255,11 @@ function checkTitle(){
   checkFieldRequired(b);
   checkFieldLength(b, indexTitle);
   maybeClearIcon('title');
+  generateFromTitle(b, c);
 }
 b.onchange= function(){checkTitle();};
 b.onkeypress= function(){setTimeout(checkTitle, dly);};
 
-var c = $('node_name');
 c.onfocus= function(){checkRequiredFields(c);};
 function checkName(){
   // these checks are unique to Name, do here
@@ -289,6 +289,7 @@ function checkName(){
   checkFieldRequired(c);
   checkFieldLength(c, indexName);
   maybeClearIcon('name');
+  generateToName(b, c);
 }
 c.onchange= function(){checkName();};
 c.onkeypress= function(){setTimeout(checkName, dly);};
@@ -315,5 +316,9 @@ e.onclick = function(){
   else
     makeButtonSeemEnabled(e);
   return !errors;
+}
+
+function getCurrentType(){
+  return $('node_sti_type').value;
 }
 

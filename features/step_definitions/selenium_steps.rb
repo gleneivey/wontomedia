@@ -69,7 +69,7 @@ When /^the focus is on the "([^\"]+)" element$/ do |element_name|
 end
 
 
-When /^the element "([^\"]+)" has the format "([^\"]+)"$/ do |selector, fmt|
+Then /^the element "([^\"]+)" has the format "([^\"]+)"$/ do |selector, fmt|
   style_keyword, style_value = fmt.split( /=/ )
   result = selenium.get_eval(
     "e = window.document.getElementById('#{selector}'); " +
@@ -124,4 +124,10 @@ Then /^the "([^\"]+)" element's "([^\"]+)" attribute is "([^\"]*)"$/ do |
   assert result == attrValue,
     "$(#{elemId}).#{attrName} should have been #{attrValue}, was '#{result}'"
 end
+
+
+When /^I click the "([^\"]+)" element$/ do |elemId|
+  selenium.get_eval "window.document.getElementById('#{elemId}').click();"
+end
+
 

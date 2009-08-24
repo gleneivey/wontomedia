@@ -107,8 +107,8 @@ Screw.Unit(function(){
         d.getElementById('node_name').value = "indivThing";
 
         // at this point, the "Create" button should be active
-	expect(d.getElementById(submitId).className).
-	  to(match, /^activeButton$/);
+        expect(d.getElementById(submitId).className).
+          to(match, /^activeButton$/);
 
         // make Description too long
         var descIndex = 2;
@@ -116,25 +116,25 @@ Screw.Unit(function(){
         desc.focus();
         desc.value = aReallyLongString.substring(0, maxLength[descIndex]+1);
         desc.blur();
-	expect(d.getElementById(flagTextIds[descIndex]).className).
-	  to(match, /helpTextFlagged/);
-	expect(d.getElementById(flagIconIds[descIndex]).src).to(match,
-	  /error_error_icon\.png/);
-	expect(d.getElementById(submitId).className).
-	  to(match, /^inactiveButton$/);
+        expect(d.getElementById(flagTextIds[descIndex]).className).
+          to(match, /helpTextFlagged/);
+        expect(d.getElementById(flagIconIds[descIndex]).src).to(match,
+          /error_error_icon\.png/);
+        expect(d.getElementById(submitId).className).
+          to(match, /^inactiveButton$/);
 
         // now empty Description, ought to change it to "warning"
         desc.focus();
         desc.value = "";
         desc.blur();
-	expect(d.getElementById(flagTextIds[descIndex]).className).
-	  to_not(match, /helpTextFlagged/);
-	expect(d.getElementById('description_recommended').className).
-	  to(match, /helpTextFlagged/);
-	expect(d.getElementById(flagIconIds[descIndex]).src).to(match,
-	  /warn_error_icon\.png/);
-	expect(d.getElementById(submitId).className).
-	  to(match, /^activeButton$/);
+        expect(d.getElementById(flagTextIds[descIndex]).className).
+          to_not(match, /helpTextFlagged/);
+        expect(d.getElementById('description_recommended').className).
+          to(match, /helpTextFlagged/);
+        expect(d.getElementById(flagIconIds[descIndex]).src).to(match,
+          /warn_error_icon\.png/);
+        expect(d.getElementById(submitId).className).
+          to(match, /^activeButton$/);
       });
     });
   });

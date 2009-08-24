@@ -17,18 +17,8 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #  - see "nodes_create_required_fields" for required input behaviors
 #  - see "nodes_create_too_long" for text input content too long behaviors
 #  - see "nodes_create_invalid" for text input invalid behaviors
-#
-#  - node.name auto-generation:
-#     - on keys typed into node.Title control, if node.Name control is
-#       empty, set auto-generation flag
-#     - on changes to node.Name control when focus is on that control,
-#       clear auto-generation flag
-#     - on changes to node.Title control, if auto-generate flag==true,
-#       create/set new value to node.Name control from current
-#       node.Title control content.  New value is node.Title content,
-#       whitespace removed, converted to CamelCase (lower C.C. if a
-#       Property, upper C.C. otherwise)
-
+#  - see "nodes_create_auto_name" for auto-generation of Name from Title
+#  - see "nodes_create_name_ajax" for Name uniqueness pre-submit check
 
   Scenario: nodes/new form defaults focus to Type "select" control
     When I am on the new nodes page

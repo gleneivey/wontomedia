@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<!--
+     WontoMedia - a wontology web application
+     Copyright (C) 2009 - Glen E. Ivey
+        www.wontology.com
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU Affero General Public License version
+     3 as published by the Free Software Foundation.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU Affero General Public License for more details.
+
+     You should have received a copy of the GNU Affero General Public License
+     along with this program in the file COPYING and/or LICENSE.  If not,
+     see "http://www.gnu.org/licenses/".
+  -->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Application | JavaScript Testing Results</title>
+    <link rel="stylesheet" href="screw.css" type="text/css" charset="utf-8" /> 
+    <script type="text/javascript"
+            src="../../../vendor/plugins/blue-ridge/lib/blue-ridge.js"></script>
+    <script>
+      // make sure that env.js (w/in Blue Ridge) loads JS scripts:
+      Envjs.scriptTypes["text/javascript"] = true;
+        // note: this statement errors in a real browser, but no harm....
+    </script>
+    <script type="text/javascript"
+            src="../../../public/javascripts/nodeTitleToName.js"></script>
+  </head>
+  <body>
+    <form>
+      <input id="title" type="text" />
+      <input id="name"  type="text" />
+    </form>
+    <script>
+      var dly = 200;
+
+      genNameFromTitleOk = true;  // initial state
+
+      // plumb methods to form elements
+      var t = document.getElementById('title');
+      var n = document.getElementById('name');
+      t.onchange   = function(){ generateFromTitle(t,n); };
+      t.onkeypress = function(){ setTimeout( generateFromTitle, dly, t, n); };
+      n.onchange   = function(){ generateToName(t,n); };
+      n.onkeypress = function(){ setTimeout( generateToName, dly, t, n); };
+    </script>
+  </body>
+</html>

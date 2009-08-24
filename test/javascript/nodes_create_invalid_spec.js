@@ -24,8 +24,8 @@ Screw.Unit(function(){
   function doPresets(presets){
     // make sure we trigger onchange handlers, so other error checks done
     for (var c=0; c < presets.length; c++){
-      var d = document.getElementById('test_frame').contentDocument;
-      var elem = d.getElementById(presets[c].elem);
+      var elem = document.getElementById('test_frame').contentDocument.
+        getElementById(presets[c].elem);
       elem.focus();
       elem.value = presets[c].value;
       elem.blur();
