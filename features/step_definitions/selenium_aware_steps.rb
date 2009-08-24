@@ -30,3 +30,33 @@ When /^I follow "([^\"]*)", accepting confirmation$/ do |link|
     assert selenium.get_confirmation
   end
 end
+
+Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
+  if @browser.nil?
+    field_labeled(field).value.should =~ /#{value}/
+  else
+    value = selenium.get_eval(
+      "window.document.getElementById('#{field}').value")
+    value.should =~ /#{value}/
+  end
+end
+
+Then /^the "([^\"]*)" field should be "([^\"]*)"$/ do |field, value|
+  if @browser.nil?
+    field_labeled(field).value
+  else
+    value = selenium.get_eval(
+      "window.document.getElementById('#{field}').value")
+    value.should == value
+  end
+end
+
+Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
+  if @browser.nil?
+    field_labeled(field).value.should_not =~ /#{value}/
+  else
+    value = selenium.get_eval(
+      "window.document.getElementById('#{field}').value")
+    value.should_not =~ /#{value}/
+  end
+end

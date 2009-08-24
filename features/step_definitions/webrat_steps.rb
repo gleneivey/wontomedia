@@ -31,7 +31,7 @@ When /^I follow "([^\"]*)"$/ do |link|
   click_link(link)
 end
 
-When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
+When /^I fill in "([^\"]*)" with "(.*)"$/ do |field, value|
   while value =~ /\\([0-7]{3})/ do
     octal = Regexp.last_match[1]
     str = " "
@@ -39,7 +39,7 @@ When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
 #    str.setbyte(0, octal.oct)        # Ruby 1.9
     value.sub!(/\\#{octal}/, str)
   end
-  fill_in(field, :with => value) 
+  fill_in(field, :with => value)
 end
 
 When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, field|
@@ -119,14 +119,6 @@ end
 
 Then /^there should be an element "([^\"]+)"$/ do |selector|
   assert_have_selector(selector)
-end
-
-Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
-  field_labeled(field).value.should =~ /#{value}/
-end
-
-Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
-  field_labeled(field).value.should_not =~ /#{value}/
 end
     
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
