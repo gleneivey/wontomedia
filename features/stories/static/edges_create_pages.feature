@@ -3,7 +3,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
   as a contributor, I want
   to be able to create and view edges.
 
-  Scenario: Create new class-hierarchy-class edge 
+  Scenario: Create new class-hierarchy-class edge
     Given there are 2 existing classes like "itemFamily"
     And I am on the new edges page
     And I select "itemFamily0 : itemFamily node number 0" from "Subject"

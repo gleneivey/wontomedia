@@ -17,7 +17,7 @@
 
 class Files
   TEMPLATE_FILES_PATH = File.join("policy", "copyright-notices", "*")
-  
+
   def self.all_files_in_this_tree
     Dir.glob( File.join("**", "*"), File::FNM_DOTMATCH ).
       reject { |path| File.directory?(path) }

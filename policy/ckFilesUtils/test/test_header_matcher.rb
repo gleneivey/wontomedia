@@ -80,7 +80,7 @@ describe HeaderMatcher, "when matching a file to a template" do
     mock_target.stub!(:gets).and_return( "one line\n", "two line\n",
       "red line\n", "blue line\n", nil, nil, nil, nil, nil, nil )
     File.should_receive(:new).with(s).and_return(mock_target)
-      
+
     hm = HeaderMatcher.new(t)
     hm.apply_to_extension?(".rb").should be_true
     hm.match_file?(s, nil).should be_true
@@ -100,7 +100,7 @@ describe HeaderMatcher, "when matching a file to a template" do
     mock_target.stub!(:gets).and_return( "a line\n", "b line\n", "c line\n",
      "d line\n", "one line\n", "two line\n", "red line\n", "blue line\n" )
     File.should_receive(:new).with(s).and_return(mock_target)
-      
+
     hm = HeaderMatcher.new(t)
     hm.apply_to_extension?(".html").should be_true
     hm.match_file?(s, nil).should be_true
@@ -143,15 +143,15 @@ describe HeaderMatcher, "when matching a file to a template" do
     mock_target.stub!(:readlines).and_return( [ "red line\n", "blue line\n",
       "one line\n", "two line\n" ] )
     File.should_receive(:new).with(s).and_return(mock_target)
-      
+
     hm = HeaderMatcher.new(t)
     hm.apply_to_extension?(".feature").should be_true
     hm.match_file?(s, nil).should be_true
   end
 
 
-  
-  
+
+
   it "should match a footer ending in the last five lines of a file" do
     t = "policy/copyright-headers/footer.doc"
     s = "fu/bar/text.doc"
@@ -167,7 +167,7 @@ describe HeaderMatcher, "when matching a file to a template" do
       "one line\n", "two line\n", "a line\n", "b line\n",
        "c line\n", "d line\n" ] )
     File.should_receive(:new).with(s).and_return(mock_target)
-      
+
     hm = HeaderMatcher.new(t)
     hm.apply_to_extension?(".doc").should be_true
     hm.match_file?(s, nil).should be_true

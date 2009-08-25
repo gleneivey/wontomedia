@@ -26,7 +26,7 @@ class EdgesNewViewTest < ActionController::TestCase
     get :new
     assert_template "edges/new"
   end
-    
+
   test "edges new form should invoke create" do
     get :new
     assert_select   "form[action=?]", @controller.url_for(:action => :create, :only_path => true) do
@@ -44,5 +44,5 @@ class EdgesNewViewTest < ActionController::TestCase
   test "edges new form shouldnt contain status" do
     get :new
     assert_negative_view_contents
-  end    
+  end
 end

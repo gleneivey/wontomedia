@@ -40,12 +40,12 @@
       </td>
       <td><%=link_to "#{h edge.obj.name}", node_path(edge.obj) %></td>
       <td><%=unless edge.edge_desc.nil?
-	       link_to "#{h edge.edge_desc.name}", node_path(edge.edge_desc)
-	     end %></td>
+               link_to "#{h edge.edge_desc.name}", node_path(edge.edge_desc)
+             end %></td>
       <% if (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
-	<td><%= link_to 'Edit', edit_edge_path(edge) %></td>
-	<td><%= link_to 'Destroy', edge, :confirm => 'Are you sure?',
-		        :method => :delete %></td>
+        <td><%= link_to 'Edit', edit_edge_path(edge) %></td>
+        <td><%= link_to 'Destroy', edge, :confirm => 'Are you sure?',
+                        :method => :delete %></td>
       <% end %>
     <% end %>
   <% end %>

@@ -65,7 +65,7 @@ describe FileExceptions, "when processing exception files" do
 "!source #{xf}\n",
 "# this is a comment\n",
 "b\n",
-"    	\n",
+"    \t\n",
 "!source #{yf}\n",
 "c\n" ] )
     file_x = mock("Exception-X")
@@ -125,7 +125,7 @@ describe FileExceptions, "when processing exception files" do
 "!lock    6ac5825b85a2fd5a2cf9ae8bf4f24586e4a0b7e3\n",
 "b\n",
 "c/d/e.rb\n",
-"!lock	d6865e2d0348cf0bcd928eec0c8aac98dbc6fbbd\n",
+"!lock\td6865e2d0348cf0bcd928eec0c8aac98dbc6fbbd\n",
 "f-dir\n",
 "g.html\n",
 "!source more-exceptions\n",
@@ -185,7 +185,7 @@ describe FileExceptions, "when processing exception files" do
 "!lock    6ac5825b85aAAAAAAAA9ae8bf4f24586e4a0b7e3\n",
 "y\n",
 "x/w/v.rb\n",
-"!lock	d686FFFFFFFFcf0bcd928eec0c8aac98dbc6fbbd\n",
+"!lock\td686FFFFFFFFcf0bcd928eec0c8aac98dbc6fbbd\n",
 "u-dir\n",
 "t.html\n",
 "!source more-exceptions\n",
@@ -222,7 +222,7 @@ describe FileExceptions, "when processing exception files" do
     Dir.should_receive(:glob).with(n("**/s/r.js/**/*"), x).and_return([])
     Dir.should_receive(:glob).with(n("**/q"), x).and_return([])
     Dir.should_receive(:glob).with(n("**/q/**/*"), x).and_return(
-      [ ".", ".." ] + (exp8 = ["q/p.o"]) ); 
+      [ ".", ".." ] + (exp8 = ["q/p.o"]) );
 
     ex = FileExceptions.new(nil)
     ex.files_excepted_from_header_checks.sort.should ==

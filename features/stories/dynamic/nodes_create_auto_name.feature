@@ -56,7 +56,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
       | Question: 6 * 9                   | question_6_9                  |
       | Don't miss a"word"                | dontMissAWord                 |
       | BattleStar Galactica (TV Series+) | battlestarGalactica_TvSeries_ |
-      | This title would make a Name more than 80 characters long, if the conversion process didn't truncate it correctly. | thisTitleWouldMakeANameMoreThan80CharactersLong_IfTheConversionProcessDidntTrunc | 
+      | This title would make a Name more than 80 characters long, if the conversion process didn't truncate it correctly. | thisTitleWouldMakeANameMoreThan80CharactersLong_IfTheConversionProcessDidntTrunc |
 
 
   Scenario: auto Name generation disabled/enabled by editing Name

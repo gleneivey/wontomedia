@@ -54,7 +54,7 @@ class HeaderMatcher
   end
 
   def match_file?(path, policy)
-    file_str = 
+    file_str =
       case @type
       when NOTICE
         File.new(path).readlines.join

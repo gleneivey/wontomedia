@@ -112,7 +112,7 @@ parent_of:
   flags: <%= Node::DATA_IS_UNALTERABLE %>
   title: Parent Of (wm built-in relationship)
   description: >-
-    
+
     This is the fundamental type of hierarchical relationship.  This
     relationship states that the subject (left-hand side) of the
     relationship ("A" in the relationship "A is the Parent-Of B", and

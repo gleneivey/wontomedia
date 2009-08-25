@@ -116,7 +116,7 @@ Feature:  Edit individual edges through non-Ajax pages
     Then I should see "error"
 
 
-  Scenario: I can't change an edge-to-self to hierarchical_relationship 
+  Scenario: I can't change an edge-to-self to hierarchical_relationship
     Given there is 1 existing item like "myItem"
     And there is an existing edge "myItem0" "value_relationship" "myItem0"
     And I am on the edit edges page for "myItem0" "value_relationship" "myItem0"

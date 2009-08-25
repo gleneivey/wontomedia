@@ -28,7 +28,7 @@ our:
 
     forum        http://rubyforge.org/forum/?group_id=7903
     email list   wontomedia-development at rubyforge dot org
-		 http://rubyforge.org/mail/?group_id=7903
+                 http://rubyforge.org/mail/?group_id=7903
     bug tracker  http://rubyforge.org/tracker/?group_id=7903
 
 

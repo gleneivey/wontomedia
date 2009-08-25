@@ -62,7 +62,7 @@ html {
             margin: 0 0 0.5em;
             border-bottom: 1px solid transparent;
           }
-          
+
           .describes .describe .its .it.enqueued h2 {
             background-color: #CC6600;
             color: white !important;
@@ -82,7 +82,7 @@ html {
             margin-left: 1em;
             color: #993300;
           }
-          
+
           .describes .describe .its .it h2:hover {
             cursor: pointer;
             color: #000 !important;

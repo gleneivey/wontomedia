@@ -22,15 +22,15 @@ class NodeHelper
   NODE_ITEM_KLASS_NAME     = "ItemNode"
   NODE_PROPERTY_KLASS_NAME = "PropertyNode"
   NODE_REIFFIED_KLASS_NAME = "ReiffiedNode"
-  
-  NODE_SUBTYPES_FROM_TEXT = { 
+
+  NODE_SUBTYPES_FROM_TEXT = {
     "node"              => Node,         "Node"         => Node,
     "class"             => ClassNode,    "ClassNode"    => ClassNode,
     "item"              => ItemNode,     "ItemNode"     => ItemNode,
     "property"          => PropertyNode, "PropertyNode" => PropertyNode,
     "reiffied-property" => ReiffiedNode, "ReiffiedNode" => ReiffiedNode
   }
-  NODE_CLASSNAME_TO_SUBTYPE_SHORT = { 
+  NODE_CLASSNAME_TO_SUBTYPE_SHORT = {
     "ClassNode" => 'class', "ItemNode" => 'item',
     "PropertyNode" => 'property', "ReiffiedNode" => 'reiffied'
   }

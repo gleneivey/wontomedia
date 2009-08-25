@@ -51,7 +51,7 @@ class EdgesIndexViewTest < ActionController::TestCase
   test "nodes index page shouldnt contain status" do
     get :index
     assert_negative_view_contents
-  end    
+  end
 
   test "edges index page should have and only have right edit destroy links" do
     get :index

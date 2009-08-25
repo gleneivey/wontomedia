@@ -41,11 +41,11 @@ system "sed --in-place=.backup " .
 
 system "DEBIAN_FRONTEND=noninteractive apt-get -y purge " .
                          " mysql-server mysql-client " .
-			 " mysql-server-5.0 mysql-client-5.0 " .
-			 " mysql-common ruby1.8-dev libdbd-mysql-perl " .
-			 " libmysqlclient15off libmysqlclient15-dev " .
-			 " zlib1g-dev libdbi-perl " .
-			 " libnet-daemon-perl libplrpc-perl linux-libc-dev";
+                         " mysql-server-5.0 mysql-client-5.0 " .
+                         " mysql-common ruby1.8-dev libdbd-mysql-perl " .
+                         " libmysqlclient15off libmysqlclient15-dev " .
+                         " zlib1g-dev libdbi-perl " .
+                         " libnet-daemon-perl libplrpc-perl linux-libc-dev";
 
 
         # get rid of password config lines added for mysql
@@ -61,7 +61,7 @@ system "gem1.8 uninstall rake rails rack actionpack actionmailer " .
 system "rm -rf /root/.gem /root/.gemrc /usr/bin/gem .gem " .
              " /home/gei/.gem /home/gei/.gemrc " .
              " /usr/local/lib/site_ruby/1.8/rubygems* " .
-	     " /usr/local/lib/site_ruby/1.8/ubygems.rb " .
+             " /usr/local/lib/site_ruby/1.8/ubygems.rb " .
              " /usr/lib/ruby/gems ";
 system "rm -rf $RUBY_GEMS_WITH_VERSION";
 system "apt-get -y purge ruby rdoc ri ruby1.8 rdoc1.8 ri1.8 " .

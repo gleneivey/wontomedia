@@ -42,7 +42,7 @@ puts "mysql CREATE/GRANT"
 IO.popen("mysql -u root -pmysql", "r+") { |mysql|
   mysql.write( "CREATE DATABASE wm_dev_db;\n" )
   mysql.write( "GRANT ALL PRIVILEGES ON wm_dev_db.* TO 'wm'\@'localhost' " +
-		 "IDENTIFIED BY 'wm-pass';\n" )
+                 "IDENTIFIED BY 'wm-pass';\n" )
   mysql.write( "quit\n\n" )
 }
 

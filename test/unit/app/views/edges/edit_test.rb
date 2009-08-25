@@ -47,5 +47,5 @@ class EdgesEditViewTest < ActionController::TestCase
   test "fresh edges edit form shouldnt contain status" do
     get :edit, :id => edges(:aParentEdge).id
     assert_negative_view_contents
-  end    
+  end
 end

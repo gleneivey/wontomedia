@@ -27,7 +27,7 @@ class NodesEditViewTest < ActionController::TestCase
     get :edit, :id => nodes(:one).id
     assert_template "nodes/edit"
   end
-    
+
   test "nodes edit form should invoke update" do
     n = nodes(:one)
     class_string = NodeHelper::NODE_CLASSNAME_TO_SUBTYPE_SHORT[n.class.to_s]
@@ -49,5 +49,5 @@ class NodesEditViewTest < ActionController::TestCase
   test "fresh nodes edit form shouldnt contain status" do
     get :edit, :id => nodes(:one).id
     assert_negative_view_contents
-  end    
+  end
 end

@@ -46,7 +46,7 @@ class EdgesShowViewTest < ActionController::TestCase
   test "edges show page shouldnt contain status" do
     get_edges_show
     assert_negative_view_contents
-  end    
+  end
 
   test "edges show page should have and only have right edit destroy links" do
     Edge.all.each do |edge|

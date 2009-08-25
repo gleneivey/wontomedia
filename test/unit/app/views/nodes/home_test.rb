@@ -45,5 +45,5 @@ class NodesHomeViewTest < ActionController::TestCase
   test "home page shouldnt contain status" do
     get :home
     assert_negative_view_contents
-  end    
+  end
 end
