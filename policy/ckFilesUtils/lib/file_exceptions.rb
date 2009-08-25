@@ -46,6 +46,10 @@ class FileExceptions
     process_an_exceptions_file(EXCEPTIONS_FILE)
   end
 
+  def binary_files()
+    Dir.glob( File.join("**", "*.png"), File::FNM_DOTMATCH ) +
+    Dir.glob( File.join("**", "*.gif"), File::FNM_DOTMATCH )
+  end
 private
 
   def process_an_exceptions_file(file_name)
@@ -106,7 +110,7 @@ private
           matches.each do |path|
             path.sub! %r%^/%, ""
             @git_includes <<= "#{commit} #{path}"
-          end 
+          end
         end
       end
     end

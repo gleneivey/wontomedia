@@ -149,7 +149,8 @@ namespace :test do
 
   desc "Execute all project-policy audit tests."
   task :policies do
-    ruby File.join( "policy", "ckFilesUtils", "ckcopyright.rb" )
+    ruby File.join( "policy", "ckFilesUtils", "ckForTabs.rb" )
+    ruby File.join( "policy", "ckFilesUtils", "ckCopyrightNotices.rb" )
   end
 end # namespace :test
 
