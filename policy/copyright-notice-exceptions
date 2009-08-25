@@ -7,7 +7,7 @@
 
     # files that don't match our extension-determines-header-format conventions
 !treat Rakefile                                      !as .rb
-!treat policy/ckcopyright/Rakefile                   !as .rb
+!treat policy/ckFilesUtils/Rakefile                  !as .rb
 !treat .autotest                                     !as .rb
 
 
