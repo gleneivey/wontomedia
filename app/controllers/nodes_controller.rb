@@ -242,4 +242,16 @@ class NodesController < ApplicationController
       redirect_to nodes_url
     end
   end
+
+  # LOOKUP /nodes/lookup?name=aNodeName
+  def lookup
+    begin
+      id = Node.find_by_name(params[:name]).id
+    rescue
+      render :text => "", :status => 404
+      return
+    end
+
+    render :text => (id.to_s + "\n")
+  end
 end

@@ -387,6 +387,19 @@ class NodesControllerTest < ActionController::TestCase
     assert_not_nil n == Node.find_by_name(name)
   end
 
+  test "should lookup existing node" do
+    name = "testCategory"
+    get :lookup, :name => name
+    assert_response :success
+    id = Node.find_by_name(name).id.to_s
+    assert @response.body =~ /^#{id}\s*$/
+  end
+
+  test "should 404 on attempt to lookup non-existent node" do
+    get :lookup, :name => "notANode"
+    assert_response :missing
+  end
+
 
 private
   def prep_for_update(fixture_name)
