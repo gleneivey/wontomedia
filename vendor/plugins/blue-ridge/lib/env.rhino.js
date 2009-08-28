@@ -46,10 +46,10 @@ var Envjs = function(){
     //uncomment these if you want to get some internal log statementes
     /*$env.debug  = function(msg){
         $env.log(msg,"DEBUG"); 
-    };
+    };*/
     $env.info   = function(msg){
         $env.log(msg,"INFO"); 
-    };*/
+    };
     $env.warn   = function(msg){
         $env.log(msg,"WARNIING");    
     };
@@ -6961,7 +6961,7 @@ __extend__(HTMLInputElement.prototype, {
     blur:function(){
         __blur__(this);
 
-        if (this._oldValue != this.getAttribute('value')){
+        if (this._oldValue != this.value){
             var event = document.createEvent();
             event.initEvent("change");
             this.dispatchEvent( event );
@@ -6969,7 +6969,7 @@ __extend__(HTMLInputElement.prototype, {
     },
     focus:function(){
         __focus__(this);
-        this._oldValue = this.getAttribute('value');
+        this._oldValue = this.value;
     },
 	select:function(){
 	    __select__(this);
@@ -7924,6 +7924,8 @@ $w.HTMLTableCellElement	= HTMLTableCellElement;$debug("Defining HTMLTextAreaElem
 var HTMLTextAreaElement = function(ownerDocument) {
     this.HTMLElement = HTMLElement;
     this.HTMLElement(ownerDocument);
+
+    this._oldValue = null;
 };
 HTMLTextAreaElement.prototype = new HTMLElement;
 __extend__(HTMLTextAreaElement.prototype, {
@@ -8012,7 +8014,7 @@ __extend__(HTMLTextAreaElement.prototype, {
     blur:function(){
         __blur__(this);
 
-        if (this._oldValue != this.getAttribute('value')){
+        if (this._oldValue != this.value){
             var event = document.createEvent();
             event.initEvent("change");
             this.dispatchEvent( event );
@@ -8020,7 +8022,7 @@ __extend__(HTMLTextAreaElement.prototype, {
     },
     focus:function(){
         __focus__(this);
-        this._oldValue = this.getAttribute('value');
+        this._oldValue = this.value;
     },
     select:function(){
         __select__(this);
