@@ -28,8 +28,8 @@ ActionController::Routing::Routes.draw do |map|
   map.admin_edge_up '/admin/edge_up', :controller => 'admin',
     :action => 'edge_up'
 
-  map.resources :nodes
   map.nodes_lookup '/nodes/lookup', :controller => :nodes, :action => :lookup
+  map.resources :nodes
   map.resources :edges
   map.root :controller => "nodes", :action => "home"
 

@@ -219,6 +219,74 @@ function makeButtonSeemDisabled(button){
 }
 
 
+
+
+var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
+                          //   wait after Name change before check
+var valueWhenLastChecked = "";
+var uniquenessTimerId = -1;
+function nameUCheckSuccess(transport){
+  $('name_must_be_unique').className = "helpTextFlagged";
+  $('name_status_icon').src = '/images/error_status_icon.png';
+  inputErrors["unique_name"] = true;
+  makeButtonSeemDisabled($('node_submit'));
+}
+function nameUCheckFailure(transport){
+  if (transport.status == 404){
+    $('name_is_unique').className = "confirmationTextShow";
+    $('name_status_icon').src = '/images/good_status_icon.png';
+  }
+  else
+    $('name_status_icon').src = '/images/blank_status_icon.png';
+}
+function launchNameUniquenessCheck(){
+  // we only have one timer ever, and this call shows it just expired, so...
+  uniquenessTimerId = -1;
+
+  var l = window.location;
+  var lookup = l.protocol + "//" + l.hostname + ":" + l.port + '/nodes/lookup';
+  new Ajax.Request(lookup, {
+                    method: 'get', parameters: "name=" + $F('node_name'),
+                    onSuccess: nameUCheckSuccess, onFailure: nameUCheckFailure
+                  });
+
+  $('name_status_icon').src = '/images/working_status_icon.png';
+}
+function maybeCheckNameUniqueness(delay){
+  if ($('node_name').value == ""){
+    valueWhenLastChecked = "";
+    $('name_must_be_unique').className = "";
+    $('name_is_unique').className = "confirmationTextInvisible";
+    $('name_status_icon').src = '/images/blank_status_icon.png';
+    return;
+  }
+
+  if ($('node_name').value != valueWhenLastChecked){
+    valueWhenLastChecked = $('node_name').value;
+
+    if (uniquenessTimerId != -1)
+      clearTimeout(uniquenessTimerId);
+    uniquenessTimerId = -1;
+
+    $('name_must_be_unique').className = "";
+    $('name_is_unique').className = "confirmationTextInvisible";
+    $('name_status_icon').src = '/images/blank_status_icon.png';
+
+    var old = inputErrors["unique_name"];
+    inputErrors["unique_name"] = false;
+    if (old)
+      maybeClearIcon('name');
+
+    if (delay > 0)
+      uniquenessTimerId = setTimeout(launchNameUniquenessCheck, delay);
+    else
+      launchNameUniquenessCheck();
+  }
+}
+
+
+
+
   // after keypress events, have to wait for browser to update the input field
   // before we check it (delay in ms)
 var dly = 200;
@@ -286,6 +354,9 @@ function checkName(){
     }
   }
 
+  maybeCheckNameUniqueness(nameAjaxStart);
+
+
   checkFieldRequired(c);
   checkFieldLength(c, indexName);
   maybeClearIcon('name');
@@ -293,6 +364,11 @@ function checkName(){
 }
 c.onchange= function(){checkName();};
 c.onkeypress= function(){setTimeout(checkName, dly);};
+
+var body = document.getElementsByTagName('body')[0];
+body.onfocus = maybeCheckNameUniqueness(0);
+body.onblur  = maybeCheckNameUniqueness(0);
+
 
 var d = $('node_description');
 d.onfocus= function(){checkRequiredFields(d);};

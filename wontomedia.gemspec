@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-08-25}
+  s.date = %q{2009-08-28}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.files = [
@@ -86,8 +86,12 @@ Gem::Specification.new do |s|
      "public/dispatch.rb",
      "public/favicon.ico",
      "public/images/blank_error_icon.png",
+     "public/images/blank_status_icon.png",
      "public/images/error_error_icon.png",
+     "public/images/error_status_icon.png",
+     "public/images/good_status_icon.png",
      "public/images/warn_error_icon.png",
+     "public/images/working_status_icon.png",
      "public/javascripts/application.js",
      "public/javascripts/controls.js",
      "public/javascripts/dragdrop.js",
@@ -134,13 +138,12 @@ Gem::Specification.new do |s|
      "vendor/plugins/blue-ridge/lib/blue-ridge.js",
      "vendor/plugins/blue-ridge/lib/blue_ridge.rb",
      "vendor/plugins/blue-ridge/lib/consoleReportForRake.js",
+     "vendor/plugins/blue-ridge/lib/env-js.jar",
      "vendor/plugins/blue-ridge/lib/env.rhino.js",
      "vendor/plugins/blue-ridge/lib/jquery-1.2.6.js",
      "vendor/plugins/blue-ridge/lib/jquery-1.3.2.js",
      "vendor/plugins/blue-ridge/lib/jquery.fn.js",
      "vendor/plugins/blue-ridge/lib/jquery.print.js",
-     "vendor/plugins/blue-ridge/lib/js.jar",
-     "vendor/plugins/blue-ridge/lib/mainForEnvjs.jar",
      "vendor/plugins/blue-ridge/lib/screw.behaviors.js",
      "vendor/plugins/blue-ridge/lib/screw.builder.js",
      "vendor/plugins/blue-ridge/lib/screw.events.js",

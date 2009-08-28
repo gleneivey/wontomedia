@@ -52,6 +52,15 @@ p.directions {
   color: #e80000;
 }
 
+.confirmationTextInvisible {
+  display: none;
+}
+
+.confirmationTextShow {
+  display: inline;
+  color: #6794ff;
+}
+
 .activeButton {
   color: black;
   background-color: #c0c0ff;

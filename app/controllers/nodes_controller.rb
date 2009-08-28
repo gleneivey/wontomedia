@@ -245,13 +245,21 @@ class NodesController < ApplicationController
 
   # LOOKUP /nodes/lookup?name=aNodeName
   def lookup
+    # huge kludge for testability.  Need to ensure that we don't respond
+    # so quickly (e.g., in setups where client and server are on the same
+    # system) that the JavaScript and acceptance tests can't see the
+    # "request in progress" state of the page/system.
+    if (ENV['RAILS_ENV'] == 'test')
+      Kernel.sleep(0.5)
+    end
+
     begin
       id = Node.find_by_name(params[:name]).id
     rescue
-      render :text => "", :status => 404
+      render :text => "<p>Didn't find Node</p>\n", :status => 404
       return
     end
 
-    render :text => (id.to_s + "\n")
+    render :text => ("<id>" + id.to_s + "</id>\n")
   end
 end

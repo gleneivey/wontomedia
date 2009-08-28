@@ -131,3 +131,20 @@ When /^I click the "([^\"]+)" element$/ do |elemId|
 end
 
 
+When /^I wait ([0-9.]+)( more)? seconds$/ do |time, fu|
+  gotTimeout = false
+  begin
+    selenium.wait_for_text "this text will never occur in a web page",
+      :timeout_in_seconds => time.to_f
+  rescue Selenium::CommandError => e
+    gotTimeout = e.message =~ /ed out after/;
+  end
+
+  assert gotTimeout, "Selenium didn't wait a fill #{time} seconds."
+end
+
+When /^I wait for Ajax requests to complete$/ do
+  selenium.wait_for_ajax
+end
+
+

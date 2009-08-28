@@ -392,7 +392,7 @@ class NodesControllerTest < ActionController::TestCase
     get :lookup, :name => name
     assert_response :success
     id = Node.find_by_name(name).id.to_s
-    assert @response.body =~ /^#{id}\s*$/
+    assert @response.body =~ /^<id>\s*#{id}\s*<\/id>\s*$/
   end
 
   test "should 404 on attempt to lookup non-existent node" do

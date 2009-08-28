@@ -35,12 +35,16 @@
   <%= f.text_field :name %>
   <%= image_tag "blank_error_icon.png", :id=>"name_error_icon", :alt=>"",
                 :size=>"16x16" %>
+  <%= image_tag "blank_status_icon.png", :id=>"name_status_icon", :alt=>"",
+                :size=>"32x16" %>
 </p><p class="directions">
   <span id="name_required">Required.</span>
   <span id="name_start_char">Start with a letter.</span>
   <span id="name_nth_char">Letters, numbers, - and _ are OK.</span>
   <span id="name_too_long">No more than 80 characters.</span>
-  Must be unique for every node.
+  <span id="name_must_be_unique">Must be unique for every node.</span>
+  <span id="name_is_unique" class="confirmationTextInvisible">
+    'Name' is unique!</span>
 </p>
 
 <p class="inputpara">
