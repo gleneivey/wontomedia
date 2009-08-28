@@ -1,3 +1,9 @@
+/*
+ * Envjs env-js.1.0.rc5 
+ * Pure JavaScript Browser Environment
+ *   By John Resig <http://ejohn.org/>
+ * Copyright 2008-2009 John Resig, under the MIT License
+ */
 /**
  * @author thatcher
  */
@@ -35,6 +41,8 @@ var Envjs = function(){
     $env.warn   = function(){};
     $env.error  = function(){};
     
+    
+    $env.debugParser = false;
     //uncomment these if you want to get some internal log statementes
     /*$env.debug  = function(msg){
         $env.log(msg,"DEBUG"); 
@@ -92,6 +100,8 @@ var Envjs = function(){
     $env.lang           = ''; 
     $env.platform       = "Rhino ";//how do we get the version
     
+    $env.load = function(){};
+    
     $env.safeScript = function(){
       //do nothing  
     };
@@ -101,6 +111,7 @@ var Envjs = function(){
         "text/envjs"        :true
     };
     
+    $env.onScriptLoadError = function(){};
     $env.loadLocalScript = function(script, parser){
         $env.debug("loading script ");
         var types, type, src, i, base, 
@@ -119,17 +130,25 @@ var Envjs = function(){
                     if($env.scriptTypes[types[i]]){
 						if(script.src){
                             $env.info("loading allowed external script :" + script.src);
-                            if($env.beforeload&&$env.beforeload[script.src]){
-                                //lets you register a function to execute 
-                                //before the script is loaded
-                                $env.beforeload[script.src]();
+                            //lets you register a function to execute 
+                            //before the script is loaded
+                            if($env.beforeload){
+                                for(src in $env.beforeload){
+                                    if(script.src.match(src)){
+                                        $env.beforeload[src]();
+                                    }
+                                }
                             }
                             base = "" + window.location;
 							load($env.location(script.src.match(/([^\?#]*)/)[1], base ));
-                            if($env.afterload&&$env.afterload[script.src]){
-                                //lets you register a function to execute 
-                                //after the script is loaded
-                                $env.afterload[script.src]();
+                            //lets you register a function to execute 
+                            //after the script is loaded
+                            if($env.afterload){
+                                for(src in $env.afterload){
+                                    if(script.src.match(src)){
+                                        $env.afterload[src]();
+                                    }
+                                }
                             }
                         }else{
                             $env.loadInlineScript(script);
@@ -148,6 +167,7 @@ var Envjs = function(){
             }
         }catch(e){
             $env.error("Error loading script.", e);
+            $env.onScriptLoadError(script);
         }finally{
             if(parser){
                 parser.appendFragment(docWrites.join(''));
@@ -159,6 +179,78 @@ var Envjs = function(){
     };
     
     $env.loadInlineScript = function(script){};
+    
+    
+    $env.globalize = function(){};
+    $env.getScope = function(){};
+    $env.setScope = function(){};
+    $env.configureScope = function(){};
+    $env.restoreScope = function(){};
+    $env.loadFrame = function(frame, url){
+        try {
+
+            var frameWindow,
+            	makingNewWinFlag = !(frame._content);
+            if (makingNewWinFlag)
+                // a blank object, inherits from original global
+                // see org.mozilla.javascript.tools.envjs.Window.java
+                frameWindow = $env.globalize();
+            else
+                frameWindow = frame._content;
+
+
+            // define local variables with content of things that are
+            // in current global/window, because when the following
+            // function executes we'll have a new/blank
+            // global/window and won't be able to get at them....
+            var local__window__    = $env.window,
+            	local_env          = $env,
+                local_window       = frame.ownerDocument.parentWindow;
+
+            // a local function gives us something whose scope
+            // is easy to change
+            var __frame__   = function(){
+                if (makingNewWinFlag){
+                    local__window__(frameWindow, 
+                                    local_env,
+                                    local_window,
+                                    local_window.top);
+                }
+
+                frameWindow.location = url;
+            }
+
+
+            // change scope of window object creation
+            //   functions, so that functions/code they create
+            //   will be scoped to new window object
+            // getScope()/setScope() from Window.java
+            var scopes = {
+                frame : $env.getScope(__frame__),
+                window : $env.getScope(local__window__),
+                global_load: $env.getScope(load),
+                local_load: $env.getScope($env.loadLocalScript)
+            };
+
+            $env.setScope(__frame__,             frameWindow);
+            $env.setScope(local__window__,       frameWindow);
+            $env.setScope($env.load,             frameWindow);
+            $env.setScope($env.loadLocalScript,  frameWindow);
+
+            __frame__();
+            frame._content = frameWindow;
+
+            // now restore the scope
+            $env.setScope(__frame__, scopes.frame);
+            $env.setScope(local__window__, scopes.window);
+            $env.setScope($env.load, scopes.global_load);
+            $env.setScope($env.loadLocalScript, scopes.local_load);
+            
+        } catch(e){
+            $env.error("failed to load frame content: from " + url, e);
+        }
+
+    };
     
 })(Envjs);/*
 *	env.rhino.js
@@ -198,63 +290,39 @@ var Envjs = function(){
     
     var timers = [];
 
-    $env.timer = function(fn, interval){
-	this.fn = fn;
-	this.interval = interval;
-	this.at = Date.now() + interval;
-	this.index = timers.length;
-	timers[this.index] = this;
-    };	
-
-    $env.timer.prototype.start = function(){};
-    $env.timer.prototype.stop = function(){
-	delete timers[this.index];
+    //For Java the window.timer is created using the java.lang.Thread in combination
+    //with the java.lang.Runnable
+    $env.timer = function(fn, time){
+       var running = true;
+        
+        var run = sync(function(){ //while happening only thing in this timer    
+    	    //$env.debug("running timed function");
+            fn();
+        });
+        var _this = this;
+        var thread = new java.lang.Thread(new java.lang.Runnable({
+            run: function(){
+                try {
+                    while (running){
+                        java.lang.Thread.currentThread().sleep(time);
+                        run.apply(_this);
+                    }
+                }catch(e){
+                    $env.debug("interuption running timed function");
+                    _this.stop();
+                    $env.onInterrupt();
+                };
+            }
+        }));
+        this.start = function(){ 
+            thread.start(); 
+        };
+        this.stop = sync(function(num){
+            running = false;
+            thread.interrupt();
+        })
     };
-
-    // wait === null: execute any immediately runnable timers and return
-    // wait(n) (n > 0): execute any timers as they fire but no longer than n ms
-    // wait(0): execute any timers as they fire, waiting until there are none left
-    $env.wait = function(wait) {
-	var i;
-	var empty;
-	var after;
-	var now;
-	var timer;
-	var sleep;
-	if (wait !== 0 && wait !== null && wait !== undefined){
-	    wait += Date.now();
-	}
-	for (;;) {
-	    for (i in timers){
-		timer = timers[i];
-		now = Date.now();
-		if (timer.at <= now){
-		    f = timer.fn;
-		    f();
-		    timer.at += timer.interval;
-		}
-	    }
-	    empty = true;
-	    sleep = null;
-	    now = Date.now();
-	    for (i in timers){
-		empty = false;
-		timer = timers[i];
-		after = timer.at - now
-		sleep = (sleep === null || after < sleep) ? after : sleep;
-	    }
-	    sleep = sleep < 0 ? 0 : sleep;
-	    if (empty ||
-                ( wait !== 0 ) &&
-                 ( ( sleep > 0 && !wait ) || ( Date.now() + sleep > wait ) ) ) {
-		break;
-	    }
-	    if (sleep) {
-		java.lang.Thread.currentThread().sleep(sleep);
-	    }
-	}
-    };
-
+    
     //Since we're running in rhino I guess we can safely assume
     //java is 'enabled'.  I'm sure this requires more thought
     //than I've given it here
@@ -263,11 +331,27 @@ var Envjs = function(){
     
     //Used in the XMLHttpRquest implementation to run a
     // request in a seperate thread
+    $env.onInterrupt = function(){};
     $env.runAsync = function(fn){
         $env.debug("running async");
-        (new java.lang.Thread(new java.lang.Runnable({
-            run: fn
-        }))).start();
+        var running = true;
+        
+        var run = sync(function(){ //while happening only thing in this timer    
+    	    //$env.debug("running timed function");
+            fn();
+        });
+        
+        var async = (new java.lang.Thread(new java.lang.Runnable({
+            run: run
+        })));
+        
+        try{
+            async.start();
+        }catch(e){
+            $env.error("error while running async", e);
+            async.interrupt();
+            $env.onInterrupt();
+        }
     };
     
     //Used to write to a local file
@@ -307,14 +391,43 @@ var Envjs = function(){
         var url = java.net.URL(xhr.url);//, $w.location);
       var connection;
         if ( /^file\:/.test(url) ) {
-            if ( xhr.method == "PUT" ) {
-                var text =  data || "" ;
-                $env.writeToFile(text, url);
-            } else if ( xhr.method == "DELETE" ) {
-                $env.deleteFile(url);
-            } else {
-                connection = url.openConnection();
-                connection.connect();
+            try{
+                if ( xhr.method == "PUT" ) {
+                    var text =  data || "" ;
+                    $env.writeToFile(text, url);
+                } else if ( xhr.method == "DELETE" ) {
+                    $env.deleteFile(url);
+                } else {
+                    connection = url.openConnection();
+                    connection.connect();
+                    //try to add some canned headers that make sense
+                    
+                    try{
+                        if(xhr.url.match(/html$/)){
+                            xhr.responseHeaders["Content-Type"] = 'text/html';
+                        }else if(xhr.url.match(/.xml$/)){
+                            xhr.responseHeaders["Content-Type"] = 'text/xml';
+                        }else if(xhr.url.match(/.js$/)){
+                            xhr.responseHeaders["Content-Type"] = 'text/javascript';
+                        }else if(xhr.url.match(/.json$/)){
+                            xhr.responseHeaders["Content-Type"] = 'application/json';
+                        }else{
+                            xhr.responseHeaders["Content-Type"] = 'text/plain';
+                        }
+                    //xhr.responseHeaders['Last-Modified'] = connection.getLastModified();
+                    //xhr.responseHeaders['Content-Length'] = headerValue+'';
+                    //xhr.responseHeaders['Date'] = new Date()+'';*/
+                    }catch(e){
+                        $env.error('failed to load response headers',e);
+                    }
+                    	
+                }
+            }catch(e){
+                $env.error('failed to open file '+ url, e);
+                connection = null;
+                xhr.readyState = 4;
+                xhr.statusText = "Local File Protocol Error";
+                xhr.responseText = "<html><head/><body><p>"+ e+ "</p></body></html>";
             }
         } else { 
             connection = url.openConnection();
@@ -340,49 +453,60 @@ var Envjs = function(){
 			}
 			
             
-            var respheadlength = connection.getHeaderFields().size();
-            // Stick the response headers into responseHeaders
-            for (var i = 0; i < respheadlength; i++) { 
-                var headerName = connection.getHeaderFieldKey(i); 
-                var headerValue = connection.getHeaderField(i); 
-                if (headerName)
-                    xhr.responseHeaders[headerName+''] = headerValue+'';
-            }
         }
         if(connection){
-                xhr.readyState = 4;
-                xhr.status = parseInt(connection.responseCode,10) || undefined;
-                xhr.statusText = connection.responseMessage || "";
-                
-                var contentEncoding = connection.getContentEncoding() || "utf-8",
-                    baos = new java.io.ByteArrayOutputStream(),
-                    buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024),
-                    length,
-                    stream = null,
-                    responseXML = null;
-
-                try{
-                    stream = (contentEncoding.equalsIgnoreCase("gzip") || contentEncoding.equalsIgnoreCase("decompress") )?
-                            new java.util.zip.GZIPInputStream(connection.getInputStream()) :
-                            connection.getInputStream();
-                }catch(e){
-                    $env.error('failed to open connection stream \n'+e.toString(), e);
-                    stream = connection.getErrorStream();
+            try{
+                var respheadlength = connection.getHeaderFields().size();
+                // Stick the response headers into responseHeaders
+                for (var i = 0; i < respheadlength; i++) { 
+                    var headerName = connection.getHeaderFieldKey(i); 
+                    var headerValue = connection.getHeaderField(i); 
+                    if (headerName)
+                        xhr.responseHeaders[headerName+''] = headerValue+'';
                 }
-                
-                while ((length = stream.read(buffer)) != -1) {
-                    baos.write(buffer, 0, length);
-                }
+            }catch(e){
+                $env.error('failed to load response headers',e);
+            }
+            
+            xhr.readyState = 4;
+            xhr.status = parseInt(connection.responseCode,10) || undefined;
+            xhr.statusText = connection.responseMessage || "";
+            
+            var contentEncoding = connection.getContentEncoding() || "utf-8",
+                baos = new java.io.ByteArrayOutputStream(),
+                buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024),
+                length,
+                stream = null,
+                responseXML = null;
 
-                baos.close();
-                stream.close();
+            try{
+                stream = (contentEncoding.equalsIgnoreCase("gzip") || contentEncoding.equalsIgnoreCase("decompress") )?
+                        new java.util.zip.GZIPInputStream(connection.getInputStream()) :
+                        connection.getInputStream();
+            }catch(e){
+                if (connection.getResponseCode() == 404)
+                    $env.info('failed to open connection stream \n' +
+                              e.toString(), e);
+                else
+                    $env.error('failed to open connection stream \n' +
+                               e.toString(), e);
+                stream = connection.getErrorStream();
+            }
+            
+            while ((length = stream.read(buffer)) != -1) {
+                baos.write(buffer, 0, length);
+            }
 
-                xhr.responseText = java.nio.charset.Charset.forName("UTF-8").
-                    decode(java.nio.ByteBuffer.wrap(baos.toByteArray())).toString()+"";
+            baos.close();
+            stream.close();
+
+            xhr.responseText = java.nio.charset.Charset.forName("UTF-8").
+                decode(java.nio.ByteBuffer.wrap(baos.toByteArray())).toString()+"";
                 
         }
         if(responseHandler){
-          responseHandler();
+            $env.debug('calling ajax response handler');
+            responseHandler();
         }
     };
     
@@ -390,27 +514,90 @@ var Envjs = function(){
     htmlDocBuilder.setNamespaceAware(false);
     htmlDocBuilder.setValidating(false);
     
-    $env.parseHTML = function(htmlstring){
-        return htmlDocBuilder.newDocumentBuilder().parse(
-                  new java.io.ByteArrayInputStream(
-                        (new java.lang.String(htmlstring)).getBytes("UTF8")))+"";
+    var htmlCleaner,
+        cleanXMLSerializer,
+        cleanerProperties,
+        htmlTransformer,
+        htmlOutputProps;
+    $env.fixHTML = false;
+    $env.cleanHTML = function(xmlString){
+        var htmlString;
+        $env.debug('Cleaning html :\n'+xmlString);
+        if(!htmlCleaner){
+            cleanerProperties = new org.htmlcleaner.CleanerProperties();
+            cleanerProperties.setOmitHtmlEnvelope(true);
+            cleanerProperties.setTranslateSpecialEntities(true);
+            cleanerProperties.setAdvancedXmlEscape(true);
+            cleanerProperties.setUseCdataForScriptAndStyle(false);
+            cleanerProperties.setOmitXmlDeclaration(true);
+            htmlCleaner = new org.htmlcleaner.HtmlCleaner(cleanerProperties);
+            cleanXMLSerializer = new org.htmlcleaner.SimpleXmlSerializer(cleanerProperties);
+            //may have been initialized in $env.xslt
+            /*transformerFactory = transformerFactory||
+                Packages.javax.xml.transform.TransformerFactory.newInstance();
+            htmlTransformer = transformerFactory.newTransformer();
+            htmlOutputProps = new java.util.Properties();
+            htmlOutputProps.put(javax.xml.transform.OutputKeys.METHOD, "xml");
+            htmlOutputProps.put(javax.xml.transform.OutputKeys.INDENT , "no");
+            htmlOutputProps.put(javax.xml.transform.OutputKeys.ENCODING  , "UTF-8");
+            htmlOutputProps.put(javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION  , "yes");
+            htmlTransformer.setOutputProperties(htmlOutputProps)*/
+        }
+        
+        /*var node = cleanXMLSerializer.createDOM(htmlCleaner.clean(xmlString)),
+            outText = new java.io.StringWriter();
+        htmlTransformer.transform(
+            new javax.xml.transform.dom.DOMSource(node),
+            new javax.xml.transform.stream.StreamResult(outText));
+            
+        htmlString = outText.toString()+'';*/
+        htmlString = cleanXMLSerializer.getXmlAsString(htmlCleaner.clean(xmlString));
+        //$env.info('Cleaned html :\n'+htmlString);
+        return htmlString;
     };
     
     var xmlDocBuilder = Packages.javax.xml.parsers.DocumentBuilderFactory.newInstance();
     xmlDocBuilder.setNamespaceAware(true);
-    xmlDocBuilder.setValidating(true);
+    xmlDocBuilder.setValidating(false);
     
     $env.parseXML = function(xmlstring){
         return xmlDocBuilder.newDocumentBuilder().parse(
                   new java.io.ByteArrayInputStream(
-                        (new java.lang.String(xmlstring)).getBytes("UTF8")))+"";
+                        (new java.lang.String(xmlstring)).getBytes("UTF8")));
     };
     
     
     $env.xpath = function(expression, doc){
-    return Packages.javax.xml.xpath.
-      XPathFactory.newInstance().newXPath().
-        evaluate(expression, doc, javax.xml.xpath.XPathConstants.NODESET);
+        return Packages.javax.xml.xpath.
+          XPathFactory.newInstance().newXPath().
+            evaluate(expression, doc, javax.xml.xpath.XPathConstants.NODESET);
+    };
+    
+    var jsonmlxslt;
+    $env.jsonml = function(xmlstring){
+        jsonmlxslt = jsonmlxslt||$env.xslt($env.xml2jsonml.toXMLString());
+        var jsonml = $env.xslttransform(jsonmlxslt, xmlstring);
+        //$env.debug('jsonml :\n'+jsonml);
+        return eval(jsonml);
+    };
+    var transformerFactory;
+    $env.xslt = function(xsltstring){
+        transformerFactory = transformerFactory||
+            Packages.javax.xml.transform.TransformerFactory.newInstance();
+        return transformerFactory.newTransformer(
+              new javax.xml.transform.dom.DOMSource(
+                  $env.parseXML(xsltstring)
+              )
+          );
+    };
+    $env.xslttransform = function(xslt, xmlstring){
+        var baos = new java.io.ByteArrayOutputStream();
+        xslt.transform(
+            new javax.xml.transform.dom.DOMSource($env.parseHTML(xmlstring)),
+            new javax.xml.transform.stream.StreamResult(baos)
+        );
+        return java.nio.charset.Charset.forName("UTF-8").
+            decode(java.nio.ByteBuffer.wrap(baos.toByteArray())).toString()+"";
     };
     
     $env.tmpdir         = java.lang.System.getProperty("java.io.tmpdir"); 
@@ -419,7 +606,10 @@ var Envjs = function(){
     $env.os_version     = java.lang.System.getProperty("os.version"); 
     $env.lang           = java.lang.System.getProperty("user.lang"); 
     $env.platform       = "Rhino ";//how do we get the version
-    
+
+    //injected by org.mozilla.javascript.tools.envjs.
+    $env.load = load;
+
     $env.safeScript = function(){
       //do nothing  
     };
@@ -431,31 +621,38 @@ var Envjs = function(){
     
     
     $env.loadInlineScript = function(script){
-        $env.debug("loading inline script :" + script.text);
         var tmpFile = $env.writeToTempFile(script.text, 'js') ;
         $env.debug("loading " + tmpFile);
-        load(tmpFile);
+        $env.load(tmpFile);
     };
     
+    //injected by org.mozilla.javascript.tools.envjs.
+    $env.globalize = globalize;
+    $env.getScope = getScope;
+    $env.setScope = setScope;
+    $env.configureScope = configureScope;
+    $env.restoreScope = restoreScope;
+    
 })(Envjs);/*
+ * Envjs env-js.1.0.rc5 
  * Pure JavaScript Browser Environment
  *   By John Resig <http://ejohn.org/>
- * Copyright 2008 John Resig, under the MIT License
+ * Copyright 2008-2009 John Resig, under the MIT License
  */
 
 
 try {
-        // this goes into the global namespace, but less likely to collide with
-        //   client JS code than methods in Rhino shell (load, print, etc.)
-    this.__proto__._$envjs$makeObjectIntoWindow$_ = function($w, $env,
-                                                             $parentWindow,
-                                                             $initTop){
+        
+    Envjs.window = function($w, 
+                            $env,
+                            $parentWindow,
+                            $initTop){
 
-        // The Window Object
-        var __this__ = $w;
-        $w.__defineGetter__('window', function(){
-            return __this__;
-        });
+    // The Window Object
+    var __this__ = $w;
+    $w.__defineGetter__('window', function(){
+        return __this__;
+    });
 
 /*
 *	window.js
@@ -773,8 +970,7 @@ var __findItemIndex__ = function (nodelist, id) {
  * @param  refChildIndex : int     - the array index to insert the Node before
  */
 var __insertBefore__ = function(nodelist, newChild, refChildIndex) {
-    if ((refChildIndex >= 0) && (refChildIndex < nodelist.length)) { // bounds check
-        
+    if ((refChildIndex >= 0) && (refChildIndex <= nodelist.length)) { // bounds check
         if (newChild.nodeType == DOMNode.DOCUMENT_FRAGMENT_NODE) {  // node is a DocumentFragment
             // append the children of DocumentFragment
             Array.prototype.splice.apply(nodelist,[refChildIndex, 0].concat(newChild.childNodes.toArray()));
@@ -937,12 +1133,12 @@ __extend__(DOMNamedNodeMap.prototype, {
               throw(new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR));
             } else {
               this[itemIndex] = arg;                // over-write existing NamedNode
-              this[arg.name] = arg;
+              this[arg.name.toLowerCase()] = arg;
             }
       } else {
             // add new NamedNode
             Array.prototype.push.apply(this, [arg]);
-            this[arg.name] = arg;
+            this[arg.name.toLowerCase()] = arg;
       }
     
       arg.ownerElement = this.parentNode;            // update ownerElement
@@ -1090,12 +1286,12 @@ var __findNamedItemIndex__ = function(namednodemap, name, isnsmap) {
   for (var i=0; i<namednodemap.length; i++) {
     // compare name to each node's nodeName
     if(isnsmap){
-        if (namednodemap[i].localName == localName) {         // found it!
+        if (namednodemap[i].localName.toLowerCase() == name.toLowerCase()) {         // found it!
           ret = i;
           break;
         }
     }else{
-        if (namednodemap[i].name == name) {         // found it!
+        if (namednodemap[i].name.toLowerCase() == name.toLowerCase()) {         // found it!
           ret = i;
           break;
         }
@@ -1121,7 +1317,8 @@ var __findNamedItemNSIndex__ = function(namednodemap, namespaceURI, localName) {
     // loop through all nodes
     for (var i=0; i<namednodemap.length; i++) {
       // compare name to each node's namespaceURI and localName
-      if ((namednodemap[i].namespaceURI == namespaceURI) && (namednodemap[i].localName == localName)) {
+      if ((namednodemap[i].namespaceURI.toLowerCase() == namespaceURI.toLowerCase()) && 
+          (namednodemap[i].localName.toLowerCase() == localName.toLowerCase())) {
         ret = i;                                 // found it!
         break;
       }
@@ -1259,7 +1456,7 @@ var DOMNode = function(ownerDocument) {
 
   this.nodeName = "";                            // The name of this node
   this.nodeValue = null;                           // The value of this node
-  this.className = "";                           // The CSS class name of this node.
+  //this.className = "";                           // The CSS class name of this node.
   
   // The parent of this node. All nodes, except Document, DocumentFragment, and Attr may have a parent.
   // However, if a node has just been created and not yet added to the tree, or if it has been removed from the tree, this is null
@@ -1308,8 +1505,12 @@ __extend__(DOMNode.prototype, {
     insertBefore : function(newChild, refChild) {
         var prevNode;
         
-        if(newChild==null || refChild==null){
+        if(newChild==null){
             return newChild;
+        }
+        if(refChild==null){
+            this.appendChild(newChild);
+            return this.newChild;
         }
         
         // test for exceptions
@@ -1333,7 +1534,6 @@ __extend__(DOMNode.prototype, {
         if (refChild) {                                // if refChild is specified, insert before it
             // find index of refChild
             var itemIndex = __findItemIndex__(this.childNodes, refChild._id);
-            
             // throw Exception if there is no child node with this id
             if (__ownerDocument__(this).implementation.errorChecking && (itemIndex < 0)) {
               throw(new DOMException(DOMException.NOT_FOUND_ERR));
@@ -1347,8 +1547,7 @@ __extend__(DOMNode.prototype, {
             }
             
             // insert newChild into childNodes
-            __insertBefore__(this.childNodes, newChild, 
-                __findItemIndex__(this.childNodes, refChild._id));
+            __insertBefore__(this.childNodes, newChild, itemIndex);
             
             // do node pointer surgery
             prevNode = refChild.previousSibling;
@@ -1368,6 +1567,7 @@ __extend__(DOMNode.prototype, {
                 newChild.parentNode = this;                // set the parentNode of the newChild
                 refChild.previousSibling = newChild;       // link refChild to newChild
             }
+            
         }else {                                         // otherwise, append to end
             prevNode = this.lastChild;
             this.appendChild(newChild);
@@ -2069,6 +2269,7 @@ __extend__(DOMText.prototype,{
     },
     get xml(){
         return __escapeXML__(""+ this.nodeValue);
+        //return ""+ this.nodeValue;
     },
     toString: function(){
         return "Text #" + this._id;    
@@ -2182,13 +2383,16 @@ __extend__(DOMAttr.prototype, {
         this.nodeValue = value;
     },
     get specified(){
-        return (this.value.length > 0);
+        return (this!==null&&this!=undefined);
     },
     get nodeType(){
         return DOMNode.ATTRIBUTE_NODE;
     },
     get xml(){
-        return this.nodeName + '="' + __escapeXML__(this.nodeValue) + '" ';
+        if(this.nodeValue)
+            return this.nodeName + '="' + __escapeXML__(this.nodeValue) + '" ';
+        else
+            return '';
     },
     toString : function(){
         return "Attr #" + this._id + " " + this.name;
@@ -2207,7 +2411,7 @@ $debug("Defining Element");
 var DOMElement = function(ownerDocument) {
     this.DOMNode  = DOMNode;
     this.DOMNode(ownerDocument);                   
-    this.id = "";                                  // the ID of the element
+    //this.id = null;                                  // the ID of the element
 };
 DOMElement.prototype = new DOMNode;
 __extend__(DOMElement.prototype, {	
@@ -2228,17 +2432,17 @@ __extend__(DOMElement.prototype, {
         if (attr) {
             ret = attr.value;
         }
-        return ret; // if Attribute exists, return its value, otherwise, return ""
+        return ret; // if Attribute exists, return its value, otherwise, return null
     },
     setAttribute : function (name, value) {
         // if attribute exists, use it
         var attr = this.attributes.getNamedItem(name);
-        var value = value+'';
+        
         //I had to add this check becuase as the script initializes
         //the id may be set in the constructor, and the html element
         //overrides the id property with a getter/setter.
         if(__ownerDocument__(this)){
-            if (!attr) {
+            if (attr===null||attr===undefined) {
                 attr = __ownerDocument__(this).createAttribute(name);  // otherwise create it
             }
             
@@ -2256,15 +2460,17 @@ __extend__(DOMElement.prototype, {
                 }
             }
             
-            if (__isIdDeclaration__(name)) {
-            //    this.id = value;  // cache ID for getElementById()
-            }
+            /*if (__isIdDeclaration__(name)) {
+                this.id = value;  // cache ID for getElementById()
+            }*/
             
             // assign values to properties (and aliases)
             attr.value     = value;
             
             // add/replace Attribute in NamedNodeMap
             this.attributes.setNamedItem(attr);
+        }else{
+            $warn('Element has no owner document '+this.tagName+'\n\t cant set attribute ' + name + ' = '+value );
         }
     },
     removeAttribute : function removeAttribute(name) {
@@ -2498,6 +2704,12 @@ __extend__(DOMProcessingInstruction.prototype, {
       // XML defines this as being the first token following the markup that begins the processing instruction.
       // The content of this processing instruction.
         return this.nodeName;
+    },
+    set target(value){
+      // The target of this processing instruction.
+      // XML defines this as being the first token following the markup that begins the processing instruction.
+      // The content of this processing instruction.
+        this.nodeName = value;
     },
     get nodeType(){
         return DOMNode.PROCESSING_INSTRUCTION_NODE;
@@ -2793,7 +3005,7 @@ XMLP.prototype.appendFragment = function(xmlfragment) {
 
 XMLP.prototype._parse = function() {
 
-        if(this.m_iP == this.m_xml.length) {
+    if(this.m_iP == this.m_xml.length) {
         return XMLP._NONE;
     }
 
@@ -2813,6 +3025,7 @@ XMLP.prototype._parse = function() {
             }
         }
         else{
+              
             return this._parseElement(this.m_iP + 1);
         }
     }
@@ -2820,6 +3033,7 @@ XMLP.prototype._parse = function() {
         return this._parseEntity(this.m_iP + 1);
     }
     else{
+          
         return this._parseText(this.m_iP);
     }
 
@@ -3644,7 +3858,7 @@ function isEmpty(str) {
  * @param  str : string - The string to be escaped
  * @return : string - The escaped string
  */
-var escAmpRegEx = /&/g;
+var escAmpRegEx = /&(?!(amp;|lt;|gt;|quot|apos;))/g;
 var escLtRegEx = /</g;
 var escGtRegEx = />/g;
 var quotRegEx = /"/g;
@@ -3967,7 +4181,7 @@ var DOMImplementation = function() {
     this.errorChecking  = true;       // by default, test for exceptions
 };
 
-var $handleEndOfNormalOrEmptyElement = function(node, doc, p){
+var __endHTMLElement__ = function(node, doc, p){
     if(node.nodeName.toLowerCase() == 'script'){
         p.replaceEntities = true;
         $env.loadLocalScript(node, p);
@@ -3985,61 +4199,7 @@ var $handleEndOfNormalOrEmptyElement = function(node, doc, p){
         if (node.src && node.src.length > 0){
             $debug("getting content document for (i)frame from " + node.src);
 
-            // create a new global/window object, such that its methods and
-            //   objects are defined within the scope of the new global.
-            //   Then load content from .src into it
-            try {
-
-        /* this code semi-duplicated in html/frame.js -- sorry */
-                // a blank object, pre-configured to inherit original global
-                //                   vvvv from EnvjsRhinoSupraGlobal.java
-                var frameWindow = createAGlobalObject();
-
-                // define local variables with content of things that are
-                //   in current global/window, because when the following
-                //   function executes we'll have a new/blank
-                //   global/window and won't be able to get at them....
-                var localCopy_mkWinFn    = _$envjs$makeObjectIntoWindow$_;
-                var localCopy_$env       = $env;
-                var localCopy_window     = window;
-
-                // a local function gives us a scope that's easy to change
-                var mkAndLoadNewWindow   = function(){
-                  localCopy_mkWinFn(frameWindow, localCopy_$env,
-                                    localCopy_window, localCopy_window.top);
-                  node._content = frameWindow;
-                  frameWindow.location = node.src;
-                }
-
-
-
-                // change scope of window object creation functions, so that
-                //   functions/code they create will be scoped to new window
-                    // *FunctionObjectsScope() from EnvjsRhinoSupraGlobal.java
-                var oldMalnwScope      = getFunctionObjectsScope(
-                  mkAndLoadNewWindow);
-                var oldMkWinScope      = getFunctionObjectsScope(
-                  localCopy_mkWinFn);
-                var oldLoadScope       = getFunctionObjectsScope(load);
-                var oldLoadScriptScope = getFunctionObjectsScope(
-                  $env.loadLocalScript);
-
-                setFunctionObjectsScope(mkAndLoadNewWindow,    frameWindow);
-                setFunctionObjectsScope(localCopy_mkWinFn,     frameWindow);
-                setFunctionObjectsScope(load,                  frameWindow);
-                setFunctionObjectsScope($env.loadLocalScript,  frameWindow);
-
-                mkAndLoadNewWindow();
-
-                // now restore the scope
-                setFunctionObjectsScope(mkAndLoadNewWindow, oldMalnwScope);
-                setFunctionObjectsScope(localCopy_mkWinFn, oldMkWinScope);
-                setFunctionObjectsScope(load, oldLoadScope);
-                setFunctionObjectsScope($env.loadLocalScript,
-                                        oldLoadScriptScope);
-            } catch(e){
-                $error("failed to load frame content: from " + node.src, e);
-            }
+            $env.loadFrame(node, $env.location(node.src));
 
             var event = doc.createEvent();
             event.initEvent("load");
@@ -4179,7 +4339,8 @@ __extend__(DOMImplementation.prototype,{
  *
  * @return : DOMDocument
  */
-function __parseLoop__(impl, doc, p) {
+
+function __parseLoop__(impl, doc, p, isWindowDocument) {
     var iEvt, iNode, iAttr, strName;
     var iNodeParent = doc;
 
@@ -4196,10 +4357,11 @@ function __parseLoop__(impl, doc, p) {
     }
 
   // loop until SAX parser stops emitting events
+  var q = 0;
   while(true) {
     // get next event
     iEvt = p.next();
-
+    
     if (iEvt == XMLP._ELM_B) {                      // Begin-Element Event
       var pName = p.getName();                      // get the Element name
       pName = trim(pName, true, true);              // strip spaces from Element name
@@ -4208,7 +4370,6 @@ function __parseLoop__(impl, doc, p) {
 
       if (!impl.namespaceAware) {
         iNode = doc.createElement(p.getName());     // create the Element
-
         // add attributes to Element
         for(var i = 0; i < p.getAttributeCount(); i++) {
           strName = p.getAttributeName(i);          // get Attribute name
@@ -4289,9 +4450,9 @@ function __parseLoop__(impl, doc, p) {
       iNodeParent = iNode;                          // descend one level of the DOM Tree
     }
 
-    else if(iEvt == XMLP._ELM_E) {                  // End-Element Event
-      $handleEndOfNormalOrEmptyElement(iNodeParent, doc, p);
-      iNodeParent = iNodeParent.parentNode;         // ascend one level of the DOM Tree
+    else if(iEvt == XMLP._ELM_E) {                  // End-Element Event        
+        __endHTMLElement__(iNodeParent, doc, p);
+        iNodeParent = iNodeParent.parentNode;         // ascend one level of the DOM Tree
     }
 
     else if(iEvt == XMLP._ELM_EMP) {                // Empty Element Event
@@ -4377,8 +4538,7 @@ function __parseLoop__(impl, doc, p) {
         iNodeParent._documentElement = iNode;        // register this Element as the Document.documentElement
       }
 
-
-      $handleEndOfNormalOrEmptyElement(iNode, doc, p);
+      __endHTMLElement__(iNode, doc, p);
       iNodeParent.appendChild(iNode);               // attach Element to parentNode
     }
     else if(iEvt == XMLP._TEXT || iEvt == XMLP._ENTITY) {                   // TextNode and entity Events
@@ -4670,9 +4830,15 @@ __extend__(DOMDocument.prototype, {
     get parentWindow(){
         return this._parentWindow;
     },
-    loadXML : function(xmlStr) {
+    loadXML : function(xmlString) {
         // create SAX Parser
-        var parser = new XMLP(xmlStr+'');
+        var htmlString;
+        if($env.fixHTML){
+            htmlString = $env.cleanHTML(xmlString);
+        }else{
+            htmlString = xmlString
+        }
+        var parser = new XMLP(htmlString+'');
         
         // create DOM Document
         if(this === $document){
@@ -4960,13 +5126,9 @@ __extend__(DOMDocument.prototype, {
 	toString: function(){ 
 	    return "Document" +  (typeof this._url == "string" ? ": " + this._url : ""); 
     },
-	get defaultView(){ //TODO: why isnt this just 'return $w;'?
+	get defaultView(){ 
 		return { getComputedStyle: function(elem){
-			return { getPropertyValue: function(prop){
-				prop = prop.replace(/\-(\w)/g,function(m,c){ return c.toUpperCase(); });
-				var val = elem.style[prop];
-				if ( prop == "opacity" && val == "" ){ val = "1"; }return val;
-			}};
+			return $w.getComputedStyle(elem);
 		}};
 	},
     _genId : function() {
@@ -5431,7 +5593,7 @@ __extend__(HTMLDocument.prototype, {
           else if(tagName.match(/SELECT/))              {node = new HTMLSelectElement(this);}
           else if(tagName.match(/STYLE/))               {node = new HTMLStyleElement(this);}
           else if(tagName.match(/TABLE/))               {node = new HTMLTableElement(this);}
-          else if(tagName.match(/TBODY|TFOOT|THEAD/))   {node = new HTMLSectionElement(this);}
+          else if(tagName.match(/TBODY|TFOOT|THEAD/))   {node = new HTMLTableSectionElement(this);}
           else if(tagName.match(/TD|TH/))               {node = new HTMLTableCellElement(this);}
           else if(tagName.match(/TEXTAREA/))            {node = new HTMLTextAreaElement(this);}
           else if(tagName.match(/TITLE/))               {node = new HTMLTitleElement(this);}
@@ -5581,11 +5743,10 @@ var HTMLElement = function(ownerDocument) {
 HTMLElement.prototype = new DOMElement;
 __extend__(HTMLElement.prototype, {
 		get className() { 
-		    return this.getAttribute("class")||""; 
-		    
+		    return this.getAttribute("class")||''; 
 	    },
-		set className(val) { 
-		    return this.setAttribute("class",trim(val)); 
+		set className(value) { 
+		    return this.setAttribute("class",trim(value)); 
 		    
 	    },
 		get dir() { 
@@ -5597,7 +5758,7 @@ __extend__(HTMLElement.prototype, {
 		    
 	    },
 		get id(){  
-		    return this.getAttribute('id')||''; 
+		    return this.getAttribute('id'); 
 		    
 	    },
 		set id(id){  
@@ -5609,8 +5770,8 @@ __extend__(HTMLElement.prototype, {
 		    
 	    },
 		set innerHTML(html){
-		    //$debug("htmlElement.innerHTML("+html+")");
 		    //Should be replaced with HTMLPARSER usage
+            //$debug('SETTING INNER HTML ('+this+'+'+html.substring(0,64));
 		    var doc = new DOMParser().
 			  parseFromString('<div>'+html+'</div>');
             var parent = doc.documentElement;
@@ -5627,7 +5788,7 @@ __extend__(HTMLElement.prototype, {
 		    doc = null;
 		},
 		get lang() { 
-		    return this.getAttribute("lang")||""; 
+		    return this.getAttribute("lang"); 
 		    
 	    },
 		set lang(val) { 
@@ -5656,33 +5817,39 @@ __extend__(HTMLElement.prototype, {
 		scrollRight: 0,
 		get style(){
 		    if(this.$css2props === null){
-		        this.updateCss2Props();
+	            this.$css2props = new CSS2Properties(this);
 	        }
-	        return this.$css2props
+	        return this.$css2props;
 		},
-		updateCss2Props: function() {
-			this.$css2props = new CSS2Properties({
-				onSet: (function(that) {
-					return function() { that.__setAttribute("style", this.cssText); }
-				})(this),
-				cssText:this.getAttribute("style")
-			});
-		},
-		__setAttribute: HTMLElement.prototype.setAttribute,
+        set style(values){
+		    __updateCss2Props__(this, values);
+        },
 		setAttribute: function (name, value) {
-		    this.__setAttribute(name, value);
+            DOMElement.prototype.setAttribute.apply(this,[name, value]);
 		    if (name === "style") {
-		        this.updateCss2Props();
+		        __updateCss2Props__(this, value);
 		    }
 		},
 		get title() { 
-		    return this.getAttribute("title")||""; 
+		    return this.getAttribute("title"); 
 		    
 	    },
-		set title(val) { 
-		    return this.setAttribute("title",val); 
+		set title(value) { 
+		    return this.setAttribute("title", value); 
 		    
 	    },
+		get tabIndex(){
+            var ti = this.getAttribute('tabindex');
+            if(ti!==null)
+                return Number(ti);
+            else
+                return 0;
+        },
+        set tabIndex(value){
+            if(value===undefined||value===null)
+                value = 0;
+            this.setAttribute('tabindex',Number(value));
+        },
 		//Not in the specs but I'll leave it here for now.
 		get outerHTML(){ 
 		    return this.xml; 
@@ -5695,17 +5862,9 @@ __extend__(HTMLElement.prototype, {
         },
 
 		onclick: function(event){
-		    __eval__(this.getAttribute('onclick')||'', this)
+		    __eval__(this.getAttribute('onclick')||'', this);
 	    },
-        // non-ECMA function, but no other way for click events to enter env.js
-        __click__: function(element){
-            var event = new Event({
-              target:element,
-              currentTarget:element
-            });
-            event.initEvent("click");
-            element.dispatchEvent(event);
-        },
+        
 
 		ondblclick: function(event){
             __eval__(this.getAttribute('ondblclick')||'', this);
@@ -5751,17 +5910,24 @@ var __eval__ = function(script, startingNode){
         listOfScopes.push(window);
 
 
-        var oldScopesArray = configureFunctionObjectsScopeChain(
+        var oldScopesArray = $env.configureScope(
           doEval,        // the function whose scope chain to change
           listOfScopes); // last array element is "head" of new chain
         doEval.call(startingNode, script);
-        restoreScopeOfSetOfObjects(oldScopesArray);
+        $env.restoreScope(oldScopesArray);
                          // oldScopesArray is N-element array of two-element
                          // arrays.  First element is JS object whose scope
                          // was modified, second is original value to restore.
     }catch(e){
         $error(e);
     }
+};
+
+var __updateCss2Props__ = function(elem, values){
+    if(elem.$css2props === null){
+        elem.$css2props = new CSS2Properties(elem);
+    }
+    __cssTextToStyles__(elem.$css2props, values);
 };
 
 var __registerEventAttrs__ = function(elm){
@@ -5798,6 +5964,15 @@ var __registerEventAttrs__ = function(elm){
     return elm;
 };
 	
+// non-ECMA function, but no other way for click events to enter env.js
+var  __click__ = function(element){
+    var event = new Event({
+      target:element,
+      currentTarget:element
+    });
+    event.initEvent("click");
+    element.dispatchEvent(event);
+};
 var __submit__ = function(element){
 	var event = new Event({
 	  target:element,
@@ -5907,7 +6082,7 @@ var HTMLAnchorElement = function(ownerDocument) {
 HTMLAnchorElement.prototype = new HTMLElement;
 __extend__(HTMLAnchorElement.prototype, {
 	get accessKey() { 
-	    return this.getAttribute("accesskey") || ""; 
+	    return this.getAttribute("accesskey"); 
 	    
     },
 	set accessKey(val) { 
@@ -5915,7 +6090,7 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get charset() { 
-	    return this.getAttribute("charset") || ""; 
+	    return this.getAttribute("charset"); 
 	    
     },
 	set charset(val) { 
@@ -5923,7 +6098,7 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get coords() { 
-	    return this.getAttribute("coords") || ""; 
+	    return this.getAttribute("coords"); 
 	    
     },
 	set coords(val) { 
@@ -5931,7 +6106,7 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get href() { 
-	    return this.getAttribute("href") || ""; 
+	    return this.getAttribute("href"); 
 	    
     },
 	set href(val) { 
@@ -5939,7 +6114,7 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get hreflang() { 
-	    return this.getAttribute("hreflang") || ""; 
+	    return this.getAttribute("hreflang"); 
 	    
     },
 	set hreflang(val) { 
@@ -5947,7 +6122,7 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get name() { 
-	    return this.getAttribute("name") || ""; 
+	    return this.getAttribute("name"); 
 	    
     },
 	set name(val) { 
@@ -5955,7 +6130,7 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get rel() { 
-	    return this.getAttribute("rel") || ""; 
+	    return this.getAttribute("rel"); 
 	    
     },
 	set rel(val) { 
@@ -5963,7 +6138,7 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get rev() { 
-	    return this.getAttribute("rev") || ""; 
+	    return this.getAttribute("rev"); 
 	    
     },
 	set rev(val) { 
@@ -5971,23 +6146,15 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get shape() { 
-	    return this.getAttribute("shape") || ""; 
+	    return this.getAttribute("shape"); 
 	    
     },
 	set shape(val) { 
 	    return this.setAttribute("shape",val); 
 	    
     },
-	get tabIndex() { 
-	    return this.getAttribute("tabindex") || ""; 
-	    
-    },
-	set tabIndex(val) { 
-	    return this.setAttribute("tabindex",val); 
-	    
-    },
 	get target() { 
-	    return this.getAttribute("target") || ""; 
+	    return this.getAttribute("target"); 
 	    
     },
 	set target(val) { 
@@ -5995,7 +6162,7 @@ __extend__(HTMLAnchorElement.prototype, {
 	    
     },
 	get type() { 
-	    return this.getAttribute("type") || ""; 
+	    return this.getAttribute("type"); 
 	    
     },
 	set type(val) { 
@@ -6133,12 +6300,12 @@ __extend__(HTMLAreaElement.prototype, {
         //TODO
         return 0;
     },
-    get tabIndex(){
+    /*get tabIndex(){
         return this.getAttribute('tabindex');
     },
     set tabIndex(value){
         this.setAttribute('tabindex',value);
-    },
+    },*/
     get target(){
         return this.getAttribute('target');
     },
@@ -6230,12 +6397,12 @@ __extend__(HTMLButtonElement.prototype, {
     set accessKey(value){
         this.setAttribute('accesskey',value);
     },
-    get tabIndex(){
+    /*get tabIndex(){
         return Number(this.getAttribute('tabindex'));
     },
     set tabIndex(value){
         this.setAttribute('tabindex',Number(value));
-    },
+    },*/
     get type(){
         return this.getAttribute('type');
     },
@@ -6421,7 +6588,7 @@ __extend__(HTMLFormElement.prototype,{
         
     },
 	get name() {
-	    return this.getAttribute("name") || ""; 
+	    return this.getAttribute("name"); 
 	    
     },
 	set name(val) { 
@@ -6429,7 +6596,7 @@ __extend__(HTMLFormElement.prototype,{
 	    
     },
 	get target() { 
-	    return this.getAttribute("target") || ""; 
+	    return this.getAttribute("target"); 
 	    
     },
 	set target(val) { 
@@ -6505,70 +6672,8 @@ __extend__(HTMLFrameElement.prototype, {
         this.setAttribute('src', value);
 
         if (value && value.length > 0){
-            try {
-
-        /* this code semi-duplicated in dom/implementation.js -- sorry */
-                var frameWindow;
-                var makingNewWinFlag = !(this._content);
-                if (makingNewWinFlag)
-                            // a blank object, inherits from original global
-                                  //  v EnvjsRhinoSupraGlobal.java
-                    frameWindow = createAGlobalObject();
-                else
-                    frameWindow = this._content;
-
-
-                // define local variables with content of things that are
-                //   in current global/window, because when the following
-                //   function executes we'll have a new/blank
-                //   global/window and won't be able to get at them....
-                var localCopy_mkWinFn    = _$envjs$makeObjectIntoWindow$_;
-                var localCopy_$env       = $env;
-                var localCopy_window     = window;
-
-                // a local function gives us something whose scope
-                //   is easy to change
-                var mkAndLoadNewWindow   = function(){
-                    if (makingNewWinFlag){
-                        localCopy_mkWinFn(frameWindow, localCopy_$env,
-                                          localCopy_window,
-                                          localCopy_window.top);
-                    }
-
-                    frameWindow.location = value;
-                }
-
-
-                // change scope of window object creation
-                //   functions, so that functions/code they create
-                //   will be scoped to new window object
-        // *FunctionObjectsScope() from EnvjsRhinoSupraGlobal.java
-                var oldMalnwScope      = getFunctionObjectsScope(
-                  mkAndLoadNewWindow);
-                var oldMkWinScope      = getFunctionObjectsScope(
-                  localCopy_mkWinFn);
-                var oldLoadScope       = getFunctionObjectsScope(load);
-                var oldLoadScriptScope = getFunctionObjectsScope(
-                  $env.loadLocalScript);
-
-                setFunctionObjectsScope(mkAndLoadNewWindow,    frameWindow);
-                setFunctionObjectsScope(localCopy_mkWinFn,     frameWindow);
-                setFunctionObjectsScope(load,                  frameWindow);
-                setFunctionObjectsScope($env.loadLocalScript,  frameWindow);
-
-                mkAndLoadNewWindow();
-                this._content = frameWindow;
-
-                // now restore the scope
-                setFunctionObjectsScope(mkAndLoadNewWindow, oldMalnwScope);
-                setFunctionObjectsScope(localCopy_mkWinFn, oldMkWinScope);
-                setFunctionObjectsScope(load, oldLoadScope);
-                setFunctionObjectsScope($env.loadLocalScript,
-                  oldLoadScriptScope);
-            } catch(e){
-                $error("failed to load frame content: from " + value, e);
-            }
-
+            $env.loadFrame(this, $env.location(value));
+            
             var event = document.createEvent();
             event.initEvent("load");
             this.dispatchEvent( event, false );
@@ -6830,12 +6935,12 @@ __extend__(HTMLInputElement.prototype, {
     set src(value){
         this.setAttribute('src', value);
     },
-    get tabIndex(){
+    /*get tabIndex(){
         return Number(this.getAttribute('tabindex'));
     },
     set tabIndex(value){
         this.setAttribute('tabindex',Number(value));
-    },
+    },*/
     get type(){
         return this.getAttribute('type');
     },
@@ -6849,6 +6954,8 @@ __extend__(HTMLInputElement.prototype, {
         return this.getAttribute('value');
     },
     set value(value){
+        if(this.defaultValue===null&&this.value!==null)
+            this.defaultValue = this.value;
         this.setAttribute('value',value);
     },
     blur:function(){
@@ -7129,12 +7236,12 @@ __extend__(HTMLObjectElement.prototype, {
     set standby(value){
         this.setAttribute('standby',value);
     },
-    get tabIndex(){
+    /*get tabIndex(){
         return this.getAttribute('tabindex');
     },
     set tabIndex(value){
         this.setAttribute('tabindex',value);
-    },
+    },*/
     get type(){
         return this.getAttribute('type');
     },
@@ -7235,6 +7342,8 @@ __extend__(HTMLOptionElement.prototype, {
         return (this.getAttribute('selected')=='selected');
     },
     set selected(value){
+        if(this.defaultSelected===null&&this.selected!==null)
+            this.defaultSelected = this.selected;
         this.setAttribute('selected', (value ? 'selected' :''));
     },
     get value(){
@@ -7309,6 +7418,10 @@ __extend__(HTMLScriptElement.prototype, {
  		}
         return this.nodeValue;
 
+    },
+    set text(value){
+        this.nodeValue = value;
+        $env.loadInlineScript(this);
     },
     get htmlFor(){
         return this.getAttribute('for');
@@ -7438,12 +7551,12 @@ __extend__(HTMLSelectElement.prototype, {
     set size(value){
         this.setAttribute('size',value);
     },
-    get tabIndex(){
+    /*get tabIndex(){
         return Number(this.getAttribute('tabindex'));
     },
     set tabIndex(value){
         this.setAttribute('tabindex',value);
-    },
+    },*/
     add : function(){
         __add__(this);
     },
@@ -7559,24 +7672,29 @@ __extend__(HTMLTableElement.prototype, {
     },
  
     appendChild : function (child) {
-
-        var tagName = child.tagName.toLowerCase();
-        if (tagName === "tr") {
-            // need an implcit <tbody> to contain this...
-            if (!this.currentBody) {
-                this.currentBody = document.createElement("tbody");
-            
-                DOMNode.prototype.appendChild.apply(this, [this.currentBody]);
+        
+        var tagName;
+        if(child.tagName){
+            tagName = child.tagName.toLowerCase();
+            if (tagName === "tr") {
+                // need an implcit <tbody> to contain this...
+                if (!this.currentBody) {
+                    this.currentBody = document.createElement("tbody");
+                
+                    DOMNode.prototype.appendChild.apply(this, [this.currentBody]);
+                }
+              
+                return this.currentBody.appendChild(child); 
+       
+            } else if (tagName === "tbody" || tagName === "tfoot" && this.currentBody) {
+                this.currentBody = child;
+                return DOMNode.prototype.appendChild.apply(this, arguments);  
+                
+            } else {
+                return DOMNode.prototype.appendChild.apply(this, arguments);
             }
-          
-            return this.currentBody.appendChild(child); 
-   
-        } else if (tagName === "tbody" || tagName === "tfoot" && this.currentBody) {
-            this.currentBody = child;
-            return DOMNode.prototype.appendChild.apply(this, arguments);  
-            
-        } else {
-            return DOMNode.prototype.appendChild.apply(this, arguments);
+        }else{
+            $error('HTMLTableElement.appendChild => child.tagName should not be undefined here... Fix ME!');
         }
     },
      
@@ -7853,6 +7971,12 @@ __extend__(HTMLTextAreaElement.prototype, {
     set disabled(value){
         this.setAttribute('disabled', (value ? 'disabled' :''));
     },
+    get maxLength(){
+        return Number(this.getAttribute('maxlength')||'0');
+    },
+    set maxLength(value){
+        this.setAttribute('maxlength', value);
+    },
     get name(){
         return this.getAttribute('name')||'';
     },
@@ -7865,12 +7989,12 @@ __extend__(HTMLTextAreaElement.prototype, {
     set readOnly(value){
         this.setAttribute('readonly', (value ? 'readonly' :''));
     },
-    get tabIndex(){
+    /*get tabIndex(){
         return Number(this.getAttribute('tabindex'));
     },
     set tabIndex(value){
         this.setAttribute('tabindex',Number(value));
-    },
+    },*/
     get type(){
         return this.getAttribute('type');
     },
@@ -7878,10 +8002,12 @@ __extend__(HTMLTextAreaElement.prototype, {
         this.setAttribute('type',value);
     },
     get value(){
-        return this.getAttribute('value');
+        return this.text;
     },
     set value(value){
-        this.setAttribute('value',value);
+        if(this.defaultValue===null&&this.text!==null)
+            this.defaultValue = this.text;
+        return this.text = value;
     },
     blur:function(){
         __blur__(this);
@@ -8226,47 +8352,67 @@ var $onblur,
     $onresize;/*
 * CSS2Properties - DOM Level 2 CSS
 */
-var CSS2Properties = function(options){
-    __extend__(this, __supportedStyles__);
-    this.onSetCallback = options.onSet?options.onSet:(function(){});
-    this.styleIndices = {};
-    __cssTextToStyles__(this, options.cssText?options.cssText:"");
+var CSS2Properties = function(element){
+    //this.onSetCallback = options.onSet?options.onSet:(function(){});
+    this.styleIndex = __supportedStyles__();
+    this.nameMap = {};
+    this.__previous__ = {};
+    this.__element__ = element;
+    __cssTextToStyles__(this, element.getAttribute('style')||'');
 };
 __extend__(CSS2Properties.prototype, {
     get cssText(){
-        return Array.prototype.join.apply(this,[';\n']);
+        var css = '';
+        for(var i=0;i<this.length;i++){
+            css+=this[i]+":"+this.getPropertyValue(this[i])+';'
+        }
+        return css;
     },
     set cssText(cssText){ 
         __cssTextToStyles__(this, cssText); 
     },
-    getPropertyCSSValue : function(){
-        
+    getPropertyCSSValue : function(name){
+        //?
     },
     getPropertyPriority : function(){
         
     },
     getPropertyValue : function(name){
-		var camelCase = name.replace(/\-(\w)/g, function(all, letter){
-			return letter.toUpperCase();
-		});
-        var i, value = this[camelCase];
-        if(value === undefined){
-            for(i=0;i<this.length;i++){
-                if(this[i]===name){
-                    return this[i];
-                }
-            }
+        if(name in this.styleIndex){
+            //$info(name +' in style index');
+            return this[name];
+        }else if(name in this.nameMap){
+            return this[__toCamelCase__(name)];
         }
-        return value;
+        //$info(name +' not found');
+        return null;
     },
     item : function(index){
         return this[index];
     },
-    removeProperty: function(){
-        
+    removeProperty: function(name){
+        this.styleIndex[name] = null;
     },
-    setProperty: function(){
-        
+    setProperty: function(name, value){
+        //$info('setting css property '+name+' : '+value);
+        name = __toCamelCase__(name);
+        if(name in this.styleIndex){
+            //$info('setting camel case css property ');
+            if (value!==undefined){
+                this.styleIndex[name] = value;
+            }
+            if(name!==__toDashed__(name)){
+                //$info('setting dashed name css property ');
+                name = __toDashed__(name);
+                this[name] = value;
+                if(!(name in this.nameMap)){
+                    Array.prototype.push.apply(this, [name]);
+                    this.nameMap[name] = this.length;
+                }
+                
+            }
+        }
+        //$info('finished setting css property '+name+' : '+value);
     },
     toString:function(){
         if (this.length >0){
@@ -8274,1058 +8420,226 @@ __extend__(CSS2Properties.prototype, {
         }else{
             return '';
         }
-    },
-    onSet:function(camelCaseName, value){
-        var dashedName = camelCaseName.replace(/[A-Z]/g, function(all) {
-            return "-" + all.toLowerCase();
-        });
-        var definition = dashedName + ": " + value;
-        if (this.styleIndices[camelCaseName] !== undefined)
-            this[this.styleIndices[camelCaseName]] = definition;
-        else {
-            Array.prototype.push.apply(this, [definition]);
-            this.styleIndices[camelCaseName] = this.length - 1;
-        }
-        this.onSetCallback();
-    },
+    }
 });
 
+
+
 var __cssTextToStyles__ = function(css2props, cssText){
-    var styleArray=[];
-    var style, name, value, camelCaseName, w3cName, styles = cssText.split(';');
-    this.styleIndices = {};
+    //var styleArray=[];
+    var style, styles = cssText.split(';');
     for ( var i = 0; i < styles.length; i++ ) {
         //$log("Adding style property " + styles[i]);
     	style = styles[i].split(':');
+        //$log(" style  " + style[0]);
     	if ( style.length == 2 ){
-    	    //keep a reference to the original name of the style which was set
-    	    //this is the w3c style setting method.
-    	    var idx = styleArray.length;
-    	    styleArray[idx] = w3cName = styles[i];
-            //camel case for dash case
-    	    value = trim(style[1]);
-            camelCaseName = trim(style[0].replace(/\-(\w)/g, function(all, letter){
-				return letter.toUpperCase();
-			}));
-            this.styleIndices[camelCaseName] = idx;
-            $debug('CSS Style Name:  ' + camelCaseName);
-            if(css2props["_" + camelCaseName]!==undefined){
-                //set the value internally with camelcase name 
-                $debug('Setting css ' + camelCaseName + ' to ' + value);
-                css2props["_" + camelCaseName] = value;
-            };
+            //$log(" value  " + style[1]);
+    	    css2props.setProperty( style[0].replace(" ",'','g'), style[1].replace(" ",'','g'));
     	}
     }
-    __setArray__(css2props, styleArray);
 };
+
+var __toCamelCase__ = function(name) {
+    //$info('__toCamelCase__'+name);
+    if(name){
+    	return name.replace(/\-(\w)/g, function(all, letter){
+    		return letter.toUpperCase();
+    	});
+    }
+    return name;
+};
+
+var __toDashed__ = function(camelCaseName) {
+    //$info("__toDashed__"+camelCaseName);
+    if(camelCaseName){
+    	return camelCaseName.replace(/[A-Z]/g, function(all) {
+    		return "-" + all.toLowerCase();
+    	});
+    }
+    return camelCaseName;
+};
+
 //Obviously these arent all supported but by commenting out various sections
 //this provides a single location to configure what is exposed as supported.
-//These getters/setters will need to get fine-tuned in the future to deal with
-//the variation on input formulations
-var __supportedStyles__ = (function(){
-    return{
-        _azimuth: "",
-        get azimuth() {
-            return this._azimuth;
-        },
-        set azimuth(val) {
-            this._azimuth = val;
-            this.onSet("azimuth", val);
-        },
-        _background:	"",
-        get background() {
-            return this._background;
-        },
-        set background(val) {
-            this._background = val;
-            this.onSet("background", val);
-        },
-        _backgroundAttachment:	"",
-        get backgroundAttachment() {
-            return this._backgroundAttachment;
-        },
-        set backgroundAttachment(val) {
-            this._backgroundAttachment = val;
-            this.onSet("backgroundAttachment", val);
-        },
-        _backgroundColor:	"",
-        get backgroundColor() {
-            return this._backgroundColor;
-        },
-        set backgroundColor(val) {
-            this._backgroundColor = val;
-            this.onSet("backgroundColor", val);
-        },
-        _backgroundImage:	"",
-        get backgroundImage() {
-            return this._backgroundImage;
-        },
-        set backgroundImage(val) {
-            this._backgroundImage = val;
-            this.onSet("backgroundImage", val);
-        },
-        _backgroundPosition:	"",
-        get backgroundPosition() {
-            return this._backgroundPosition;
-        },
-        set backgroundPosition(val) {
-            this._backgroundPosition = val;
-            this.onSet("backgroundPosition", val);
-        },
-        _backgroundRepeat:	"",
-        get backgroundRepeat() {
-            return this._backgroundRepeat;
-        },
-        set backgroundRepeat(val) {
-            this._backgroundRepeat = val;
-            this.onSet("backgroundRepeat", val);
-        },
-        _border:	"",
-        get border() {
-            return this._border;
-        },
-        set border(val) {
-            this._border = val;
-            this.onSet("border", val);
-        },
-        _borderBottom:	"",
-        get borderBottom() {
-            return this._borderBottom;
-        },
-        set borderBottom(val) {
-            this._borderBottom = val;
-            this.onSet("borderBottom", val);
-        },
-        _borderBottomColor:	"",
-        get borderBottomColor() {
-            return this._borderBottomColor;
-        },
-        set borderBottomColor(val) {
-            this._borderBottomColor = val;
-            this.onSet("borderBottomColor", val);
-        },
-        _borderBottomStyle:	"",
-        get borderBottomStyle() {
-            return this._borderBottomStyle;
-        },
-        set borderBottomStyle(val) {
-            this._borderBottomStyle = val;
-            this.onSet("borderBottomStyle", val);
-        },
-        _borderBottomWidth:	"",
-        get borderBottomWidth() {
-            return this._borderBottomWidth;
-        },
-        set borderBottomWidth(val) {
-            this._borderBottomWidth = val;
-            this.onSet("borderBottomWidth", val);
-        },
-        _borderCollapse:	"",
-        get borderCollapse() {
-            return this._borderCollapse;
-        },
-        set borderCollapse(val) {
-            this._borderCollapse = val;
-            this.onSet("borderCollapse", val);
-        },
-        _borderColor:	"",
-        get borderColor() {
-            return this._borderColor;
-        },
-        set borderColor(val) {
-            this._borderColor = val;
-            this.onSet("borderColor", val);
-        },
-        _borderLeft:	"",
-        get borderLeft() {
-            return this._borderLeft;
-        },
-        set borderLeft(val) {
-            this._borderLeft = val;
-            this.onSet("borderLeft", val);
-        },
-        _borderLeftColor:	"",
-        get borderLeftColor() {
-            return this._borderLeftColor;
-        },
-        set borderLeftColor(val) {
-            this._borderLeftColor = val;
-            this.onSet("borderLeftColor", val);
-        },
-        _borderLeftStyle:	"",
-        get borderLeftStyle() {
-            return this._borderLeftStyle;
-        },
-        set borderLeftStyle(val) {
-            this._borderLeftStyle = val;
-            this.onSet("borderLeftStyle", val);
-        },
-        _borderLeftWidth:	"",
-        get borderLeftWidth() {
-            return this._borderLeftWidth;
-        },
-        set borderLeftWidth(val) {
-            this._borderLeftWidth = val;
-            this.onSet("borderLeftWidth", val);
-        },
-        _borderRight:	"",
-        get borderRight() {
-            return this._borderRight;
-        },
-        set borderRight(val) {
-            this._borderRight = val;
-            this.onSet("borderRight", val);
-        },
-        _borderRightColor:	"",
-        get borderRightColor() {
-            return this._borderRightColor;
-        },
-        set borderRightColor(val) {
-            this._borderRightColor = val;
-            this.onSet("borderRightColor", val);
-        },
-        _borderRightStyle:	"",
-        get borderRightStyle() {
-            return this._borderRightStyle;
-        },
-        set borderRightStyle(val) {
-            this._borderRightStyle = val;
-            this.onSet("borderRightStyle", val);
-        },
-        _borderRightWidth:	"",
-        get borderRightWidth() {
-            return this._borderRightWidth;
-        },
-        set borderRightWidth(val) {
-            this._borderRightWidth = val;
-            this.onSet("borderRightWidth", val);
-        },
-        _borderSpacing:	"",
-        get borderSpacing() {
-            return this._borderSpacing;
-        },
-        set borderSpacing(val) {
-            this._borderSpacing = val;
-            this.onSet("borderSpacing", val);
-        },
-        _borderStyle:	"",
-        get borderStyle() {
-            return this._borderStyle;
-        },
-        set borderStyle(val) {
-            this._borderStyle = val;
-            this.onSet("borderStyle", val);
-        },
-        _borderTop:	"",
-        get borderTop() {
-            return this._borderTop;
-        },
-        set borderTop(val) {
-            this._borderTop = val;
-            this.onSet("borderTop", val);
-        },
-        _borderTopColor:	"",
-        get borderTopColor() {
-            return this._borderTopColor;
-        },
-        set borderTopColor(val) {
-            this._borderTopColor = val;
-            this.onSet("borderTopColor", val);
-        },
-        _borderTopStyle:	"",
-        get borderTopStyle() {
-            return this._borderTopStyle;
-        },
-        set borderTopStyle(val) {
-            this._borderTopStyle = val;
-            this.onSet("borderTopStyle", val);
-        },
-        _borderTopWidth:	"",
-        get borderTopWidth() {
-            return this._borderTopWidth;
-        },
-        set borderTopWidth(val) {
-            this._borderTopWidth = val;
-            this.onSet("borderTopWidth", val);
-        },
-        _borderWidth:	"",
-        get borderWidth() {
-            return this._borderWidth;
-        },
-        set borderWidth(val) {
-            this._borderWidth = val;
-            this.onSet("borderWidth", val);
-        },
-        _bottom:	"",
-        get bottom() {
-            return this._bottom;
-        },
-        set bottom(val) {
-            this._bottom = val;
-            this.onSet("bottom", val);
-        },
-        _captionSide:	"",
-        get captionSide() {
-            return this._captionSide;
-        },
-        set captionSide(val) {
-            this._captionSide = val;
-            this.onSet("captionSide", val);
-        },
-        _clear:	"",
-        get clear() {
-            return this._clear;
-        },
-        set clear(val) {
-            this._clear = val;
-            this.onSet("clear", val);
-        },
-        _clip:	"",
-        get clip() {
-            return this._clip;
-        },
-        set clip(val) {
-            this._clip = val;
-            this.onSet("clip", val);
-        },
-        _color:	"",
-        get color() {
-            return this._color;
-        },
-        set color(val) {
-            this._color = val;
-            this.onSet("color", val);
-        },
-        _content:	"",
-        get content() {
-            return this._content;
-        },
-        set content(val) {
-            this._content = val;
-            this.onSet("content", val);
-        },
-        _counterIncrement:	"",
-        get counterIncrement() {
-            return this._counterIncrement;
-        },
-        set counterIncrement(val) {
-            this._counterIncrement = val;
-            this.onSet("counterIncrement", val);
-        },
-        _counterReset:	"",
-        get counterReset() {
-            return this._counterReset;
-        },
-        set counterReset(val) {
-            this._counterReset = val;
-            this.onSet("counterReset", val);
-        },
-        _cssFloat:	"",
-        get cssFloat() {
-            return this._cssFloat;
-        },
-        set cssFloat(val) {
-            this._cssFloat = val;
-            this.onSet("cssFloat", val);
-        },
-        _cue:	"",
-        get cue() {
-            return this._cue;
-        },
-        set cue(val) {
-            this._cue = val;
-            this.onSet("cue", val);
-        },
-        _cueAfter:	"",
-        get cueAfter() {
-            return this._cueAfter;
-        },
-        set cueAfter(val) {
-            this._cueAfter = val;
-            this.onSet("cueAfter", val);
-        },
-        _cueBefore:	"",
-        get cueBefore() {
-            return this._cueBefore;
-        },
-        set cueBefore(val) {
-            this._cueBefore = val;
-            this.onSet("cueBefore", val);
-        },
-        _cursor:	"",
-        get cursor() {
-            return this._cursor;
-        },
-        set cursor(val) {
-            this._cursor = val;
-            this.onSet("cursor", val);
-        },
-        _direction:	"",
-        get direction() {
-            return this._direction;
-        },
-        set direction(val) {
-            this._direction = val;
-            this.onSet("direction", val);
-        },
-        _display:	"",
-        get display() {
-            return this._display;
-        },
-        set display(val) {
-            this._display = val;
-            this.onSet("display", val);
-        },
-        _elevation:	"",
-        get elevation() {
-            return this._elevation;
-        },
-        set elevation(val) {
-            this._elevation = val;
-            this.onSet("elevation", val);
-        },
-        _emptyCells:	"",
-        get emptyCells() {
-            return this._emptyCells;
-        },
-        set emptyCells(val) {
-            this._emptyCells = val;
-            this.onSet("emptyCells", val);
-        },
-        _font:	"",
-        get font() {
-            return this._font;
-        },
-        set font(val) {
-            this._font = val;
-            this.onSet("font", val);
-        },
-        _fontFamily:	"",
-        get fontFamily() {
-            return this._fontFamily;
-        },
-        set fontFamily(val) {
-            this._fontFamily = val;
-            this.onSet("fontFamily", val);
-        },
-        _fontSize:	"",
-        get fontSize() {
-            return this._fontSize;
-        },
-        set fontSize(val) {
-            this._fontSize = val;
-            this.onSet("fontSize", val);
-        },
-        _fontSizeAdjust:	"",
-        get fontSizeAdjust() {
-            return this._fontSizeAdjust;
-        },
-        set fontSizeAdjust(val) {
-            this._fontSizeAdjust = val;
-            this.onSet("fontSizeAdjust", val);
-        },
-        _fontStretch:	"",
-        get fontStretch() {
-            return this._fontStretch;
-        },
-        set fontStretch(val) {
-            this._fontStretch = val;
-            this.onSet("fontStretch", val);
-        },
-        _fontStyle:	"",
-        get fontStyle() {
-            return this._fontStyle;
-        },
-        set fontStyle(val) {
-            this._fontStyle = val;
-            this.onSet("fontStyle", val);
-        },
-        _fontVariant:	"",
-        get fontVariant() {
-            return this._fontVariant;
-        },
-        set fontVariant(val) {
-            this._fontVariant = val;
-            this.onSet("fontVariant", val);
-        },
-        _fontWeight:	"",
-        get fontWeight() {
-            return this._fontWeight;
-        },
-        set fontWeight(val) {
-            this._fontWeight = val;
-            this.onSet("fontWeight", val);
-        },
-        _height:	"",
-        get height() {
-            return this._height;
-        },
-        set height(val) {
-            this._height = val;
-            this.onSet("height", val);
-        },
-        _left:	"",
-        get left() {
-            return this._left;
-        },
-        set left(val) {
-            this._left = val;
-            this.onSet("left", val);
-        },
-        _letterSpacing:	"",
-        get letterSpacing() {
-            return this._letterSpacing;
-        },
-        set letterSpacing(val) {
-            this._letterSpacing = val;
-            this.onSet("letterSpacing", val);
-        },
-        _lineHeight:	"",
-        get lineHeight() {
-            return this._lineHeight;
-        },
-        set lineHeight(val) {
-            this._lineHeight = val;
-            this.onSet("lineHeight", val);
-        },
-        _listStyle:	"",
-        get listStyle() {
-            return this._listStyle;
-        },
-        set listStyle(val) {
-            this._listStyle = val;
-            this.onSet("listStyle", val);
-        },
-        _listStyleImage:	"",
-        get listStyleImage() {
-            return this._listStyleImage;
-        },
-        set listStyleImage(val) {
-            this._listStyleImage = val;
-            this.onSet("listStyleImage", val);
-        },
-        _listStylePosition:	"",
-        get listStylePosition() {
-            return this._listStylePosition;
-        },
-        set listStylePosition(val) {
-            this._listStylePosition = val;
-            this.onSet("listStylePosition", val);
-        },
-        _listStyleType:	"",
-        get listStyleType() {
-            return this._listStyleType;
-        },
-        set listStyleType(val) {
-            this._listStyleType = val;
-            this.onSet("listStyleType", val);
-        },
-        _margin:	"",
-        get margin() {
-            return this._margin;
-        },
-        set margin(val) {
-            this._margin = val;
-            this.onSet("margin", val);
-        },
-        _marginBottom:	"",
-        get marginBottom() {
-            return this._marginBottom;
-        },
-        set marginBottom(val) {
-            this._marginBottom = val;
-            this.onSet("marginBottom", val);
-        },
-        _marginLeft:	"",
-        get marginLeft() {
-            return this._marginLeft;
-        },
-        set marginLeft(val) {
-            this._marginLeft = val;
-            this.onSet("marginLeft", val);
-        },
-        _marginRight:	"",
-        get marginRight() {
-            return this._marginRight;
-        },
-        set marginRight(val) {
-            this._marginRight = val;
-            this.onSet("marginRight", val);
-        },
-        _marginTop:	"",
-        get marginTop() {
-            return this._marginTop;
-        },
-        set marginTop(val) {
-            this._marginTop = val;
-            this.onSet("marginTop", val);
-        },
-        _markerOffset:	"",
-        get markerOffset() {
-            return this._markerOffset;
-        },
-        set markerOffset(val) {
-            this._markerOffset = val;
-            this.onSet("markerOffset", val);
-        },
-        _marks:	"",
-        get marks() {
-            return this._marks;
-        },
-        set marks(val) {
-            this._marks = val;
-            this.onSet("marks", val);
-        },
-        _maxHeight:	"",
-        get maxHeight() {
-            return this._maxHeight;
-        },
-        set maxHeight(val) {
-            this._maxHeight = val;
-            this.onSet("maxHeight", val);
-        },
-        _maxWidth:	"",
-        get maxWidth() {
-            return this._maxWidth;
-        },
-        set maxWidth(val) {
-            this._maxWidth = val;
-            this.onSet("maxWidth", val);
-        },
-        _minHeight:	"",
-        get minHeight() {
-            return this._minHeight;
-        },
-        set minHeight(val) {
-            this._minHeight = val;
-            this.onSet("minHeight", val);
-        },
-        _minWidth:	"",
-        get minWidth() {
-            return this._minWidth;
-        },
-        set minWidth(val) {
-            this._minWidth = val;
-            this.onSet("minWidth", val);
-        },
-        _opacity:	1,
-        get opacity() {
-            return this._opacity;
-        },
-        set opacity(val) {
-            this._opacity = val;
-            this.onSet("opacity", val);
-        },
-        _orphans:	"",
-        get orphans() {
-            return this._orphans;
-        },
-        set orphans(val) {
-            this._orphans = val;
-            this.onSet("orphans", val);
-        },
-        _outline:	"",
-        get outline() {
-            return this._outline;
-        },
-        set outline(val) {
-            this._outline = val;
-            this.onSet("outline", val);
-        },
-        _outlineColor:	"",
-        get outlineColor() {
-            return this._outlineColor;
-        },
-        set outlineColor(val) {
-            this._outlineColor = val;
-            this.onSet("outlineColor", val);
-        },
-        _outlineOffset:	"",
-        get outlineOffset() {
-            return this._outlineOffset;
-        },
-        set outlineOffset(val) {
-            this._outlineOffset = val;
-            this.onSet("outlineOffset", val);
-        },
-        _outlineStyle:	"",
-        get outlineStyle() {
-            return this._outlineStyle;
-        },
-        set outlineStyle(val) {
-            this._outlineStyle = val;
-            this.onSet("outlineStyle", val);
-        },
-        _outlineWidth:	"",
-        get outlineWidth() {
-            return this._outlineWidth;
-        },
-        set outlineWidth(val) {
-            this._outlineWidth = val;
-            this.onSet("outlineWidth", val);
-        },
-        _overflow:	"",
-        get overflow() {
-            return this._overflow;
-        },
-        set overflow(val) {
-            this._overflow = val;
-            this.onSet("overflow", val);
-        },
-        _overflowX:	"",
-        get overflowX() {
-            return this._overflowX;
-        },
-        set overflowX(val) {
-            this._overflowX = val;
-            this.onSet("overflowX", val);
-        },
-        _overflowY:	"",
-        get overflowY() {
-            return this._overflowY;
-        },
-        set overflowY(val) {
-            this._overflowY = val;
-            this.onSet("overflowY", val);
-        },
-        _padding:	"",
-        get padding() {
-            return this._padding;
-        },
-        set padding(val) {
-            this._padding = val;
-            this.onSet("padding", val);
-        },
-        _paddingBottom:	"",
-        get paddingBottom() {
-            return this._paddingBottom;
-        },
-        set paddingBottom(val) {
-            this._paddingBottom = val;
-            this.onSet("paddingBottom", val);
-        },
-        _paddingLeft:	"",
-        get paddingLeft() {
-            return this._paddingLeft;
-        },
-        set paddingLeft(val) {
-            this._paddingLeft = val;
-            this.onSet("paddingLeft", val);
-        },
-        _paddingRight:	"",
-        get paddingRight() {
-            return this._paddingRight;
-        },
-        set paddingRight(val) {
-            this._paddingRight = val;
-            this.onSet("paddingRight", val);
-        },
-        _paddingTop:	"",
-        get paddingTop() {
-            return this._paddingTop;
-        },
-        set paddingTop(val) {
-            this._paddingTop = val;
-            this.onSet("paddingTop", val);
-        },
-        _page:	"",
-        get page() {
-            return this._page;
-        },
-        set page(val) {
-            this._page = val;
-            this.onSet("page", val);
-        },
-        _pageBreakAfter:	"",
-        get pageBreakAfter() {
-            return this._pageBreakAfter;
-        },
-        set pageBreakAfter(val) {
-            this._pageBreakAfter = val;
-            this.onSet("pageBreakAfter", val);
-        },
-        _pageBreakBefore:	"",
-        get pageBreakBefore() {
-            return this._pageBreakBefore;
-        },
-        set pageBreakBefore(val) {
-            this._pageBreakBefore = val;
-            this.onSet("pageBreakBefore", val);
-        },
-        _pageBreakInside:	"",
-        get pageBreakInside() {
-            return this._pageBreakInside;
-        },
-        set pageBreakInside(val) {
-            this._pageBreakInside = val;
-            this.onSet("pageBreakInside", val);
-        },
-        _pause:	"",
-        get pause() {
-            return this._pause;
-        },
-        set pause(val) {
-            this._pause = val;
-            this.onSet("pause", val);
-        },
-        _pauseAfter:	"",
-        get pauseAfter() {
-            return this._pauseAfter;
-        },
-        set pauseAfter(val) {
-            this._pauseAfter = val;
-            this.onSet("pauseAfter", val);
-        },
-        _pauseBefore:	"",
-        get pauseBefore() {
-            return this._pauseBefore;
-        },
-        set pauseBefore(val) {
-            this._pauseBefore = val;
-            this.onSet("pauseBefore", val);
-        },
-        _pitch:	"",
-        get pitch() {
-            return this._pitch;
-        },
-        set pitch(val) {
-            this._pitch = val;
-            this.onSet("pitch", val);
-        },
-        _pitchRange:	"",
-        get pitchRange() {
-            return this._pitchRange;
-        },
-        set pitchRange(val) {
-            this._pitchRange = val;
-            this.onSet("pitchRange", val);
-        },
-        _position:	"",
-        get position() {
-            return this._position;
-        },
-        set position(val) {
-            this._position = val;
-            this.onSet("position", val);
-        },
-        _quotes:	"",
-        get quotes() {
-            return this._quotes;
-        },
-        set quotes(val) {
-            this._quotes = val;
-            this.onSet("quotes", val);
-        },
-        _richness:	"",
-        get richness() {
-            return this._richness;
-        },
-        set richness(val) {
-            this._richness = val;
-            this.onSet("richness", val);
-        },
-        _right:	"",
-        get right() {
-            return this._right;
-        },
-        set right(val) {
-            this._right = val;
-            this.onSet("right", val);
-        },
-        _size:	"",
-        get size() {
-            return this._size;
-        },
-        set size(val) {
-            this._size = val;
-            this.onSet("size", val);
-        },
-        _speak:	"",
-        get speak() {
-            return this._speak;
-        },
-        set speak(val) {
-            this._speak = val;
-            this.onSet("speak", val);
-        },
-        _speakHeader:	"",
-        get speakHeader() {
-            return this._speakHeader;
-        },
-        set speakHeader(val) {
-            this._speakHeader = val;
-            this.onSet("speakHeader", val);
-        },
-        _speakNumeral:	"",
-        get speakNumeral() {
-            return this._speakNumeral;
-        },
-        set speakNumeral(val) {
-            this._speakNumeral = val;
-            this.onSet("speakNumeral", val);
-        },
-        _speakPunctuation:	"",
-        get speakPunctuation() {
-            return this._speakPunctuation;
-        },
-        set speakPunctuation(val) {
-            this._speakPunctuation = val;
-            this.onSet("speakPunctuation", val);
-        },
-        _speechRate:	"",
-        get speechRate() {
-            return this._speechRate;
-        },
-        set speechRate(val) {
-            this._speechRate = val;
-            this.onSet("speechRate", val);
-        },
-        _stress:	"",
-        get stress() {
-            return this._stress;
-        },
-        set stress(val) {
-            this._stress = val;
-            this.onSet("stress", val);
-        },
-        _tableLayout:	"",
-        get tableLayout() {
-            return this._tableLayout;
-        },
-        set tableLayout(val) {
-            this._tableLayout = val;
-            this.onSet("tableLayout", val);
-        },
-        _textAlign:	"",
-        get textAlign() {
-            return this._textAlign;
-        },
-        set textAlign(val) {
-            this._textAlign = val;
-            this.onSet("textAlign", val);
-        },
-        _textDecoration:	"",
-        get textDecoration() {
-            return this._textDecoration;
-        },
-        set textDecoration(val) {
-            this._textDecoration = val;
-            this.onSet("textDecoration", val);
-        },
-        _textIndent:	"",
-        get textIndent() {
-            return this._textIndent;
-        },
-        set textIndent(val) {
-            this._textIndent = val;
-            this.onSet("textIndent", val);
-        },
-        _textShadow:	"",
-        get textShadow() {
-            return this._textShadow;
-        },
-        set textShadow(val) {
-            this._textShadow = val;
-            this.onSet("textShadow", val);
-        },
-        _textTransform:	"",
-        get textTransform() {
-            return this._textTransform;
-        },
-        set textTransform(val) {
-            this._textTransform = val;
-            this.onSet("textTransform", val);
-        },
-        _top:	"",
-        get top() {
-            return this._top;
-        },
-        set top(val) {
-            this._top = val;
-            this.onSet("top", val);
-        },
-        _unicodeBidi:	"",
-        get unicodeBidi() {
-            return this._unicodeBidi;
-        },
-        set unicodeBidi(val) {
-            this._unicodeBidi = val;
-            this.onSet("unicodeBidi", val);
-        },
-        _verticalAlign:	"",
-        get verticalAlign() {
-            return this._verticalAlign;
-        },
-        set verticalAlign(val) {
-            this._verticalAlign = val;
-            this.onSet("verticalAlign", val);
-        },
-        _visibility:	"",
-        get visibility() {
-            return this._visibility;
-        },
-        set visibility(val) {
-            this._visibility = val;
-            this.onSet("visibility", val);
-        },
-        _voiceFamily:	"",
-        get voiceFamily() {
-            return this._voiceFamily;
-        },
-        set voiceFamily(val) {
-            this._voiceFamily = val;
-            this.onSet("voiceFamily", val);
-        },
-        _volume:	"",
-        get volume() {
-            return this._volume;
-        },
-        set volume(val) {
-            this._volume = val;
-            this.onSet("volume", val);
-        },
-        _whiteSpace:	"",
-        get whiteSpace() {
-            return this._whiteSpace;
-        },
-        set whiteSpace(val) {
-            this._whiteSpace = val;
-            this.onSet("whiteSpace", val);
-        },
-        _widows:	"",
-        get widows() {
-            return this._widows;
-        },
-        set widows(val) {
-            this._widows = val;
-            this.onSet("widows", val);
-        },
-        _width:	"",
-        get width() {
-            return this._width;
-        },
-        set width(val) {
-            this._width = val;
-            this.onSet("width", val);
-        },
-        _wordSpacing:	"",
-        get wordSpacing() {
-            return this._wordSpacing;
-        },
-        set wordSpacing(val) {
-            this._wordSpacing = val;
-            this.onSet("wordSpacing", val);
-        },
-        _zIndex:	"",
-        get zIndex() {
-            return this._zIndex;
-        },
-        set zIndex(val) {
-            this._zIndex = val;
-            this.onSet("zIndex", val);
-        }
+var __supportedStyles__ = function(){
+    return {
+        azimuth:                null,
+        background:	            null,
+        backgroundAttachment:	null,
+        backgroundColor:	    null,
+        backgroundImage:	    null,
+        backgroundPosition:	    null,
+        backgroundRepeat:	    null,
+        border:	                null,
+        borderBottom:	        null,
+        borderBottomColor:	    null,
+        borderBottomStyle:	    null,
+        borderBottomWidth:	    null,
+        borderCollapse:	        null,
+        borderColor:	        null,
+        borderLeft:	            null,
+        borderLeftColor:	    null,
+        borderLeftStyle:	    null,
+        borderLeftWidth:	    null,
+        borderRight:	        null,
+        borderRightColor:	    null,
+        borderRightStyle:	    null,
+        borderRightWidth:	    null,
+        borderSpacing:	        null,
+        borderStyle:	        null,
+        borderTop:	            null,
+        borderTopColor:	        null,
+        borderTopStyle:	        null,
+        borderTopWidth:	        null,
+        borderWidth:	        null,
+        bottom:	                null,
+        captionSide:	        null,
+        clear:	                null,
+        clip:	                null,
+        color:	                null,
+        content:	            null,
+        counterIncrement:	    null,
+        counterReset:	        null,
+        cssFloat:	            null,
+        cue:	                null,
+        cueAfter:	            null,
+        cueBefore:	            null,
+        cursor:	                null,
+        direction:	            'ltr',
+        display:	            null,
+        elevation:	            null,
+        emptyCells:	            null,
+        font:	                null,
+        fontFamily:	            null,
+        fontSize:	            "1em",
+        fontSizeAdjust:	null,
+        fontStretch:	null,
+        fontStyle:	null,
+        fontVariant:	null,
+        fontWeight:	null,
+        height:	'1px',
+        left:	null,
+        letterSpacing:	null,
+        lineHeight:	null,
+        listStyle:	null,
+        listStyleImage:	null,
+        listStylePosition:	null,
+        listStyleType:	null,
+        margin:	null,
+        marginBottom:	"0px",
+        marginLeft:	"0px",
+        marginRight:	"0px",
+        marginTop:	"0px",
+        markerOffset:	null,
+        marks:	null,
+        maxHeight:	null,
+        maxWidth:	null,
+        minHeight:	null,
+        minWidth:	null,
+        opacity:	1,
+        orphans:	null,
+        outline:	null,
+        outlineColor:	null,
+        outlineOffset:	null,
+        outlineStyle:	null,
+        outlineWidth:	null,
+        overflow:	null,
+        overflowX:	null,
+        overflowY:	null,
+        padding:	null,
+        paddingBottom:	"0px",
+        paddingLeft:	"0px",
+        paddingRight:	"0px",
+        paddingTop:	"0px",
+        page:	null,
+        pageBreakAfter:	null,
+        pageBreakBefore:	null,
+        pageBreakInside:	null,
+        pause:	null,
+        pauseAfter:	null,
+        pauseBefore:	null,
+        pitch:	null,
+        pitchRange:	null,
+        position:	null,
+        quotes:	null,
+        richness:	null,
+        right:	null,
+        size:	null,
+        speak:	null,
+        speakHeader:	null,
+        speakNumeral:	null,
+        speakPunctuation:	null,
+        speechRate:	null,
+        stress:	null,
+        tableLayout:	null,
+        textAlign:	null,
+        textDecoration:	null,
+        textIndent:	null,
+        textShadow:	null,
+        textTransform:	null,
+        top:	null,
+        unicodeBidi:	null,
+        verticalAlign:	null,
+        visibility:	null,
+        voiceFamily:	null,
+        volume:	null,
+        whiteSpace:	null,
+        widows:	null,
+        width:	'1px',
+        wordSpacing:	null,
+        zIndex:	1
     };
-})()
+};
+
+var __displayMap__ = {
+		"DIV"      : "block",
+		"P"        : "block",
+		"A"        : "inline",
+		"CODE"     : "inline",
+		"PRE"      : "block",
+		"SPAN"     : "inline",
+		"TABLE"    : "table",
+		"THEAD"    : "table-header-group",
+		"TBODY"    : "table-row-group",
+		"TR"       : "table-row",
+		"TH"       : "table-cell",
+		"TD"       : "table-cell",
+		"UL"       : "block",
+		"LI"       : "list-item"
+};
+var __styleMap__ = __supportedStyles__();
+
+for(var style in __supportedStyles__()){
+    (function(name){
+        if(name === 'width' || name === 'height'){
+            CSS2Properties.prototype.__defineGetter__(name, function(){
+                if(this.display==='none'){
+                    return '0px';
+                }
+                //$info(name+' = '+this.getPropertyValue(name));
+                return this.styleIndex[name];
+            });
+        }else if(name === 'display'){
+            //display will be set to a tagName specific value if ""
+            CSS2Properties.prototype.__defineGetter__(name, function(){
+                var val = this.styleIndex[name];
+                val = val?val:__displayMap__[this.__element__.tagName];
+                //$log(" css2properties.get  " + name + "="+val+" for("+this.__element__.tagName+")");
+                return val;
+            });
+        }else{
+            CSS2Properties.prototype.__defineGetter__(name, function(){
+                //$log(" css2properties.get  " + name + "="+this.styleIndex[name]);
+                return this.styleIndex[name];
+            });
+       }
+       CSS2Properties.prototype.__defineSetter__(name, function(value){
+           //$log(" css2properties.set  " + name +"="+value);
+           this.setProperty(name, value);
+       });
+    })(style);
+};
+
 
 $w.CSS2Properties = CSS2Properties;/* 
 * CSSRule - DOM Level 2
@@ -9506,7 +8820,6 @@ $w.__defineGetter__("location", function(url){
 *	history.js
 */
 
-    $info("Initializing Window History.");
 	$currentHistoryIndex = 0;
 	$history = [];
 	
@@ -9616,33 +8929,11 @@ $debug("Initializing Window Timer.");
 var $timers = [];
 
 window.setTimeout = function(fn, time){
-	var num = $timers.length;
-	var tfn;
-	
-    if (typeof fn == 'string') {
-        tfn = function() { 
-            eval(fn); 
-			window.clearInterval(num);
-        }; 
-    } else {
-		tfn = function() {
-			fn();
-			window.clearInterval(num);
-        };
-	}
-
-    if (time === 0){
-        if (typeof fn == 'string')
-            eval(fn);
-        else
-            fn();
-    }
-    else {
-        $debug("Creating timer number "+num);
-        $timers[num] = new $env.timer(tfn, time);
-        $timers[num].start();
-        return num;
-    }
+  var num;
+  return num = window.setInterval(function(){
+    fn();
+    window.clearInterval(num);
+  }, time);
 };
 
 window.setInterval = function(fn, time){
@@ -9657,7 +8948,7 @@ window.setInterval = function(fn, time){
 	if(time===0){
 	    fn();
 	}else{
-	    $debug("Creating timer number "+num);
+	    //$debug("Creating timer number "+num);
     	$timers[num] = new $env.timer(fn, time);
     	$timers[num].start();
 	}
@@ -9665,15 +8956,14 @@ window.setInterval = function(fn, time){
 };
 
 window.clearInterval = window.clearTimeout = function(num){
+	//$log("clearing interval "+num);
 	if ( $timers[num] ) {
 	    
-	    $debug("Deleting timer number "+num);
 		$timers[num].stop();
 		delete $timers[num];
 	}
 };	
-	
-window.$wait = function(wait){ $env.wait(wait); }/*
+	/*
 * event.js
 */
 // Window Events
@@ -9684,7 +8974,7 @@ var $events = [],
     $onunload;
 
 $w.addEventListener = function(type, fn){
-  //$log("adding event listener " + type);
+    $debug("adding event listener \n\t" + type +" \n\tfor "+this+" with callback \n\t"+fn);
 	if ( !this.uuid ) {
 		this.uuid = $events.length;
 		$events[this.uuid] = {};
@@ -9721,25 +9011,29 @@ $w.dispatchEvent = function(event, bubbles){
         bubbles = true;
 
     if (!event.target) {
+        $debug("no event target : "+event.target);
         event.target = this;
     }
     $debug("event target: " + event.target);
-    if ( event.type ) {
+    if ( event.type && this.nodeType || this===window) {
+        $debug("nodeType: " + this.nodeType);
         if ( this.uuid && $events[this.uuid][event.type] ) {
             var _this = this;
             $events[this.uuid][event.type].forEach(function(fn){
                 $debug('calling event handler '+fn+' on target '+_this);
-                fn.call( _this, event );
+                fn( event );
             });
         }
     
         if (this["on" + event.type]) {
-            $debug('calling event handler '+event.type+' on target '+this);
-            this["on" + event.type].call(this, event);
+            $debug('calling event handler on'+event.type+' on target '+this);
+            this["on" + event.type](event);
         }
+    }else{
+        $debug("non target: " + event.target + " \n this->"+this);
     }
     if (bubbles && this.parentNode){
-        this.parentNode.dispatchEvent.call(this.parentNode,event);
+        this.parentNode.dispatchEvent(event);
     }
 };
 	
@@ -9798,7 +9092,6 @@ XMLHttpRequest.prototype = {
 	setRequestHeader: function(header, value){
 		this.headers[header] = value;
 	},
-	getResponseHeader: function(header){ },
 	send: function(data){
 		var _this = this;
 		
@@ -9815,10 +9108,21 @@ XMLHttpRequest.prototype = {
         					    $debug("parsing response text into xml document");
         						responseXML = $domparser.parseFromString(_this.responseText+"");
                                 return responseXML;
-        					} catch(e) { return null;/*TODO: need to flag an error here*/}
+        					} catch(e) { 
+                                $error('response XML does not apear to be well formed xml', e);
+        						responseXML = $domparser.parseFromString("<html>"+
+                                    "<head/><body><p> parse error </p></body></html>");
+                                return responseXML;
+                            }
       					}
-      				}else{return null;}
+      				}else{
+                        $env.warn('response XML does not apear to be xml');
+                        return null;
+                    }
       			});
+                _this.__defineSetter__("responseXML",function(xml){
+                    responseXML = xml;
+                });
 			}, data);
 			_this.onreadystatechange();
 		}
@@ -9837,6 +9141,7 @@ XMLHttpRequest.prototype = {
 		//TODO
 	},
 	getResponseHeader: function(header){
+        $debug('GETTING RESPONSE HEADER '+header);
 	  var rHeader, returnedHeaders;
 		if (this.readyState < 3){
 			throw new Error("INVALID_STATE_ERR");
@@ -9846,8 +9151,13 @@ XMLHttpRequest.prototype = {
 				if (rHeader.match(new RegExp(header, "i")))
 					returnedHeaders.push(this.responseHeaders[rHeader]);
 			}
-			if (returnedHeaders.length){ return returnedHeaders.join(", "); }
-		}return null;
+            
+			if (returnedHeaders.length){ 
+                $debug('GOT RESPONSE HEADER '+returnedHeaders.join(", "));
+                return returnedHeaders.join(", "); 
+            }
+		}
+        return null;
 	},
 	getAllResponseHeaders: function(){
 	  var header, returnedHeaders = [];
@@ -9871,6 +9181,7 @@ $debug("Initializing Window CSS");
 // attributes and values used to render the specified element in this
 // window.  Any length values are always expressed in pixel, or
 // absolute values.
+
 $w.getComputedStyle = function(elt, pseudo_elt){
   //TODO
   //this is a naive implementation
@@ -10735,7 +10046,6 @@ var loadCookies = function(){
 //We simply use the default ajax get to load the .cookies.js file
 //if it doesn't exist we create it with a post.  Cookies are maintained
 //in memory, but serialized with each set.
-$info("Loading Cookies");
 try{
 	//TODO - load cookies
 	loadCookies();
@@ -10747,12 +10057,12 @@ try{
 */
 
 
-    };        // close function definition begun in 'intro.js'
+    };// close function definition begun in 'intro.js'
 
 
-        // turn "original" JS interpreter global object into the
-        //   "root" window object; third param value for new window's "parent"
-    _$envjs$makeObjectIntoWindow$_(this, Envjs, null, this);
+    // turn "original" JS interpreter global object into the
+    // "root" window object; third param value for new window's "parent"
+    Envjs.window(this, Envjs, null, this);
 
 } catch(e){
     Envjs.error("ERROR LOADING ENV : " + e + "\nLINE SOURCE:\n" +
