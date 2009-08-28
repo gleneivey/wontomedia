@@ -46,7 +46,7 @@ Screw.Unit(function(){
         for (var c=0; c < 8; c++){
 
           // set test state
-          for (var cn=0, mask=1; cn < 3; cn++, mask*=2){
+          for (var cn=0, mask=1; cn < flagTextIds.length; cn++, mask*=2){
 
             var err = (c & mask) == 0;
             var len = maxLength[cn];
