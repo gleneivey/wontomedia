@@ -16,7 +16,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #     - only one line (doesn't contain any line-break whitespace)
 
 
-  Scenario Outline: error flagged if nodes/new's Name has bad first character
+  Scenario: error flagged if nodes/new's Name has bad first character
     When I am on the new nodes page
     Then the element "name_start_char" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
@@ -26,7 +26,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And I fill in "Name" with "temporaryGoodName0-_"
     Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
 
-    When I fill in "Name" with <badName>
+    When I fill in "Name" with " badNameStartsWithASpace"
     Then the element "name_start_char" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=400"
     And the element "name_nth_char" has the format "font-weight=400"
@@ -34,10 +34,21 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "name_error_icon" is "error_error_icon"
     And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
 
+
+  @extended
+  Scenario Outline: More errors flagged if bad first character
+    Given I am on the new nodes page
+    And I select "Property" from "Type"
+    And I fill in "Title" with "A property's title"
+    And I fill in "Name" with "temporaryGoodName0-_"
+    When I fill in "Name" with <badName>
+    Then the element "name_start_char" has the format "font-weight=bold"
+    And the image "name_error_icon" is "error_error_icon"
+    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+
     Examples:
       |             badName                   |
       | "4badNameStartsWithADigit"            |
-      | " badNameStartsWithASpace"            |
       | "^badNameStartsWithRandomPunctuation" |
       | ".badNameStartsWithPeriod"            |
       | ":badNameStartsWithColon"             |
@@ -46,6 +57,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
 
 
+  @extended
   Scenario Outline: error flagged if nodes/new's Name has bad 2nd+ character
     When I am on the new nodes page
     Then the element "name_start_char" has the format "font-weight=400"

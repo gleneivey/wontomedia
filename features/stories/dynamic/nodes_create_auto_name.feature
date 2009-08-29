@@ -43,7 +43,15 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #       always be capitalized
 
 
-  Scenario Outline: page generates a Name from a Title
+  Scenario: page generates a Name from a Title
+    Given I am on the new nodes page
+    And I select "Category" from "Type"
+    When I fill in "Title" with "42 isn't a good start--for a name}"
+    Then the "node_name" field should be "IsntAGoodStartForAName"
+
+
+  @extended
+  Scenario Outline: More page generates a Name from a Title
     Given I am on the new nodes page
     And I select "Property" from "Type"
     When I fill in "Title" with "<inputTitle>"

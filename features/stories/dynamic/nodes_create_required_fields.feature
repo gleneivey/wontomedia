@@ -154,6 +154,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
 
 
+  @extended
   Scenario: Re-empty fields in filled-out form
     When I am on the new nodes page
     Then the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
