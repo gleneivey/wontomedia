@@ -87,11 +87,34 @@ Screw.Unit(function(){
           /good_status_icon\.png/);
       });
 
-/*
       it("doesn't check when Name changed to blank", function(){
+        var d = document.getElementById('test_frame').contentDocument;
+        var name = d.getElementById('node_name');
 
+        setNameAndCheckProgress("one_of");
+        expect(d.getElementById('name_status_icon').src).to(match,
+          /error_status_icon\.png/);
+
+        // setup done, now try clearing....
+        name.focus();
+        name.value = "";
+        name.blur();
+
+        // should happen on any change, including =""
+        expect(d.getElementById('name_status_icon').src).to(match,
+          /blank_status_icon\.png/);
+
+        // now wait long enough to be sure we didn't trigger anything...
+        java.lang.Thread.currentThread().sleep(ajaxStartsAfter + 2*timeMargin);
+        expect(d.getElementById('name_must_be_unique').className).
+          to_not(match, /helpTextFlagged/);
+        expect(d.getElementById('name_is_unique').className).
+          to(match, /confirmationTextInvisible/);
+        expect(d.getElementById('name_status_icon').src).to(match,
+          /blank_status_icon\.png/);
       });
 
+/*
       it("doesn't check if Name is invalid", function(){
 
       });

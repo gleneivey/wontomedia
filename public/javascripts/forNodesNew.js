@@ -253,16 +253,9 @@ function launchNameUniquenessCheck(){
   $('name_status_icon').src = '/images/working_status_icon.png';
 }
 function maybeCheckNameUniqueness(delay){
-  if ($('node_name').value == ""){
-    valueWhenLastChecked = "";
-    $('name_must_be_unique').className = "";
-    $('name_is_unique').className = "confirmationTextInvisible";
-    $('name_status_icon').src = '/images/blank_status_icon.png';
-    return;
-  }
-
-  if ($('node_name').value != valueWhenLastChecked){
-    valueWhenLastChecked = $('node_name').value;
+  var name = $('node_name');
+  if (name.value != valueWhenLastChecked){
+    valueWhenLastChecked = name.value;
 
     if (uniquenessTimerId != -1)
       clearTimeout(uniquenessTimerId);
@@ -277,10 +270,14 @@ function maybeCheckNameUniqueness(delay){
     if (old)
       maybeClearIcon('name');
 
-    if (delay > 0)
-      uniquenessTimerId = setTimeout(launchNameUniquenessCheck, delay);
-    else
-      launchNameUniquenessCheck();
+    var mtch = $('name_error_icon').src.match(/error_error_icon/);
+    if (name.value != null && name.value != "" &&
+        (mtch == null || mtch.length < 1)){
+      if (delay > 0)
+        uniquenessTimerId = setTimeout(launchNameUniquenessCheck, delay);
+      else
+        launchNameUniquenessCheck();
+    }
   }
 }
 
@@ -354,13 +351,15 @@ function checkName(){
     }
   }
 
-  maybeCheckNameUniqueness(nameAjaxStart);
-
 
   checkFieldRequired(c);
   checkFieldLength(c, indexName);
   maybeClearIcon('name');
   generateToName(b, c);
+
+
+  // do last, because we're going to skip part of this if other errors...
+  maybeCheckNameUniqueness(nameAjaxStart);
 }
 c.onchange= function(){checkName();};
 c.onkeypress= function(){setTimeout(checkName, dly);};
