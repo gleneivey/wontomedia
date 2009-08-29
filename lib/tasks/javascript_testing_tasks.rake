@@ -45,6 +45,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+
+# so we can make sure the 'test' db is seeded before tests run
+require File.join( RAILS_ROOT, 'test', 'seed_helper' )
+
+
 begin   # don't force Blue Ridge dependency on non-developers
 
   plugin_prefix = "#{RAILS_ROOT}/vendor/plugins/blue-ridge"
@@ -60,11 +65,12 @@ begin   # don't force Blue Ridge dependency on non-developers
   # Support Test::Unit & Test/Spec style
   namespace :test do
     desc "Runs all the JavaScript tests and outputs the results"
-    task :javascripts do
+    task :javascripts => :environment do
       Dir.chdir("#{RAILS_ROOT}/test/javascript") do
         all_fine = true
 
         begin
+          load_wontomedia_app_seed_data
           setup_for_js_testing
 
           if ENV["TEST"]
@@ -85,16 +91,10 @@ begin   # don't force Blue Ridge dependency on non-developers
   end
 
 
-  # use webrat's machinery for starting up a test server running our app
-  require 'webrat'
-  require 'webrat/selenium'
-  require 'webrat/selenium/selenium_session'
-  require 'webrat/selenium/application_servers/rails'
-
-
   namespace :js do
-    task :fixtures do
+    task :fixtures => :environment do
       begin
+        load_wontomedia_app_seed_data
         setup_for_js_testing
 
         # Create an "index.html" file listing JS test fixtures because
@@ -122,6 +122,11 @@ begin   # don't force Blue Ridge dependency on non-developers
 
 
   private
+
+
+  # use webrat's machinery for starting up a test server running our app
+  require 'webrat'
+  require 'webrat/selenium/application_servers/rails'
 
   def setup_for_js_testing
     # Link the JavaScript test folder under /public to avoid "same

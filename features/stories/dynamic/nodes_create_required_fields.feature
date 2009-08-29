@@ -112,20 +112,21 @@ Feature:  Verify inputs for creation of new node dynamically within the page
   Scenario: Inputs flagged for being empty are unflagged when filled in
     Given I am on the new nodes page
     And I put the focus on the "node_description" element
-    When I fill in "Title" with "A new node"
+    When I fill in "Name" with "aNewNode"
     Then the element "sti_type_required" has the format "font-weight=bold"
-    And the element "title_required" has the format "font-weight=400"
-    And the element "name_required" has the format "font-weight=bold"
+    And the element "title_required" has the format "font-weight=bold"
+    And the element "name_required" has the format "font-weight=400"
     And the element "description_recommended" has the format "font-weight=400"
     And the image "sti_type_error_icon" is "error_error_icon"
-    And the image "title_error_icon" is "blank_error_icon"
-    And the image "name_error_icon" is "error_error_icon"
+    And the image "title_error_icon" is "error_error_icon"
+    And the image "name_error_icon" is "blank_error_icon"
     And the image "description_error_icon" is "blank_error_icon"
 
 
   Scenario: When all fields are filled in, submit button is enabled
     Given I am on the new nodes page
     When I put the focus on the "node_submit" element
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=bold"

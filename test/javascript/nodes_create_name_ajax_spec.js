@@ -64,7 +64,7 @@ Screw.Unit(function(){
       }
 
       it( "flags redundant node Name strings", function(){
-        setNameAndCheckProgress("aNode");
+        setNameAndCheckProgress("peer_of");
 
         var d = document.getElementById('test_frame').contentDocument;
         expect(d.getElementById('name_must_be_unique').className).

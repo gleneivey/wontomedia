@@ -15,6 +15,11 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
 
+
+require 'active_record'
+require 'active_record/fixtures'
+
+
 # define method in any context where 'require'ed; no fixed namespace/class
 def load_wontomedia_app_seed_data
   unless ActiveRecord::Base.connected?
