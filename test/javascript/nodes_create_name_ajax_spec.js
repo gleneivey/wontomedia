@@ -23,7 +23,7 @@ Screw.Unit(function(){
   ajaxStartsAfter = 400;  // milliseconds
   timeMargin      =  50;
   pollingInterval =  10;
-  maxPollAttempts =  20;  // times
+  maxPollAttempts =  30;  // iterations
 
   describe( "Dynamic input checks in nodes/new page", function(){
     describe( "Pre-submit check for  uniqueness of Name value", function(){
@@ -46,7 +46,7 @@ Screw.Unit(function(){
           /blank_status_icon\.png/);
 
         // wait until after check should start, verify in-progress state
-        java.lang.Thread.currentThread().sleep(timeMargin * 2);
+        java.lang.Thread.currentThread().sleep(timeMargin * 3);
         expect(d.getElementById('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
         expect(d.getElementById('name_is_unique').className).
@@ -75,11 +75,19 @@ Screw.Unit(function(){
           /error_status_icon\.png/);
       });
 
-/*
       it("shows confirming message when node Name string is unique", function(){
+        setNameAndCheckProgress("aNodeThatDoesntAlreadyExist");
 
+        var d = document.getElementById('test_frame').contentDocument;
+        expect(d.getElementById('name_must_be_unique').className).
+          to_not(match, /helpTextFlagged/);
+        expect(d.getElementById('name_is_unique').className).
+          to(match, /confirmationTextShow/);
+        expect(d.getElementById('name_status_icon').src).to(match,
+          /good_status_icon\.png/);
       });
 
+/*
       it("doesn't check when Name changed to blank", function(){
 
       });
