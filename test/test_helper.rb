@@ -16,7 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-ENV["RAILS_ENV"] = "test"
+RAILS_ENV = "test"
 require File.join( File.dirname(__FILE__), "..", "config", "environment" )
 require 'action_view/test_case'
 require 'test_help'

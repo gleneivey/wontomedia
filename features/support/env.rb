@@ -17,7 +17,7 @@
 
 
 # Sets up the Rails environment for Cucumber
-ENV["RAILS_ENV"] = "test"
+RAILS_ENV = "test"
 $KCODE = "u"
 require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 require 'cucumber/rails/world'

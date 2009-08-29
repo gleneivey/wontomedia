@@ -23,7 +23,7 @@ require 'yaml'
 class NodesController < ApplicationController
   before_filter :temporary_page_protection
   def temporary_page_protection
-    if ENV['RAILS_ENV'] != 'test' && session[:who_am_i].nil?
+    if RAILS_ENV != 'test' && session[:who_am_i].nil?
       render :file => "#{RAILS_ROOT}/public/not_logged_in.html"
       return
     end
@@ -249,8 +249,8 @@ class NodesController < ApplicationController
     # so quickly (e.g., in setups where client and server are on the same
     # system) that the JavaScript and acceptance tests can't see the
     # "request in progress" state of the page/system.
-    if (ENV['RAILS_ENV'] == 'test')
-      Kernel.sleep(0.5)
+    if (RAILS_ENV == 'test')
+      Kernel.sleep(0.75)
     end
 
     begin

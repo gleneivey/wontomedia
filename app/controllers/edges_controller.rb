@@ -27,7 +27,7 @@ class EdgesController < ApplicationController
 
 
   def temporary_page_protection
-    if ENV['RAILS_ENV'] != 'test' && session[:who_am_i].nil?
+    if RAILS_ENV != 'test' && session[:who_am_i].nil?
       render :file => "#{RAILS_ROOT}/public/not_logged_in.html"
       return
     end
