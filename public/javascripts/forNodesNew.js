@@ -272,7 +272,7 @@ function maybeCheckNameUniqueness(delay){
 
     var mtch = $('name_error_icon').src.match(/error_error_icon/);
     if (name.value != null && name.value != "" &&
-        (mtch == null || mtch.length < 1)){
+        (mtch == null || mtch.length == 0)){
       if (delay > 0)
         uniquenessTimerId = setTimeout(launchNameUniquenessCheck, delay);
       else

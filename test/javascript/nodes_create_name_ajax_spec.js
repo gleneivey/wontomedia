@@ -28,7 +28,7 @@ Screw.Unit(function(){
   describe( "Dynamic input checks in nodes/new page", function(){
     describe( "Pre-submit check for  uniqueness of Name value", function(){
 
-      function setNameAndCheckProgress(newNameValue){
+      function setNameAndCheckProgress(newNameValue, expectAjax){
         var d = document.getElementById('test_frame').contentDocument;
         var name = d.getElementById('node_name');
 
@@ -44,6 +44,9 @@ Screw.Unit(function(){
           to(match, /confirmationTextInvisible/);
         expect(d.getElementById('name_status_icon').src).to(match,
           /blank_status_icon\.png/);
+
+        if (!expectAjax)
+          return;
 
         // wait until after check should start, verify in-progress state
         java.lang.Thread.currentThread().sleep(timeMargin * 3);
@@ -64,7 +67,7 @@ Screw.Unit(function(){
       }
 
       it( "flags redundant node Name strings", function(){
-        setNameAndCheckProgress("peer_of");
+        setNameAndCheckProgress("peer_of", true);
 
         var d = document.getElementById('test_frame').contentDocument;
         expect(d.getElementById('name_must_be_unique').className).
@@ -76,7 +79,7 @@ Screw.Unit(function(){
       });
 
       it("shows confirming message when node Name string is unique", function(){
-        setNameAndCheckProgress("aNodeThatDoesntAlreadyExist");
+        setNameAndCheckProgress("aNodeThatDoesntAlreadyExist", true);
 
         var d = document.getElementById('test_frame').contentDocument;
         expect(d.getElementById('name_must_be_unique').className).
@@ -91,7 +94,7 @@ Screw.Unit(function(){
         var d = document.getElementById('test_frame').contentDocument;
         var name = d.getElementById('node_name');
 
-        setNameAndCheckProgress("one_of");
+        setNameAndCheckProgress("one_of", true);
         expect(d.getElementById('name_status_icon').src).to(match,
           /error_status_icon\.png/);
 
@@ -114,11 +117,23 @@ Screw.Unit(function(){
           /blank_status_icon\.png/);
       });
 
-/*
       it("doesn't check if Name is invalid", function(){
+        setNameAndCheckProgress("0: bad Name!", false);
 
+        // wait until after check would have started,
+        java.lang.Thread.currentThread().sleep(timeMargin * 3);
+
+        // verify not in progress
+        var d = document.getElementById('test_frame').contentDocument;
+        expect(d.getElementById('name_must_be_unique').className).
+          to_not(match, /helpTextFlagged/);
+        expect(d.getElementById('name_is_unique').className).
+          to(match, /confirmationTextInvisible/);
+        expect(d.getElementById('name_status_icon').src).to(match,
+          /blank_status_icon\.png/);
       });
 
+/*
       it( "delays starting check after node.Name onchange", function(){
 
       });
