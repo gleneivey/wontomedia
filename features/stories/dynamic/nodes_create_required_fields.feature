@@ -29,6 +29,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
   Scenario: Empty form incrementally displays flag text/icons
     # new page: focus on Type, all inputs blank, none flagged
     When I am on the new nodes page
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=400"
     And the element "title_required" has the format "font-weight=400"
     And the element "name_required" has the format "font-weight=400"
@@ -40,6 +41,8 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
     # focus from Type to Title -> Type gets flagges as "required"
     When I type the "Tab" special key
+    And I pause
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=400"
     And the element "name_required" has the format "font-weight=400"
@@ -51,6 +54,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
     # focus from Title to Name -> Title also flagged as "required"
     When I type the "Tab" special key
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=400"
@@ -62,6 +66,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
     # focus from Name to Description -> now Name flagged as "required" too
     When I type the "Tab" special key
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=bold"
@@ -73,6 +78,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
     # focus from Description to Create button -> plus Description flagged
     When I type the "Tab" special key
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=bold"
@@ -86,6 +92,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
   Scenario: Empty form displays flags & dialog on (disabled) Create click
     # by default, a new/empty form can't be submitted
     When I am on the new nodes page
+    And I pause
     Then the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
 
     # all the messages/icons should be in "unflagged" state, but rely
@@ -93,6 +100,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
     # after clicking "Create", everything should be flagged...
     When I press "Create"
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=bold"
@@ -113,6 +121,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Given I am on the new nodes page
     And I put the focus on the "node_description" element
     When I fill in "Name" with "aNewNode"
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=400"
@@ -137,18 +146,22 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "description_error_icon" is "warn_error_icon"
 
     When I fill in "Description" with "Here's a new node"
+    And I pause
     Then the element "description_recommended" has the format "font-weight=400"
     And the image "description_error_icon" is "blank_error_icon"
 
     When I fill in "Title" with "Another new node"
+    And I pause
     Then the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "blank_error_icon"
 
     When I select "Item" from "Type"
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=400"
     And the image "sti_type_error_icon" is "blank_error_icon"
 
     When I fill in "Name" with "aNewNode"
+    And I pause
     Then the element "name_required" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
 
@@ -158,10 +171,12 @@ Feature:  Verify inputs for creation of new node dynamically within the page
   @extended
   Scenario: Re-empty fields in filled-out form
     When I am on the new nodes page
+    And I pause
     Then the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
 
     When I select "Category" from "Type"
     And I type the "Tab" special key
+    And I pause
     Then the element "sti_type_required" has the format "font-weight=400"
     And the image "sti_type_error_icon" is "blank_error_icon"
     And the element "title_required" has the format "font-weight=400"
@@ -169,6 +184,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
     When I type "This is a Title"
     And I type the "Tab" special key
+    And I pause
     Then the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "blank_error_icon"
     And the element "name_required" has the format "font-weight=400"
@@ -177,6 +193,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
     When I type "NodeName"
     And I type the "Tab" special key
+    And I pause
     Then the element "name_required" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
     And the element "description_recommended" has the format "font-weight=400"
@@ -184,17 +201,20 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
 
     When I type the "Tab" special key
+    And I pause
     Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
     And the element "description_recommended" has the format "font-weight=bold"
     And the image "description_error_icon" is "warn_error_icon"
 
     When I put the focus on the "node_description" element
     And I type "Here is a very simple description."
+    And I pause
     Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
     And the element "description_recommended" has the format "font-weight=400"
     And the image "description_error_icon" is "blank_error_icon"
 
     When I fill in "Name" with ""
+    And I pause
     Then the element "name_required" has the format "font-weight=bold"
     And the image "name_error_icon" is "error_error_icon"
     And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
@@ -202,19 +222,22 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "title_error_icon" is "blank_error_icon"
 
     When I fill in "Title" with ""
+    And I pause
     Then the element "title_required" has the format "font-weight=bold"
     And the image "title_error_icon" is "error_error_icon"
     And the element "description_recommended" has the format "font-weight=400"
     And the image "description_error_icon" is "blank_error_icon"
 
     When I fill in "Description" with ""
+    And I pause
     Then the element "description_recommended" has the format "font-weight=bold"
     And the image "description_error_icon" is "warn_error_icon"
     And the element "sti_type_required" has the format "font-weight=400"
     And the image "sti_type_error_icon" is "blank_error_icon"
 
     When I select "- type of node -" from "Type"
-    And the element "sti_type_required" has the format "font-weight=bold"
+    And I pause
+    Then the element "sti_type_required" has the format "font-weight=bold"
     And the image "sti_type_error_icon" is "error_error_icon"
     And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
 

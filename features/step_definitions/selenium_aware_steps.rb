@@ -60,3 +60,10 @@ Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
     value.should_not =~ /#{value}/
   end
 end
+
+When /^I pause$/ do
+  if !@browser.nil?
+    Kernel.sleep(1.0)
+  end
+end
+

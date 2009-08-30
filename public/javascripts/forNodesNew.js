@@ -81,6 +81,8 @@ function flagAsRequired(elemName){
 function maybeClearIcon(field){
   icon = $(field + "_error_icon");
   var mtch = icon.src.match(/blank_/);
+
+  // if icon already clear, then don't need to actually clear
   if (mtch == null || mtch.length == 0){
 
     // "recommended" is a special case....
@@ -91,11 +93,12 @@ function maybeClearIcon(field){
     for (var err in inputErrors){
       mtch = err.match(new RegExp(field));
       if (mtch != null && mtch.length > 0 && inputErrors[err]){
-        inputErrors["node_description"] = descReco;  // restore
         canClear = false;
         break;
       }
     }
+
+    inputErrors["node_description"] = descReco;  // restore
 
     if (canClear){
       if (field == "description" && descReco){
@@ -108,6 +111,7 @@ function maybeClearIcon(field){
   }
 
 
+  // if *all* the error flags are clear, then indicate that we can submit
   for (var err in inputErrors)
     if (err != "node_description" && inputErrors[err] != false){
       makeButtonSeemDisabled($('node_submit'));
@@ -117,8 +121,35 @@ function maybeClearIcon(field){
 }
 
 
-    // validation function
-function checkRequiredFields(e){
+    // validation functions
+function nameFieldValidityCheck(){
+  var mtch, val = $('node_name').value;
+
+  $('name_start_char').className = "";
+  inputErrors['char_1_name'] = false;
+  if (val.length > 0){
+    mtch = val.match(/^[a-zA-Z]/);
+    if (mtch == null || mtch.length == 0){
+      $('name_start_char').className = "helpTextFlagged";
+      inputErrors['char_1_name'] = true;
+      $('name_error_icon').src = "/images/error_error_icon.png";
+    }
+  }
+
+  $('name_nth_char').className = "";
+  inputErrors['char_N_name'] = false;
+  if (val.length > 1){
+    mtch = c.value.match(/^.[a-zA-Z0-9_-]+$/);
+    if (mtch == null || mtch.length == 0){
+      $('name_nth_char').className = "helpTextFlagged";
+      inputErrors['char_N_name'] = true;
+      $('name_error_icon').src = "/images/error_error_icon.png";
+    }
+  }
+}
+
+
+function onfocusCommonBehavior(e){
   var errFlag = false;
   var eId = e.id;
   var c;
@@ -147,6 +178,13 @@ function checkRequiredFields(e){
 
   if (errFlag)
     makeButtonSeemDisabled($('node_submit'));
+
+  // refresh everything
+  maybeClearIcon('sti_type');
+  maybeClearIcon('title');
+  maybeClearIcon('name');
+  maybeClearIcon('description');
+  maybeCheckNameUniqueness(nameAjaxStart);
 }
 
 function checkFieldRequired(f){
@@ -254,6 +292,7 @@ function launchNameUniquenessCheck(){
 }
 function maybeCheckNameUniqueness(delay){
   var name = $('node_name');
+
   if (name.value != valueWhenLastChecked){
     valueWhenLastChecked = name.value;
 
@@ -290,7 +329,6 @@ var dly = 200;
 
     // plumb validation function to relevant elements
 var a = $('node_sti_type');
-a.onfocus=  function(){checkRequiredFields(a);};
 a.onkeypress= function(){setTimeout(function(){
   checkFieldRequired(a);
   maybeClearIcon('sti_type');
@@ -303,7 +341,6 @@ a.onchange= function(){
 
 var b = $('node_title');
 var c = $('node_name');
-b.onfocus= function(){checkRequiredFields(b);};
 function checkTitle(){
   // this check is unique to Title, do here
   var mtch = b.value.match(/\n|\r/m);
@@ -321,37 +358,13 @@ function checkTitle(){
   checkFieldLength(b, indexTitle);
   maybeClearIcon('title');
   generateFromTitle(b, c);
+  nameFieldValidityCheck();
 }
 b.onchange= function(){checkTitle();};
 b.onkeypress= function(){setTimeout(checkTitle, dly);};
 
-c.onfocus= function(){checkRequiredFields(c);};
 function checkName(){
-  // these checks are unique to Name, do here
-  var mtch, val = c.value;
-  $('name_start_char').className = "";
-  inputErrors['char_1_name'] = false;
-  if (val.length > 0){
-    mtch = val.match(/^[a-zA-Z]/);
-    if (mtch == null || mtch.length == 0){
-      $('name_start_char').className = "helpTextFlagged";
-      inputErrors['char_1_name'] = true;
-      $('name_error_icon').src = "/images/error_error_icon.png";
-    }
-  }
-
-  $('name_nth_char').className = "";
-  inputErrors['char_N_name'] = false;
-  if (val.length > 1){
-    mtch = c.value.match(/^.[a-zA-Z0-9_-]+$/);
-    if (mtch == null || mtch.length == 0){
-      $('name_nth_char').className = "helpTextFlagged";
-      inputErrors['char_N_name'] = true;
-      $('name_error_icon').src = "/images/error_error_icon.png";
-    }
-  }
-
-
+  nameFieldValidityCheck();
   checkFieldRequired(c);
   checkFieldLength(c, indexName);
   maybeClearIcon('name');
@@ -364,13 +377,8 @@ function checkName(){
 c.onchange= function(){checkName();};
 c.onkeypress= function(){setTimeout(checkName, dly);};
 
-var body = document.getElementsByTagName('body')[0];
-body.onfocus = maybeCheckNameUniqueness(0);
-body.onblur  = maybeCheckNameUniqueness(0);
-
 
 var d = $('node_description');
-d.onfocus= function(){checkRequiredFields(d);};
 function checkDescription(){
   checkFieldRequired(d);
   checkFieldLength(d, indexDescription);
@@ -380,10 +388,9 @@ d.onchange= function(){checkDescription();};
 d.onkeypress= function(){setTimeout(checkDescription, dly);};
 
 var e = $('node_submit');
-e.onfocus= function(){checkRequiredFields(e);};
 makeButtonSeemDisabled(e);
 e.onclick = function(){
-  checkRequiredFields(e);
+  onfocusCommonBehavior(e);
   var errors = genDialog();
 
   if (errors)
@@ -397,3 +404,9 @@ function getCurrentType(){
   return $('node_sti_type').value;
 }
 
+
+a.onfocus= function(){onfocusCommonBehavior(a);};
+b.onfocus= function(){onfocusCommonBehavior(b);};
+c.onfocus= function(){onfocusCommonBehavior(c);};
+d.onfocus= function(){onfocusCommonBehavior(d);};
+e.onfocus= function(){onfocusCommonBehavior(e);};
