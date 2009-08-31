@@ -20,9 +20,10 @@ In short, the deployment procedure is as follows:
  * from the root of the A2 user account:
      [  shutdown WontoMedia via cPanel RoR widget ]
       $ ./install-wontomedia.sh
-      $ cd etc/rails_apps/WontoMedia
+      $ cd etc/rails_apps/WontoMedia                   # if necessary
       $ RAILS_ENV=production rake db:reseed            # if necessary
      [  start WontoMedia via cPanel RoR widget ]
+     [  restore from nodes.yaml edges.n3 ]             # if necessary
 
 
 These scripts make the following assumption about the A2 host's configuration:
