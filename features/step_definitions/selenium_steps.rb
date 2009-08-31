@@ -113,7 +113,7 @@ Then /^the image "([^\"]+)" is "([^\"]+)"$/ do |imgId, srcSubstr|
            /\/#{srcSubstr}\.[a-zA-Z]+$/ =~ imgSrc           ||
            /^#{srcSubstr}\.[a-zA-Z]+\?/ =~ imgSrc           ||
            /\/#{srcSubstr}\.[a-zA-Z]+\?/ =~ imgSrc
-  assert result, "Image source didn't match substring"
+  assert result, "Image source didn't match substring, actual was: "+imgSrc
 end
 
 
