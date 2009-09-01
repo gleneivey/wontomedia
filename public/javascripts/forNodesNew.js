@@ -149,9 +149,9 @@ function nameFieldValidityCheck(){
 }
 
 
-function onfocusCommonBehavior(e){
+function onfocusCommonBehavior(elem){
   var errFlag = false;
-  var eId = e.id;
+  var eId = elem.id;
   var c;
   for (c=0; c   <  requiredInputElements.length &&
             eId != "node_" + requiredInputElements[c];    c++)
@@ -323,21 +323,33 @@ function maybeCheckNameUniqueness(delay){
 
 
 
-  // after keypress events, have to wait for browser to update the input field
+  // after key presses, have to wait for browser to update the input field
   // before we check it (delay in ms)
 var dly = 200;
 
     // plumb validation function to relevant elements
 var a = $('node_sti_type');
-a.onkeypress= function(){setTimeout(function(){
-  checkFieldRequired(a);
-  maybeClearIcon('sti_type');
-                                    } , dly);};
-a.onchange= function(){
-  typeSelectOnchange();
-  checkFieldRequired(a);
-  maybeClearIcon('sti_type');
-};
+a.observe('keyup',
+  function(ev){
+    if (ev.keyCode != Event.KEY_TAB){   // onfocus does all we need for this
+      setTimeout(
+        function(){
+          checkFieldRequired(a);
+          maybeClearIcon('sti_type');
+        } ,
+        dly
+      );
+    }
+  }
+);
+
+a.observe('change',
+  function(){
+    typeSelectOnchange();
+    checkFieldRequired(a);
+    maybeClearIcon('sti_type');
+  }
+);
 
 var b = $('node_title');
 var c = $('node_name');
@@ -360,8 +372,14 @@ function checkTitle(){
   generateFromTitle(b, c);
   nameFieldValidityCheck();
 }
-b.onchange= function(){checkTitle();};
-b.onkeypress= function(){setTimeout(checkTitle, dly);};
+
+b.observe('change', function(){checkTitle();});
+b.observe('keyup',
+  function(ev){
+    if (ev.keyCode != Event.KEY_TAB)
+      setTimeout(checkTitle, dly);
+  }
+);
 
 function checkName(){
   nameFieldValidityCheck();
@@ -374,9 +392,13 @@ function checkName(){
   // do last, because we're going to skip part of this if other errors...
   maybeCheckNameUniqueness(nameAjaxStart);
 }
-c.onchange= function(){checkName();};
-c.onkeypress= function(){setTimeout(checkName, dly);};
-
+c.observe('change', function(){checkName();});
+c.observe('keyup',
+  function(ev){
+    if (ev.keyCode != Event.KEY_TAB)
+      setTimeout(checkName, dly);
+  }
+);
 
 var d = $('node_description');
 function checkDescription(){
@@ -384,29 +406,37 @@ function checkDescription(){
   checkFieldLength(d, indexDescription);
   maybeClearIcon('description');
 }
-d.onchange= function(){checkDescription();};
-d.onkeypress= function(){setTimeout(checkDescription, dly);};
+d.observe('change', function(){checkDescription();});
+d.observe('keyup',
+  function(ev){
+    if (ev.keyCode != Event.KEY_TAB)
+      setTimeout(checkDescription, dly);
+  }
+);
 
 var e = $('node_submit');
 makeButtonSeemDisabled(e);
-e.onclick = function(){
-  onfocusCommonBehavior(e);
-  var errors = genDialog();
+e.observe('click',
+  function(ev){
+    onfocusCommonBehavior(e);
+    var errors = genDialog();
 
-  if (errors)
-    makeButtonSeemDisabled(e);
-  else
-    makeButtonSeemEnabled(e);
-  return !errors;
-}
+    if (errors){
+      ev.stop();
+      makeButtonSeemDisabled(e);
+    }
+    else
+      makeButtonSeemEnabled(e);
+  }
+);
 
 function getCurrentType(){
   return $('node_sti_type').value;
 }
 
 
-a.onfocus= function(){onfocusCommonBehavior(a);};
-b.onfocus= function(){onfocusCommonBehavior(b);};
-c.onfocus= function(){onfocusCommonBehavior(c);};
-d.onfocus= function(){onfocusCommonBehavior(d);};
-e.onfocus= function(){onfocusCommonBehavior(e);};
+a.observe('focus', function(){onfocusCommonBehavior(a);});
+b.observe('focus', function(){onfocusCommonBehavior(b);});
+c.observe('focus', function(){onfocusCommonBehavior(c);});
+d.observe('focus', function(){onfocusCommonBehavior(d);});
+e.observe('focus', function(){onfocusCommonBehavior(e);});

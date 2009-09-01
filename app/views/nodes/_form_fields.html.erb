@@ -20,7 +20,7 @@
 
 <p class="inputpara">
   <%= f.label :title %><br />
-  <%= f.text_field :title %>
+  <%= f.text_field :title, :tabindex => "2" %>
   <%= image_tag "blank_error_icon.png", :id=>"title_error_icon", :alt=>"",
                 :size=>"16x16" %>
 </p><p class="directions">
@@ -32,7 +32,7 @@
 
 <p class="inputpara">
   <%= f.label :name %><br />
-  <%= f.text_field :name %>
+  <%= f.text_field :name, :tabindex => "3" %>
   <%= image_tag "blank_error_icon.png", :id=>"name_error_icon", :alt=>"",
                 :size=>"16x16" %>
   <%= image_tag "blank_status_icon.png", :id=>"name_status_icon", :alt=>"",
@@ -52,7 +52,7 @@
   <%= image_tag "blank_error_icon.png", :id=>"description_error_icon", :alt=>"",
                 :size=>"16x16" %>
   <br />
-  <%= f.text_area :description %>
+  <%= f.text_area :description, :tabindex => "4" %>
 </p><p class="directions">
   Describe what this node represents.
   <span id="description_recommended">Recommended.</span>

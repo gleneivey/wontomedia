@@ -254,7 +254,12 @@ class NodesController < ApplicationController
     end
 
     begin
-      id = Node.find_by_name(params[:name]).id
+      n = Node.find_by_name(params[:name])
+      if n.nil?
+        render :text => "<p>Didn't find Node</p>\n", :status => 404
+        return
+      end
+      id = n.id
     rescue
       render :text => "<p>Didn't find Node</p>\n", :status => 404
       return

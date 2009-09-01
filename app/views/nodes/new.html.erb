@@ -34,7 +34,8 @@
                                   [ "Category",         "ClassNode" ],
                                   [ "Item",              "ItemNode" ],
                                   [ "Property",      "PropertyNode" ] ],
-                                @node.sti_type.nil? ? "" : @node.sti_type )
+                                @node.sti_type.nil? ? "" : @node.sti_type ),
+            :tabindex => "1"
        %>
       <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
                     :alt=>"", :size=>"16x16" %>
@@ -87,7 +88,7 @@
     </dd></dl>
 
     <p id="create_button_container" style="text-align: center">
-      <%= f.submit "Create" %>
+      <%= f.submit "Create", :tabindex => "10" %>
     </p>
 
     <p style="text-align: center">
