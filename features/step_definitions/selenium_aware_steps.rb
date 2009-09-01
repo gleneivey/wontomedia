@@ -35,19 +35,19 @@ Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
   if @browser.nil?
     field_labeled(field).value.should =~ /#{value}/
   else
-    value = selenium.get_eval(
+    fromPage = selenium.get_eval(
       "window.document.getElementById('#{field}').value")
-    value.should =~ /#{value}/
+    fromPage.should =~ /#{value}/
   end
 end
 
 Then /^the "([^\"]*)" field should be "([^\"]*)"$/ do |field, value|
   if @browser.nil?
-    field_labeled(field).value
+    field_labeled(field).value == value
   else
-    value = selenium.get_eval(
+    fromPage = selenium.get_eval(
       "window.document.getElementById('#{field}').value")
-    value.should == value
+    fromPage.should == value
   end
 end
 

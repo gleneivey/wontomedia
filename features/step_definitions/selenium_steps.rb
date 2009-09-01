@@ -27,11 +27,13 @@ When /^I type "([^\"]*)"$/ do |value|
       selenium.key_down_native(16)    # SHIFT key down for cap alphas
       selenium.key_press_native(key)
       selenium.key_up_native(16)
-    elsif key > 0x61 && key <= 0x7a
+    elsif key >= 0x61 && key <= 0x7a
       selenium.key_press_native(key - 0x20)
     else
       selenium.key_press_native(key)
     end
+
+    Kernel.sleep(0.1)
   }
 end
 
@@ -102,7 +104,7 @@ Then /^the "([^\"]+)" element should(.*)match "([^\"]+)"$/ do |
 end
 
 
-Then /^the image "([^\"]+)" is "([^\"]+)"$/ do |imgId, srcSubstr|
+Then /^the image "([^\"]+)" is( not)? "([^\"]+)"$/ do |imgId, sense, srcSubstr|
   assert_have_selector "img##{imgId}"
   imgSrc = selenium.get_eval( "window.document.getElementById('#{imgId}').src" )
   result = /^#{srcSubstr}$/ =~ imgSrc                       ||
@@ -113,7 +115,11 @@ Then /^the image "([^\"]+)" is "([^\"]+)"$/ do |imgId, srcSubstr|
            /\/#{srcSubstr}\.[a-zA-Z]+$/ =~ imgSrc           ||
            /^#{srcSubstr}\.[a-zA-Z]+\?/ =~ imgSrc           ||
            /\/#{srcSubstr}\.[a-zA-Z]+\?/ =~ imgSrc
-  assert result, "Image source didn't match substring, actual was: "+imgSrc
+  if sense.nil? || sense == ""
+    assert result, "Image source didn't match substring, actual was: "+imgSrc
+  else
+    assert !result, "Image source matched substring and shouldn't have"
+  end
 end
 
 

@@ -71,25 +71,33 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Given I am on the new nodes page
     And I select "Item" from "Type"
     When I put the focus on the "node_title" element
+    And I pause
     And I type "another good title--for testing!"
-    Then the "node_name" field should be "AnotherGoodTitle_ForTesting"
+    Then the "node_name" field should be "AnotherGoodTitleForTesting"
 
     When I put the focus on the "node_name" element
-    And I type the "Back" special key
-    Then the "node_name" field should be "AnotherGoodTitle_ForTestin"
+    And I pause
+    And I type "Again"
+    Then the "node_name" field should be "AnotherGoodTitleForTestingAgain"
 
     When I fill in "Title" with "but not this title!"
-    Then the "node_name" field should be "AnotherGoodTitle_ForTestin"
+    Then the "node_name" field should be "AnotherGoodTitleForTestingAgain"
 
-    When I fill in "Name" with ""
-    And  I fill in "Title" with "auto-gen again"
+    Given I fill in "Name" with ""
+    And  I fill in "Title" with ""
+    And I put the focus on the "node_title" element
+    And I pause
+    When I type "auto-gen again"
     Then the "node_name" field should be "AutoGenAgain"
+    And the element "sti_type_required" has the format "font-weight=400"
+    And the image "sti_type_error_icon" is "blank_error_icon"
 
 
   Scenario: non-changing acts on Name field don't block auto generation
     Given I am on the new nodes page
     And I select "Property" from "Type"
     When I put the focus on the "node_title" element
+    And I pause
     And I type "PoRtIo"
     Then the "node_name" field should be "portio"
 
@@ -99,27 +107,23 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Then the "node_name" field should be "portio"
 
     When I put the focus on the "node_title" element
+    And I pause
     And I type "n of a t"
     Then the "node_name" field should be "portionOfAT"
 
-    When I click the "node_name" element
-    And I type the "Up" special key
+    Given I put the focus on the "node_name" element
+    And I pause
+    When I type the "Up" special key
     And I type the "Left" special key
     And I type the "Escape" special key
     And I type the "Left" special key
     And I type the "Down" special key
-    And I type ".:BAD"
-    Then the "node_name" field should be "portionOfAT.:BAD"
-
-    When I type the "Back" special key
-    When I type the "Back" special key
-    When I type the "Back" special key
-    When I type the "Back" special key
-    When I type the "Back" special key
     Then the "node_name" field should be "portionOfAT"
 
-    When I put the focus on the "node_title" element
-    And I type "itle"
+    Given I put the focus on the "node_title" element
+    And I pause
+    When I type "itle"
+    And I pause
     Then the "node_name" field should be "portionOfATitle"
 
 

@@ -42,8 +42,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "name_is_unique" has the format "display=none"
 
     When I fill in "Name" with "anUnusedNodeName"
-    And I put the focus on the "node_description" element
-    Then the image "name_status_icon" is "blank_status_icon"
+    Then the image "name_status_icon" is not "error_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=400"
     And the element "name_is_unique" has the format "display=none"
 
@@ -69,7 +68,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "name_must_be_unique" has the format "font-weight=400"
     And the element "name_is_unique" has the format "display=none"
 
-    When I wait 0.30 seconds
+    When I wait 0.05 seconds
     Then the image "name_status_icon" is "working_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=400"
     And the element "name_is_unique" has the format "display=none"
