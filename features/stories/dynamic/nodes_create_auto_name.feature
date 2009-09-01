@@ -89,8 +89,8 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And I pause
     When I type "auto-gen again"
     Then the "node_name" field should be "AutoGenAgain"
-    And the element "sti_type_required" has the format "font-weight=400"
-    And the image "sti_type_error_icon" is "blank_error_icon"
+    And the element "name_required" has the format "font-weight=400"
+    And the image "name_error_icon" is "blank_error_icon"
 
 
   Scenario: non-changing acts on Name field don't block auto generation

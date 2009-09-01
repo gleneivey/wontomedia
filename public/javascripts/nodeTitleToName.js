@@ -24,8 +24,14 @@
 
 
 function generateFromTitle(titleInputElem, nameInputElem){
-  if (genNameFromTitleOk && titleInputElem.value != null)
+  var result = false;
+  if (genNameFromTitleOk && titleInputElem.value != null){
+    if (nameInputElem.value == null ||
+        nameInputElem.value == "")
+      result = true;
     nameInputElem.value = genNameValue(titleInputElem.value);
+  }
+  return result;
 }
 
 function generateToName(titleInputElem, nameInputElem){

@@ -369,7 +369,12 @@ function checkTitle(){
   checkFieldRequired(b);
   checkFieldLength(b, indexTitle);
   maybeClearIcon('title');
-  generateFromTitle(b, c);
+  var emptyToNotEmpty = generateFromTitle(b, c);
+  if (emptyToNotEmpty){
+    inputErrors["node_name"] = false;
+    $('name_required').className = "";
+    maybeClearIcon('name');
+  }
   nameFieldValidityCheck();
 }
 
