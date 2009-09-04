@@ -19,18 +19,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 
-When /^I go to "(.+)"$/ do |page_name|
-  visit path_to(page_name)
-end
-
-When /^I press "([^\"]*)"$/ do |button|
-  click_button(button)
-end
-
-When /^I follow "([^\"]*)"$/ do |link|
-  click_link(link)
-end
-
 When /^I fill in "([^\"]*)" with "(.*)"$/ do |field, value|
   while value =~ /\\([0-7]{3})/ do
     octal = Regexp.last_match[1]

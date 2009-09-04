@@ -16,8 +16,12 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+
 When /^I (am on|go to|try to go to) the path "(.+)"$/ do |fu, path|
   visit path
+  if !@browser.nil?
+    Kernel.sleep(1.5)
+  end
 end
 
 When /^I (am on|go to|try to go to) the (\S+) (\S+) page$/ do |fu, action,
@@ -26,6 +30,10 @@ When /^I (am on|go to|try to go to) the (\S+) (\S+) page$/ do |fu, action,
     visit "/#{controller}/"
   else
     visit "/#{controller}/#{action}"
+  end
+  if !@browser.nil?
+    selenium.get_eval( "window.focus();" )
+    Kernel.sleep(1.5)
   end
 end
 
@@ -55,6 +63,9 @@ When /^I (am on|go to|try to go to) the (\S+) edges page for "(.+)" "(.+)" "(.+)
       visit "/edges/#{e.id}/#{action}"
     end
   end
+  if !@browser.nil?
+    Kernel.sleep(1.5)
+  end
 end
 
 # it would be cool to generate a model class from the controller name, but...
@@ -72,5 +83,8 @@ When /^I (am on|go to|try to go to) the (\S+) nodes page for "([^"]+)"$/ do |fu,
     else
       visit "/nodes/#{n.id}/#{action}"
     end
+  end
+  if !@browser.nil?
+    Kernel.sleep(1.5)
   end
 end

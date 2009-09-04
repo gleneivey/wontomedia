@@ -133,7 +133,9 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
   Scenario: When all fields are filled in, submit button is enabled
     Given I am on the new nodes page
+    And I pause
     When I put the focus on the "node_submit" element
+    And I pause
     And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=bold"

@@ -53,41 +53,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "name_is_unique" has the format "display=inline"
 
 
-  Scenario: Name uniqueness check starts and aborts with correct timing
-    Given there is 1 existing item like "aNodeName"
-    And I am on the new nodes page
-    And I put the focus on the "node_name" element
-    And I type "aNo"
-    Then the image "name_status_icon" is "blank_status_icon"
-    And the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=none"
-
-    When I type "de"
-    And I type "Na"
-    Then the image "name_status_icon" is "blank_status_icon"
-    And the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=none"
-
-    When I wait 0.05 seconds
-    Then the image "name_status_icon" is "working_status_icon"
-    And the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=none"
-
-    When I type "me"
-    And I type "Ne"
-    And I type "xt"
-    Then the image "name_status_icon" is "blank_status_icon"
-    And the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=none"
-
-    When I wait for Ajax requests to complete
-    And I pause
-    Then the image "name_status_icon" is "good_status_icon"
-    And the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=inline"
-
-
-
 #### Note: add checks for no "Name is unique" flagging to Name tests
 #### in the nodes_create_invalid -checks feature
 

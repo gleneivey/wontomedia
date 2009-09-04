@@ -67,3 +67,26 @@ When /^I pause$/ do
   end
 end
 
+
+######## originally in 'webrat_steps.rb'
+
+When /^I go to "(.+)"$/ do |page_name|
+  visit path_to(page_name)
+  if !@browser.nil?
+    Kernel.sleep(1.5)
+  end
+end
+
+When /^I press "([^\"]*)"$/ do |button|
+  click_button(button)
+  if !@browser.nil?
+    Kernel.sleep(1.5)
+  end
+end
+
+When /^I follow "([^\"]*)"$/ do |link|
+  click_link(link)
+  if !@browser.nil?
+    Kernel.sleep(1.5)
+  end
+end

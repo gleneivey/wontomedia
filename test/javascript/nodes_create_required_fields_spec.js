@@ -97,6 +97,12 @@ Screw.Unit(function(){
             elem.value = letters[cn];
             elem.blur();
 
+            // *very* special case
+            if ( c == 1  &&         // We're filling fields back in, and
+                cn == 1  )          // We just filled in Title, so
+              cn = 2;               // Skip ahead to Name, because it was
+                                    //  filled in automatically based on title
+
             var ct;
             for (ct = innerLoopStart[c];
                  ct != cn + innerLoopDelta[c];

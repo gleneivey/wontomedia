@@ -99,6 +99,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     When I put the focus on the "node_title" element
     And I pause
     And I type "PoRtIo"
+    And I pause
     Then the "node_name" field should be "portio"
 
     When I type the "Tab" special key
