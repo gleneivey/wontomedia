@@ -53,6 +53,8 @@ require File.join( RAILS_ROOT, 'test', 'seed_helper' )
 begin   # don't force Blue Ridge dependency on non-developers
 
   plugin_prefix = "#{RAILS_ROOT}/vendor/plugins/blue-ridge"
+  require File.join(plugin_prefix, "lib", "blue_ridge")
+
   rhino_command = "java -Dblue.ridge.prefix=\"#{plugin_prefix}\" " +
                       " -jar #{plugin_prefix}/lib/env-js.jar -w -debug"
   test_runner_command = "#{rhino_command} #{plugin_prefix}/lib/test_runner.js"
@@ -64,7 +66,7 @@ begin   # don't force Blue Ridge dependency on non-developers
 
   # Support Test::Unit & Test/Spec style
   namespace :test do
-    desc "Runs all the JavaScript tests and outputs the results"
+    desc "Runs all the JavaScript tests and outputs the results."
     task :javascripts => :environment do
       Dir.chdir("#{RAILS_ROOT}/test/javascript") do
         all_fine = true
@@ -97,17 +99,14 @@ begin   # don't force Blue Ridge dependency on non-developers
         load_wontomedia_app_seed_data
         setup_for_js_testing
 
-        # Create an "index.html" file listing JS test fixtures because
-        # Rails won't automatically index accesses to directories under
-        # /public.
-        #### TODO
+        ENV["BLUERIDGE_PREFIX"] = "http://localhost:3001/#{@link_root}"
+        js_spec_dir = BlueRidge.find_javascript_spec_dir
+        fixture_path = BlueRidge.generateSpecIndexFile(js_spec_dir)
 
-        fixture_dir =
-          "http://localhost:3001/#{@link_root}/#{@test_path}/index.html"
         if PLATFORM[/darwin/]
-          system "open #{fixture_dir}"
+          system "open #{fixture_path}"
         elsif PLATFORM[/linux/]
-          system "firefox #{fixture_dir}"
+          system "firefox #{fixture_path}"
         end
       ensure
         cleanup_after_js_testing
