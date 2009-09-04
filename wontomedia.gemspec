@@ -121,6 +121,7 @@ Gem::Specification.new do |s|
      "script/process/spawner",
      "script/runner",
      "script/server",
+     "vendor/plugins/blue-ridge/CONTRIBUTORS",
      "vendor/plugins/blue-ridge/LICENSE",
      "vendor/plugins/blue-ridge/LICENSE-Screw.Unit",
      "vendor/plugins/blue-ridge/LICENSE-Smoke",
