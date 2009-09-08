@@ -25,6 +25,7 @@
 
 <table>
   <tr>
+    <th></th>
     <th>Subject</th>
     <th></th>
     <th>Predicate</th>
@@ -33,6 +34,7 @@
 
   <% @edges.each do |edge| %>
     <% content_tag :tr, :id => edge.id do %>
+      <td><%=link_to 'Show', edge_path(edge) %></td>
       <td><%=link_to "#{h edge.subject.name}", node_path(edge.subject) %></td>
       <td style="font-size: 80%">(is [a|an|the])</td>
       <td>

@@ -53,6 +53,12 @@ class EdgesIndexViewTest < ActionController::TestCase
     assert_negative_view_contents
   end
 
+  test "should have Show link for a known edge" do
+    get :index
+    edge = Edge.all[2]
+    assert_select "*##{edge.id} a[href=\"#{edge_path(edge)}\"]", true
+  end
+
   test "edges index page should have and only have right edit destroy links" do
     get :index
 
