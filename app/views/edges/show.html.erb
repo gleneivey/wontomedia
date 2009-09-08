@@ -19,20 +19,37 @@
 
 <h1>Edge Contents</h1>
 
-<p><b>Subject:</b>
-  <%= h @subject.title %> &mdash;
-  (<%= link_to "#{h @subject.name}", node_path(@subject) %>)
-</p>
+<table>
+  <tr><td>
+    <b>Subject:</b>
+  </td><td>
+      <%= h @subject.title %> &mdash;
+      (<%= link_to "#{h @subject.name}", node_path(@subject) %>)
+    <p>
+      <%= h @subject.description %>
+    </p>
+  </td></tr>
 
-<p><b>Predicate:</b>
-  <%= h @predicate.title %> &mdash;
-  (<%= link_to "#{@predicate.name}", node_path(@predicate) %>)
-</p>
+  <tr><td>
+    <b>Predicate:</b>
+  </td><td>
+      <%= h @predicate.title %> &mdash;
+      (<%= link_to "#{@predicate.name}", node_path(@predicate) %>)
+    <p>
+      <%= h @predicate.description %>
+    </p>
+  </td></tr>
 
-<p><b>Object:</b>
-  <%= h @obj.title %> &mdash;
-  (<%= link_to "#{@obj.name}", node_path(@obj) %>)
-</p>
+  <tr><td>
+    <b>Object:</b>
+  </td><td>
+      <%= h @obj.title %> &mdash;
+      (<%= link_to "#{@obj.name}", node_path(@obj) %>)
+    <p>
+      <%= h @obj.description %>
+    </p>
+  </td></tr>
+</table>
 
 <% if (@edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
   <%= link_to 'Edit this edge', edit_edge_path(@edge) %> &mdash;

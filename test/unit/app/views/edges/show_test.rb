@@ -28,19 +28,52 @@ class EdgesShowViewTest < ActionController::TestCase
     assert_template "edges/show"
   end
 
+    # subject
   test "edge-show page should contain edge's subject Node's title" do
     get_edges_show
     assert_select "body", /#{edges(:aReiffiedEdge).subject.title}/
   end
 
+  test "edge-show page should contain edge's subject Node's name" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).subject.name}/
+  end
+
+  test "edge-show page should contain edge's subject Node's description" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).subject.description}/
+  end
+
+    # predicate
   test "edge-show page should contain edge's predicate Node's title" do
     get_edges_show
     assert_select "body", /#{edges(:aReiffiedEdge).predicate.title}/
   end
 
+  test "edge-show page should contain edge's predicate Node's name" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).predicate.name}/
+  end
+
+  test "edge-show page should contain edge's predicate Node's description" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).predicate.description}/
+  end
+
+    # object
   test "edge-show page should contain edge's object Node's title" do
     get_edges_show
     assert_select "body", /#{edges(:aReiffiedEdge).obj.title}/
+  end
+
+  test "edge-show page should contain edge's object Node's name" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).obj.name}/
+  end
+
+  test "edge-show page should contain edge's object Node's description" do
+    get_edges_show
+    assert_select "body", /#{edges(:aReiffiedEdge).obj.description}/
   end
 
   test "edges show page shouldnt contain status" do
