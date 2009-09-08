@@ -1,5 +1,5 @@
 Feature:  Verify inputs for creation of new node dynamically within the page
-  (verify all "required" fields present before submission; flag those missing)
+  (verify the content of Title, Name, Description not too long)
   In order to create a wontology,
   as a contributor, I want
   to be told about bad inputs before I submit a page.

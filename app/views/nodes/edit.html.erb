@@ -28,3 +28,9 @@
 
 <%= link_to 'Cancel, show node', node_path(@node) %> |
 <%= link_to 'Cancel, show node list', nodes_path %>
+
+<%= javascript_include_tag "modalbox" %>
+<%= javascript_include_tag "forNodesForms" %>
+<script type="text/javascript">
+  $(controlNamePrefix + 'node_title').focus();
+</script>

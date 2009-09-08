@@ -16,6 +16,24 @@
 // see <http://www.gnu.org/licenses/>.
 
 
+var test = $('node_sti_type');
+var thereIsATypeControl = (test != null);
+
+var controlNamePrefix = "";
+var originalNodeName = ""
+if (!thereIsATypeControl){
+  controlNamePrefix = document.forms[0].className.
+                        replace(/^edit_/, "").
+                        replace(/node$/, "");
+
+  originalNodeName = $(controlNamePrefix + 'node_name').value;
+}
+
+var submit = $(controlNamePrefix + 'node_submit');
+var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
+                          //   wait after Name change before check
+
+
 
 // function to highlight help text based on Type <select> element state
 function typeSelectOnchange(){
@@ -28,16 +46,16 @@ function typeSelectOnchange(){
     $(tags[c]).className = "";
 
   if (sel.value == "ClassNode"){
-    $("category_title").className = "titleSelectedItemDescription";
-    $("category_desc").className = "bodySelectedItemDescription";
+    $(tags[0]).className = "titleSelectedItemDescription";
+    $(tags[1]).className = "bodySelectedItemDescription";
   }
   else if (sel.value == "ItemNode"){
-    $("item_title").className = "titleSelectedItemDescription";
-    $("item_desc").className = "bodySelectedItemDescription";
+    $(tags[2]).className = "titleSelectedItemDescription";
+    $(tags[3]).className = "bodySelectedItemDescription";
   }
   else if (sel.value == "PropertyNode"){
-    $("property_title").className = "titleSelectedItemDescription";
-    $("property_desc").className = "bodySelectedItemDescription";
+    $(tags[4]).className = "titleSelectedItemDescription";
+    $(tags[5]).className = "bodySelectedItemDescription";
   }
 }
 
@@ -62,7 +80,8 @@ var maxLengths = [ 0, 255, 80, 65535 ];
     //           true  -> error condition present
 var inputErrors = {};
 for (var c=0; c < requiredInputElements.length-2; c++)
-  inputErrors["node_" + requiredInputElements[c]] = -1;
+  inputErrors["node_" + requiredInputElements[c]] =
+    thereIsATypeControl ? -1 : false;
 for (var c=1; c < requiredInputElements.length-1; c++)
   inputErrors["length_" + requiredInputElements[c]] = false;
 
@@ -101,10 +120,8 @@ function maybeClearIcon(field){
     inputErrors["node_description"] = descReco;  // restore
 
     if (canClear){
-      if (field == "description" && descReco){
-        inputErrors["node_description"] = true;
+      if (field == "description" && descReco)
         icon.src = "/images/warn_error_icon.png";
-      }
       else
         icon.src = "/images/blank_error_icon.png";
     }
@@ -114,16 +131,16 @@ function maybeClearIcon(field){
   // if *all* the error flags are clear, then indicate that we can submit
   for (var err in inputErrors)
     if (err != "node_description" && inputErrors[err] != false){
-      makeButtonSeemDisabled($('node_submit'));
+      makeButtonSeemDisabled(submit);
       return;
     }
-  makeButtonSeemEnabled($('node_submit'));
+  makeButtonSeemEnabled(submit);
 }
 
 
     // validation functions
 function nameFieldValidityCheck(){
-  var mtch, val = $('node_name').value;
+  var mtch, val = $(controlNamePrefix + 'node_name').value;
 
   $('name_start_char').className = "";
   inputErrors['char_1_name'] = false;
@@ -150,19 +167,21 @@ function nameFieldValidityCheck(){
 
 
 function onfocusCommonBehavior(elem){
-  var errFlag = false;
   var eId = elem.id;
   var c;
   for (c=0; c   <  requiredInputElements.length &&
-            eId != "node_" + requiredInputElements[c];    c++)
+            eId != controlNamePrefix + "node_" + requiredInputElements[c];
+       c++)
     ;
 
   if (c >= requiredInputElements.length)
     return;  // Hmmmm..... maybe not
 
   var lastToCheck = c-1;
-  for (c=0; c <= lastToCheck; c++){
-    ck = $("node_" + requiredInputElements[c]);
+  var errFlag = false;
+  c = thereIsATypeControl ? 0 : 1;
+  for (; c <= lastToCheck; c++){
+    ck = $(controlNamePrefix + "node_" + requiredInputElements[c]);
     if (ck.value == null || ck.value == ""){
 
       inputErrors["node_" + requiredInputElements[c]] = true;
@@ -171,16 +190,16 @@ function onfocusCommonBehavior(elem){
       if (c < requiredInputElements.length-2)
         errFlag = true;
     }
-    else {
+    else
       inputErrors["node_" + requiredInputElements[c]] = false;
-    }
   }
 
   if (errFlag)
-    makeButtonSeemDisabled($('node_submit'));
+    makeButtonSeemDisabled(submit);
 
   // refresh everything
-  maybeClearIcon('sti_type');
+  if (thereIsATypeControl)
+    maybeClearIcon('sti_type');
   maybeClearIcon('title');
   maybeClearIcon('name');
   maybeClearIcon('description');
@@ -189,7 +208,9 @@ function onfocusCommonBehavior(elem){
 
 function checkFieldRequired(f){
   var idStr = f.id;
-  var name = idStr.match(/^node_(.+)$/)[1];
+  if (!thereIsATypeControl)
+    idStr = idStr.replace(new RegExp(controlNamePrefix), "");
+  var name = idStr.match(/node_(.+)$/)[1];
 
   if (f.value == null || f.value == ""){
     flagAsRequired(name);
@@ -207,7 +228,7 @@ function checkFieldRequired(f){
 }
 
 function checkFieldLength(elem, index){
-  var name = elem.id.match(/^node_(.+)$/)[1];
+  var name = elem.id.match(/node_(.+)$/)[1];
 
   if (elem.value.length > maxLengths[index]){
     $(name + '_too_long').className = "helpTextFlagged";
@@ -241,8 +262,11 @@ function genDialog(){
 
   if (accum){
     newDialogText += "</p>";
+    var titleText = thereIsATypeControl ?
+      "Can't create this node yet" :
+      "Can't update this node";
     Modalbox.show(newDialogText,
-      { title: "Can't create this node yet",
+      { title: titleText,
         slideDownDuration: 0.25, slideUpDuration: 0.1 } );
   }
   return accum;
@@ -259,15 +283,13 @@ function makeButtonSeemDisabled(button){
 
 
 
-var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
-                          //   wait after Name change before check
 var valueWhenLastChecked = "";
 var uniquenessTimerId = -1;
 function nameUCheckSuccess(transport){
   $('name_must_be_unique').className = "helpTextFlagged";
   $('name_status_icon').src = '/images/error_status_icon.png';
   inputErrors["unique_name"] = true;
-  makeButtonSeemDisabled($('node_submit'));
+  makeButtonSeemDisabled(submit);
 }
 function nameUCheckFailure(transport){
   if (transport.status == 404){
@@ -284,14 +306,15 @@ function launchNameUniquenessCheck(){
   var l = window.location;
   var lookup = l.protocol + "//" + l.hostname + ":" + l.port + '/nodes/lookup';
   new Ajax.Request(lookup, {
-                    method: 'get', parameters: "name=" + $F('node_name'),
+                    method: 'get', parameters: "name=" +
+                      $F(controlNamePrefix + 'node_name'),
                     onSuccess: nameUCheckSuccess, onFailure: nameUCheckFailure
                   });
 
   $('name_status_icon').src = '/images/working_status_icon.png';
 }
 function maybeCheckNameUniqueness(delay){
-  var name = $('node_name');
+  var name = $(controlNamePrefix + 'node_name');
 
   if (name.value != valueWhenLastChecked){
     valueWhenLastChecked = name.value;
@@ -311,6 +334,7 @@ function maybeCheckNameUniqueness(delay){
 
     var mtch = $('name_error_icon').src.match(/error_error_icon/);
     if (name.value != null && name.value != "" &&
+        name.value != originalNodeName         &&
         (mtch == null || mtch.length == 0)){
       if (delay > 0)
         uniquenessTimerId = setTimeout(launchNameUniquenessCheck, delay);
@@ -328,31 +352,37 @@ function maybeCheckNameUniqueness(delay){
 var dly = 200;
 
     // plumb validation function to relevant elements
-var a = $('node_sti_type');
-a.observe('keyup',
-  function(ev){
-    if (ev.keyCode != Event.KEY_TAB){   // onfocus does all we need for this
-      setTimeout(
-        function(){
-          checkFieldRequired(a);
-          maybeClearIcon('sti_type');
-        } ,
-        dly
-      );
+if (thereIsATypeControl){
+  var a = $('node_sti_type');
+  a.observe('keyup',
+    function(ev){
+      if (ev.keyCode != Event.KEY_TAB){   // onfocus does all we need for this
+        setTimeout(
+          function(){
+            checkFieldRequired(a);
+            maybeClearIcon('sti_type');
+          } ,
+          dly
+        );
+      }
     }
-  }
-);
+  );
 
-a.observe('change',
-  function(){
-    typeSelectOnchange();
-    checkFieldRequired(a);
-    maybeClearIcon('sti_type');
-  }
-);
+  a.observe('change',
+    function(){
+      typeSelectOnchange();
+      checkFieldRequired(a);
+      maybeClearIcon('sti_type');
+    }
+  );
 
-var b = $('node_title');
-var c = $('node_name');
+  function getCurrentType(){
+    return $('node_sti_type').value;
+  }
+}
+
+var b = $(controlNamePrefix + 'node_title');
+var c = $(controlNamePrefix + 'node_name');
 function checkTitle(){
   // this check is unique to Title, do here
   var mtch = b.value.match(/\n|\r/m);
@@ -369,11 +399,13 @@ function checkTitle(){
   checkFieldRequired(b);
   checkFieldLength(b, indexTitle);
   maybeClearIcon('title');
-  var emptyToNotEmpty = generateFromTitle(b, c);
-  if (emptyToNotEmpty){
-    inputErrors["node_name"] = false;
-    $('name_required').className = "";
-    maybeClearIcon('name');
+  if (thereIsATypeControl){
+    var emptyToNotEmpty = generateFromTitle(b, c);
+    if (emptyToNotEmpty){
+      inputErrors["node_name"] = false;
+      $('name_required').className = "";
+      maybeClearIcon('name');
+    }
   }
   nameFieldValidityCheck();
 }
@@ -391,7 +423,8 @@ function checkName(){
   checkFieldRequired(c);
   checkFieldLength(c, indexName);
   maybeClearIcon('name');
-  generateToName(b, c);
+  if (thereIsATypeControl)
+    generateToName(b, c);
 
 
   // do last, because we're going to skip part of this if other errors...
@@ -405,7 +438,7 @@ c.observe('keyup',
   }
 );
 
-var d = $('node_description');
+var d = $(controlNamePrefix + 'node_description');
 function checkDescription(){
   checkFieldRequired(d);
   checkFieldLength(d, indexDescription);
@@ -419,8 +452,13 @@ d.observe('keyup',
   }
 );
 
-var e = $('node_submit');
-makeButtonSeemDisabled(e);
+
+var e = submit;
+if (thereIsATypeControl)
+  makeButtonSeemDisabled(e);       // nodes/new -- can't submit a blank form
+else
+  makeButtonSeemEnabled(e);        // nodes/##/edit -- can submit as-is form
+
 e.observe('click',
   function(ev){
     onfocusCommonBehavior(e);
@@ -435,12 +473,9 @@ e.observe('click',
   }
 );
 
-function getCurrentType(){
-  return $('node_sti_type').value;
-}
 
-
-a.observe('focus', function(){onfocusCommonBehavior(a);});
+if (thereIsATypeControl)
+  a.observe('focus', function(){onfocusCommonBehavior(a);});
 b.observe('focus', function(){onfocusCommonBehavior(b);});
 c.observe('focus', function(){onfocusCommonBehavior(c);});
 d.observe('focus', function(){onfocusCommonBehavior(d);});
