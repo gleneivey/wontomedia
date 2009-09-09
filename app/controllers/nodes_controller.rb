@@ -84,6 +84,11 @@ class NodesController < ApplicationController
       return
     end
 
+    if request.format.json?
+      render :json => @node
+      return
+    end
+
     used_as_subj = Edge.all( :conditions => [ "subject_id = ?", @node.id ])
     used_as_pred = Edge.all( :conditions => [ "predicate_id = ?", @node.id ])
     used_as_obj  = Edge.all( :conditions => [ "obj_id = ?", @node.id ])

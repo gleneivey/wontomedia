@@ -27,30 +27,58 @@ class NodesShowViewTest < ActionController::TestCase
     n
   end
 
-  test "should have show page for nodes" do
+  def get_nodes_show_json(name, sti_type)
+    n = nodes(name)
+    get :show, :id => n.id, :format => 'json'
+    return n, ActiveSupport::JSON.decode(@response.body)[sti_type + "_node"]
+  end
+
+  test "should have show HTML page for nodes" do
     get_nodes_show(:one)
     assert_template "nodes/show"
   end
 
-  test "node-show page should contain node name" do
-    get_nodes_show(:one)
-    assert_select "body", /#{nodes(:one).name}/
+  test "node-show HTML page should contain node name" do
+    n = get_nodes_show(:one)
+    assert_select "body", /#{n.name}/
   end
 
-  test "node-show page should contain node title" do
-    get_nodes_show(:one)
-    assert_select "body", /#{nodes(:one).title}/
+  test "node-show HTML page should contain node title" do
+    n = get_nodes_show(:one)
+    assert_select "body", /#{n.title}/
   end
 
-  test "node-show page should contain node description" do
-    get_nodes_show(:one)
-    assert_select "body", /#{nodes(:one).description}/
+  test "node-show HTML page should contain node description" do
+    n = get_nodes_show(:one)
+    assert_select "body", /#{n.description}/
   end
 
-  test "nodes show page shouldnt contain status" do
+  test "nodes show HTML page shouldnt contain status" do
     get_nodes_show(:one)
     assert_negative_view_contents
   end
+
+  test "nodes show JSON response should contain node name" do
+    n, j = get_nodes_show_json(:one, "item")
+    assert j["name"] == n.name,
+      "Expected response Name '#{j['name']}' to match node's #{n.name}"
+  end
+
+  test "nodes show JSON response should contain node title" do
+    n, j = get_nodes_show_json(:one, "item")
+    assert j["title"] == n.title,
+      "Expected response Title '#{j['title']}' to match node's #{n.title}"
+  end
+
+  test "nodes show JSON response should contain node description" do
+    n, j = get_nodes_show_json(:one, "item")
+    assert j["description"] == n.description,
+      "Expected response Description '#{j['description']}' to " +
+        "match node's #{n.description}"
+  end
+
+
+        # all following are tests of the HTML page
 
   test "node-show page should contain node-edit link" do
     n = get_nodes_show(:two)

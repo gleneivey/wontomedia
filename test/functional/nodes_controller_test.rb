@@ -119,6 +119,15 @@ class NodesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:node_hash)
   end
 
+  test "should show JSON-format node" do
+    id = nodes(:one).id
+    get :show, :id => id, :format => 'json'
+    assert_response :success
+    node = assigns(:node)
+    assert_not_nil node
+    assert_equal id, node.id
+  end
+
   test "should show first edge for node with value" do
     n = nodes(:testSubcategory)
     get :show, :id => n.id
