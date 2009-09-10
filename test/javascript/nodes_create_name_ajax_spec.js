@@ -20,6 +20,8 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
+  before(function() { IFrame("http://localhost:3001/nodes/new"); });
+
   ajaxStartsAfter = 400;  // milliseconds
   timeMargin      =  50;
   pollingInterval =  10;
@@ -29,43 +31,36 @@ Screw.Unit(function(){
     describe( "Pre-submit check for  uniqueness of Name value", function(){
 
       function setName(newNameValue){
-        var d = document.getElementById('test_frame').contentDocument;
-        var name = d.getElementById('node_name');
-
+        var name = E('node_name');
         name.focus();
         name.value = newNameValue;
         name.blur();
       }
 
       function checkBeforeWorking(){
-        var d = document.getElementById('test_frame').contentDocument;
-
         // wait until just before the check should start, verify no activity
         java.lang.Thread.currentThread().sleep(ajaxStartsAfter - timeMargin);
-        expect(d.getElementById('name_must_be_unique').className).
+        expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
-        expect(d.getElementById('name_is_unique').className).
+        expect(E('name_is_unique').className).
           to(match, /confirmationTextInvisible/);
-        expect(d.getElementById('name_status_icon').src).to(match,
+        expect(E('name_status_icon').src).to(match,
           /blank_status_icon\.png/);
       }
 
       function checkWorkingStart(){
-        var d = document.getElementById('test_frame').contentDocument;
-
         // wait until after check should start, verify in-progress state
         java.lang.Thread.currentThread().sleep(timeMargin * 3);
-        expect(d.getElementById('name_must_be_unique').className).
+        expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
-        expect(d.getElementById('name_is_unique').className).
+        expect(E('name_is_unique').className).
           to(match, /confirmationTextInvisible/);
-        expect(d.getElementById('name_status_icon').src).to(match,
+        expect(E('name_status_icon').src).to(match,
           /working_status_icon\.png/);
       }
 
       function waitForAjax(){
-        var d = document.getElementById('test_frame').contentDocument;
-        icon = d.getElementById('name_status_icon');
+        icon = E('name_status_icon');
 
         // now wait for Ajax operation to complete
         for (var c=0;
@@ -85,35 +80,25 @@ Screw.Unit(function(){
 
       it( "flags redundant node Name strings", function(){
         setNameAndCheckProgress("peer_of", true);
-
-        var d = document.getElementById('test_frame').contentDocument;
-        expect(d.getElementById('name_must_be_unique').className).
-          to(match, /helpTextFlagged/);
-        expect(d.getElementById('name_is_unique').className).
+        expect(E('name_must_be_unique').className).to(match, /helpTextFlagged/);
+        expect(E('name_is_unique').className).
           to(match, /confirmationTextInvisible/);
-        expect(d.getElementById('name_status_icon').src).to(match,
-          /error_status_icon\.png/);
+        expect(E('name_status_icon').src).to(match, /error_status_icon\.png/);
       });
 
       it("shows confirming message when node Name string is unique", function(){
         setNameAndCheckProgress("aNodeThatDoesntAlreadyExist", true);
-
-        var d = document.getElementById('test_frame').contentDocument;
-        expect(d.getElementById('name_must_be_unique').className).
+        expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
-        expect(d.getElementById('name_is_unique').className).
-          to(match, /confirmationTextShow/);
-        expect(d.getElementById('name_status_icon').src).to(match,
-          /good_status_icon\.png/);
+        expect(E('name_is_unique').className).to(match, /confirmationTextShow/);
+        expect(E('name_status_icon').src).to(match, /good_status_icon\.png/);
       });
 
       it("doesn't check when Name changed to blank", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-        var name = d.getElementById('node_name');
+        var name = E('node_name');
 
         setNameAndCheckProgress("one_of", true);
-        expect(d.getElementById('name_status_icon').src).to(match,
-          /error_status_icon\.png/);
+        expect(E('name_status_icon').src).to(match, /error_status_icon\.png/);
 
         // setup done, now try clearing....
         name.focus();
@@ -121,17 +106,15 @@ Screw.Unit(function(){
         name.blur();
 
         // should happen on any change, including =""
-        expect(d.getElementById('name_status_icon').src).to(match,
-          /blank_status_icon\.png/);
+        expect(E('name_status_icon').src).to(match, /blank_status_icon\.png/);
 
         // now wait long enough to be sure we didn't trigger anything...
         java.lang.Thread.currentThread().sleep(ajaxStartsAfter + 2*timeMargin);
-        expect(d.getElementById('name_must_be_unique').className).
+        expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
-        expect(d.getElementById('name_is_unique').className).
+        expect(E('name_is_unique').className).
           to(match, /confirmationTextInvisible/);
-        expect(d.getElementById('name_status_icon').src).to(match,
-          /blank_status_icon\.png/);
+        expect(E('name_status_icon').src).to(match, /blank_status_icon\.png/);
       });
 
       it("doesn't check if Name is invalid", function(){
@@ -141,39 +124,39 @@ Screw.Unit(function(){
         java.lang.Thread.currentThread().sleep(timeMargin * 3);
 
         // verify not in progress
-        var d = document.getElementById('test_frame').contentDocument;
-        expect(d.getElementById('name_must_be_unique').className).
+        expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
-        expect(d.getElementById('name_is_unique').className).
+        expect(E('name_is_unique').className).
           to(match, /confirmationTextInvisible/);
-        expect(d.getElementById('name_status_icon').src).to(match,
-          /blank_status_icon\.png/);
+        expect(E('name_status_icon').src).to(match, /blank_status_icon\.png/);
       });
 
       it( "performs check after node.Title set, node_title.blur()", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-
-        d.getElementById('node_sti_type').value = "ItemNode";
-        var title = d.getElementById('node_title');
+        E('node_sti_type').value = "ItemNode";
+        var title = E('node_title');
         title.focus();
         title.value = "another new node";
         title.blur();
-        d.getElementById('node_description').focus();
+        E('node_description').focus();
 
         checkBeforeWorking();
         checkWorkingStart();
         waitForAjax();
 
-        expect(d.getElementById('name_must_be_unique').className).
+        expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
-        expect(d.getElementById('name_is_unique').className).
-          to(match, /confirmationTextShow/);
-        expect(d.getElementById('name_status_icon').src).to(match,
-          /good_status_icon\.png/);
+        expect(E('name_is_unique').className).to(match, /confirmationTextShow/);
+        expect(E('name_status_icon').src).to(match, /good_status_icon\.png/);
       });
 
 /*
-      it( "clears Name string confirmation on node.Name change ", function(){
+      it( "clears Name string confirmation on user node.Name change ",
+        function(){
+
+      });
+
+      it( "clears Name string confirmation on auto-gen node.Name change ",
+        function(){
 
       });
 

@@ -20,6 +20,8 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
+  before(function() { IFrame("http://localhost:3001/nodes/new"); });
+
   var submitId = "node_submit";
   var flagTextIds = [ "sti_type_required", "title_required", "name_required",
                       "description_recommended" ];
@@ -37,39 +39,32 @@ Screw.Unit(function(){
     describe( "Check results with no user input", function(){
       it( "Shows 'Create' button inactive when blank page first loaded",
           function(){
-        var d = document.getElementById('test_frame').contentDocument;
-        expect(d.getElementById(submitId).className).
-          to(match, /^inactiveButton$/);
+        expect(E(submitId).className).to(match, /^inactiveButton$/);
       });
 
       it( "Doesn't display flags when blank page first loaded", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-
         for (var c=0; c < flagTextIds.length; c++){
-          expect(d.getElementById(flagTextIds[c]).className).
+          expect(E(flagTextIds[c]).className).
             to_not(match, /helpTextFlagged/);
-          expect(d.getElementById(flagIconIds[c]).src).to(match,
+          expect(E(flagIconIds[c]).src).to(match,
             /blank_error_icon\.png/);
         }
       });
 
       it( "Flags blank inputs when input focus passes them", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-
         for (var c=1; c < inputIds.length; c++){
-          d.getElementById(inputIds[c]).focus();
+          E(inputIds[c]).focus();
 
           var cn;
           for (cn=0; cn < c; cn++){
-            expect(d.getElementById(flagTextIds[cn]).className).
-              to(match, /helpTextFlagged/);
-            expect(d.getElementById(flagIconIds[cn]).src).to(match,
+            expect(E(flagTextIds[cn]).className).to(match, /helpTextFlagged/);
+            expect(E(flagIconIds[cn]).src).to(match,
               new RegExp(flagIconSrc[cn] + "\\.png"));
           }
           for (;cn < flagTextIds.length; cn++){
-            expect(d.getElementById(flagTextIds[cn]).className).
+            expect(E(flagTextIds[cn]).className).
               to_not(match, /helpTextFlagged/);
-            expect(d.getElementById(flagIconIds[cn]).src).to(match,
+            expect(E(flagIconIds[cn]).src).to(match,
               /blank_error_icon\.png/);
           }
         }
@@ -77,7 +72,6 @@ Screw.Unit(function(){
 
       it( "Clears input-required flags on input", function(){
         var tf = document.getElementById('test_frame');
-        var d = tf.contentDocument;
 
         // first set inputs from bottom, then start over from top
         var letters = [ "ClassNode", "G", "K", "q" ];
@@ -86,13 +80,13 @@ Screw.Unit(function(){
         var innerLoopDelta = [ -1,                1 ];
         for (var c=0; c < 2; c++){
 
-          d.getElementById(submitId).focus();     // all inputs flagged
+          E(submitId).focus();     // all inputs flagged
 
           for (var cn=innerLoopStart[c];
                cn != innerLoopEnd[c];
                cn += innerLoopDelta[c]){
 
-            var elem = d.getElementById(inputIds[cn]);
+            var elem = E(inputIds[cn]);
             elem.focus();
             elem.value = letters[cn];
             elem.blur();
@@ -107,23 +101,21 @@ Screw.Unit(function(){
             for (ct = innerLoopStart[c];
                  ct != cn + innerLoopDelta[c];
                  ct += innerLoopDelta[c]){
-              expect(d.getElementById(flagTextIds[ct]).className).
+              expect(E(flagTextIds[ct]).className).
                 to_not(match, /helpTextFlagged/);
-              expect(d.getElementById(flagIconIds[ct]).src).to(match,
+              expect(E(flagIconIds[ct]).src).to(match,
                 /blank_error_icon\.png/);
             }
             for (;ct != innerLoopEnd[c];
                  ct += innerLoopDelta[c]){
-              expect(d.getElementById(flagTextIds[ct]).className).
-                to(match, /helpTextFlagged/);
-              expect(d.getElementById(flagIconIds[ct]).src).to(match,
+              expect(E(flagTextIds[ct]).className).to(match, /helpTextFlagged/);
+              expect(E(flagIconIds[ct]).src).to(match,
                 new RegExp(flagIconSrc[ct] + "\\.png"));
             }
           }
 
           // and check that "Create" button is now enabled
-          expect(d.getElementById(submitId).className).
-            to(match, /^activeButton$/);
+          expect(E(submitId).className).to(match, /^activeButton$/);
 
           // setup for next pass
           var src = tf.src;
@@ -133,17 +125,16 @@ Screw.Unit(function(){
       });
 
       it( "Flags input elements when changed to blank", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-        var submit = d.getElementById(submitId);
+        var submit = E(submitId);
 
         // first, fill in the form
-        d.getElementById(inputIds[0]).value = "ClassNode";       // Type
-        d.getElementById(inputIds[1]).value = "A title";         // Title
-        d.getElementById(inputIds[2]).value = "ANode";           // Name
+        E(inputIds[0]).value = "ClassNode";       // Type
+        E(inputIds[1]).value = "A title";         // Title
+        E(inputIds[2]).value = "ANode";           // Name
 
-        var x = d.getElementById(inputIds[3]);
+        var x = E(inputIds[3]);
         x.focus();
-        x.value = "Cool test node";                              // Description
+        x.value = "Cool test node";               // Description
         x.blur();
 
 
@@ -152,21 +143,18 @@ Screw.Unit(function(){
 
         for (var c=descIndex; c >= 0; c--){
           // starts out unflagged
-          expect(d.getElementById(flagTextIds[c]).className).
-            to_not(match, /helpTextFlagged/);
-          expect(d.getElementById(flagIconIds[c]).src).to(match,
-            /blank_error_icon\.png/);
+          expect(E(flagTextIds[c]).className).to_not(match, /helpTextFlagged/);
+          expect(E(flagIconIds[c]).src).to(match, /blank_error_icon\.png/);
 
           // make input blank
-          var elem = d.getElementById(inputIds[c]);
+          var elem = E(inputIds[c]);
           elem.focus();
           elem.value = "";
           elem.blur();
 
           // check flags, whether form still submit-able
-          expect(d.getElementById(flagTextIds[c]).className).
-            to(match, /helpTextFlagged/);
-          expect(d.getElementById(flagIconIds[c]).src).to(match,
+          expect(E(flagTextIds[c]).className).to(match, /helpTextFlagged/);
+          expect(E(flagIconIds[c]).src).to(match,
             new RegExp(flagIconSrc[c] + "\\.png"));
           if (c == descIndex)
             expect(submit.className).to(match, /^activeButton$/);

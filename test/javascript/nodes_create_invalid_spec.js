@@ -20,12 +20,12 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
+  before(function() { IFrame("http://localhost:3001/nodes/new"); });
 
   function doPresets(presets){
     // make sure we trigger onchange handlers, so other error checks done
     for (var c=0; c < presets.length; c++){
-      var elem = document.getElementById('test_frame').contentDocument.
-        getElementById(presets[c].elem);
+      var elem = E(presets[c].elem);
       elem.focus();
       elem.value = presets[c].value;
       elem.blur();
@@ -36,8 +36,6 @@ Screw.Unit(function(){
   describe( "Dynamic input checks in nodes/new page", function(){
     describe( "Validation of input to Title and Name", function(){
       it( "Checks the Title field for newlines", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-
         // set values for controls we're not testing
         var presets = [
           { elem: 'node_sti_type',    value: "ClassNode" },
@@ -46,9 +44,9 @@ Screw.Unit(function(){
         ];
         doPresets(presets);
 
-        var titleSpan = d.getElementById('title_multi_line');
-        var titleIcon = d.getElementById('title_error_icon');
-        var nodesNewSubmit = d.getElementById('node_submit');
+        var titleSpan = E('title_multi_line');
+        var titleIcon = E('title_error_icon');
+        var nodesNewSubmit = E('node_submit');
         // alternate between good and bad strings to verify flags on/off
         var testData = [
           { good: false, title: "String with\012two lines." },
@@ -69,7 +67,7 @@ Screw.Unit(function(){
         var otherIcons = [ "sti_type_error_icon", "name_error_icon",
                            "description_error_icon" ];
 
-        var title = d.getElementById('node_title');
+        var title = E('node_title');
         for (var c=0; c < testData.length; c++){
           title.focus();
           title.value = testData[c].title;
@@ -88,10 +86,10 @@ Screw.Unit(function(){
 
           // make sure there's no spurious reporting of other errors
           for (var cn=0; cn < otherSpans.length; cn++)
-            expect(d.getElementById(otherSpans[cn]).className).
+            expect(E(otherSpans[cn]).className).
               to_not(match, /helpTextFlagged/);
           for (var cn =0; cn < otherIcons.length; cn++)
-            expect(d.getElementById(otherIcons[cn]).src).
+            expect(E(otherIcons[cn]).src).
               to(match, /blank_error_icon\.png/);
         }
       });
@@ -104,15 +102,13 @@ Screw.Unit(function(){
       ];
 
       it( "Checks the Name field's first character for bad values", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-
         // set values for controls we're not testing
         doPresets(nameTestPresets);
 
-        var name =     d.getElementById('node_name');
-        var nameSpan = d.getElementById('name_start_char');
-        var nameIcon = d.getElementById('name_error_icon');
-        var nodesNewSubmit = d.getElementById('node_submit');
+        var name =     E('node_name');
+        var nameSpan = E('name_start_char');
+        var nameIcon = E('name_error_icon');
+        var nodesNewSubmit = E('node_submit');
         for (var c=0x20; c < 0x7f; c++){
 
           name.focus();
@@ -135,13 +131,12 @@ Screw.Unit(function(){
 
       it( "Checks the Name field's second/subsequent characters for bad values",
             function(){
-        var d = document.getElementById('test_frame').contentDocument;
         doPresets(nameTestPresets);
 
-        var name =     d.getElementById('node_name');
-        var nameSpan = d.getElementById('name_nth_char');
-        var nameIcon = d.getElementById('name_error_icon');
-        var nodesNewSubmit = d.getElementById('node_submit');
+        var name =     E('node_name');
+        var nameSpan = E('name_nth_char');
+        var nameIcon = E('name_error_icon');
+        var nodesNewSubmit = E('node_submit');
         for (var c=0x20; c < 0x7f; c++){
 
           name.focus();

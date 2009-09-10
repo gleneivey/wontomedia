@@ -20,27 +20,27 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
+  before(function() { IFrame("http://localhost:3001/nodes/new"); });
+
   var titleIds = [ 'category_title', 'item_title', 'property_title' ];
   var descIds  = [ 'category_desc', 'item_desc', 'property_desc' ];
 
   describe( "Dynamic input checks in nodes/new page", function(){
     describe( "Visual feedback for Type selection", function(){
       it( "'Fresh' page has no descriptive text highlighted", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-        var sel = d.getElementById('node_sti_type');
+        var sel = E('node_sti_type');
 
         // at the beginning, no items highlighted
         for (var c=0; c < titleIds.length; c++){
-          expect(d.getElementById(titleIds[c]).className).
+          expect(E(titleIds[c]).className).
             to_not(match, /titleSelectedItemDescription/);
-          expect(d.getElementById(descIds[c]).className).
+          expect(E(descIds[c]).className).
             to_not(match, /bodySelectedItemDescription/);
         }
       });
 
       it( "Node-type selection highlights matching text", function(){
-        var d = document.getElementById('test_frame').contentDocument;
-        var sel = d.getElementById('node_sti_type');
+        var sel = E('node_sti_type');
 
         var nodeTypeValue = [ 'ClassNode', 'ItemNode', 'PropertyNode' ];
         var testSequence = [ 0, 1, 2, 0, 1, 2, 1, 0, 2 ];
@@ -54,18 +54,18 @@ Screw.Unit(function(){
           sel.blur();                // needed to trigger SELECT.onchange
 
           // ...and the text for that node type gets highlighted,
-          expect(d.getElementById(titleIds[seq]).className).
+          expect(E(titleIds[seq]).className).
             to(match, /titleSelectedItemDescription/);
-          expect(d.getElementById(descIds[seq]).className).
+          expect(E(descIds[seq]).className).
             to(match, /bodySelectedItemDescription/);
 
           // and the other descriptive text is un-highlighted
           for (var cn=0; cn < titleIds.length; cn++){
 
             if (seq != cn){
-              expect(d.getElementById(titleIds[cn]).className).
+              expect(E(titleIds[cn]).className).
                 to_not(match, /titleSelectedItemDescription/);
-              expect(d.getElementById(descIds[cn]).className).
+              expect(E(descIds[cn]).className).
                 to_not(match, /bodySelectedItemDescription/);
             }
           }

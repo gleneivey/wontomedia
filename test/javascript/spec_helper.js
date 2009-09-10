@@ -23,3 +23,15 @@ require("../../public/javascripts/prototype.js", {onload: function(){
     require("../../public/javascripts/application.js");
 }});
 
+
+// common helpers for integration tests that load page-under-test into the
+// iframe element in "fixture.html"
+function IFrame(targetPageUrl){
+  document.getElementById('test_frame').src = targetPageUrl;
+}
+function D(){
+  return document.getElementById('test_frame').contentDocument;
+}
+function E(elementId){
+  return D().getElementById(elementId);
+}
