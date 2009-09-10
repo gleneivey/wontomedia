@@ -79,7 +79,8 @@ module BlueRidge
       end
       needSpecParam = true
     end
-    nil
+
+    return "fixture.html", true
   end
 
   def self.write_html_page_with_index(html_index, specs)
@@ -98,16 +99,15 @@ module BlueRidge
 
     specs.each do |spec|
       fixture, needSpecParam = find_fixture_for_spec(spec)
-      unless fixture.nil?
-        url = ENV['BLUERIDGE_PREFIX']
-        if url.nil? then url = Dir.pwd end
-        url += "/" + fixture
-        spec.sub!(/_spec\.js$/, "")
-        if needSpecParam
-          url += "?" + spec
-        end
-        html_index.puts "    <a href='#{url}'>#{spec}</a><br/>"
+
+      url = ENV['BLUERIDGE_PREFIX']
+      if url.nil? then url = Dir.pwd end
+      url += "/" + fixture
+      spec.sub!(/_spec\.js$/, "")
+      if needSpecParam
+        url += "?" + spec
       end
+      html_index.puts "    <a href='#{url}'>#{spec}</a><br/>"
     end
 
     html_index.puts "  </body>"
