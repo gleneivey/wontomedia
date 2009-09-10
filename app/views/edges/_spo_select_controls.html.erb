@@ -18,39 +18,79 @@
 %>
 
 
-<p>
-  <%= f.label :subject_id %>
-  <%= select_tag "edge[subject_id]",
-        options_for_select(
-          [[ "- this object -", "" ]] +
-            nodes.map do |n|
-              [ h("#{n.name} : #{n.title}"), n.id ]
-            end,
-          edge.subject.nil? ? "" : edge.subject.id
-        )
-   %>
-</p>
-<p>
-  <%= f.label :predicate_id,"Relates to" %>
-  <%= select_tag "edge[predicate_id]",
-        options_for_select(
-          [[ "- has this relationship -", "" ]] +
-            verbs.map do |n|
-              [ h("#{n.name} : #{n.title}"), n.id ]
-            end,
-          edge.predicate.nil? ? "" : edge.predicate.id
-        )
-   %>
-</p>
-<p>
-  <%= f.label :obj_id %>
-  <%= select_tag "edge[obj_id]",
-        options_for_select(
-          [[ "- to this object -", "" ]] +
-            nodes.map do |n|
-              [ h("#{n.name} : #{n.title}"), n.id ]
-            end,
-          edge.obj.nil? ? "" : edge.obj.id
-        )
-   %>
-</p>
+<script type="text/javascript">
+  function sizeDescDiv(name){
+    var h = document.viewport.getHeight() / 6;
+    $(name + "_desc").style.height = h + "px";
+    var w = $("edge_" + name + "_id").getWidth();
+    $(name + "_desc").style.width  = w + "px";
+  }
+</script>
+<style>
+  div.desc {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+  }
+</style>
+
+
+<table>
+  <tr><td style="text-align: right">
+    <%= f.label :subject_id %>
+  </td><td>
+    <%= select_tag "edge[subject_id]",
+	  options_for_select(
+	    [[ "- this object -", "" ]] +
+	      nodes.map do |n|
+		[ h("#{n.name} : #{n.title}"), n.id ]
+	      end,
+	    edge.subject.nil? ? "" : edge.subject.id
+	  )
+     %>
+
+    <div id="subject_desc" class="desc">
+      <%= image_tag "blank_status_icon.png", :id=>"subject_status_icon",
+		    :alt=>"", :size=>"32x16" %>
+    </div>
+    <script type="text/javascript">sizeDescDiv('subject');</script>
+  </td></tr>
+  <tr><td style="text-align: right">
+    <%= f.label :predicate_id,"Relates to" %>
+  </td><td>
+    <%= select_tag "edge[predicate_id]",
+	  options_for_select(
+	    [[ "- has this relationship -", "" ]] +
+	      verbs.map do |n|
+		[ h("#{n.name} : #{n.title}"), n.id ]
+	      end,
+	    edge.predicate.nil? ? "" : edge.predicate.id
+	  )
+     %>
+
+    <div id="predicate_desc" class="desc">
+      <%= image_tag "blank_status_icon.png", :id=>"predicate_status_icon",
+		    :alt=>"", :size=>"32x16" %>
+    </div>
+    <script type="text/javascript">sizeDescDiv('predicate');</script>
+  </td></tr>
+  <tr><td style="text-align: right">
+    <%= f.label :obj_id %>
+  </td><td>
+    <%= select_tag "edge[obj_id]",
+	  options_for_select(
+	    [[ "- to this object -", "" ]] +
+	      nodes.map do |n|
+		[ h("#{n.name} : #{n.title}"), n.id ]
+	      end,
+	    edge.obj.nil? ? "" : edge.obj.id
+	  )
+     %>
+
+    <div id="obj_desc" class="desc">
+      <%= image_tag "blank_status_icon.png", :id=>"obj_status_icon",
+		    :alt=>"", :size=>"32x16" %>
+    </div>
+    <script type="text/javascript">sizeDescDiv('obj');</script>
+  </td></tr>
+</table>
