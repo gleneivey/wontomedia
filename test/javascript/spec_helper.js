@@ -20,9 +20,19 @@
 
 jQuery.noConflict();
 require("../../public/javascripts/prototype.js", {onload: function(){
-    require("../../public/javascripts/application.js");
+  require("../../public/javascripts/application.js");
 }});
 
+
+// because we need to manipulate focus to trigger an onchange event:
+function changeNamedFieldToValue(fieldName, newValue){
+  changeFieldToValue(E(fieldName), newValue);
+}
+function changeFieldToValue(fieldElem, newValue){
+  fieldElem.focus();
+  fieldElem.value = newValue;
+  fieldElem.blur();
+}
 
 // common helpers for integration tests that load page-under-test into the
 // iframe element in "fixture.html"

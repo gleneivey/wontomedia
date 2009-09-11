@@ -30,13 +30,6 @@ Screw.Unit(function(){
   describe( "Dynamic input checks in nodes/new page", function(){
     describe( "Pre-submit check for  uniqueness of Name value", function(){
 
-      function setName(newNameValue){
-        var name = E('node_name');
-        name.focus();
-        name.value = newNameValue;
-        name.blur();
-      }
-
       function checkBeforeWorking(){
         // wait until just before the check should start, verify no activity
         java.lang.Thread.currentThread().sleep(ajaxStartsAfter - timeMargin);
@@ -71,7 +64,7 @@ Screw.Unit(function(){
       }
 
       function setNameAndCheckProgress(newNameValue, expectAjax){
-        setName(newNameValue);
+        changeNamedFieldToValue('node_name', newNameValue);
         checkBeforeWorking();
         if (!expectAjax) return;
         checkWorkingStart();
@@ -95,15 +88,11 @@ Screw.Unit(function(){
       });
 
       it("doesn't check when Name changed to blank", function(){
-        var name = E('node_name');
-
         setNameAndCheckProgress("one_of", true);
         expect(E('name_status_icon').src).to(match, /error_status_icon\.png/);
 
         // setup done, now try clearing....
-        name.focus();
-        name.value = "";
-        name.blur();
+        changeNamedFieldToValue('node_name', "");
 
         // should happen on any change, including =""
         expect(E('name_status_icon').src).to(match, /blank_status_icon\.png/);
@@ -133,10 +122,7 @@ Screw.Unit(function(){
 
       it( "performs check after node.Title set, node_title.blur()", function(){
         E('node_sti_type').value = "ItemNode";
-        var title = E('node_title');
-        title.focus();
-        title.value = "another new node";
-        title.blur();
+        changeNamedFieldToValue('node_title', "another new node");
         E('node_description').focus();
 
         checkBeforeWorking();

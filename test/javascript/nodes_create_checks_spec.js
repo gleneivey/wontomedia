@@ -40,8 +40,6 @@ Screw.Unit(function(){
       });
 
       it( "Node-type selection highlights matching text", function(){
-        var sel = E('node_sti_type');
-
         var nodeTypeValue = [ 'ClassNode', 'ItemNode', 'PropertyNode' ];
         var testSequence = [ 0, 1, 2, 0, 1, 2, 1, 0, 2 ];
 
@@ -49,10 +47,7 @@ Screw.Unit(function(){
           var seq = testSequence[c];
 
           // select a node type...
-          sel.focus();
-          sel.value = nodeTypeValue[seq];
-          sel.blur();                // needed to trigger SELECT.onchange
-
+          changeNamedFieldToValue('node_sti_type', nodeTypeValue[seq]);
           // ...and the text for that node type gets highlighted,
           expect(E(titleIds[seq]).className).
             to(match, /titleSelectedItemDescription/);

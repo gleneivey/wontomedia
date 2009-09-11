@@ -51,11 +51,8 @@ Screw.Unit(function(){
             var err = (c & mask) == 0;
             var len = maxLength[cn];
             if (err) len++;
-
-            elem = E(inputIds[cn]);
-            elem.focus();
-            elem.value = aReallyLongString.substring(0, len);
-            elem.blur();
+            changeNamedFieldToValue(inputIds[cn],
+				    aReallyLongString.substring(0, len));
           }
 
           // verify that unrelated error flags aren't set
@@ -98,20 +95,15 @@ Screw.Unit(function(){
         // initialize all the non-Description elements to non-error content
         E('node_sti_type').value = "ItemNode";
         E('node_title').value = "A node for an individual thing";
-        var name = E('node_name');
-        name.focus();
-        name.value = "indivThing";
-        name.blur();
+        changeNamedFieldToValue('node_name', "indivThing");
 
         // at this point, the "Create" button should be active
         expect(submit.className).to(match, /^activeButton$/);
 
         // make Description too long
         var descIndex = 2;
-        var desc = E('node_description');
-        desc.focus();
-        desc.value = aReallyLongString.substring(0, maxLength[descIndex]+1);
-        desc.blur();
+        changeNamedFieldToValue('node_description',
+          aReallyLongString.substring(0, maxLength[descIndex]+1));
         expect(E(flagTextIds[descIndex]).className).
           to(match, /helpTextFlagged/);
         expect(E(flagIconIds[descIndex]).src).to(match,
@@ -119,9 +111,7 @@ Screw.Unit(function(){
         expect(submit.className).to(match, /^inactiveButton$/);
 
         // now empty Description, ought to change it to "warning"
-        desc.focus();
-        desc.value = "";
-        desc.blur();
+        changeNamedFieldToValue('node_description', "");
         expect(E(flagTextIds[descIndex]).className).
           to_not(match, /helpTextFlagged/);
         expect(E('description_recommended').className).

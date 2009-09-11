@@ -86,10 +86,7 @@ Screw.Unit(function(){
                cn != innerLoopEnd[c];
                cn += innerLoopDelta[c]){
 
-            var elem = E(inputIds[cn]);
-            elem.focus();
-            elem.value = letters[cn];
-            elem.blur();
+            changeNamedFieldToValue(inputIds[cn], letters[cn]);
 
             // *very* special case
             if ( c == 1  &&         // We're filling fields back in, and
@@ -128,15 +125,10 @@ Screw.Unit(function(){
         var submit = E(submitId);
 
         // first, fill in the form
-        E(inputIds[0]).value = "ClassNode";       // Type
-        E(inputIds[1]).value = "A title";         // Title
-        E(inputIds[2]).value = "ANode";           // Name
-
-        var x = E(inputIds[3]);
-        x.focus();
-        x.value = "Cool test node";               // Description
-        x.blur();
-
+        E(inputIds[0]).value = "ClassNode";                     // Type
+        E(inputIds[1]).value = "A title";                       // Title
+        E(inputIds[2]).value = "ANode";                         // Name
+        changeNamedFieldToValue(inputIds[3], "Cool test node"); // Description
 
         // form should be submit-able
         expect(submit.className).to(match, /^activeButton$/);
@@ -147,10 +139,7 @@ Screw.Unit(function(){
           expect(E(flagIconIds[c]).src).to(match, /blank_error_icon\.png/);
 
           // make input blank
-          var elem = E(inputIds[c]);
-          elem.focus();
-          elem.value = "";
-          elem.blur();
+          changeNamedFieldToValue(inputIds[c], "");
 
           // check flags, whether form still submit-able
           expect(E(flagTextIds[c]).className).to(match, /helpTextFlagged/);

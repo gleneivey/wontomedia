@@ -25,10 +25,7 @@ Screw.Unit(function(){
   function doPresets(presets){
     // make sure we trigger onchange handlers, so other error checks done
     for (var c=0; c < presets.length; c++){
-      var elem = E(presets[c].elem);
-      elem.focus();
-      elem.value = presets[c].value;
-      elem.blur();
+      changeNamedFieldToValue(presets[c].elem, presets[c].value);
     }
   }
 
@@ -67,11 +64,8 @@ Screw.Unit(function(){
         var otherIcons = [ "sti_type_error_icon", "name_error_icon",
                            "description_error_icon" ];
 
-        var title = E('node_title');
         for (var c=0; c < testData.length; c++){
-          title.focus();
-          title.value = testData[c].title;
-          title.blur();
+          changeNamedFieldToValue('node_title', testData[c].title);
 
           if (testData[c].good){
             expect(titleSpan.className).to_not(match, /helpTextFlagged/);
@@ -105,15 +99,12 @@ Screw.Unit(function(){
         // set values for controls we're not testing
         doPresets(nameTestPresets);
 
-        var name =     E('node_name');
         var nameSpan = E('name_start_char');
         var nameIcon = E('name_error_icon');
         var nodesNewSubmit = E('node_submit');
         for (var c=0x20; c < 0x7f; c++){
-
-          name.focus();
-          name.value = String.fromCharCode(c) + "NodeName";
-          name.blur();
+          changeNamedFieldToValue('node_name',
+                                  String.fromCharCode(c) + "NodeName");
 
           if ((c >= 0x41 && c <= 0x5a) ||
               (c >= 0x61 && c <= 0x7a)    ){     // valid character
@@ -133,15 +124,12 @@ Screw.Unit(function(){
             function(){
         doPresets(nameTestPresets);
 
-        var name =     E('node_name');
         var nameSpan = E('name_nth_char');
         var nameIcon = E('name_error_icon');
         var nodesNewSubmit = E('node_submit');
         for (var c=0x20; c < 0x7f; c++){
-
-          name.focus();
-          name.value = "Node_" + String.fromCharCode(c) + "-Name4U";
-          name.blur();
+          changeNamedFieldToValue('node_name',
+            "Node_" + String.fromCharCode(c) + "-Name4U");
 
           if ((c >= 0x41 && c <= 0x5a) ||
               (c >= 0x30 && c <= 0x39) ||

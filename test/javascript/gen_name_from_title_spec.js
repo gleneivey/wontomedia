@@ -163,11 +163,8 @@ Screw.Unit(function(){
       var titleElem = document.getElementById('title');
       var nameElem  = document.getElementById('name');
       testType = "PropertyNode";
-
-      titleElem.focus();
-      titleElem.value = "1 Title string--turns into short'r name string.";
-      titleElem.blur();
-
+      changeFieldToValue(titleElem,
+                         "1 Title string--turns into short'r name string.");
       expect(nameElem.value).to(equal, "titleStringTurnsIntoShortrNameString");
     });
 
@@ -187,9 +184,7 @@ Screw.Unit(function(){
         iS = inStr.substr(0, inCt);
         oS = outStr.substr(0, outCt);
 
-        titleElem.focus();
-        titleElem.value = iS;
-        titleElem.blur();
+        changeFieldToValue(titleElem, iS);
         expect(nameElem.value).to(equal, oS);
 
         if (inStr.substr(inCt,1) != " ")
@@ -216,21 +211,13 @@ Screw.Unit(function(){
         iS = inStr.substr(0, inCt);
         oS = outStr.substr(0, outCt);
 
-        if (outCt == stopGenAt){
-          nameElem.focus();
-          nameElem.value = "fred";
-          nameElem.blur();
-        }
+        if (outCt == stopGenAt)
+          changeFieldToValue(nameElem, "fred");
         if (outCt == restartGenAt && !restarted){
           restarted = true;
-          nameElem.focus();
-          nameElem.value = "";
-          nameElem.blur();
+          changeFieldToValue(nameElem, "");
         }
-
-        titleElem.focus();
-        titleElem.value = iS;
-        titleElem.blur();
+        changeFieldToValue(titleElem, iS);
 
         if (outCt >= stopGenAt && outCt < restartGenAt)
           expect(nameElem.value).to(equal, "fred");
