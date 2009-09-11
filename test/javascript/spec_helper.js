@@ -51,3 +51,8 @@ function sleep(periodInMilliseconds){
   java.lang.Thread.currentThread().sleep(periodInMilliseconds);
 }
 
+ajaxStartsAfter = 400;  // milliseconds
+timeMargin      =  50;
+pollingInterval =  50;
+maxPollAttempts =  30;  // iterations
+

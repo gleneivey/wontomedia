@@ -22,11 +22,6 @@ require("spec_helper.js");
 Screw.Unit(function(){
   before(function() { IFrame("http://localhost:3001/nodes/new"); });
 
-  ajaxStartsAfter = 400;  // milliseconds
-  timeMargin      =  50;
-  pollingInterval =  10;
-  maxPollAttempts =  30;  // iterations
-
   describe( "Dynamic input checks in nodes/new page", function(){
     describe( "Pre-submit check for  uniqueness of Name value", function(){
 
@@ -53,13 +48,10 @@ Screw.Unit(function(){
       }
 
       function waitForAjax(){
-        icon = E('name_status_icon');
-
-        // now wait for Ajax operation to complete
-        for (var c=0;
-             c < maxPollAttempts && icon.src.indexOf("working") != -1;
-             c++)
-          sleep(50);
+        var c;
+        for (c=0; c < maxPollAttempts &&
+                  E('name_status_icon').src.indexOf("working") != -1; c++)
+          sleep(pollingInterval);
         expect(c).to(be_lt, maxPollAttempts);
       }
 
