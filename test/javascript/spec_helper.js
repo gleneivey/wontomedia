@@ -45,3 +45,9 @@ function D(){
 function E(elementId){
   return D().getElementById(elementId);
 }
+
+// other common operations
+function sleep(periodInMilliseconds){
+  java.lang.Thread.currentThread().sleep(periodInMilliseconds);
+}
+

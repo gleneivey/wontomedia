@@ -32,7 +32,7 @@ Screw.Unit(function(){
 
       function checkBeforeWorking(){
         // wait until just before the check should start, verify no activity
-        java.lang.Thread.currentThread().sleep(ajaxStartsAfter - timeMargin);
+        sleep(ajaxStartsAfter - timeMargin);
         expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
         expect(E('name_is_unique').className).
@@ -43,7 +43,7 @@ Screw.Unit(function(){
 
       function checkWorkingStart(){
         // wait until after check should start, verify in-progress state
-        java.lang.Thread.currentThread().sleep(timeMargin * 3);
+        sleep(timeMargin * 3);
         expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
         expect(E('name_is_unique').className).
@@ -59,7 +59,7 @@ Screw.Unit(function(){
         for (var c=0;
              c < maxPollAttempts && icon.src.indexOf("working") != -1;
              c++)
-          java.lang.Thread.currentThread().sleep(50);
+          sleep(50);
         expect(c).to(be_lt, maxPollAttempts);
       }
 
@@ -98,7 +98,7 @@ Screw.Unit(function(){
         expect(E('name_status_icon').src).to(match, /blank_status_icon\.png/);
 
         // now wait long enough to be sure we didn't trigger anything...
-        java.lang.Thread.currentThread().sleep(ajaxStartsAfter + 2*timeMargin);
+        sleep(ajaxStartsAfter + 2*timeMargin);
         expect(E('name_must_be_unique').className).
           to_not(match, /helpTextFlagged/);
         expect(E('name_is_unique').className).
@@ -110,7 +110,7 @@ Screw.Unit(function(){
         setNameAndCheckProgress("0: bad Name!", false);
 
         // wait until after check would have started,
-        java.lang.Thread.currentThread().sleep(timeMargin * 3);
+        sleep(timeMargin * 3);
 
         // verify not in progress
         expect(E('name_must_be_unique').className).
