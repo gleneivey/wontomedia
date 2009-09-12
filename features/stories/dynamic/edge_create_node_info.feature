@@ -10,7 +10,6 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 # description from the server (Ajax) and display it
 
 
-  @unfinished
   Scenario: New edges page interactively displays selected node descriptions
     Given there are 3 existing classes like "aClass"
     And there are 3 existing properties like "aProperty"

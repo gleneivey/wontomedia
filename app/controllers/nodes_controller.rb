@@ -85,6 +85,14 @@ class NodesController < ApplicationController
     end
 
     if request.format.json?
+      # huge kludge for testability.  Need to ensure that we don't respond
+      # so quickly (e.g., in setups where client and server are on the same
+      # system) that the JavaScript and acceptance tests can't see the
+      # "request in progress" state of the page/system.
+      if (RAILS_ENV == 'test')
+        Kernel.sleep(0.75)
+      end
+
       render :json => @node
       return
     end
