@@ -52,7 +52,7 @@ Screw.Unit(function(){
             var len = maxLength[cn];
             if (err) len++;
             changeNamedFieldToValue(inputIds[cn],
-				    aReallyLongString.substring(0, len));
+                                    aReallyLongString.substring(0, len));
           }
 
           // verify that unrelated error flags aren't set
@@ -80,7 +80,7 @@ Screw.Unit(function(){
             }
           }
 
-	  var submit = E(submitId);
+          var submit = E(submitId);
           if (c == 7)
             expect(submit.className).to(match, /^activeButton$/);
           else
