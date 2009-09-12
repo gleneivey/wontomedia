@@ -48,12 +48,15 @@ ENDOSTRING
     s.extra_rdoc_files = ["README"]
 
     s.files =  FileList["[A-Z]*",
-      "{app,config,bin,db,generators,lib,public,script,vendor}/**/*"].
+      "{app,config,bin,db,generators,lib,public,script}/**/*"].
         exclude("database.yml")
-    # Note:
-    #       .autotest cucumber.yml .gitignore
-    # and the testing directories
-    #       deploy features policy
+    # Note: 1) Include any non-testing packages under 'vendor' explicitly
+    # 2)
+    #     .autotest cucumber.yml .gitignore
+    # the testing directories
+    #     deploy features policy test
+    # and the working/transitory directories
+    #     log pkg tmp
     # aren't included because developers are expected to pull from Git
 
     s.add_dependency 'rails', '~>2.2'

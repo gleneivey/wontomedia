@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen Ivey"]
-  s.date = %q{2009-09-08}
+  s.date = %q{2009-09-12}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.files = [
@@ -96,6 +96,7 @@ Gem::Specification.new do |s|
      "public/javascripts/controls.js",
      "public/javascripts/dragdrop.js",
      "public/javascripts/effects.js",
+     "public/javascripts/forEdgesForms.js",
      "public/javascripts/forNodesForms.js",
      "public/javascripts/modalbox.js",
      "public/javascripts/nodeTitleToName.js",
@@ -120,41 +121,7 @@ Gem::Specification.new do |s|
      "script/process/reaper",
      "script/process/spawner",
      "script/runner",
-     "script/server",
-     "vendor/plugins/blue-ridge/CONTRIBUTORS",
-     "vendor/plugins/blue-ridge/LICENSE",
-     "vendor/plugins/blue-ridge/LICENSE-Screw.Unit",
-     "vendor/plugins/blue-ridge/LICENSE-Smoke",
-     "vendor/plugins/blue-ridge/README.markdown",
-     "vendor/plugins/blue-ridge/Rakefile",
-     "vendor/plugins/blue-ridge/TODO.taskpaper",
-     "vendor/plugins/blue-ridge/generators/blue_ridge/blue_ridge_generator.rb",
-     "vendor/plugins/blue-ridge/generators/blue_ridge/templates/application.html",
-     "vendor/plugins/blue-ridge/generators/blue_ridge/templates/application_spec.js",
-     "vendor/plugins/blue-ridge/generators/blue_ridge/templates/screw.css",
-     "vendor/plugins/blue-ridge/generators/blue_ridge/templates/spec_helper.js",
-     "vendor/plugins/blue-ridge/generators/javascript_spec/javascript_spec_generator.rb",
-     "vendor/plugins/blue-ridge/generators/javascript_spec/templates/fixture.html.erb",
-     "vendor/plugins/blue-ridge/generators/javascript_spec/templates/javascript_spec.js.erb",
-     "vendor/plugins/blue-ridge/lib/blue-ridge.js",
-     "vendor/plugins/blue-ridge/lib/blue_ridge.rb",
-     "vendor/plugins/blue-ridge/lib/consoleReportForRake.js",
-     "vendor/plugins/blue-ridge/lib/env-js.jar",
-     "vendor/plugins/blue-ridge/lib/env.rhino.js",
-     "vendor/plugins/blue-ridge/lib/jquery-1.2.6.js",
-     "vendor/plugins/blue-ridge/lib/jquery-1.3.2.js",
-     "vendor/plugins/blue-ridge/lib/jquery.fn.js",
-     "vendor/plugins/blue-ridge/lib/jquery.print.js",
-     "vendor/plugins/blue-ridge/lib/screw.behaviors.js",
-     "vendor/plugins/blue-ridge/lib/screw.builder.js",
-     "vendor/plugins/blue-ridge/lib/screw.events.js",
-     "vendor/plugins/blue-ridge/lib/screw.matchers.js",
-     "vendor/plugins/blue-ridge/lib/screw.mocking.js",
-     "vendor/plugins/blue-ridge/lib/shell.js",
-     "vendor/plugins/blue-ridge/lib/smoke.core.js",
-     "vendor/plugins/blue-ridge/lib/smoke.mock.js",
-     "vendor/plugins/blue-ridge/lib/smoke.stub.js",
-     "vendor/plugins/blue-ridge/lib/test_runner.js"
+     "script/server"
   ]
   s.has_rdoc = true
   s.homepage = %q{http://wontomedia.rubyforge.org}
