@@ -67,7 +67,8 @@ begin   # don't force Blue Ridge dependency on non-developers
   # Support Test::Unit & Test/Spec style
   namespace :test do
     desc "Runs all the JavaScript tests and outputs the results."
-    task :javascripts => :environment do
+    task :javascripts => [ :environment, "db:test_fixtures" ] do
+
       Dir.chdir("#{RAILS_ROOT}/test/javascript") do
         all_fine = true
 
@@ -94,7 +95,7 @@ begin   # don't force Blue Ridge dependency on non-developers
 
 
   namespace :js do
-    task :fixtures => :environment do
+    task :fixtures => [ :environment, "db:test_fixtures" ] do
       begin
         load_wontomedia_app_seed_data
         setup_for_js_testing
