@@ -27,18 +27,18 @@ def load_wontomedia_app_seed_data
       ActiveRecord::Base.configurations['test'])
   end
   Dir.glob(
-    File.join( File.dirname(__FILE__), "..", "db", "fixtures",
-               "**", "*.yml" )).each do |path|
-      path =~ %r%([^/_]+)\.yml$%
-      table = $1
-      path.sub!(/\.yml$/, "")
+           File.join( File.dirname(__FILE__), "..", "db", "fixtures",
+                      "**", "*.yml" )).each do |path|
+    path =~ %r%([^/_]+)\.yml$%
+    table = $1
+    path.sub!(/\.yml$/, "")
 
-      begin
-        f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
-        f.insert_fixtures
-      rescue ActiveRecord::StatementInvalid
-        # must have already loaded this data
-      end
+    begin
+      f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
+      f.insert_fixtures
+    rescue ActiveRecord::StatementInvalid
+      # must have already loaded this data
     end
+  end
 end
 
