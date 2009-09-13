@@ -16,28 +16,50 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'active_record'
+require 'active_record/fixtures'
+
+
 namespace :db do
   desc "Load YAML seed data from db/fixtures"
   task :seed => :environment do
-    require 'active_record'
-    require 'active_record/fixtures'
-
-    unless ActiveRecord::Base.connected?
-      ActiveRecord::Base.establish_connection(
-        ActiveRecord::Base.configurations[RAILS_ENV] )
-    end
-
-    pattern = File.join( RAILS_ROOT, 'db', 'fixtures', '**', '*.yml' )
-    Dir.glob(pattern).each do |path|
-      path =~ %r%([^/_]+)\.yml$%
-      table = $1
-      path.sub!(/\.yml$/, "")
-
-      f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
-      f.insert_fixtures
-    end
+    load_all_YAML_globbed_from(
+      File.join( RAILS_ROOT, 'db', 'fixtures', '**', '*.yml' ))
   end
 
   desc "This drops the db, builds the db, and seeds the data."
   task :reseed => [:environment, 'db:reset', 'db:seed']
+
+  desc "Load YAML developtment test data from test/fixtures"
+  task :test_fixtures => :environment do
+    load_all_YAML_globbed_from(
+      File.join( RAILS_ROOT, 'test', 'fixtures', '**', '*.yml' ))
+  end
+end
+
+def load_all_YAML_globbed_from(pattern)
+  ensure_ActiveRecord_available
+  Dir.glob(pattern).each do |path|
+    load_YAML_from path
+  end
+end
+
+def ensure_ActiveRecord_available
+  unless ActiveRecord::Base.connected?
+    ActiveRecord::Base.establish_connection(
+      ActiveRecord::Base.configurations[RAILS_ENV] )
+  end
+end
+
+def load_YAML_from(path)
+  path =~ %r%([^/_]+)\.yml$%
+  table = $1
+  path.sub!(/\.yml$/, "")
+
+  begin
+    f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
+    f.insert_fixtures
+  rescue ActiveRecord::StatementInvalid
+    # must have already loaded this data
+  end
 end
