@@ -80,50 +80,83 @@ Screw.Unit(function(){
 
 
       function getNodeIdByName(nodeName){
-        return nodeNamesToIdsHash[nodeName];
+        var nodeId = nodeNamesToIdsHash[nodeName];
+        expect(nodeId).to_not(be_undefined);
+        expect(nodeId).to_not(be_null);
+        return nodeId;
       }
 
       it( "fetches node description when Subject selected", function(){
-        var nodeId = getNodeIdByName("bNode");
-        changeNamedFieldToValue('edge_subject_id', nodeId);
-        sleep(timeMargin);
-        expectDivToContainImgMatching('subject_desc',
-                                      /working_status_icon\.png/);
-        expect(E('subject_desc').className).to(equal, "desc");
-
+        expectAjaxStart("subject", "bNode");
         waitForAjax('subject_status_icon');
-        expect(E('subject_desc').innerHTML).to(match,
+        expectDescriptionText("subject",
           /This category could contain anything/);
-        expect(E('subject_desc').className).to(equal, "");
       });
 
-      it( "fetches node description when Predicate selected", function(){
-        var nodeId = getNodeIdByName("parent_of");
-        changeNamedFieldToValue('edge_predicate_id', nodeId);
+      function expectAjaxStart(divName, nodeName){
+        var nodeId = getNodeIdByName(nodeName);
+        changeNamedFieldToValue('edge_' + divName + '_id', nodeId);
         sleep(timeMargin);
-        expectDivToContainImgMatching('predicate_desc',
+        expectDivToContainImgMatching(divName + '_desc',
                                       /working_status_icon\.png/);
-        expect(E('predicate_desc').className).to(equal, "desc");
+        expect(E(divName + '_desc').className).to(equal, "desc");
+      }
 
+      function expectDescriptionText(divName, descRE){
+        expect(E(divName + '_desc').innerHTML).to(match, descRE);
+        expect(E(divName + '_desc').className).to(equal, "");
+      }
+
+      it( "fetches node description when Predicate selected", function(){
+        expectAjaxStart("predicate", "parent_of");
         waitForAjax('predicate_status_icon');
-        var matchText = "the subject .left-hand side. of the relationship " +
-          ".+Of spacecraft.+ is a super-set";
-        expect(E('predicate_desc').innerHTML).to(match, new RegExp(matchText));
-        expect(E('predicate_desc').className).to(equal, "");
+        expectDescriptionText("predicate", new RegExp(
+          "the subject .left-hand side. of the relationship " +
+          ".+Of spacecraft.+ is a super-set"));
       });
 
       it( "fetches node description when Object selected", function(){
-        var nodeId = getNodeIdByName("aNode");
-        changeNamedFieldToValue('edge_obj_id', nodeId);
-        sleep(timeMargin);
-        expectDivToContainImgMatching('obj_desc',
-                                      /working_status_icon\.png/);
-        expect(E('obj_desc').className).to(equal, "desc");
-
+        expectAjaxStart("obj", "aNode");
         waitForAjax('obj_status_icon');
-        expect(E('obj_desc').innerHTML).to(match,
-          /This node could be anything/);
-        expect(E('obj_desc').className).to(equal, "");
+        expectDescriptionText("obj", /This node could be anything/);
+      });
+
+      it( "clears node description when missing-description node selected",
+          function(){
+        expectAjaxStart("subject", "testSubcategory");
+        waitForAjax('subject_status_icon');
+        expectDescriptionBlank("subject");
+      });
+
+      function expectDescriptionBlank(divName){
+        expect(E(divName + '_desc').innerText).to(equal, "");
+        expect(E(divName + '_desc').className).to(equal, "");
+      }
+
+      it( "updates node description for multiple changes", function(){
+        expectAjaxStart("predicate", "child_of");
+        waitForAjax('predicate_status_icon');
+        expectDescriptionText("predicate", new RegExp(
+          "This is the fundamental type of hierarchical relationship.+" +
+          "A is a Child.Of B"));
+
+        expectAjaxStart("predicate", "A");
+        waitForAjax('predicate_status_icon');
+        expectDescriptionText("predicate", /A description for A/);
+      });
+
+      it( "clears node description on change-to-unselected", function(){
+        expectAjaxStart("obj", "contains");
+        waitForAjax('obj_status_icon');
+        expectDescriptionText("obj", /&quot;A Contains B&quot;/);
+
+        changeNamedFieldToValue('edge_obj_id', "");
+	expectDivToContainImgMatching('obj_desc', /blank_status_icon\.png/);
+	expect(E('obj_desc').className).to(equal, "desc");
+
+        expectAjaxStart("obj", "isAssigned");
+        waitForAjax('obj_status_icon');
+        expectDescriptionBlank("obj");
       });
     });
   });

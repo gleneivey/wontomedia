@@ -86,6 +86,7 @@ A:
   title: A
   sti_type: PropertyNode
   flags: 0
+  description: A description for A
 
 B:
   name: B
