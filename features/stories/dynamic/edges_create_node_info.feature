@@ -1,8 +1,9 @@
-Feature:  Verify inputs for creation of new node dynamically within the page
-  (set focus on Type onload; highlight descriptive text matching Type selection)
+Feature:  Verify inputs for creation of new edge dynamically within the page
+  (query server for Description of nodes chose in page's Select controls)
   In order to create a wontology,
   as a contributor, I want
-  to be told about bad inputs before I submit a page.
+  to be given context relating to my selections, so
+    I feel more confidence in my actions and make fewer mistakes
 
 # The edges/new form has three drop-down controls, one for each of the
 # new edge's Subject, Predicate, and Object.  Each time the selection in
