@@ -38,7 +38,7 @@
 <p class="directions">
   You must select a node for each of the
   <span id="subject_required">subject</span>,
-  <span id="predicate_required">predicate</span>, and
+  <span id="predicate_required">relationship</span>, and
   <span id="obj_required">object</span>.
 </p>
 
@@ -55,6 +55,11 @@
             edge.subject.nil? ? "" : edge.subject.id
           )
      %>
+    <script type="text/javascript">
+      $('edge_subject_id').focus();
+    </script>
+    <%= image_tag "blank_error_icon.png", :id=>"subject_error_icon", :alt=>"",
+		  :size=>"16x16" %>
 
     <div id="subject_desc" class="desc">
       <%= image_tag "blank_status_icon.png", :id=>"subject_status_icon",
@@ -74,6 +79,8 @@
             edge.predicate.nil? ? "" : edge.predicate.id
           )
      %>
+    <%= image_tag "blank_error_icon.png", :id=>"predicate_error_icon", :alt=>"",
+		  :size=>"16x16" %>
 
     <div id="predicate_desc" class="desc">
       <%= image_tag "blank_status_icon.png", :id=>"predicate_status_icon",
@@ -82,7 +89,7 @@
     <script type="text/javascript">sizeDescDiv('predicate');</script>
   </td></tr>
   <tr><td style="text-align: right">
-    <%= f.label :obj_id %>
+    <%= f.label :obj_id, "Object" %>
   </td><td>
     <%= select_tag "edge[obj_id]",
           options_for_select(
@@ -93,6 +100,8 @@
             edge.obj.nil? ? "" : edge.obj.id
           )
      %>
+    <%= image_tag "blank_error_icon.png", :id=>"obj_error_icon", :alt=>"",
+		  :size=>"16x16" %>
 
     <div id="obj_desc" class="desc">
       <%= image_tag "blank_status_icon.png", :id=>"obj_status_icon",
