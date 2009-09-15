@@ -26,7 +26,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
     Then I should see "dolor sit aProperty"
     And I should see "Suspendisse 1"
 
-    When I select "anItem2 : anItem node number 2" from "Obj"
+    When I select "anItem2 : anItem node number 2" from "Object"
     Then I should see "dolor sit anItem"
     And I should see "Suspendisse 2"
 

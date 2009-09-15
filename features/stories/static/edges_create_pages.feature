@@ -8,7 +8,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "itemFamily0 : itemFamily node number 0" from "Subject"
     And I select "parent_of : Parent Of (wm built-in relationship)" from "Relates to"
-    And I select "itemFamily1 : itemFamily node number 1" from "Obj"
+    And I select "itemFamily1 : itemFamily node number 1" from "Object"
     When I press "Create"
     Then I should see "successfully created"
     And I should see "itemFamily0"
@@ -20,7 +20,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "newProp0 : newProp node number 0" from "Subject"
     And I select "sub_property_of : SubProperty Of (wm built-in type of relationship)" from "Relates to"
-    And I select "predecessor_of : Predecessor Of (wm built-in relationship)" from "Obj"
+    And I select "predecessor_of : Predecessor Of (wm built-in relationship)" from "Object"
     When I press "Create"
     Then I should see "successfully created"
     And I should see "newProp0"
@@ -33,7 +33,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "thing0 : thing node number 0" from "Subject"
     And I select "contains : Contains (wm built-in relationship)" from "Relates to"
-    And I select "thing1 : thing node number 1" from "Obj"
+    And I select "thing1 : thing node number 1" from "Object"
     When I press "Create"
     Then I should see "error"
 
@@ -44,7 +44,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "thing0 : thing node number 0" from "Subject"
     And I select "parent_of : Parent Of (wm built-in relationship)" from "Relates to"
-    And I select "thing1 : thing node number 1" from "Obj"
+    And I select "thing1 : thing node number 1" from "Object"
     When I press "Create"
     Then I should see "error"
 
@@ -55,7 +55,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "thing1 : thing node number 1" from "Subject"
     And I select "one_of : One Of (wm built-in relationship)" from "Relates to"
-    And I select "thing0 : thing node number 0" from "Obj"
+    And I select "thing0 : thing node number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
@@ -66,7 +66,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "myItem0 : myItem node number 0" from "Subject"
     And I select "contains : Contains (wm built-in relationship)" from "Relates to"
-    And I select "myClass0 : myClass node number 0" from "Obj"
+    And I select "myClass0 : myClass node number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
@@ -77,7 +77,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "myClass0 : myClass node number 0" from "Subject"
     And I select "child_of : Child Of (wm built-in relationship)" from "Relates to"
-    And I select "myItem0 : myItem node number 0" from "Obj"
+    And I select "myItem0 : myItem node number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
@@ -89,7 +89,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "item2 : item node number 2" from "Subject"
     And I select "predecessor_of : Predecessor Of (wm built-in relationship)" from "Relates to"
-    And I select "item0 : item node number 0" from "Obj"
+    And I select "item0 : item node number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
@@ -102,7 +102,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "myItem0 : myItem node number 0" from "Subject"
     And I select "hierarchical_relationship : generic Hierarchical Relationship (wm built-in root type)" from "Relates to"
-    And I select "myItem0 : myItem node number 0" from "Obj"
+    And I select "myItem0 : myItem node number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
@@ -112,7 +112,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "myItem0 : myItem node number 0" from "Subject"
     And I select "ordered_relationship : generic Ordered Relationship (wm built-in root type)" from "Relates to"
-    And I select "myItem0 : myItem node number 0" from "Obj"
+    And I select "myItem0 : myItem node number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
@@ -122,7 +122,7 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I am on the new edges page
     And I select "myItem0 : myItem node number 0" from "Subject"
     And I select "one_of : One Of (wm built-in relationship)" from "Relates to"
-    And I select "myItem0 : myItem node number 0" from "Obj"
+    And I select "myItem0 : myItem node number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 

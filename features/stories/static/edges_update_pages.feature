@@ -9,7 +9,7 @@ Feature:  Edit individual edges through non-Ajax pages
     And I am on the edit edges page for "item0" "child_of" "item1"
     And I select "item2 : item node number 2" from "Subject"
     And I select "parent_of : Parent Of (wm built-in relationship)" from "Relates to"
-    And I select "item3 : item node number 3" from "Obj"
+    And I select "item3 : item node number 3" from "Object"
     When I press "Update"
     Then I should see "successfully updated"
     And I should see "item2"
@@ -37,7 +37,7 @@ Feature:  Edit individual edges through non-Ajax pages
     And I should see "item1"
 
     Then I am on the edit edges page for "item2" "parent_of" "item1"
-    And I select "item3 : item node number 3" from "Obj"
+    And I select "item3 : item node number 3" from "Object"
     When I press "Update"
     Then I should see "successfully updated"
     And I should see "item2"
@@ -56,7 +56,7 @@ Feature:  Edit individual edges through non-Ajax pages
     And I am on the edit edges page for "item0" "peer_of" "item1"
     And I select "thing0 : thing node number 0" from "Subject"
     And I select "contains : Contains (wm built-in relationship)" from "Relates to"
-    And I select "thing1 : thing node number 1" from "Obj"
+    And I select "thing1 : thing node number 1" from "Object"
     When I press "Update"
     Then I should see "error"
 
@@ -68,7 +68,7 @@ Feature:  Edit individual edges through non-Ajax pages
     And I am on the edit edges page for "thing0" "parent_of" "thing1"
     And I select "thing0 : thing node number 0" from "Subject"
     And I select "contains : Contains (wm built-in relationship)" from "Relates to"
-    And I select "thing1 : thing node number 1" from "Obj"
+    And I select "thing1 : thing node number 1" from "Object"
     When I press "Update"
     Then I should see "error"
 
@@ -80,7 +80,7 @@ Feature:  Edit individual edges through non-Ajax pages
     And I am on the edit edges page for "thing0" "contains" "thing1"
     And I select "thing1 : thing node number 1" from "Subject"
     And I select "one_of : One Of (wm built-in relationship)" from "Relates to"
-    And I select "thing0 : thing node number 0" from "Obj"
+    And I select "thing0 : thing node number 0" from "Object"
     When I press "Update"
     Then I should see "error"
 
@@ -129,7 +129,7 @@ Feature:  Edit individual edges through non-Ajax pages
     Given there are 2 existing items like "myItem"
     And there is an existing edge "myItem0" "hierarchical_relationship" "myItem1"
     And I am on the edit edges page for "myItem0" "hierarchical_relationship" "myItem1"
-    And I select "myItem0 : myItem node number 0" from "Obj"
+    And I select "myItem0 : myItem node number 0" from "Object"
     When I press "Update"
     Then I should see "error"
 
@@ -147,7 +147,7 @@ Feature:  Edit individual edges through non-Ajax pages
     Given there are 2 existing items like "myItem"
     And there is an existing edge "myItem0" "predecessor_of" "myItem1"
     And I am on the edit edges page for "myItem0" "predecessor_of" "myItem1"
-    And I select "myItem0 : myItem node number 0" from "Obj"
+    And I select "myItem0 : myItem node number 0" from "Object"
     When I press "Update"
     Then I should see "error"
 
