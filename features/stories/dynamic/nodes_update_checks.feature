@@ -23,13 +23,13 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
   Scenario: nodes/##/edit form has correct Tab order to controls
     Given there is 1 existing item like "wilma"
     And I am on the edit nodes page for "wilma0"
+    And I pause
     When I type the "Tab" special key
     Then the focus is on the "item_node_name" element
     When I type the "Tab" special key
     Then the focus is on the "item_node_description" element
     When I type the "Tab" special key
     Then the focus is on the "item_node_submit" element
-
 
 
   Scenario: Empty form incrementally displays flag text/icons

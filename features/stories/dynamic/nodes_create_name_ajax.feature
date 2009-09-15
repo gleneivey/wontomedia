@@ -24,11 +24,12 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
   Scenario: Name check identifies unique and already-used values
     Given there is 1 existing item like "alreadyExisting"
-    And I am on the new nodes page
+    When I am on the new nodes page
+    Then the image "name_status_icon" is "blank_status_icon"
+
     When I fill in "Name" with "alreadyExisting0"
-    And the image "name_status_icon" is "blank_status_icon"
-    Then the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=none"
+    Then the element "name_is_unique" has the format "display=none"
+    And the element "name_must_be_unique" has the format "font-weight=400"
 
     # total elapsed time from node.Name.onchange > 0.40
     When I wait 0.20 seconds
