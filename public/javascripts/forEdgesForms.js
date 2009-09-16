@@ -22,9 +22,9 @@ var l = window.location;
 var base = l.protocol + "//" + l.hostname + ":" + l.port;
 
 var lastValue = {
-  subject   : "",
-  predicate : "",
-  obj       : ""
+  subject   : $('edge_subject_id').value,
+  predicate : $('edge_predicate_id').value,
+  obj       : $('edge_obj_id').value
 };
 
 

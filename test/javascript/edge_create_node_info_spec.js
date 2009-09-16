@@ -151,8 +151,8 @@ Screw.Unit(function(){
         expectDescriptionText("obj", /&quot;A Contains B&quot;/);
 
         changeNamedFieldToValue('edge_obj_id', "");
-	expectDivToContainImgMatching('obj_desc', /blank_status_icon\.png/);
-	expect(E('obj_desc').className).to(equal, "desc");
+        expectDivToContainImgMatching('obj_desc', /blank_status_icon\.png/);
+        expect(E('obj_desc').className).to(equal, "desc");
 
         expectAjaxStart("obj", "isAssigned");
         waitForAjax('obj_status_icon');

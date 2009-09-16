@@ -34,3 +34,10 @@
 <%= link_to 'Cancel, show edge', edge_path(@edge) %> &mdash;
 <%= link_to 'Cancel, show edge list', edges_path %> &mdash;
 <%= link_to 'Cancel, show node list', nodes_path %>
+
+
+<script type="text/javascript">
+  creatingNewEdge = false;
+</script>
+<%= javascript_include_tag "modalbox" %>
+<%= javascript_include_tag "forEdgesForms" %>

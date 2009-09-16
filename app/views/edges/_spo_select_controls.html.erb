@@ -65,11 +65,17 @@
       $('edge_subject_id').focus();
     </script>
     <%= image_tag "blank_error_icon.png", :id=>"subject_error_icon", :alt=>"",
-		  :size=>"16x16" %>
+                  :size=>"16x16" %>
 
-    <div id="subject_desc" class="desc">
-      <%= image_tag "blank_status_icon.png", :id=>"subject_status_icon",
-                    :alt=>"", :size=>"32x16" %>
+    <!-- start 'div' differently depending on 'if' -->
+      <% if edge.subject.nil? %>
+        <div id="subject_desc" class="desc">
+          <%= image_tag "blank_status_icon.png", :id=>"subject_status_icon",
+                        :alt=>"", :size=>"32x16" %>
+      <% else %>
+        <div id="subject_desc" class="">
+          <p><%= h edge.subject.description %></p>
+      <% end %>
     </div>
     <script type="text/javascript">sizeDescDiv('subject');</script>
   </td></tr>
@@ -86,11 +92,17 @@
           )
      %>
     <%= image_tag "blank_error_icon.png", :id=>"predicate_error_icon", :alt=>"",
-		  :size=>"16x16" %>
+                  :size=>"16x16" %>
 
-    <div id="predicate_desc" class="desc">
-      <%= image_tag "blank_status_icon.png", :id=>"predicate_status_icon",
-                    :alt=>"", :size=>"32x16" %>
+    <!-- start 'div' differently depending on 'if' -->
+      <% if edge.predicate.nil? %>
+        <div id="predicate_desc" class="desc">
+          <%= image_tag "blank_status_icon.png", :id=>"predicate_status_icon",
+                        :alt=>"", :size=>"32x16" %>
+      <% else %>
+        <div id="predicate_desc" class="">
+          <p><%= h edge.predicate.description %></p>
+      <% end %>
     </div>
     <script type="text/javascript">sizeDescDiv('predicate');</script>
   </td></tr>
@@ -107,11 +119,17 @@
           )
      %>
     <%= image_tag "blank_error_icon.png", :id=>"obj_error_icon", :alt=>"",
-		  :size=>"16x16" %>
+                  :size=>"16x16" %>
 
-    <div id="obj_desc" class="desc">
-      <%= image_tag "blank_status_icon.png", :id=>"obj_status_icon",
-                    :alt=>"", :size=>"32x16" %>
+    <!-- start 'div' differently depending on 'if' -->
+      <% if edge.obj.nil? %>
+        <div id="obj_desc" class="desc">
+          <%= image_tag "blank_status_icon.png", :id=>"obj_status_icon",
+                        :alt=>"", :size=>"32x16" %>
+      <% else %>
+        <div id="obj_desc" class="">
+          <p><%= h edge.obj.description %></p>
+      <% end %>
     </div>
     <script type="text/javascript">sizeDescDiv('obj');</script>
   </td></tr>
