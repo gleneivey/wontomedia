@@ -19,7 +19,9 @@ var Envjs = function(){
     			Envjs[i] = arguments[1][i];
     	}
     }
-    window.location = arguments[0];
+
+    if (arguments[0] != null && arguments[0] != "")
+        window.location = arguments[0];
 };
 
 /*
