@@ -1,16 +1,16 @@
 var BLUE_RIDGE_LIB_PREFIX = (environment["blue.ridge.prefix"] ||
-			     "../../vendor/plugins/blue-ridge") + "/lib/";
+                             "../../vendor/plugins/blue-ridge") + "/lib/";
 load(BLUE_RIDGE_LIB_PREFIX + "command-line.js");
 
 
 if(BlueRidge.loaded != true) {
-  BlueRidge.loaded = true;  
+  BlueRidge.loaded = true;
 
   if(arguments.length == 0) {
     print("Usage: test_runner.js spec/javascripts/file_spec.js");
     quit(1);
   }
-  
+
 
   require(BLUE_RIDGE_LIB_PREFIX + "env.rhino.js");
   Envjs.logLevel = Envjs.NONE;       // one of: DEBUG, INFO, WARN, ERROR, NONE

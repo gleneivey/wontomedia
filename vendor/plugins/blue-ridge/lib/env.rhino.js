@@ -88,11 +88,12 @@ var Envjs = function(){
     catch (ex){      configureScope    = function(){}; countOfMissing++; }
     try { dontCare = restoreScope; }
     catch (ex){      restoreScope      = function(){}; countOfMissing++; }
-    if (countOfMissing != 0 && countOfMissing != 6)
+    try { $env.loadIntoFnsScope = loadIntoFnsScope; }
+    catch (ex){      $env.loadIntoFnsScope = load;     countOfMissing++; }
+    if (countOfMissing != 0 && countOfMissing != 7)
         $env.warn("Some but not all of scope-manipulation functions were " +
                   "not present in environment.  JavaScript execution may " +
                   "not occur correctly.");
-
 
     $env.lineSource = function(e){};
     
@@ -130,8 +131,6 @@ var Envjs = function(){
     $env.os_version     = ''; 
     $env.lang           = ''; 
     $env.platform       = "Rhino ";//how do we get the version
-    
-    $env.load = function(){};
     
     $env.scriptTypes = {
         "text/javascript"   :false,
@@ -256,7 +255,7 @@ var Envjs = function(){
             local__window__(newWindow,        // object to "window-ify"
                             local_env,        // our scope for globals
                             local_parent,     // win's "parent"
-                            local_opener,     // win's "opener
+                            local_opener,     // win's "opener"
                             local_parent.top, // win's "top"
                             false             // this win isn't the original
                            );
@@ -275,22 +274,22 @@ var Envjs = function(){
         return {                //   getScope()/setScope() from Window.java
             frame :          $env.getScope(fnToExecInOtherContext),
             window :         $env.getScope($env.window),
-            global_load:     $env.getScope(load),
-            local_load:      $env.getScope($env.loadLocalScript)
+            global_load :    $env.getScope($env.loadIntoFnsScope),
+            local_load :     $env.getScope($env.loadLocalScript)
         };
     }
 
     function setScopesOfKeyObjects(fnToExecInOtherContext, windowObj){
         $env.setScope(fnToExecInOtherContext,  windowObj);
         $env.setScope($env.window,             windowObj);
-        $env.setScope($env.load,               windowObj);
+        $env.setScope($env.loadIntoFnsScope,   windowObj);
         $env.setScope($env.loadLocalScript,    windowObj);
     }
 
     function restoreScopesOfKeyObjects(fnToExecInOtherContext, scopes){
         $env.setScope(fnToExecInOtherContext,  scopes.frame);
         $env.setScope($env.window,             scopes.window);
-        $env.setScope($env.load,               scopes.global_load);
+        $env.setScope($env.loadIntoFnsScope,   scopes.global_load);
         $env.setScope($env.loadLocalScript,    scopes.local_load);
     }
 })(Envjs);
@@ -636,9 +635,6 @@ var Envjs = function(){
     $env.lang           = java.lang.System.getProperty("user.lang"); 
     $env.platform       = "Rhino ";//how do we get the version
 
-    //injected by org.mozilla.javascript.tools.envjs.
-    $env.load = load;
-
     $env.scriptTypes = {
         "text/javascript"   :false,
         "text/envjs"        :true
@@ -648,7 +644,7 @@ var Envjs = function(){
     $env.loadInlineScript = function(script){
         var tmpFile = $env.writeToTempFile(script.text, 'js') ;
         $env.debug("loading " + tmpFile);
-        $env.load(tmpFile);
+        $env.loadIntoFnsScope(tmpFile);
     };
     
     //injected by org.mozilla.javascript.tools.envjs.

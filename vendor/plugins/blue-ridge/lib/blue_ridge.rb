@@ -35,10 +35,6 @@ module BlueRidge
     Dir.glob("**/*_spec.js")
   end
   
-  def self.run_spec(spec_filename)
-    system("#{test_runner_command} #{spec_filename}")
-  end
-  
   def self.run_specs_in_dir(spec_dir, spec_name = nil)
     result = nil
     Dir.chdir(spec_dir) { result = run_specs(spec_name) }
@@ -47,7 +43,11 @@ module BlueRidge
   
   def self.run_specs(spec_name = nil)
     specs = spec_name.nil? ? find_specs_under_current_dir : ["#{spec_name}_spec.js"]
-    all_fine = specs.inject(true) {|result, spec| result &= run_spec(spec) }
+    run_test_command(specs.join(' '))
+  end
+
+  def self.run_test_command(runner_arguments)
+    system("#{test_runner_command} #{runner_arguments}")
   end
 
 
