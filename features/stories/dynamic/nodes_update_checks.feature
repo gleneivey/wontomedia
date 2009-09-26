@@ -34,8 +34,8 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
   Scenario: Empty form incrementally displays flag text/icons
     # edit page: focus on Title, all inputs filled in, none flagged
-    When there is 1 existing reiffied-property like "someNode"
-    And I am on the edit nodes page for "someNode0"
+    Given there is 1 existing reiffied-property like "someNode"
+    When I am on the edit nodes page for "someNode0"
     Then the element "reiffied_node_submit" has the format "background-color=rgb(192, 192, 255)"
     And the element "title_required" has the format "font-weight=400"
     And the element "name_required" has the format "font-weight=400"
