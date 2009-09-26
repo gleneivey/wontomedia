@@ -51,6 +51,11 @@ class NodesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "should get new-pop" do
+    get :newpop
+    assert_response :success
+  end
+
   test "new form should have fresh node object" do
     get :new
     node = assigns(:node)

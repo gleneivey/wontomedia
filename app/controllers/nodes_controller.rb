@@ -54,6 +54,11 @@ class NodesController < ApplicationController
     @node = Node.new
   end
 
+  # GET /nodes/new-pop
+  def newpop
+    @node = Node.new
+  end
+
   # POST /nodes
   def create
     type_string = params[:node][:sti_type]

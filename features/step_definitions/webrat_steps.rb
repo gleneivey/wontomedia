@@ -109,6 +109,10 @@ Then /^there should be an element "([^\"]+)"$/ do |selector|
   assert_have_selector(selector)
 end
 
+Then /^there should not be an element "([^\"]+)"$/ do |selector|
+  assert_have_no_selector(selector)
+end
+
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
   field_labeled(label).should be_checked
 end

@@ -29,7 +29,10 @@ ActionController::Routing::Routes.draw do |map|
     :action => 'edge_up'
 
   map.nodes_lookup '/nodes/lookup', :controller => :nodes, :action => :lookup
+  map.nodeCreatePopup '/nodes/new-pop',
+    :controller => :nodes, :action => :newpop
   map.resources :nodes
+
   map.resources :edges
   map.root :controller => "nodes", :action => "home"
 

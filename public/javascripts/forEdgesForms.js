@@ -17,7 +17,7 @@
 
 
 var selectElems = [ "subject", "predicate", "obj", "submit" ];
-var submit = $('edge_submit');
+var edgeSubmit = $('edge_submit');
 var l = window.location;
 var base = l.protocol + "//" + l.hostname + ":" + l.port;
 
@@ -29,16 +29,16 @@ var lastValue = {
 
 
     // define fields subject to check, order they occur in form
-var requiredInputElements = [ "subject", "predicate", "obj", "submit" ];
-var inputElementNames = [ "Subject selector", "Relationship selector",
+var requiredEdgeElements = [ "subject", "predicate", "obj", "submit" ];
+var edgeElementNames = [ "Subject selector", "Relationship selector",
                           "Object selector" ];
 
     // encoding: -1    -> haven't checked yet
     //           false -> no error
     //           true  -> error condition present
-var inputErrors = {};
-for (var c=0; c < requiredInputElements.length-1; c++)
-  inputErrors[requiredInputElements[c]] = creatingNewEdge ? -1 : false;
+var edgeFormErrors = {};
+for (var c=0; c < requiredEdgeElements.length-1; c++)
+  edgeFormErrors[requiredEdgeElements[c]] = creatingNewEdge ? -1 : false;
 
 
 
@@ -49,23 +49,15 @@ for (var c=0; c < selectElems.length; c++){
 
 
 if (creatingNewEdge)
-  makeButtonSeemDisabled(submit);    // edges/new -- can't submit a blank form
+  makeButtonSeemDisabled(edgeSubmit); // edges/new -- can't submit a blank form
 else
-  makeButtonSeemEnabled(submit);     // edges/##/edit -- can submit as-is form
+  makeButtonSeemEnabled(edgeSubmit);  // edges/##/edit -- can submit as-is form
 
 
-submit.observe('click', submitOnclickHandler);
-
-
+edgeSubmit.observe('click', submitOnclickHandler);
 
 
 
-function makeButtonSeemEnabled(button){
-  button.className = "activeButton";
-}
-function makeButtonSeemDisabled(button){
-  button.className = "inactiveButton";
-}
 
 
 function createOnchangeHandler(thisName){
@@ -77,8 +69,13 @@ function createOnchangeHandler(thisName){
       if (thisElem.value != lastValue[thisName]){
         lastValue[thisName] = thisElem.value;
         if (thisElem.value == ""){
-          flagAsRequired(thisName);
           divToBlank(thisName);
+          flagEdgeAsRequired(thisName);
+        }
+        else if (thisElem.value == "-1"){
+          divToBlank(thisName);
+          var type = ("thisName" == "predicate") ? "verb" : "noun";
+          nodeCreatePopup(thisElem, type);
         }
         else {
           clearError(thisName);
@@ -87,7 +84,7 @@ function createOnchangeHandler(thisName){
             method: 'get',
             onSuccess: function(response){
               var nodeObject = response.responseJSON;
-              var key = getFirstHashKey(nodeObject)
+              var key = getFirstHashKey(nodeObject);
               divToText(thisName, nodeObject[key]["description"]);
             },
             onFailure: function(){
@@ -139,54 +136,54 @@ function createOnfocusHandler(thisName){
 function onfocusBehavior(elem){
   var eId = elem.id;
   var c;
-  for (c=0; c < requiredInputElements.length; c++){
-    var re = new RegExp(requiredInputElements[c]);
+  for (c=0; c < requiredEdgeElements.length; c++){
+    var re = new RegExp(requiredEdgeElements[c]);
     var mtch = eId.match(re);
     if (mtch != null && mtch.length > 0)
       break;
   }
 
-  if (c >= requiredInputElements.length)
+  if (c >= requiredEdgeElements.length)
     return;  // Hmmmm..... maybe not
 
   var lastToCheck = c-1;
   for (c=0; c <= lastToCheck; c++){
-    var ck = $("edge_" + requiredInputElements[c] + "_id");
+    var ck = $("edge_" + requiredEdgeElements[c] + "_id");
     if (ck.value == null || ck.value == "")
-      flagAsRequired(requiredInputElements[c]);
+      flagEdgeAsRequired(requiredEdgeElements[c]);
     else
-      clearError(requiredInputElements[c]);
+      clearError(requiredEdgeElements[c]);
   }
   refreshSubmitState();
 }
 
-function flagAsRequired(elemName){
-  inputErrors[elemName] = true;
+function flagEdgeAsRequired(elemName){
+  edgeFormErrors[elemName] = true;
   $(elemName + "_required").className = "helpTextFlagged";
   $(elemName + "_error_icon").src = "/images/error_error_icon.png";
 }
 
 function clearError(elemName){
-  inputErrors[elemName] = false;
+  edgeFormErrors[elemName] = false;
   $(elemName + "_required").className = "";
   $(elemName + "_error_icon").src = "/images/blank_error_icon.png";
 }
 
 function refreshSubmitState(){
   var detectedAtLeastOneError = false;
-  for (var c =0; c < requiredInputElements.length-1; c++)
-    if (inputErrors[requiredInputElements[c]] != false)
+  for (var c =0; c < requiredEdgeElements.length-1; c++)
+    if (edgeFormErrors[requiredEdgeElements[c]] != false)
       detectedAtLeastOneError = true;
 
   if (detectedAtLeastOneError)
-    makeButtonSeemDisabled(submit);
+    makeButtonSeemDisabled(edgeSubmit);
   else
-    makeButtonSeemEnabled(submit);
+    makeButtonSeemEnabled(edgeSubmit);
 }
 
 
 function submitOnclickHandler(ev){
-  onfocusBehavior(submit);
+  onfocusBehavior(edgeSubmit);
   var dialogDisplayed = maybeShowErrorDialog();
   if (dialogDisplayed)
     ev.stop();
@@ -196,10 +193,10 @@ function maybeShowErrorDialog(){
   var newDialogText = "<p>";
 
   var accum = false;
-  for (var c=0; c < requiredInputElements.length-1; c++){
-    if (inputErrors[requiredInputElements[c]] == true){
+  for (var c=0; c < requiredEdgeElements.length-1; c++){
+    if (edgeFormErrors[requiredEdgeElements[c]] == true){
       accum = true;
-      newDialogText += "The " + inputElementNames[c] + " must have a value. ";
+      newDialogText += "The " + edgeElementNames[c] + " must have a value. ";
     }
   }
 

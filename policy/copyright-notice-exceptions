@@ -51,7 +51,6 @@ COPYING.DOCUMENTATION
 /LICENSE
 !lock            5862f0bf8976cb84de7a49e81c8d2fa5435d23ca
 public/javascripts/modalbox.js
-public/stylesheets/modalbox.css
 !unlock
 
     # can't embed license notice in binary files--our originals still

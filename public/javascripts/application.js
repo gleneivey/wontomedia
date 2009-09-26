@@ -19,3 +19,13 @@
 
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
+
+
+
+    // common to several forms
+function makeButtonSeemEnabled(button){
+  button.className = "activeButton";
+}
+function makeButtonSeemDisabled(button){
+  button.className = "inactiveButton";
+}

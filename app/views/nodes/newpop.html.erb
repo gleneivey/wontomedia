@@ -1,0 +1,73 @@
+<%
+# WontoMedia - a wontology web application
+# Copyright (C) 2009 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see "http://www.gnu.org/licenses/".
+%>
+
+
+<% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
+
+<h1>Make a new node</h1>
+
+<% options = @node.sti_type.nil? ? {} : { :url => nodes_path() }
+   form_for(@node, options) do |f|
+ %>
+  <%= f.error_messages %>
+  <p class="inputpara">
+    <%= f.label :sti_type, "Type" %>
+    <%= if @type == "noun"
+          selections = [ [ "- type of node -",          "" ],
+                         [ "Category",         "ClassNode" ],
+                         [ "Item",              "ItemNode" ],
+                         [ "Property",      "PropertyNode" ] ]
+        else
+          selections = [ [ "Property",      "PropertyNode" ] ]
+          @node.sti_type = "PropertyNode"
+        end
+
+        select_tag "node[sti_type]",
+          options_for_select( selections,
+                              @node.sti_type.nil? ? "" : @node.sti_type ),
+          :tabindex => "1"
+     %>
+    <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
+                  :alt=>"", :size=>"16x16" %>
+  </p><p class="directions">
+    <span id="sti_type_required">Selection of a type is required.</span>
+  </p>
+
+  <%= render :partial => "form_fields", :locals => { :f => f } %>
+
+  <p id="create_button_container" style="text-align: center">
+    <%= button_to_function "Create",
+          "nodeCreatePopup_Submit(this.id, this.href)",
+          :id => "node_submit", :tabindex => "10" %>
+  </p>
+
+  <p style="text-align: center">
+    <%= link_to_function 'Cancel node creation', 'Modalbox.hide()' %>
+  </p>
+<% end %>  <!-- of form_for -->
+
+
+<!-- forNodesForms.js should have already been loaded by page that
+     popped us up.  Call function to wire library functions to the form
+     elements we've just loaded. -->
+<script type="text/javascript">
+  $('node_sti_type').focus();
+  genNameFromTitleOk = true;
+  plumbEventHandlersToNodeCreationElements();
+</script>

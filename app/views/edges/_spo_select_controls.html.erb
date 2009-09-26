@@ -54,7 +54,9 @@
   </td><td>
     <%= select_tag "edge[subject_id]",
           options_for_select(
-            [[ "- this object -", "" ]] +
+            [[ "- this object -", "" ],
+             [ "- create a new node for this object -", "-1" ],
+            ] +
               nodes.map do |n|
                 [ h("#{n.name} : #{n.title}"), n.id ]
               end,
@@ -84,7 +86,9 @@
   </td><td>
     <%= select_tag "edge[predicate_id]",
           options_for_select(
-            [[ "- has this relationship -", "" ]] +
+            [[ "- has this relationship -", "" ],
+             [ "- create a new property for this relationship -", "-1" ],
+            ] +
               verbs.map do |n|
                 [ h("#{n.name} : #{n.title}"), n.id ]
               end,
@@ -111,7 +115,9 @@
   </td><td>
     <%= select_tag "edge[obj_id]",
           options_for_select(
-            [[ "- to this object -", "" ]] +
+            [[ "- to this object -", "" ],
+             [ "- create a new node for this object -", "-1" ],
+            ] +
               nodes.map do |n|
                 [ h("#{n.name} : #{n.title}"), n.id ]
               end,
