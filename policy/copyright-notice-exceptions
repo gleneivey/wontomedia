@@ -14,6 +14,7 @@
     # un- and not-to-be-modified third-party components, expect to be
     # updated periodically with new versions
 vendor
+public/javascripts/modalbox.js
 
 
     # repeatedly auto-generated from other files
@@ -49,8 +50,6 @@ public/javascripts/prototype.js
 COPYING
 COPYING.DOCUMENTATION
 /LICENSE
-!lock            5862f0bf8976cb84de7a49e81c8d2fa5435d23ca
-public/javascripts/modalbox.js
 !unlock
 
     # can't embed license notice in binary files--our originals still
