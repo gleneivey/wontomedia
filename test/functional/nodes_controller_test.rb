@@ -51,11 +51,6 @@ class NodesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get new-pop" do
-    get :newpop
-    assert_response :success
-  end
-
   test "new form should have fresh node object" do
     get :new
     node = assigns(:node)
@@ -63,6 +58,28 @@ class NodesControllerTest < ActionController::TestCase
     assert_nil node.name
     assert_nil node.title
     assert_nil node.description
+  end
+
+  test "should get new-pop" do
+    get :newpop
+    assert_response :success
+  end
+
+  test "new-pop form should have fresh node object" do
+    get :newpop
+    node = assigns(:node)
+    assert_not_nil node
+    assert_nil node.name
+    assert_nil node.title
+    assert_nil node.description
+  end
+
+  test "new-pop form should have type parameter" do
+    knownTypeValue = "noun"
+    get :newpop, :type => knownTypeValue
+    type = assigns(:type)
+    assert_not_nil type
+    assert_equal type, knownTypeValue
   end
 
   test "should create node with valid data" do

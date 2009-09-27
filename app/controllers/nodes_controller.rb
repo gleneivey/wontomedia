@@ -57,6 +57,7 @@ class NodesController < ApplicationController
   # GET /nodes/new-pop
   def newpop
     @node = Node.new
+    @type = params[:type]
   end
 
   # POST /nodes

@@ -74,7 +74,7 @@ function createOnchangeHandler(thisName){
         }
         else if (thisElem.value == "-1"){
           divToBlank(thisName);
-          var type = ("thisName" == "predicate") ? "verb" : "noun";
+          var type = (thisName == "predicate") ? "verb" : "noun";
           nodeCreatePopup(thisElem, type);
         }
         else {

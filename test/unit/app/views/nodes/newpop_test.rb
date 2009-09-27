@@ -19,28 +19,26 @@
 
 require 'test_helper'
 
-class NodesNewViewTest < ActionController::TestCase
+class NodesNewpopViewTest < ActionController::TestCase
   tests NodesController
 
-  test "should have new form for nodes" do
-    get :new
-    assert_template "nodes/new"
+  test "should have new-popup form for nodes" do
+    get :newpop
+    assert_template "nodes/newpop"
   end
 
-  test "nodes new form should invoke create" do
+  test "nodes new-popup form should invoke create" do
     get :new
     assert_select   "form[action=?]",
         @controller.url_for(:action => :create, :only_path => true) do
-      assert_select "form[method=post]", true,
-        "new-node form uses POST"
       assert_select "select#node_sti_type", true,
-        "new-node form contains 'select' field for :sti_type attribute"
+        "new-popup-node form contains 'select' control for :sti_type attribute"
       assert_select "input#node_name[type=text]", true,
-        "new-node form contains 'text' field for :name attribute"
+        "new-popup-node form contains 'text' field for :name attribute"
       assert_select "input#node_title[type=text]", true,
-        "new-node form contains 'text' field for :title attribute"
+        "new-popup-node form contains 'text' field for :title attribute"
       assert_select "textarea#node_description", true,
-        "new-node form contains 'textarea' field for :description attribute"
+        "new-popup-node form contains 'textarea' field for :description attribute"
     end
   end
 
