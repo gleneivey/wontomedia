@@ -2792,7 +2792,7 @@ $debug("Defining DOMParser");
 var DOMParser = function(){};
 __extend__(DOMParser.prototype,{
     parseFromString: function(xmlString){
-        //$log("Parsing XML String: " +xmlString);
+        $debug("Parsing XML String: " +xmlString);
         return document.implementation.createDocument().loadXML(xmlString);
     }
 });
@@ -4275,14 +4275,17 @@ var DOMImplementation = function() {
 
 var __endHTMLElement__ = function(node, doc, p){
     if(node.nodeName.toLowerCase() == 'script'){
-        p.replaceEntities = true;
-        $env.loadLocalScript(node, p);
+        // unless we're parsing in a window context, don't execute scripts
+        if (doc.parentWindow){
+            p.replaceEntities = true;
+            $env.loadLocalScript(node, p);
 
-        // only fire event if we actually had something to load
-        if (node.src && node.src.length > 0){
-            var event = doc.createEvent();
-            event.initEvent("load");
-            node.dispatchEvent( event, false );
+            // only fire event if we actually had something to load
+            if (node.src && node.src.length > 0){
+                var event = doc.createEvent();
+                event.initEvent("load");
+                node.dispatchEvent( event, false );
+            }
         }
     }
     else if (node.nodeName.toLowerCase() == 'frame' ||
