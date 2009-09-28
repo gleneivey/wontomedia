@@ -115,7 +115,7 @@ function divToImg(divName, imageName){
   $(divName + '_desc').className = "desc";
   $(divName + '_desc').innerHTML =
     "<img alt='' width='32' height='16' id='" + divName + "_status_icon' " +
-    "     src='/images/" + imageName + "_status_icon.png'>";
+    "     src='/images/" + imageName + "_status_icon.png' />";
 }
 
 function divToText(divName, divText){
