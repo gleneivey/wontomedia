@@ -17,7 +17,9 @@
 
 
 function nodeCreatePopup(selectElem, nodeType){
-  Modalbox.show("/nodes/new-pop?type=" + nodeType, {
+  var newpop = l.protocol + "//" + l.hostname + ":" + l.port +
+               "/nodes/new-pop?type=" + nodeType;
+  Modalbox.show(newpop, {
     title: "Create a new node",
     height: nodeCreatePopup_Height(),
     width: nodeCreatePopup_Width(),

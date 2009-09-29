@@ -16,12 +16,13 @@
 // see <http://www.gnu.org/licenses/>.
 
 
-var test = $('node_sti_type');
-var thereIsATypeControl = (test != null);
-
+    // defaults, real value figured when "plumb"ing
+var thereIsATypeControl = false;
 var controlNamePrefix = "";
-var originalNodeName = "";
 var nodeSubmit;
+
+
+var originalNodeName = "";
 var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
                           //   wait after Name change before check
 
@@ -33,6 +34,9 @@ function typeSelectOnchange(){
   var tags = [ "category_title", "category_desc",
                "item_title",     "item_desc",
                "property_title", "property_desc" ];
+
+  if ($(tags[0]) == null)   // this version of form w/o explanatory text
+    return;
 
   for (var c=0; c != tags.length; c++)
     $(tags[c]).className = "";
@@ -314,6 +318,9 @@ function getCurrentType(){
 
 
 function plumbEventHandlersToNodeCreationElements(){
+  var test = $('node_sti_type');
+  thereIsATypeControl = (test != null);
+
   if (!creatingNewNode){
     var arrayOfForms = document.getElementsByTagName('form');
     var newNodeId;

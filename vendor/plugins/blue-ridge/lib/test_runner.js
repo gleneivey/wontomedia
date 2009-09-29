@@ -13,7 +13,7 @@ if(BlueRidge.loaded != true) {
 
 
   require(BLUE_RIDGE_LIB_PREFIX + "env.rhino.js");
-  Envjs.logLevel = Envjs.WARN;       // one of: DEBUG, INFO, WARN, ERROR, NONE
+  Envjs.logLevel = Envjs.ERROR;       // one of: DEBUG, INFO, WARN, ERROR, NONE
 
 
   function executeTest(testWin, prefix, spec){

@@ -35,6 +35,7 @@ Feature:  Create new nodes in the process of creating an edge
   Scenario: Can create a new node during edge creation
     Given I am on the new edges page
     When I select "- create a new node for this object -" from "Subject"
+    And I pause
     And I wait for Ajax requests to complete
     Then the "MB_content" element should match "Selection of a type is required"
     And the "MB_content" element should match "No more than 255 characters"
