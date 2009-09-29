@@ -53,7 +53,7 @@
 
   <p id="create_button_container" style="text-align: center">
     <%= button_to_function "Create",
-          "nodeCreatePopup_Submit(this.id, this.href)",
+          "if (okToSubmitNodeForm()) nodeCreatePopup_Submit(this)",
           :id => "node_submit", :tabindex => "10" %>
   </p>
 
@@ -69,5 +69,5 @@
 <script type="text/javascript">
   $('node_sti_type').focus();
   genNameFromTitleOk = true;
-  plumbEventHandlersToNodeCreationElements();
+  plumbEventHandlersToNodeCreationElements("submitViaModalbox");
 </script>

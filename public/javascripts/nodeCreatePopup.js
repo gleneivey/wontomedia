@@ -39,14 +39,16 @@ function nodeCreatePopup_Width(){
   return Math.floor(document.viewport.getWidth() * 0.62);
 }
 
-function nodeCreatePopup_Submit(formId, targetHref){
-  Modalbox.show(targetHref, {
+function nodeCreatePopup_Submit(buttonElement){
+  var formElement = buttonElement.form;
+
+  Modalbox.show(formElement.href, {
     title: "Create a new node",
     height: nodeCreatePopup_Height(),
     width: nodeCreatePopup_Width(),
 
     method: "post",
-    params: Form.serialize(formId),
+    params: Form.serialize(formElement.id),
 
     overlayClose: false,
     slideDownDuration: 0.25,

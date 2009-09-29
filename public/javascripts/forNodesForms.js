@@ -317,7 +317,21 @@ function getCurrentType(){
 }
 
 
-function plumbEventHandlersToNodeCreationElements(){
+
+function okToSubmitNodeForm(){
+  onfocusCommonBehavior(nodeSubmit);
+  var errors = genDialog();
+
+  if (errors){
+    makeButtonSeemDisabled(nodeSubmit);
+  }
+  else
+    makeButtonSeemEnabled(nodeSubmit);
+
+  return !errors;
+}
+
+function plumbEventHandlersToNodeCreationElements(customizationSelector){
   var test = $('node_sti_type');
   thereIsATypeControl = (test != null);
 
@@ -459,31 +473,25 @@ function plumbEventHandlersToNodeCreationElements(){
     }
   );
 
-
-  var e = nodeSubmit;
   if (creatingNewNode)
-    makeButtonSeemDisabled(e);       // nodes/new -- can't submit a blank form
+    makeButtonSeemDisabled(nodeSubmit);// nodes/new -- can't submit a blank form
   else
-    makeButtonSeemEnabled(e);        // nodes/##/edit -- can submit as-is form
+    makeButtonSeemEnabled(nodeSubmit); // nodes/##/edit -- can submit as-is form
 
-  e.observe('click',
-    function(ev){
-      onfocusCommonBehavior(e);
-      var errors = genDialog();
-
-      if (errors){
-        ev.stop();
-        makeButtonSeemDisabled(e);
+  if (customizationSelector != "submitViaModalbox"){
+    nodeSubmit.observe('click',
+      function(ev){
+        if (!okToSubmitNodeForm())
+	  ev.stop();
       }
-      else
-        makeButtonSeemEnabled(e);
-    }
-  );
+    );
+  }
 
   if (thereIsATypeControl)
     a.observe('focus', function(){onfocusCommonBehavior(a);});
   b.observe('focus', function(){onfocusCommonBehavior(b);});
   c.observe('focus', function(){onfocusCommonBehavior(c);});
   d.observe('focus', function(){onfocusCommonBehavior(d);});
-  e.observe('focus', function(){onfocusCommonBehavior(e);});
+  nodeSubmit.
+    observe('focus', function(){onfocusCommonBehavior(nodeSubmit);});
 }
