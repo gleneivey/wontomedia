@@ -6195,7 +6195,275 @@ $w.HTMLCollection = HTMLCollection;
   });
 };*/
 
-	$debug("Defining HTMLAnchorElement");
+	/*
+ *  a set of convenience classes to centralize implementation of
+ * properties and methods across multiple in-form elements
+ *
+ *  the hierarchy of related HTML elements and their members is as follows:
+ *
+ *
+ *    HTMLInputCommon:  common to all elements
+ *       .form
+ *
+ *    <legend>
+ *          [common plus:]
+ *       .align
+ *
+ *    <fieldset>
+ *          [identical to "legend" plus:]
+ *       .margin
+ *
+ *
+ *  ****
+ *
+ *    <label>
+ *          [common plus:]
+ *       .dataFormatAs
+ *       .htmlFor
+ *       [plus data properties]
+ *
+ *    <option>
+ *          [common plus:]
+ *       .defaultSelected
+ *       .index
+ *       .label
+ *       .selected
+ *       .text
+ *       .value   // unique implementation, not duplicated
+ *
+ *  ****
+ *
+ *    HTMLTypeValueInputs:  common to remaining elements
+ *          [common plus:]
+ *       .name
+ *       .type
+ *       .value
+ *       [plus data properties]
+ *
+ *
+ *    <select>
+ *       .length
+ *       .multiple
+ *       .options[]
+ *       .selectedIndex
+ *       .add()
+ *       .remove()
+ *       .item()                                       // unimplemented
+ *       .namedItem()                                  // unimplemented
+ *       [plus ".onchange"]
+ *       [plus focus events]
+ *       [plus data properties]
+ *       [plus ".size"]
+ *
+ *    <button>
+ *       .dataFormatAs   // duplicated from above, oh well....
+ *       [plus ".status", ".createTextRange()"]
+ *
+ *  ****
+ *
+ *    HTMLInputAreaCommon:  common to remaining elements
+ *       .defaultValue
+ *       .readOnly
+ *       .handleEvent()                                // unimplemented
+ *       .select()
+ *       .onselect
+ *       [plus ".size"]
+ *       [plus ".status", ".createTextRange()"]
+ *       [plus focus events]
+ *       [plus ".onchange"]
+ *
+ *    <textarea>
+ *       .cols
+ *       .rows
+ *       .wrap                                         // unimplemented
+ *       .onscroll                                     // unimplemented
+ *
+ *    <input>
+ *       .alt
+ *       .accept                                       // unimplemented
+ *       .checked
+ *       .complete                                     // unimplemented
+ *       .defaultChecked
+ *       .dynsrc                                       // unimplemented
+ *       .height
+ *       .hspace                                       // unimplemented
+ *       .indeterminate                                // unimplemented
+ *       .loop                                         // unimplemented
+ *       .lowsrc                                       // unimplemented
+ *       .maxLength
+ *       .src
+ *       .start                                        // unimplemented
+ *       .useMap
+ *       .vspace                                       // unimplemented
+ *       .width
+ *       .onclick
+ *       [plus ".size"]
+ *       [plus ".status", ".createTextRange()"]
+
+ *    [data properties]                                // unimplemented
+ *       .dataFld
+ *       .dataSrc
+
+ *    [status stuff]                                   // unimplemented
+ *       .status
+ *       .createTextRange()
+
+ *    [focus events]
+ *       .onblur
+ *       .onfocus
+
+ */
+
+
+
+
+$debug("Defining input element 'mix in' objects");
+var inputElements_dataProperties = {};
+var inputElements_status = {};
+
+var inputElements_onchange = {
+    onchange: function(event){
+        __eval__(this.getAttribute('onchange')||'', this)
+    }
+};
+
+var inputElements_size = {
+    get size(){
+        return Number(this.getAttribute('size'));
+    },
+    set size(value){
+        this.setAttribute('size',value);
+    }
+};
+
+var inputElements_focusEvents = {
+    blur: function(){
+        __blur__(this);
+
+        if (this._oldValue != this.value){
+            var event = document.createEvent();
+            event.initEvent("change");
+            this.dispatchEvent( event );
+        }
+    },
+    focus: function(){
+        __focus__(this);
+        this._oldValue = this.value;
+    }
+};
+
+
+$debug("Defining HTMLInputCommon");
+
+/*
+* HTMLInputCommon - convenience class, not DOM
+*/
+var HTMLInputCommon = function(ownerDocument) {
+    this.HTMLElement = HTMLElement;
+    this.HTMLElement(ownerDocument);
+};
+HTMLInputCommon.prototype = new HTMLElement;
+__extend__(HTMLInputCommon.prototype, {
+    get form(){
+        var parent = this.parentNode;
+        while(parent.nodeName.toLowerCase() != 'form'){
+            parent = parent.parentNode;
+        }
+        return parent;
+    },
+    get accessKey(){
+        return this.getAttribute('accesskey');
+    },
+    set accessKey(value){
+        this.setAttribute('accesskey',value);
+    },
+    get access(){
+        return this.getAttribute('access');
+    },
+    set access(value){
+        this.setAttribute('access', value);
+    },
+    get disabled(){
+        return (this.getAttribute('disabled')=='disabled');
+    },
+    set disabled(value){
+        this.setAttribute('disabled', (value ? 'disabled' :''));
+    }
+});
+
+$w.HTMLInputCommon = HTMLInputCommon;
+
+
+$debug("Defining HTMLTypeValueInputs");
+
+/*
+* HTMLTypeValueInputs - convenience class, not DOM
+*/
+var HTMLTypeValueInputs = function(ownerDocument) {
+    this.HTMLInputCommon = HTMLInputCommon;
+    this.HTMLInputCommon(ownerDocument);
+
+    this._oldValue = "";
+};
+HTMLTypeValueInputs.prototype = new HTMLInputCommon;
+__extend__(HTMLTypeValueInputs.prototype, inputElements_size);
+__extend__(HTMLTypeValueInputs.prototype, inputElements_status);
+__extend__(HTMLTypeValueInputs.prototype, inputElements_dataProperties);
+__extend__(HTMLTypeValueInputs.prototype, {
+    get name(){
+        return this.getAttribute('name')||'';
+    },
+    set name(value){
+        this.setAttribute('name',value);
+    },
+    get type(){
+        return this.getAttribute('type');
+    },
+    get value(){
+        return this.getAttribute('value')||'';
+    },
+    set value(newValue){
+        this.setAttribute('value',newValue);
+    }
+});
+
+$w.HTMLTypeValueInputs = HTMLTypeValueInputs;
+
+
+
+$debug("Defining HTMLInputAreaCommon");
+
+/*
+* HTMLInputAreaCommon - convenience class, not DOM
+*/
+var HTMLInputAreaCommon = function(ownerDocument) {
+    this.HTMLTypeValueInputs = HTMLTypeValueInputs;
+    this.HTMLTypeValueInputs(ownerDocument);
+};
+HTMLInputAreaCommon.prototype = new HTMLTypeValueInputs;
+__extend__(HTMLInputAreaCommon.prototype, inputElements_focusEvents);
+__extend__(HTMLInputAreaCommon.prototype, inputElements_onchange);
+__extend__(HTMLInputAreaCommon.prototype, {
+    get defaultValue(){
+        return this.getAttribute('defaultValue');
+    },
+    set defaultValue(value){
+        this.setAttribute('defaultValue', value);
+    },
+    get readOnly(){
+        return (this.getAttribute('readonly')=='readonly');
+    },
+    set readOnly(value){
+        this.setAttribute('readonly', (value ? 'readonly' :''));
+    },
+    select:function(){
+        __select__(this);
+
+    }
+});
+
+$w.HTMLInputAreaCommon = HTMLInputAreaCommon;
+$debug("Defining HTMLAnchorElement");
 /* 
 * HTMLAnchorElement - DOM Level 2
 */
@@ -6503,49 +6771,27 @@ __extend__(HTMLBodyElement.prototype, {
 
 $w.HTMLBodyElement = HTMLBodyElement;
 $debug("Defining HTMLButtonElement");
-/* 
+/*
 * HTMLButtonElement - DOM Level 2
 */
 var HTMLButtonElement = function(ownerDocument) {
-    this.HTMLElement = HTMLElement;
-    this.HTMLElement(ownerDocument);
+    this.HTMLTypeValueInputs = HTMLTypeValueInputs;
+    this.HTMLTypeValueInputs(ownerDocument);
 };
-HTMLButtonElement.prototype = new HTMLElement;
+HTMLButtonElement.prototype = new HTMLTypeValueInputs;
+__extend__(HTMLButtonElement.prototype, inputElements_status);
 __extend__(HTMLButtonElement.prototype, {
-    get form(){
-        var parent = this.parent;
-        while(parent.nodeName.toLowerCase() != 'form'){
-            parent = parent.parent;
-        }
-        return parent;
+    get dataFormatAs(){
+        return this.getAttribute('dataFormatAs');
     },
-    get accessKey(){
-        return this.getAttribute('accesskey');
-    },
-    set accessKey(value){
-        this.setAttribute('accesskey',value);
-    },
-    /*get tabIndex(){
-        return Number(this.getAttribute('tabindex'));
-    },
-    set tabIndex(value){
-        this.setAttribute('tabindex',Number(value));
-    },*/
-    get type(){
-        return this.getAttribute('type');
-    },
-    set type(value){
-        this.setAttribute('type',value);
-    },
-    get value(){
-        return this.getAttribute('value');
-    },
-    set value(value){
-        this.setAttribute('value',value);
+    set dataFormatAs(value){
+        this.setAttribute('dataFormatAs',value);
     }
 });
 
-$w.HTMLButtonElement = HTMLButtonElement;				$debug("Defining HTMLTableColElement");
+$w.HTMLButtonElement = HTMLButtonElement;
+
+$debug("Defining HTMLTableColElement");
 /* 
 * HTMLTableColElement - DOM Level 2
 */
@@ -6646,26 +6892,45 @@ __extend__(HTMLDivElement.prototype, {
 });
 
 $w.HTMLDivElement = HTMLDivElement;
-$debug("Defining HTMLFieldSetElement");
-/* 
-* HTMLFieldSetElement - DOM Level 2
+$debug("Defining HTMLLegendElement");
+/*
+* HTMLLegendElement - DOM Level 2
 */
-var HTMLFieldSetElement = function(ownerDocument) {
-    this.HTMLElement = HTMLElement;
-    this.HTMLElement(ownerDocument);
+var HTMLLegendElement = function(ownerDocument) {
+    this.HTMLInputCommon = HTMLInputCommon;
+    this.HTMLInputCommon(ownerDocument);
 };
-HTMLFieldSetElement.prototype = new HTMLElement;
-__extend__(HTMLFieldSetElement.prototype, {
-    get form(){
-        var parent = this.parent;
-        while(parent.nodeName.toLowerCase() != 'form'){
-            parent = parent.parent;
-        }
-        return parent;
+HTMLLegendElement.prototype = new HTMLInputCommon;
+__extend__(HTMLLegendElement.prototype, {
+    get align(){
+        return this.getAttribute('align');
+    },
+    set align(value){
+        this.setAttribute('align',value);
     }
 });
 
-$w.HTMLFieldSetElement = HTMLFieldSetElement;	$debug("Defining HTMLFormElement");
+$w.HTMLLegendElement = HTMLLegendElement;
+$debug("Defining HTMLFieldSetElement");
+/*
+* HTMLFieldSetElement - DOM Level 2
+*/
+var HTMLFieldSetElement = function(ownerDocument) {
+    this.HTMLLegendElement = HTMLLegendElement;
+    this.HTMLLegendElement(ownerDocument);
+};
+HTMLFieldSetElement.prototype = new HTMLLegendElement;
+__extend__(HTMLFieldSetElement.prototype, {
+    get margin(){
+        return this.getAttribute('margin');
+    },
+    set margin(value){
+        this.setAttribute('margin',value);
+    }
+});
+
+$w.HTMLFieldSetElement = HTMLFieldSetElement;
+$debug("Defining HTMLFormElement");
 /* 
 * HTMLFormElement - DOM Level 2
 */
@@ -6976,45 +7241,15 @@ __extend__(HTMLImageElement.prototype, {
 });
 
 $w.HTMLImageElement = HTMLImageElement;$debug("Defining HTMLInputElement");
-/* 
+/*
 * HTMLInputElement - DOM Level 2
 */
 var HTMLInputElement = function(ownerDocument) {
-    this.HTMLElement = HTMLElement;
-    this.HTMLElement(ownerDocument);
-
-    this._oldValue = "";
+    this.HTMLInputAreaCommon = HTMLInputAreaCommon;
+    this.HTMLInputAreaCommon(ownerDocument);
 };
-HTMLInputElement.prototype = new HTMLElement;
+HTMLInputElement.prototype = new HTMLInputAreaCommon;
 __extend__(HTMLInputElement.prototype, {
-    get defaultValue(){
-        return this.getAttribute('defaultValue');
-    },
-    set defaultValue(value){
-        this.setAttribute('defaultValue', value);
-    },
-    get defaultChecked(){
-        return this.getAttribute('defaultChecked');
-    },
-    get form(){
-        var parent = this.parent;
-        while(parent.nodeName.toLowerCase() != 'form'){
-            parent = parent.parent;
-        }
-        return parent;
-    },
-    get accessKey(){
-        return this.getAttribute('accesskey');
-    },
-    set accessKey(value){
-        this.setAttribute('accesskey',value);
-    },
-    get access(){
-        return this.getAttribute('access');
-    },
-    set access(value){
-        this.setAttribute('access', value);
-    },
     get alt(){
         return this.getAttribute('alt');
     },
@@ -7027,11 +7262,14 @@ __extend__(HTMLInputElement.prototype, {
     set checked(value){
         this.setAttribute('checked', (value ? 'checked' :''));
     },
-    get disabled(){
-        return (this.getAttribute('disabled')=='disabled');
+    get defaultChecked(){
+        return this.getAttribute('defaultChecked');
     },
-    set disabled(value){
-        this.setAttribute('disabled', (value ? 'disabled' :''));
+    get height(){
+        return this.getAttribute('height');
+    },
+    set height(value){
+        this.setAttribute('height',value);
     },
     get maxLength(){
         return Number(this.getAttribute('maxlength')||'0');
@@ -7039,136 +7277,55 @@ __extend__(HTMLInputElement.prototype, {
     set maxLength(value){
         this.setAttribute('maxlength', value);
     },
-    get name(){
-        return this.getAttribute('name')||'';
-    },
-    set name(value){
-        this.setAttribute('name', value);
-    },
-    get readOnly(){
-        return (this.getAttribute('readonly')=='readonly');
-    },
-    set readOnly(value){
-        this.setAttribute('readonly', (value ? 'readonly' :''));
-    },
-    get size(){
-        return this.getAttribute('size');
-    },
-    set size(value){
-        this.setAttribute('size', value);
-    },
     get src(){
         return this.getAttribute('src');
     },
     set src(value){
         this.setAttribute('src', value);
     },
-    /*get tabIndex(){
-        return Number(this.getAttribute('tabindex'));
-    },
-    set tabIndex(value){
-        this.setAttribute('tabindex',Number(value));
-    },*/
-    get type(){
-        return this.getAttribute('type');
-    },
-    set type(value){
-        this.setAttribute('type',value);
-    },
     get useMap(){
         return this.getAttribute('map');
     },
-    get value(){
-        return this.getAttribute('value');
+    get width(){
+        return this.getAttribute('width');
     },
-    set value(value){
-        if(this.defaultValue===null&&this.value!==null)
-            this.defaultValue = this.value;
-        this.setAttribute('value',value);
+    set width(value){
+        this.setAttribute('width',value);
     },
-    blur:function(){
-        __blur__(this);
-
-        if (this._oldValue != this.value){
-            var event = document.createEvent();
-            event.initEvent("change");
-            this.dispatchEvent( event );
-        }
-    },
-    focus:function(){
-        __focus__(this);
-        this._oldValue = this.value;
-    },
-	select:function(){
-	    __select__(this);
-	    
-    },
-	click:function(){
-	    __click__(this);
-	    
-    },
-    onchange: function(event){
-        __eval__(this.getAttribute('onchange')||'', this)
+    click:function(){
+        __click__(this);
     }
 });
 
-$w.HTMLInputElement = HTMLInputElement;$debug("Defining HTMLLabelElement");
+$w.HTMLInputElement = HTMLInputElement;
+
+$debug("Defining HTMLLabelElement");
 /* 
 * HTMLLabelElement - DOM Level 2
 */
 var HTMLLabelElement = function(ownerDocument) {
-    this.HTMLElement = HTMLElement;
-    this.HTMLElement(ownerDocument);
+    this.HTMLInputCommon = HTMLInputCommon;
+    this.HTMLInputCommon(ownerDocument);
 };
-HTMLLabelElement.prototype = new HTMLElement;
+HTMLLabelElement.prototype = new HTMLInputCommon;
+__extend__(HTMLLabelElement.prototype, inputElements_dataProperties);
 __extend__(HTMLLabelElement.prototype, {
-    get form(){
-        var parent = this.parent;
-        while(parent.nodeName.toLowerCase() != 'form'){
-            parent = parent.parent;
-        }
-        return parent;
-    },
-    get accessKey(){
-        return this.getAttribute('accesskey');
-    },
-    set accessKey(value){
-        this.setAttribute('accesskey',value);
-    },
     get htmlFor(){
         return this.getAttribute('for');
     },
     set htmlFor(value){
         this.setAttribute('for',value);
+    },
+    get dataFormatAs(){
+        return this.getAttribute('dataFormatAs');
+    },
+    set dataFormatAs(value){
+        this.setAttribute('dataFormatAs',value);
     }
 });
 
-$w.HTMLLabelElement = HTMLLabelElement;	$debug("Defining HTMLLegendElement");
-/* 
-* HTMLLegendElement - DOM Level 2
-*/
-var HTMLLegendElement = function(ownerDocument) {
-    this.HTMLElement = HTMLElement;
-    this.HTMLElement(ownerDocument);
-};
-HTMLLegendElement.prototype = new HTMLElement;
-__extend__(HTMLLegendElement.prototype, {
-    get form(){
-        var parent = this.parent;
-        while(parent.nodeName.toLowerCase() != 'form'){
-            parent = parent.parent;
-        }
-        return parent;
-    },
-    get accessKey(){
-        return this.getAttribute('accesskey');
-    },
-    set accessKey(value){
-        this.setAttribute('accesskey',value);
-    }
-});
-
-$w.HTMLLegendElement = HTMLLegendElement;	/**
+$w.HTMLLabelElement = HTMLLabelElement;
+/**
 * Link - HTMLElement 
 */
 $w.__defineGetter__("Link", function(){
@@ -7419,32 +7576,20 @@ __extend__(HTMLOptGroupElement.prototype, {
 });
 
 $w.HTMLOptGroupElement = HTMLOptGroupElement;		$debug("Defining HTMLOptionElement");
-/* 
+/*
 * HTMLOptionElement - DOM Level 2
 */
 var HTMLOptionElement = function(ownerDocument) {
-    this.HTMLElement = HTMLElement;
-    this.HTMLElement(ownerDocument);
+    this.HTMLInputCommon = HTMLInputCommon;
+    this.HTMLInputCommon(ownerDocument);
 };
-HTMLOptionElement.prototype = new HTMLElement;
+HTMLOptionElement.prototype = new HTMLInputCommon;
 __extend__(HTMLOptionElement.prototype, {
-    get form(){
-        var parent = this.parent;
-        while(parent.nodeName.toLowerCase() != 'form'){
-            parent = parent.parent;
-        }
-        return parent;
-    },
     get defaultSelected(){
         return this.getAttribute('defaultSelected');
     },
     set defaultSelected(value){
         this.setAttribute('defaultSelected',value);
-    },
-    get text(){
-         return ((this.nodeValue === null) ||  (this.nodeValue ===undefined)) ? 
-             this.innerHTML : 
-             this.nodeValue;
     },
     get index(){
         var options = this.parent.childNodes;
@@ -7453,12 +7598,6 @@ __extend__(HTMLOptionElement.prototype, {
                 return i;
         }
         return -1;
-    },
-    get disabled(){
-        return this.getAttribute('disabled');
-    },
-    set disabled(value){
-        this.setAttribute('disabled',value);
     },
     get label(){
         return this.getAttribute('label');
@@ -7474,9 +7613,14 @@ __extend__(HTMLOptionElement.prototype, {
             this.defaultSelected = this.selected;
         this.setAttribute('selected', (value ? 'selected' :''));
     },
+    get text(){
+         return ((this.nodeValue === null) ||  (this.nodeValue ===undefined)) ?
+             this.innerHTML :
+             this.nodeValue;
+    },
     get value(){
         return ((this.getAttribute('value') === undefined) || (this.getAttribute('value') === null)) ?
-            this.text : 
+            this.text :
             this.getAttribute('value');
     },
     set value(value){
@@ -7597,15 +7741,48 @@ $w.HTMLScriptElement = HTMLScriptElement;$debug("Defining HTMLSelectElement");
 * HTMLSelectElement - DOM Level 2
 */
 var HTMLSelectElement = function(ownerDocument) {
-    this.HTMLElement = HTMLElement;
-    this.HTMLElement(ownerDocument);
+    this.HTMLTypeValueInputs = HTMLTypeValueInputs;
+    this.HTMLTypeValueInputs(ownerDocument);
 
     this._oldIndex = -1;
 };
-HTMLSelectElement.prototype = new HTMLElement;
+HTMLSelectElement.prototype = new HTMLTypeValueInputs;
+__extend__(HTMLSelectElement.prototype, inputElements_dataProperties);
+__extend__(HTMLButtonElement.prototype, inputElements_size);
+__extend__(HTMLSelectElement.prototype, inputElements_onchange);
+__extend__(HTMLSelectElement.prototype, inputElements_focusEvents);
 __extend__(HTMLSelectElement.prototype, {
-    get type(){
-        return this.getAttribute('type');
+
+    // over-ride the value setter in HTMLTypeValueInputs
+    set value(newValue) {
+        var options = this.options,
+            i, index;
+        for (i=0; i<options.length; i++) {
+            if (options[i].value == newValue) {
+                index = i;
+                break;
+            }
+        }
+        if (index !== undefined) {
+            this.setAttribute('value', newValue);
+            this.selectedIndex = index;
+        }
+    },
+    get value(){    // if we only over-ride one, then getter becomes undefined
+        return this.getAttribute('value')||'';
+    },
+
+    get length(){
+        return this.options.length;
+    },
+    get multiple(){
+        return this.getAttribute('multiple');
+    },
+    set multiple(value){
+        this.setAttribute('multiple',value);
+    },
+    get options(){
+        return this.getElementsByTagName('option');
     },
     get selectedIndex(){
         var options = this.options;
@@ -7625,91 +7802,18 @@ __extend__(HTMLSelectElement.prototype, {
             option.selected = 'selected';
         }
     },
-    get value(){
-        return this.getAttribute('value')||'';
-    },
-    set value(value) {
-        var options = this.options,
-            i, index;
-        for (i=0; i<options.length; i++) {
-            if (options[i].value == value) {
-                index = i;
-                break;
-            }
-        }
-        if (index !== undefined) {
-            this.setAttribute('value', value);
-            this.selectedIndex = index;
-        }
-    },
-    get length(){
-        return this.options.length;
-    },
-    get form(){
-        var parent = this.parent;
-        while(parent.nodeName.toLowerCase() != 'form'){
-            parent = parent.parent;
-        }
-        return parent;
-    },
-    get options(){
-        return this.getElementsByTagName('option');
-    },
-    get disabled(){
-        return (this.getAttribute('disabled')=='disabled');
-    },
-    set disabled(value){
-        this.setAttribute('disabled', (value ? 'disabled' :''));
-    },
-    get multiple(){
-        return this.getAttribute('multiple');
-    },
-    set multiple(value){
-        this.setAttribute('multiple',value);
-    },
-    get name(){
-        return this.getAttribute('name')||'';
-    },
-    set name(value){
-        this.setAttribute('name',value);
-    },
-    get size(){
-        return Number(this.getAttribute('size'));
-    },
-    set size(value){
-        this.setAttribute('size',value);
-    },
-    /*get tabIndex(){
-        return Number(this.getAttribute('tabindex'));
-    },
-    set tabIndex(value){
-        this.setAttribute('tabindex',value);
-    },*/
+
     add : function(){
         __add__(this);
     },
     remove : function(){
         __remove__(this);
-    },
-    blur: function(){
-        __blur__(this);
-
-        if (this._oldIndex != this.selectedIndex){
-            var event = document.createEvent();
-            event.initEvent("change");
-            this.dispatchEvent( event );
-        }
-    },
-    focus: function(){
-        __focus__(this);
-        this._oldIndex = this.selectedIndex;
-    },
-    onchange: function(event){
-        __eval__(this.getAttribute('onchange')||'', this)
     }
 });
 
-$w.HTMLSelectElement = HTMLSelectElement;$debug("Defining HTMLStyleElement");
+$w.HTMLSelectElement = HTMLSelectElement;
+
+$debug("Defining HTMLStyleElement");
 /* 
 * HTMLStyleElement - DOM Level 2
 */
@@ -8050,12 +8154,10 @@ $w.HTMLTableCellElement	= HTMLTableCellElement;$debug("Defining HTMLTextAreaElem
 * HTMLTextAreaElement - DOM Level 2
 */
 var HTMLTextAreaElement = function(ownerDocument) {
-    this.HTMLElement = HTMLElement;
-    this.HTMLElement(ownerDocument);
-
-    this._oldValue = null;
+    this.HTMLInputAreaCommon = HTMLInputAreaCommon;
+    this.HTMLInputAreaCommon(ownerDocument);
 };
-HTMLTextAreaElement.prototype = new HTMLElement;
+HTMLTextAreaElement.prototype = new HTMLInputAreaCommon;
 __extend__(HTMLTextAreaElement.prototype, {
     get cols(){
         return this.getAttribute('cols');
@@ -8068,100 +8170,6 @@ __extend__(HTMLTextAreaElement.prototype, {
     },
     set rows(value){
         this.setAttribute('rows', value);
-    },
-
-    get defaultValue(){
-        return this.getAttribute('defaultValue');
-    },
-    set defaultValue(value){
-        this.setAttribute('defaultValue', value);
-    },
-    get form(){
-        var parent = this.parent;
-        while(parent.nodeName.toLowerCase() != 'form'){
-            parent = parent.parent;
-        }
-        return parent;
-    },
-    get accessKey(){
-        return this.getAttribute('accesskey');
-    },
-    set accessKey(value){
-        this.setAttribute('accesskey',value);
-    },
-    get access(){
-        return this.getAttribute('access');
-    },
-    set access(value){
-        this.setAttribute('access', value);
-    },
-    get disabled(){
-        return (this.getAttribute('disabled')=='disabled');
-    },
-    set disabled(value){
-        this.setAttribute('disabled', (value ? 'disabled' :''));
-    },
-    get maxLength(){
-        return Number(this.getAttribute('maxlength')||'0');
-    },
-    set maxLength(value){
-        this.setAttribute('maxlength', value);
-    },
-    get name(){
-        return this.getAttribute('name')||'';
-    },
-    set name(value){
-        this.setAttribute('name', value);
-    },
-    get readOnly(){
-        return (this.getAttribute('readonly')=='readonly');
-    },
-    set readOnly(value){
-        this.setAttribute('readonly', (value ? 'readonly' :''));
-    },
-    /*get tabIndex(){
-        return Number(this.getAttribute('tabindex'));
-    },
-    set tabIndex(value){
-        this.setAttribute('tabindex',Number(value));
-    },*/
-    get type(){
-        return this.getAttribute('type');
-    },
-    set type(value){
-        this.setAttribute('type',value);
-    },
-    get value(){
-        return this.text;
-    },
-    set value(value){
-        if(this.defaultValue===null&&this.text!==null)
-            this.defaultValue = this.text;
-        return this.text = value;
-    },
-    blur:function(){
-        __blur__(this);
-
-        if (this._oldValue != this.value){
-            var event = document.createEvent();
-            event.initEvent("change");
-            this.dispatchEvent( event );
-        }
-    },
-    focus:function(){
-        __focus__(this);
-        this._oldValue = this.value;
-    },
-    select:function(){
-        __select__(this);
-
-    },
-    click:function(){
-        __click__(this);
-
-    },
-    onchange: function(event){
-        __eval__(this.getAttribute('onchange')||'', this)
     }
 });
 
