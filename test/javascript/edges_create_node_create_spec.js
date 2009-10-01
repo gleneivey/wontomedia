@@ -86,6 +86,8 @@ Screw.Unit(function(){
             E('name_status_icon').src.match(/good_status_icon/)
           );
         });
+
+        submit.click();
       });
 
       function waitForAjaxCreatedElement(elemId){

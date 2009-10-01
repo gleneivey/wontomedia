@@ -17,6 +17,7 @@
 
 
 function nodeCreatePopup(selectElem, nodeType){
+  var l = window.location;
   var newpop = l.protocol + "//" + l.hostname + ":" + l.port +
                "/nodes/new-pop?type=" + nodeType;
   Modalbox.show(newpop, {
@@ -27,8 +28,6 @@ function nodeCreatePopup(selectElem, nodeType){
     slideDownDuration: 0.25,
     slieUpDuration: 0.1
   });
-
-selectElem.value="";//temporary no-op
 }
 
 function nodeCreatePopup_Height(){
@@ -40,15 +39,19 @@ function nodeCreatePopup_Width(){
 }
 
 function nodeCreatePopup_Submit(buttonElement){
-  var formElement = buttonElement.form;
+  var l = window.location;
+  var postUrl = buttonElement.form.action;
+  if (!(postUrl.match(/^http:/)))
+    postUrl = l.protocol + "//" + l.hostname + ":" + l.port +
+      buttonElement.form.action;
 
-  Modalbox.show(formElement.href, {
+  Modalbox.show(postUrl, {
     title: "Create a new node",
     height: nodeCreatePopup_Height(),
     width: nodeCreatePopup_Width(),
 
     method: "post",
-    params: Form.serialize(formElement.id),
+    params: Form.serialize(buttonElement.form.id),
 
     overlayClose: false,
     slideDownDuration: 0.25,
