@@ -16,7 +16,13 @@
 // see <http://www.gnu.org/licenses/>.
 
 
+var nodeSelectElementHavingNewNodeAdded = null;
+var nounVerbCodeOfNewNodeBeingAdded = "";
+
 function nodeCreatePopup(selectElem, nodeType){
+  nodeSelectElementHavingNewNodeAdded = selectElem;
+  nounVerbCodeOfNewNodeBeingAdded = nodeType;
+
   var l = window.location;
   var newpop = l.protocol + "//" + l.hostname + ":" + l.port +
                "/nodes/new-pop?type=" + nodeType;
@@ -52,10 +58,45 @@ function nodeCreatePopup_Submit(buttonElement){
 
     method: "post",
     params: Form.serialize(buttonElement.form.id),
+    afterLoad: nodeCreatePopup_MakeSelection,
 
     overlayClose: false,
     slideDownDuration: 0.25,
     slieUpDuration: 0.1
   });
+}
+
+function nodeCreatePopup_MakeSelection(){
+  if (!($('MB_content').innerHTML.match(/Node Contents/)))
+    return;
+
+    // grab content of new node
+  var idNo = $('node_id').innerHTML;
+  var name = $('node_name').innerHTML;
+  var title = $('node_title').innerHTML;
+
+    // add new node to all (appropriate) <select> controls
+  var controlsToAdd = (nounVerbCodeOfNewNodeBeingAdded == "noun") ?
+    [ 'edge_subject_id', 'edge_obj_id' ]                          :
+    [ 'edge_subject_id', 'edge_predicate_id', 'edge_obj_id' ];
+  for (var c=0; c < controlsToAdd.length; c++){
+    var txt = document.createTextNode(name + " : " + title);
+    var newOptionElem = document.createElement("option");
+    newOptionElem.setAttribute("value", idNo);
+    newOptionElem.appendChild(txt);
+    $(controlsToAdd[c]).appendChild(newOptionElem);
+  }
+
+    // make new node the selection in the operation-originating <select> control
+  nodeSelectElementHavingNewNodeAdded.value = idNo;
+  // Note: we're being lazy.  Just setting the value will cause an Ajax
+  //    fetch to the server for the node's description.  However, we've
+  //    already got it in the nodes/show page content that we're
+  //    interrogating for idNo, name, and title.  However, supressing this
+  //    fetch would take several lines of code and establish a tight linkage
+  //    between here and the on-change logic for <select> elements.
+
+    // close Modalbox
+  Modalbox.hide();
 }
 

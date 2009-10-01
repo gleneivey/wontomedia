@@ -20,16 +20,18 @@
 <h1>Node Contents</h1>
 
 <p>
-  <b>Name:</b>  <%=h @node.name %>
+  <b>Name:</b>  <span id="node_name"><%=h @node.name %></span>
 </p>
 
 <p>
-  <b>Title:</b>  <%=h @node.title %>
+  <b>Title:</b>  <span id="node_title"><%=h @node.title %></span>
 </p>
 
 <p>
-  <b>Description:</b>  <%=h @node.description %>
+  <b>Description:</b>
+  <span id="node_description"><%=h @node.description %></span>
 </p>
+<span id="node_id" style="display: none"><%=h @node.id %></span>
 
 <% unless @edge_list.empty? %>
   <%= render :partial => "show_outbound_links" %>

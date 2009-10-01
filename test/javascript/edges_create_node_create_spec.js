@@ -47,8 +47,9 @@ Screw.Unit(function(){
 
       it( "allows creation of a node from within edges/new page", function(){
         var submitName = 'node_submit';
+        var selectName = 'edge_subject_id';
 
-        changeNamedFieldToValue('edge_subject_id', magicSelectValue);
+        changeNamedFieldToValue(selectName, magicSelectValue);
         waitForAjaxCreatedElement(submitName);
 
         var nodeCreationElements = [ 'node_sti_type', 'node_title',
@@ -65,19 +66,20 @@ Screw.Unit(function(){
         expect(submit.className).to(match, /^inactiveButton/);
 
         // node.title
-        changeNamedFieldToValue(nodeCreationElements[1],
-          "new node for JS testing");
+        var title = "new node for JS testing";
+        changeNamedFieldToValue(nodeCreationElements[1], title);
         expect(submit.className).to(match, /^activeButton/);
         expect(E(nodeCreationElements[2]).value).to(
           equal, "NewNodeForJsTesting");
 
         // node.name
-        changeNamedFieldToValue(nodeCreationElements[2], "newJsNode");
+        var name = "newJsNode";
+        changeNamedFieldToValue(nodeCreationElements[2], name);
         expect(submit.className).to(match, /^activeButton/);
 
         // node.description
-        changeNamedFieldToValue(nodeCreationElements[3],
-          "A node for testing of popup JS");
+        var description = "A node for testing of popup JS";
+        changeNamedFieldToValue(nodeCreationElements[3], description);
         expect(submit.className).to(match, /^activeButton/);
 
         waitForAjaxCondition(function(){
@@ -88,6 +90,21 @@ Screw.Unit(function(){
         });
 
         submit.click();
+        var nodeRE = new RegExp("^" + name + " : " + title + "$");
+        waitForAjaxCondition(function(){
+          return (optionOfElementMatchingRe(E(selectName), nodeRE) != null);
+        });
+
+        var opt;
+        opt = optionOfElementMatchingRe(E('edge_subject_id'), nodeRE);
+        expect(opt).to_not(be_null);
+        opt = optionOfElementMatchingRe(E('edge_predicate_id'), nodeRE);
+        expect(opt).to(be_null);
+        opt = optionOfElementMatchingRe(E('edge_obj_id'), nodeRE);
+        expect(opt).to_not(be_null);
+
+        var newNodesId = opt.value;
+        expect(E(selectName).value).to(equal, newNodesId);
       });
 
       function waitForAjaxCreatedElement(elemId){
@@ -104,6 +121,13 @@ Screw.Unit(function(){
         }
         expect(c).to(be_lt, maxPollAttempts);
         sleep(5*pollingInterval);   // modalbox needs time to process....
+      }
+
+      function optionOfElementMatchingRe(selectElem, regExp){
+	for (var c=0;c < selectElem.options.length; c++)
+	  if (selectElem.options[c].text.match(regExp))
+	    return selectElem.options[c];
+        return null;
       }
     });
   });

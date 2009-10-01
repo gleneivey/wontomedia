@@ -482,7 +482,7 @@ function plumbEventHandlersToNodeCreationElements(customizationSelector){
     nodeSubmit.observe('click',
       function(ev){
         if (!okToSubmitNodeForm())
-	  ev.stop();
+          ev.stop();
       }
     );
   }
