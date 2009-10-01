@@ -67,14 +67,15 @@ begin   # don't force Blue Ridge dependency on non-developers
   # Support Test::Unit & Test/Spec style
   namespace :test do
     desc "Runs all the JavaScript tests and outputs the results."
-    task :javascripts => [ :environment, "db:test_fixtures" ] do
+    task :javascripts => [ :environment ] do
+      prepare_and_load_database
 
       Dir.chdir("#{RAILS_ROOT}/test/javascript") do
         all_fine = true
 
         begin
           load_wontomedia_app_seed_data
-          setup_for_js_testing
+          setup_server_and_environment_for_js_testing
 
           if ENV["TEST"]
             all_fine = false unless
@@ -85,11 +86,13 @@ begin   # don't force Blue Ridge dependency on non-developers
               system "#{test_runner_command} #{files}"
           end
         ensure
-          cleanup_after_js_testing
+          cleanup_server_and_environment_after_js_testing
         end
 
         raise "JavaScript test failures" unless all_fine
       end
+
+      cleanup_database
     end
   end
 
@@ -98,7 +101,7 @@ begin   # don't force Blue Ridge dependency on non-developers
     task :fixtures => [ :environment, "db:test_fixtures" ] do
       begin
         load_wontomedia_app_seed_data
-        setup_for_js_testing
+        setup_server_and_environment_for_js_testing
 
         ENV["BLUERIDGE_PREFIX"] = "http://localhost:3001/#{@link_root}"
         js_spec_dir = BlueRidge.find_javascript_spec_dir
@@ -110,7 +113,7 @@ begin   # don't force Blue Ridge dependency on non-developers
           system "firefox #{fixture_path}"
         end
       ensure
-        cleanup_after_js_testing
+        cleanup_server_and_environment_after_js_testing
       end
     end
 
@@ -128,7 +131,7 @@ begin   # don't force Blue Ridge dependency on non-developers
   require 'webrat'
   require 'webrat/selenium/application_servers/rails'
 
-  def setup_for_js_testing
+  def setup_server_and_environment_for_js_testing
     # Link the JavaScript test folder under /public to avoid "same
     # origin policy" (DEVELOPTMENT ONLY!).
     system "ln -s #{RAILS_ROOT} #{RAILS_ROOT}/public/#{@link_root}"
@@ -146,13 +149,25 @@ begin   # don't force Blue Ridge dependency on non-developers
            "--pid #{Webrat::Selenium::ApplicationServers::Rails.new.pid_file} &"
   end
 
-  def cleanup_after_js_testing
+  def cleanup_server_and_environment_after_js_testing
     STDOUT.puts                    # Blue Ridge doesn't put a \n after last "."
     system "rm #{RAILS_ROOT}/public/#{@link_root}"
     silence_stream(STDOUT) do
       system "mongrel_rails stop -c #{RAILS_ROOT} " +
              "--pid #{Webrat::Selenium::ApplicationServers::Rails.new.pid_file}"
     end
+  end
+
+  def prepare_and_load_database
+    # ensure that we start with a clean database
+    Rake::Task["db:test:prepare"].invoke
+    # plus our test "fixture" data
+    Rake::Task["db:test_fixtures"].invoke
+  end
+
+  def cleanup_database
+    # ensure that we *leave* a clean database, too
+    Rake::Task["db:test:prepare"].invoke
   end
 
 rescue LoadError

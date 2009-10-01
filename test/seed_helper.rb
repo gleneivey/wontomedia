@@ -22,10 +22,8 @@ require 'active_record/fixtures'
 
 # define method in any context where 'require'ed; no fixed namespace/class
 def load_wontomedia_app_seed_data
-  unless ActiveRecord::Base.connected?
-    ActiveRecord::Base.establish_connection(
-      ActiveRecord::Base.configurations['test'])
-  end
+  ensure_connection
+
   Dir.glob(
            File.join( File.dirname(__FILE__), "..", "db", "fixtures",
                       "**", "*.yml" )).each do |path|
@@ -34,11 +32,30 @@ def load_wontomedia_app_seed_data
     path.sub!(/\.yml$/, "")
 
     begin
-      f = Fixtures.new( ActiveRecord::Base.connection, table, nil, path )
+      f = Fixtures.new( @helper_db_connection, table, nil, path )
       f.insert_fixtures
     rescue ActiveRecord::StatementInvalid
       # must have already loaded this data
     end
   end
 end
+
+def ensure_connection
+  unless ActiveRecord::Base.connected?
+    ActiveRecord::Base.establish_connection(
+      ActiveRecord::Base.configurations['test'])
+  end
+  @helper_db_connection = ActiveRecord::Base.connection
+end
+
+def start_rails_db_transaction
+  @helper_db_connection.increment_open_transactions
+  @helper_db_connection.begin_db_transaction
+end
+
+def rollback_rails_db_transaction
+  @helper_db_connection.rollback_db_transaction
+  @helper_db_connection.decrement_open_transactions
+end
+
 
