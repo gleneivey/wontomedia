@@ -124,9 +124,9 @@ Screw.Unit(function(){
       }
 
       function optionOfElementMatchingRe(selectElem, regExp){
-	for (var c=0;c < selectElem.options.length; c++)
-	  if (selectElem.options[c].text.match(regExp))
-	    return selectElem.options[c];
+        for (var c=0;c < selectElem.options.length; c++)
+          if (selectElem.options[c].text.match(regExp))
+            return selectElem.options[c];
         return null;
       }
     });

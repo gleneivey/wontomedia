@@ -67,7 +67,9 @@ function createOnchangeHandler(thisName){
   thisElem.observe('change',
     function(){                       // nest all these fn defs for closure
       if (thisElem.value != lastValue[thisName]){
+        var lastLast = lastValue[thisName];
         lastValue[thisName] = thisElem.value;
+
         if (thisElem.value == ""){
           divToBlank(thisName);
           flagEdgeAsRequired(thisName);
@@ -75,7 +77,7 @@ function createOnchangeHandler(thisName){
         else if (thisElem.value == "-1"){
           divToBlank(thisName);
           var type = (thisName == "predicate") ? "verb" : "noun";
-          nodeCreatePopup(thisElem, type);
+          nodeCreatePopup(thisElem, type, lastLast);
         }
         else {
           clearError(thisName);

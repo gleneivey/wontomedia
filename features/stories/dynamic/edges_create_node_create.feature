@@ -31,7 +31,6 @@ Feature:  Create new nodes in the process of creating an edge
 # sets the value of the original select control.
 
 
-  @unfinished
   Scenario: Can create a new node during edge creation
     Given I am on the new edges page
     When I select "- create a new node for this object -" from "Subject"
@@ -40,16 +39,16 @@ Feature:  Create new nodes in the process of creating an edge
     Then the "MB_content" element should match "Selection of a type is required"
     And the "MB_content" element should match "No more than 255 characters"
 
-    Given I fill in "Name" with "aNewSubject"
+    Given I select "Item" from "node_sti_type"
+    And I fill in "Name" with "aNewSubject"
     And I fill in "Title" with "A new node for a new edge's Subject"
     And I fill in "Description" with "New subject node: test test test"
     When I press "Create"
     And I wait for Ajax requests to complete
     Then there should not be an element "MB_content"
-    And the "edge_subject_id" field should be "aNewSubject : A new node for a new edge's Subject"
+    And "aNewSubject : A new node for a new edge's Subject" is selected from "edge_subject_id"
 
 
-  @unfinished
   Scenario: Can cancel the creation of a node during edge creation
     Given I am on the new edges page
     And I select "peer_of : Peer Of (wm built-in relationship)" from "Relates to"
@@ -62,14 +61,14 @@ Feature:  Create new nodes in the process of creating an edge
     And I fill in "Description" with "Too lazy to write one"
     When I follow "Cancel node creation"
     Then there should not be an element "MB_content"
-    And the "edge_predicate_id" field should be "peer_of : Peer Of (wm built-in relationship)"
+    And "peer_of : Peer Of (wm built-in relationship)" is selected from "edge_predicate_id"
 
 
-  @unfinished
   Scenario: Node created during cancelled edge creation still persists
     Given I am on the new edges page
     And I select "- create a new node for this object -" from "Object"
     And I wait for Ajax requests to complete
+    And I select "Category" from "node_sti_type"
     And I fill in "Name" with "newNode"
     And I fill in "Title" with "New node"
     And I press "Create"

@@ -55,12 +55,17 @@ When /^I type the "(.+)" special key$/ do |key_string|
 end
 
 
+When /^I click the "([^\"]+)" element$/ do |elemId|
+  selenium.get_eval "window.document.getElementById('#{elemId}').click();"
+end
+
+
 When /^I put the focus on the "([^\"]+)" element$/ do |element_name|
   selenium.focus(element_name)
 end
 
 
-When /^the focus is on the "([^\"]+)" element$/ do |element_name|
+Then /^the focus is on the "([^\"]+)" element$/ do |element_name|
   assert selenium.is_element_present(element_name),
     "No such element as '#{element_name}'."
   result = selenium.get_eval "" +
@@ -80,11 +85,6 @@ Then /^the element "([^\"]+)" has the format "([^\"]+)"$/ do |selector, fmt|
   assert result == style_value,
     "'#{selector}' element should have had the format '#{fmt}', " +
       "but was '#{result}'"
-end
-
-
-When /^a debug alert "([^\"]+)"$/ do |alert_text|
-  selenium.get_eval "alert('#{alert_text}');"
 end
 
 
@@ -132,8 +132,12 @@ Then /^the "([^\"]+)" element's "([^\"]+)" attribute is "([^\"]*)"$/ do |
 end
 
 
-When /^I click the "([^\"]+)" element$/ do |elemId|
-  selenium.get_eval "window.document.getElementById('#{elemId}').click();"
+Then /^"([^\"]+)" is selected from "([^\"]+)"$/ do |expectedText, elemId|
+  currentText = selenium.get_eval(
+    "var selElem = window.document.getElementById('#{elemId}');              \
+     selElem.options[selElem.selectedIndex].text;")
+  assert currentText == expectedText,
+    "<select> element '#{elemId}' should have had the option '#{expectedText}' selected, but the selected option was '#{currentText}'"
 end
 
 
@@ -144,4 +148,10 @@ end
 When /^I wait for Ajax requests to complete$/ do
   selenium.wait_for_ajax
 end
+
+
+When /^a debug alert "([^\"]+)"$/ do |alert_text|
+  selenium.get_eval "alert('#{alert_text}');"
+end
+
 

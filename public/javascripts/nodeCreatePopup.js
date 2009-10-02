@@ -18,10 +18,12 @@
 
 var nodeSelectElementHavingNewNodeAdded = null;
 var nounVerbCodeOfNewNodeBeingAdded = "";
+var priorValueOfSelectElementHavingNewNodeAdded = "";
 
-function nodeCreatePopup(selectElem, nodeType){
+function nodeCreatePopup(selectElem, nodeType, priorValue){
   nodeSelectElementHavingNewNodeAdded = selectElem;
   nounVerbCodeOfNewNodeBeingAdded = nodeType;
+  priorValueOfSelectElementHavingNewNodeAdded = priorValue;
 
   var l = window.location;
   var newpop = l.protocol + "//" + l.hostname + ":" + l.port +
@@ -66,9 +68,18 @@ function nodeCreatePopup_Submit(buttonElement){
   });
 }
 
+function nodeCreatePopup_Cancel(){
+  nodeSelectElementHavingNewNodeAdded.value =
+    priorValueOfSelectElementHavingNewNodeAdded;
+  Modalbox.hide();
+}
+
 function nodeCreatePopup_MakeSelection(){
-  if (!($('MB_content').innerHTML.match(/Node Contents/)))
+  if (!($('MB_content').innerHTML.match(/Node Contents/))){
+    nodeSelectElementHavingNewNodeAdded.value =
+      priorValueOfSelectElementHavingNewNodeAdded;
     return;
+  }
 
     // grab content of new node
   var idNo = $('node_id').innerHTML;
