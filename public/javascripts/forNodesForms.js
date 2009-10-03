@@ -242,6 +242,11 @@ function genDialog(){
 
 
 
+function clearNameUniquenessIndicators(){
+    $('name_must_be_unique').className = "";
+    $('name_is_unique').className = "confirmationTextInvisible";
+    $('name_status_icon').src = '/images/blank_status_icon.png';
+}
 
 var valueWhenLastChecked = "";
 var uniquenessTimerId = -1;
@@ -283,9 +288,7 @@ function maybeCheckNameUniqueness(delay){
       clearTimeout(uniquenessTimerId);
     uniquenessTimerId = -1;
 
-    $('name_must_be_unique').className = "";
-    $('name_is_unique').className = "confirmationTextInvisible";
-    $('name_status_icon').src = '/images/blank_status_icon.png';
+    clearNameUniquenessIndicators();
 
     var old = nodeFormErrors["unique_name"];
     nodeFormErrors["unique_name"] = false;

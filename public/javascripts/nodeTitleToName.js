@@ -29,7 +29,9 @@ function generateFromTitle(titleInputElem, nameInputElem){
     if (nameInputElem.value == null ||
         nameInputElem.value == "")
       result = true;
+
     nameInputElem.value = genNameValue(titleInputElem.value);
+    clearNameUniquenessIndicators();
   }
   return result;
 }

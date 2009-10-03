@@ -127,13 +127,32 @@ Screw.Unit(function(){
         expect(E('name_status_icon').src).to(match, /good_status_icon\.png/);
       });
 
-/*
-      it( "clears Name string confirmation on user node.Name change ",
+      it( "clears Name string confirmation on auto-gen node.Name change ",
         function(){
 
+        // setup
+        E('node_sti_type').value = "ItemNode";
+        var title = E('node_title');
+        var name = E('node_name');
+
+        // start entering a Title, which will auto-generate a Name
+        changeFieldToValue(title, "start of title");
+        // focus on Name field will trigger uniqueness check
+        name.focus();
+        checkBeforeWorking();
+        checkWorkingStart();
+        waitForAjax();
+
+        // extend Title, will regenerate Name, should clear "unique" flags
+        changeFieldToValue(title, "start of title-end of title");
+        expect(E('name_is_unique').className).
+          to(match, /confirmationTextInvisible/);
+        expect(E('name_status_icon').src).to(match,
+          /blank_status_icon\.png/);
       });
 
-      it( "clears Name string confirmation on auto-gen node.Name change ",
+/*
+      it( "clears Name string confirmation on user node.Name change ",
         function(){
 
       });
