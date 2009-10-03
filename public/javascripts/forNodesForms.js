@@ -271,7 +271,7 @@ function launchNameUniquenessCheck(){
                     onSuccess: nameUCheckSuccess, onFailure: nameUCheckFailure
                   });
 
-  $('name_status_icon').src = '/images/working_status_icon.png';
+  $('name_status_icon').src = '/images/working_status_icon.gif';
 }
 function maybeCheckNameUniqueness(delay){
   var name = $(controlNamePrefix + 'node_name');

@@ -44,7 +44,7 @@ Screw.Unit(function(){
         expect(E('name_is_unique').className).
           to(match, /confirmationTextInvisible/);
         expect(E('name_status_icon').src).to(match,
-          /working_status_icon\.png/);
+          /working_status_icon/);
       }
 
       function waitForAjax(){

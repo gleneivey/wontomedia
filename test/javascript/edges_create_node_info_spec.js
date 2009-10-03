@@ -98,7 +98,7 @@ Screw.Unit(function(){
         changeNamedFieldToValue('edge_' + divName + '_id', nodeId);
         sleep(timeMargin);
         expectDivToContainImgMatching(divName + '_desc',
-                                      /working_status_icon\.png/);
+                                      /working_status_icon/);
         expect(E(divName + '_desc').className).to(equal, "desc");
       }
 
