@@ -250,13 +250,16 @@ function clearNameUniquenessIndicators(){
 
 var valueWhenLastChecked = "";
 var uniquenessTimerId = -1;
+var ajaxRequestInProgress = null;
 function nameUCheckSuccess(transport){
+  ajaxRequestInProgress = null;
   $('name_must_be_unique').className = "helpTextFlagged";
   $('name_status_icon').src = '/images/error_status_icon.png';
   nodeFormErrors["unique_name"] = true;
   makeButtonSeemDisabled(nodeSubmit);
 }
 function nameUCheckFailure(transport){
+  ajaxRequestInProgress = null;
   if (transport.status == 404){
     $('name_is_unique').className = "confirmationTextShow";
     $('name_status_icon').src = '/images/good_status_icon.png';
@@ -270,11 +273,11 @@ function launchNameUniquenessCheck(){
 
   var l = window.location;
   var lookup = l.protocol + "//" + l.hostname + ":" + l.port + '/nodes/lookup';
-  new Ajax.Request(lookup, {
-                    method: 'get', parameters: "name=" +
-                      $F(controlNamePrefix + 'node_name'),
-                    onSuccess: nameUCheckSuccess, onFailure: nameUCheckFailure
-                  });
+  ajaxRequestInProgress = new Ajax.Request(
+    lookup, {
+      method: 'get', parameters: "name=" + $F(controlNamePrefix + 'node_name'),
+      onSuccess: nameUCheckSuccess, onFailure: nameUCheckFailure
+    });
 
   $('name_status_icon').src = '/images/working_status_icon.gif';
 }
@@ -287,6 +290,9 @@ function maybeCheckNameUniqueness(delay){
     if (uniquenessTimerId != -1)
       clearTimeout(uniquenessTimerId);
     uniquenessTimerId = -1;
+    if (ajaxRequestInProgress != null)
+      ajaxRequestInProgress.transport.abort();
+    ajaxRequestInProgress = null;
 
     clearNameUniquenessIndicators();
 

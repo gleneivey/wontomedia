@@ -9226,6 +9226,7 @@ $debug("Initializing Window XMLHttpRequest.");
 $w.XMLHttpRequest = function(){
 	this.headers = {};
 	this.responseHeaders = {};
+    this.$continueProcessing = true;
 	$debug("creating xhr");
 };
 
@@ -9246,36 +9247,41 @@ XMLHttpRequest.prototype = {
 		var _this = this;
 		
 		function makeRequest(){
-			$env.connection(_this, function(){
-			  var responseXML = null;
-				_this.__defineGetter__("responseXML", function(){
-      				if ( _this.responseText.match(/^\s*</) ) {
-      				  if(responseXML){
-      				      return responseXML;
-      				      
-  				      }else{
-        					try {
-        					    $debug("parsing response text into xml document");
-        						responseXML = $domparser.parseFromString(_this.responseText+"");
-                                return responseXML;
-        					} catch(e) { 
-                                $error('response XML does not apear to be well formed xml', e);
-        						responseXML = $domparser.parseFromString("<html>"+
-                                    "<head/><body><p> parse error </p></body></html>");
-                                return responseXML;
+            $env.connection(_this, function(){
+                if (_this.$continueProcessing){
+                    var responseXML = null;
+                    _this.__defineGetter__("responseXML", function(){
+                        if ( _this.responseText.match(/^\s*</) ) {
+                          if(responseXML){
+                              return responseXML;
+
+                          }else{
+                                try {
+                                    $debug("parsing response text into xml document");
+                                    responseXML = $domparser.parseFromString(_this.responseText+"");
+                                    return responseXML;
+                                } catch(e) { 
+                                    $error('response XML does not apear to be well formed xml', e);
+                                    responseXML = $domparser.parseFromString("<html>"+
+                                        "<head/><body><p> parse error </p></body></html>");
+                                    return responseXML;
+                                }
                             }
-      					}
-      				}else{
-                        $env.warn('response XML does not apear to be xml');
-                        return null;
-                    }
-      			});
-                _this.__defineSetter__("responseXML",function(xml){
-                    responseXML = xml;
-                });
+                        }else{
+                            $env.warn('response XML does not apear to be xml');
+                            return null;
+                        }
+                    });
+                    _this.__defineSetter__("responseXML",function(xml){
+                        responseXML = xml;
+                    });
+                }
 			}, data);
-			_this.onreadystatechange();
+
+            if (_this.$continueProcessing)
+                _this.onreadystatechange();
 		}
+
 		if (this.async){
 		    $debug("XHR sending asynch;");
 			$env.runAsync(makeRequest);
@@ -9285,7 +9291,7 @@ XMLHttpRequest.prototype = {
 		}
 	},
 	abort: function(){
-		//TODO
+        this.$continueProcessing = false;
 	},
 	onreadystatechange: function(){
 		//TODO
