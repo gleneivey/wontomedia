@@ -26,6 +26,7 @@ class TempLoginController < ApplicationController
   def login_verify
     people = {
       "gei@mcn.org"         => "1968",
+      "barth3141@gmail.com" => "1992",
       "esh@qualitytree.com" => "1986",
       "bill@netwidget.com"  => "1989",
       "pivey@mcn.org"       => "1989",

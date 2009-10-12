@@ -165,10 +165,10 @@ end # namespace :test
 
 # redefine Rail's basic test task so that we get a reasonable execution order
 Rake::Task[:test].clear!
-desc 'Run all unit, functional and integration tests'
+desc 'Run all unit, functional, integration, and policy checks'
 task :test do
-  errors = %w(test:dev test:dbmigrations test:functionals test:javascripts
-              test:integration features:acceptance).
+  errors = %w(test:policies test:dev test:dbmigrations test:functionals
+              test:javascripts test:integration features:acceptance).
       collect do |task|
 
     begin
@@ -184,6 +184,5 @@ end
 
 
 
-# not really done unless we conform to source policies, and check any
-# unfinished (build break expected) Cucumber tests very last
-task :default => [ "build", "test:policies", "features:unfinished" ]
+# not really done unless we conform to source policies
+task :default => [ "build" ]
