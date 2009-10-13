@@ -45,7 +45,7 @@ system "DEBIAN_FRONTEND=noninteractive apt-get -y purge " .
                          " mysql-common ruby1.8-dev libdbd-mysql-perl " .
                          " libmysqlclient15off libmysqlclient15-dev " .
                          " zlib1g-dev libdbi-perl " .
-                         " libnet-daemon-perl libplrpc-perl linux-libc-dev";
+                         " libnet-daemon-perl libplrpc-perl";
 
 
         # get rid of password config lines added for mysql
