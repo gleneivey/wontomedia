@@ -1,0 +1,17 @@
+This directory and those under it contain copies of the content of
+wiki.wontology.org.  They are included here as part of WontoMedia so
+that they can be referenced off-line, as a backup against data loss on
+the public Wiki, 
+
+
+wiki.wontology.org is an instance of the MediaWiki wiki server.  All
+of the files here with ".mediawiki" extensions are written using
+MediaWiki markup and can be directly substituted into the matching
+page's "edit" form box.
+
+
+The content of all of these pages are copyrighted and licensed under
+the GNU Free Documentation License (see
+wontomedia/COPYING.DOCUMENTATION and/or
+http://www.gnu.org/copyleft/fdl.html).
+
