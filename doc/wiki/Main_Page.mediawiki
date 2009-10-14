@@ -15,16 +15,15 @@ If this command is familiar to you, and you know how to update a Rails applicati
 '''To install WontoMedia for development''', it is better to obtain it directly from our ''development'' repository on [[GitHub]]:
 
   ''cd to the directory that you want wontomedia '''below''' ''
-  git remote add origin git@github.com:gleneivey/wontomedia.git
   git clone git://github.com/gleneivey/wontomedia.git 
 
 And we have more information on [[SettingUpYourDevelopmentEnvironment]] separately.
 
 == Developer's References ==
 
-Our latest source code is on GitHub (we push to the [http://rubyforge.org/scm/?group_id=7903 Git repository on RubyForge] when each "user story" is done).  You can install directly from it (see above) or [http://github.com/gleneivey/wontomedia/tree/master use GitHub's web-based source browser] to investigate our source.
+Our latest source code is on GitHub (we push to the [http://rubyforge.org/scm/?group_id=7903 Git repository on RubyForge] for each minor release, but not when each "user story" is done).  You can install directly from it (see above) or [http://github.com/gleneivey/wontomedia/tree/master use GitHub's web-based source browser] to investigate our source.
 
-* [[IveJustGotALittleChange]] &mdash; The minimal steps for volunteering a code change ("contribution guidelines"), pull request or patch
+* [[IveJustGotALittleChange]] &mdash; The minimal steps for volunteering a code change ("contribution guidelines"), pull request, or patch
 * [[SettingUpYourDevelopmentEnvironment]] &mdash; Alternatives for installation sources, tool dependencies, configuring your <tt>database.yml</tt>, running tests
 * [[AdditionalDevelopmentInformation]] &mdash; Things you'll want to know if you're thinking about doing more than a little change or two.
 
@@ -34,11 +33,11 @@ For reference, the tools we use are as follows (all [http://www.fsf.org/about/wh
 * the [http://rubyonrails.org/ Ruby-on-Rails] web application framework on top of the [http://www.mysql.com/ MySQL] database server
 * the [http://www.kernel.org/pub/software/scm/git/docs/ Git] source code management system
 * the [http://www.rubygems.org/ Gem] Ruby software packaging and distribution system
-* [http://rubyforge.org/projects/wontomedia/ RubyForge], the open-source Ruby project hosting site, who also hosts the [http://wontomedia.rubyforge.org/ development project web site]
+* [http://rubyforge.org/projects/wontomedia/ RubyForge], the open-source Ruby project hosting site, which hosts hosts our [http://wontomedia.rubyforge.org/ project web site]
 * [https://github.com/gleneivey/wontomedia/tree GitHub], the public Git repository web site
 * various Ruby and web-based automated-testing tools, including:
 ** [http://cukes.info/ Cucumber] for our automated acceptance testing framework
-*** [http://github.com/brynary/webrat/tree/master Webrat] for acceptance testing browser simulator
+*** [http://github.com/brynary/webrat/tree/master Webrat] for browser simulation for acceptance testing of Rails-only 
 *** [http://seleniumhq.org/projects/remote-control/ Selenium RC] for automated in-browser Ajax testing
 ** [http://zentest.rubyforge.org/ZenTest ZenTest] primarily for "continuous testing (i.e., its <tt>autotest</tt> tool)
 

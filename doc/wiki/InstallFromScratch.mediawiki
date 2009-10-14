@@ -120,7 +120,7 @@ In the <tt>config</tt> directory, copy the file <tt>database-mysql.yml</tt> to <
 Once <tt>database.yml</tt> is in place, the database must be initialized with the correct tables for WontoMedia.  This is accomplished by executing the commands:
 
  cd ''[your gem installation dir]''/gems/wontomedia-''[version]''
- sudo RAILS_ENV=production rake db:schema:load
+ sudo RAILS_ENV=production rake db:reseed
 
 ==== Running WontoMedia ====
 

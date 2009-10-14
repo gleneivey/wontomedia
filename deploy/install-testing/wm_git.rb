@@ -18,7 +18,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-#test_git_source = "git://10.201.2.100/~gei/wontomedia/"
+#test_git_source = "git://10.201.2.100/~gei/Repose/Mainlines/wontomedia/"
 ### Note:  below is a GitHub "public" clone URL, which means you won't
 ### be able to push any changes you make back to GitHub.  Better would be
 ### to get permission to commit and use the "Your Clone URL", or to
@@ -35,16 +35,6 @@ cmd = "git clone #{test_git_source}"
 puts cmd
 `#{cmd}`
 exit $?.exitstatus if $?.exitstatus != 0
-
-
-          # make sure we've got the databases in place
-puts "mysql CREATE/GRANT"
-IO.popen("mysql -u root -pmysql", "r+") { |mysql|
-  mysql.write( "CREATE DATABASE wm_dev_db;\n" )
-  mysql.write( "GRANT ALL PRIVILEGES ON wm_dev_db.* TO 'wm'\@'localhost' " +
-                 "IDENTIFIED BY 'wm-pass';\n" )
-  mysql.write( "quit\n\n" )
-}
 
 
           # write a new "database.yml" file in our Git directory

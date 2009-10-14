@@ -32,10 +32,27 @@ exc "apt-get -y #{apt_load_options} install libxml2-dev libxslt1-dev"
 
 
       # don't get stuck on accepting-the-license dialog
-exc "sed --in-place=.backup " +
-      " -e '/^Template: shared\\/accepted-sun-dlj-v1-1/aValue: true' " +
-      " -e '/^Template: shared\\/accepted-sun-dlj-v1-1/aFlags: seen' " +
-      "/var/cache/debconf/config.dat"
+if `grep sun-dlj /var/cache/debconf/config.dat`
+puts "editing config.dat"
+  exc "sed --in-place=.backup " +
+        " -e '/^Template: shared\\/accepted-sun-dlj-v1-1/aValue: true' " +
+        " -e '/^Template: shared\\/accepted-sun-dlj-v1-1/aFlags: seen' " +
+        "/var/cache/debconf/config.dat"
+else
+puts "appending to config.dat"
+  fileSnipet = <<FILESNIPET
+
+Name: shared/accepted-sun-dlj-v1-1
+Template: shared/accepted-sun-dlj-v1-1
+Value: true
+Owners: sun-java6-bin, sun-java6-jre
+Flags: seen
+
+FILESNIPET
+  File.open("/var/cache/debconf/config.dat", "a") do |debconf|
+    debconf.puts fileSnipet
+  end
+end
 exc "apt-get -y #{apt_load_options} install sun-java6-bin sun-java6-jre java-common rhino"
 
 
