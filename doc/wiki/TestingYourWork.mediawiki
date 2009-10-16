@@ -40,7 +40,7 @@ general term was needed.  All development tests are located under
 
 Acceptance-test driven development (ATDD) is a development cycle
 analogous to TDD, but at a higher-level.  In the context of an agile
-development process, and for our use on WontoMedia, 
+development process, and for our use on WontoMedia,
 '''''acceptance tests''''' are a detailed criteria determined by the
 [[Customer]] in collaboration with the development team.  The atomic
 unit of system functionality is the
@@ -81,7 +81,7 @@ formal coding standards, scripts to verify compliance would be
 included in the policy tests.  (Informally, the goal is to style
 WontoMedia's source to match the Rails source.  As such, if you need a
 written style guide, we suggest
-[http://www.pathf.com/blogs/ruby-and-rails-style-guide/ Ruby and Rails], 
+[http://www.pathf.com/blogs/ruby-and-rails-style-guide/ Ruby and Rails],
 [http://www.pathf.com/blogs/2008/10/ruby-stylista/ Ruby Stylista], and
 [http://www.caliban.org/ruby/rubyguide.shtml Unofficial Ruby Usage]
 ''in that order or precedence''.)

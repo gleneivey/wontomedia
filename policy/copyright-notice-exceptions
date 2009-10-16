@@ -15,9 +15,11 @@
     # updated periodically with new versions
 vendor
 public/javascripts/modalbox.js
+config/environments/cucumber.rb
 features/support/paths.rb
 features/support/version_check.rb
 features/support/env.rb
+features/step_definitions/webrat_steps.rb
 
 
     # repeatedly auto-generated from other files
@@ -26,7 +28,7 @@ VERSION.yml
 
     # one-time auto-generated files, never to be modified
     #  "lock" directive contains git commit # of acceptable version
-!lock            6ac5825b85a2fd5a2cf9ae8bf4f24586e4a0b7e3
+!lock            4b45222d3f846a9bac9c1317657799862f13a1ba
 script
 config/database-sample-mysql.yml
 config/environments/development.rb

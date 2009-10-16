@@ -15,7 +15,7 @@ If this command is familiar to you, and you know how to update a Rails applicati
 '''To install WontoMedia for development''', it is better to obtain it directly from our ''development'' repository on [[GitHub]]:
 
   ''cd to the directory that you want wontomedia '''below''' ''
-  git clone git://github.com/gleneivey/wontomedia.git 
+  git clone git://github.com/gleneivey/wontomedia.git
 
 And we have more information on [[SettingUpYourDevelopmentEnvironment]] separately.
 
@@ -37,7 +37,7 @@ For reference, the tools we use are as follows (all [http://www.fsf.org/about/wh
 * [https://github.com/gleneivey/wontomedia/tree GitHub], the public Git repository web site
 * various Ruby and web-based automated-testing tools, including:
 ** [http://cukes.info/ Cucumber] for our automated acceptance testing framework
-*** [http://github.com/brynary/webrat/tree/master Webrat] for browser simulation for acceptance testing of Rails-only 
+*** [http://github.com/brynary/webrat/tree/master Webrat] for browser simulation for acceptance testing of Rails-only
 *** [http://seleniumhq.org/projects/remote-control/ Selenium RC] for automated in-browser Ajax testing
 ** [http://zentest.rubyforge.org/ZenTest ZenTest] primarily for "continuous testing (i.e., its <tt>autotest</tt> tool)
 
