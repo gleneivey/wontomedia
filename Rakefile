@@ -168,7 +168,7 @@ Rake::Task[:test].clear!
 desc 'Run all unit, functional, integration, and policy checks'
 task :test do
   errors = %w(test:policies test:dev test:dbmigrations test:functionals
-              test:javascripts test:integration features:acceptance).
+              test:javascripts test:integration cucumber:ok).
       collect do |task|
 
     begin

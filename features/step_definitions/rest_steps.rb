@@ -17,13 +17,6 @@
 
 
 
-When /^I (am on|go to|try to go to) the path "(.+)"$/ do |fu, path|
-  visit path
-  if !@browser.nil?
-    Kernel.sleep(1.5)
-  end
-end
-
 When /^I (am on|go to|try to go to) the (\S+) (\S+) page$/ do |fu, action,
                                                                    controller|
   if action == "index"

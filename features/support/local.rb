@@ -15,3 +15,8 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
 
+
+$KCODE = "u"
+
+require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
+load_wontomedia_app_seed_data

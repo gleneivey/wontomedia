@@ -16,60 +16,65 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-begin    # don't force Cucumber dependency on non-developers
-  $LOAD_PATH.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib') if
-    File.directory?(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
+$LOAD_PATH.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib') if
+  File.directory?(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
+
+unless ARGV.any? {|a| a =~ /^gems/}
+
+begin
   require 'cucumber/rake/task'
 
-  namespace :features do
+  # Use vendored cucumber binary if possible. If it's not vendored,
+  # Cucumber::Rake::Task will automatically use installed gem's cucumber binary
+  vendored_cucumber_binary =
+    Dir["#{RAILS_ROOT}/vendor/{gems,plugins}/cucumber*/bin/cucumber"].first
 
-    # note, real definitions of what these tasks do left to option profiles
-    # defined in wontomedia/cucumber.yml
-
-    Cucumber::Rake::Task.new(:static_acceptance => 'db:test:prepare') do |t|
+  namespace :cucumber do
+    Cucumber::Rake::Task.new({:static_ok => 'db:test:prepare'},
+        'Run non-Selenium features that should pass') do |t|
+      t.binary = vendored_cucumber_binary
       t.fork = true
-      t.cucumber_opts = "-p static_acceptance"
-      t.feature_list = Dir.glob("features/**/static/**/*.feature")
+      t.profile = "static_acceptance"
     end
 
-    Cucumber::Rake::Task.new(:dynamic_acceptance => 'db:test:prepare') do |t|
+    Cucumber::Rake::Task.new({:dynamic_ok => 'db:test:prepare'},
+        'Run need-Selenium-to-test features that should pass') do |t|
+      t.binary = vendored_cucumber_binary
       t.fork = true
-      t.cucumber_opts = "-p dynamic_acceptance"
-      t.feature_list = Dir.glob("features/**/dynamic/**/*.feature")
+      t.profile = "dynamic_acceptance"
     end
 
-    Cucumber::Rake::Task.new(:static_unfinished => 'db:test:prepare') do |t|
+    Cucumber::Rake::Task.new({:static_wip => 'db:test:prepare'},
+        'Run non-Selenium features that are being worked on') do |t|
+      t.binary = vendored_cucumber_binary
       t.fork = true
-      t.cucumber_opts = "-p static_unfinished"
-      t.feature_list = Dir.glob("features/**/static/**/*.feature")
+      t.profile = "static_unfinished"
     end
 
-    Cucumber::Rake::Task.new(:dynamic_unfinished => 'db:test:prepare') do |t|
+    Cucumber::Rake::Task.new({:dynamic_wip => 'db:test:prepare'},
+        'Run need-Selenium-to-test features that are being worked on') do |t|
+      t.binary = vendored_cucumber_binary
       t.fork = true
-      t.cucumber_opts = "-p dynamic_unfinished"
-      t.feature_list = Dir.glob("features/**/dynamic/**/*.feature")
+      t.profile = "dynamic_unfinished"
     end
 
-    Cucumber::Rake::Task.new(:selenium => 'db:test:prepare') do |t|
-      t.fork = true
-      t.cucumber_opts = "-p selenium"
-      t.feature_list = Dir.glob("features/**/*.feature")
-    end
-
-    task :acceptance => [ "features:static_acceptance",
-                          "features:dynamic_acceptance"   ]
-    task :unfinished => [ "features:static_unfinished",
-                          "features:dynamic_unfinished"   ]
-    task :static     => [ "features:static_acceptance",
-                          "features:static_unfinished"   ]
-    task :dynamic    => [ "features:dynamic_acceptance",
-                          "features:dynamic_unfinished"   ]
+    desc 'Run features that should pass'
+    task :ok => [:static_ok, :dynamic_ok]
+    desc 'Run features that are being worked on'
+    task :wip => [:static_wip, :dynamic_wip]
+    desc 'Run all features'
+    task :all => [:ok, :wip]
   end
 
-  task :features => [ "features:acceptance",
-                      "features:unfinished"   ]
+  desc 'Alias for cucumber:ok'
+  task :cucumber => 'cucumber:ok'
+  task :default => :cucumber
 
 rescue LoadError
-  puts "WARNING: Missing development dependency.  'Cucumber' not available. To install, see 'http://wiki.github.com/aslakhellesoy/cucumber/ruby-on-rails'"
+  desc 'cucumber rake task not available (cucumber not installed)'
+  task :cucumber do
+    abort 'Cucumber rake task is not available. Be sure to install cucumber as a gem or plugin'
+  end
 end
 
+end

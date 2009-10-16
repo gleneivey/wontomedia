@@ -15,52 +15,38 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
 
+<%
+  common  = "--color --strict --format progress --tags ~@invalid "
+  rake    = "--tags ~@invalid --tags ~@extended "
+  static  = "-r features/support/env.rb -r features/support/local.rb " +
+            "-r features/support/static.rb -r features/step_definitions "
+  dynamic = "-r features/support/env.rb -r features/support/local.rb " +
+            "-r features/support/dynamic.rb -r features/step_definitions "
+  static_only  = "--exclude=dynamic   features "
+  dynamic_only = "--exclude=static    features "
+%>
 
-default:            -r features/support/env.rb   -r features/support/dynamic.rb
-                    -r features/step_definitions
-                       --tags ~@not_for_selenium --tags ~@invalid
-                          --tags ~@extended
-                       --format pretty             features
+default:            <%= common + rake + dynamic %>
+                       --tags ~@not_for_selenium
+                       --format pretty                             features
 
-selenium:           -r features/support/env.rb   -r features/support/dynamic.rb
-                    -r features/step_definitions
-                       --tags ~@not_for_selenium --tags ~@invalid
-                       --format progress           features
+selenium:           <%= common +        dynamic %>
+                       --tags ~@not_for_selenium --tags ~@invalid  features
 
-manual:             -r features/support/env.rb   -r features/support/dynamic.rb
-                    -r features/step_definitions
+manual:             <%= common +        dynamic %>
                        --tags ~@not_for_selenium --tags ~@invalid
-                       --format pretty
+                       --format pretty                             features
 
   # profiles to be used from rake
-static_acceptance:  -r features/support/env.rb   -r features/support/static.rb
-                    -r features/step_definitions
-                       --tags ~@unfinished --tags ~@invalid --tags ~@extended
-                       --format progress
-
-static_unfinished:  -r features/support/env.rb   -r features/support/static.rb
-                    -r features/step_definitions
-                       --tags @unfinished --tags ~@invalid --tags ~@extended
-                       --format progress
-
-dynamic_acceptance: -r features/support/env.rb   -r features/support/dynamic.rb
-                    -r features/step_definitions
-                       --tags ~@unfinished --tags ~@invalid --tags ~@extended
-                       --format progress
-
-dynamic_unfinished: -r features/support/env.rb   -r features/support/dynamic.rb
-                    -r features/step_definitions
-                       --tags @unfinished --tags ~@invalid --tags ~@extended
-                       --format progress
-
-
-autotest:           -r features/support/env.rb   -r features/support/static.rb
-                    -r features/step_definitions -r lib
-                       --tags ~@unfinished --tags ~@invalid --tags ~@extended
-                       --format progress
-
-autotest-all:       -r features/support/env.rb   -r features/support/static.rb
-                    -r features/step_definitions -r lib
-                       --tags ~@invalid
-                       --format progress
-
+static_acceptance:
+  <%= common + rake + static  %> --tags ~@wip        <%= static_only %>
+static_unfinished:
+  <%= common + rake + static  %> --tags  @wip        <%= static_only %>
+dynamic_acceptance:
+  <%= common + rake + dynamic %> --tags ~@wip        <%= dynamic_only %>
+dynamic_unfinished:
+  <%= common + rake + dynamic %> --tags  @wip        <%= dynamic_only %>
+autotest:
+  <%= common + rake + static  %> --tags ~@wip -r lib <%= static_only %>
+autotest-all:
+  <%= common +        static  %>              -r lib <%= static_only %>
