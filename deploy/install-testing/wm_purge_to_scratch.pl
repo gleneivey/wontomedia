@@ -19,7 +19,7 @@ system "apt-get -y purge git-core liberror-perl libdigest-sha1-perl ";
             #### from here, uninstall Gem version and runtime dependencies
 
     # Note, when this changes, DUPLICATE in wm_install_from_scratch.pl
-$RUBY_GEMS_WITH_VERSION= "rubygems-1.3.1";
+$RUBY_GEMS_WITH_VERSION= "rubygems-1.3.5";
 
 
 system "gem1.8 uninstall wontomedia";

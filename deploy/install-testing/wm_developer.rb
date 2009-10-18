@@ -32,14 +32,12 @@ exc "apt-get -y #{apt_load_options} install libxml2-dev libxslt1-dev"
 
 
       # don't get stuck on accepting-the-license dialog
-if `grep sun-dlj /var/cache/debconf/config.dat`
-puts "editing config.dat"
+if `grep sun-dlj /var/cache/debconf/config.dat` =~ /\S/
   exc "sed --in-place=.backup " +
         " -e '/^Template: shared\\/accepted-sun-dlj-v1-1/aValue: true' " +
         " -e '/^Template: shared\\/accepted-sun-dlj-v1-1/aFlags: seen' " +
         "/var/cache/debconf/config.dat"
 else
-puts "appending to config.dat"
   fileSnipet = <<FILESNIPET
 
 Name: shared/accepted-sun-dlj-v1-1

@@ -8,12 +8,13 @@ test types and files can be found in [[TestingTypesAndDirectories]].
 == Categories of Testing (TDD and ATDD) ==
 
 The least flexible aspect of our intent to develop WontoMedia in an
-agile style is the use of [[Wikipedia:Test_driven_development|Test-Driven Development]] (TDD) and
+agile style is the use of
+[[Wikipedia:Test_driven_development|Test-Driven Development]] (TDD) and
 [http://testdrivendeveloper.com/2008/04/02/AcceptanceTestDrivenDevelopmentExplained.aspx Acceptance-Test Driven Development]
 ([http://testobsessed.com/wordpress/wp-content/uploads/2008/12/atddexample.pdf ATDD]).
-Submissions to WontoMedia's code base will ''not'' be
-accepted/integrated unless they include new or changed automated test
-cases that verify the functional change intended by the submission.
+Submissions to WontoMedia's code base will ''not'' be integrated until
+they include new or changed automated test cases that verify the
+functional change intended by the submission.
 
 In brief, the process of test-driven development consists of ''first''
 creating an automated test for the functionality that is to be
@@ -48,7 +49,7 @@ unit of system functionality is the
 and as each story is defined, it is characterized by a number of
 acceptance tests.  The set of acceptance tests for a story will not be
 exhaustive from a classic QA point of view (all possible values,
-corner cases, etc.), but is should include examples of all of the
+corner cases, etc.), but should include examples of all of the
 behaviors (positive and negative) that need to be present when
 implementation of the story is "done".
 
@@ -62,7 +63,7 @@ acceptance test cases, and is likely to be developed incrementally by
 many passes through the ATDD cycle.  And each ATDD cycle is likely to
 itself "contain" several incremental passes through the TDD cycle.
 
-All development tests are located under <tt>wontomedia/features</tt>,
+All acceptance tests are located under <tt>wontomedia/features</tt>,
 as described in [[TestingTypesAndDirectories]] and
 [[AcceptanceTesting]].  Note that the name "features" is the default
 created/used by the [http://cukes.info/ Cucumber] literate
@@ -72,8 +73,8 @@ testing tool.
 There are also a handfull of automated '''''policy tests''''', which
 are responsible for ensuring that the WontoMedia codebase continues to
 conform to project policies.  These tests are run by the top-level
-<tt>rake test</tt> task, and must be run before a developer pushes
-their changes to a shared [[Git]] repository.  Tests in this category
+<tt>rake test</tt> task, and must pass before a developer pushes their
+changes to a shared [[Git]] repository.  Tests in this category
 include things like verifying that all source files contain the
 correct copyright and licensing notice, and that the directory tree
 will build cleanly into a <tt>gem</tt>.  Should we ever adopt any
@@ -81,10 +82,10 @@ formal coding standards, scripts to verify compliance would be
 included in the policy tests.  (Informally, the goal is to style
 WontoMedia's source to match the Rails source.  As such, if you need a
 written style guide, we suggest
-[http://www.pathf.com/blogs/ruby-and-rails-style-guide/ Ruby and Rails],
-[http://www.pathf.com/blogs/2008/10/ruby-stylista/ Ruby Stylista], and
-[http://www.caliban.org/ruby/rubyguide.shtml Unofficial Ruby Usage]
-''in that order or precedence''.)
+[http://www.pathf.com/blogs/ruby-and-rails-style-guide/ Ruby and
+Rails], [http://www.pathf.com/blogs/2008/10/ruby-stylista/ Ruby
+Stylista], and [http://www.caliban.org/ruby/rubyguide.shtml Unofficial
+Ruby Usage] ''in that order or precedence''.)
 
 Finally, we also have '''''deployment tests''''', defined as
 those (still automated) tests which cannot or need not be performed by
@@ -198,7 +199,7 @@ particular:
 ; <tt>config/database.yml</tt> : The content of this file must typically be customized for each system on which a Rails application is installed.  A sample <tt>database.yml</tt> is contained in WontoMedia's Git repositories for distribution, but our project's <tt>.gitignore</tt> file prevents the repository version from being passed to or updated from developers.
 ; <tt>Rakefile</tt>, <tt>**/*.rake</tt> : The rakefiles for WontoMedia are managed by Git and shared between all developers and installations, but do not have automated tests.  There are few WontoMedia-specific rake tasks, they change infrequently, and can be tested interactively when necessary.
 ; <tt>script/*</tt> : We have no expectations of making changes to any of the Rails-provided scripts.
-; <tt>public/*</tt> : Files in this directory (static web content) should be "verified" interactively, like the appearance of dynamic pages generated through Rails.
+; <tt>public/*</tt> : ''(excluding public/javascripts)'' The static web content below this directory should be "verified" interactively, like the appearance of dynamic pages generated through Rails.
 ; <tt>vendor/*</tt>, <tt>lib/*</tt> : The contents of these directories are "tested" implicitly by the development and acceptance testing of the balance of WontoMedia.
 ; <tt>doc/*</tt>, <tt>README</tt>, etc. : Human-readable documentation is, of course, not subject to automated testing.  However, API documentation should be encapsulated in RDoc comments, development and acceptance tests, and public static web pages (for user and administrator document available directly from WontoMedia when it is running) wherever possible.  The <tt>doc</tt> directory should be used for original material that doesn't fit into one of these other environments, and for pointers into them.
 ; <tt>tmp/*</tt>, <tt>log/*</tt> : Obviously, generated files don't need to be "tested".  (Although some automated tests might eventually examine these files to confirm assertions.)  For a complete list of generated files, see <tt>wontomedia/.gitignore</tt>.

@@ -1,15 +1,14 @@
-'''''RubyForge''''' (http://rubyforge.org/) is a public site providing free hosting resources for open-source software development projects.  [[WontoMedia]]'s main project page on RubyForge is at:
+'''''RubyForge''''' (http://rubyforge.org/) is a public site providing
+free hosting resources for open-source software development projects.
+[[WontoMedia]]'s main project page on RubyForge is at:
 
  http://rubyforge.org/projects/wontomedia/
 
 We currently use the following RubyForge services:
 
 * Primary (stable) source code Git repository: <tt>http://rubyforge.org/</tt>
-
 * Discussion forum: http://rubyforge.org/forum/?group_id=7903
-
 * Project email distribution lists: http://rubyforge.org/mail/?group_id=7903
-
 * Project bug/issue tracking: http://rubyforge.org/tracker/?group_id=7903
 
 We also use [[GitHub]] and [http://www.a2hosting.com/ A2 Hosting].

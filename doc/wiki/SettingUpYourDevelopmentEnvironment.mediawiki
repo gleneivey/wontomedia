@@ -1,55 +1,101 @@
 == Introduction ==
 
-This page provides detailed instructions for setting up a WontoMedia development environment, including setting up a directory tree and repository using Git, and installing all of the Ruby gems on which WontoMedia's automated test suite depends.  If you have any problems, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list].
+This page provides detailed instructions for setting up a WontoMedia
+development environment, including setting up a directory tree and
+repository using Git, and installing all of the Ruby gems on which
+WontoMedia's automated test suite depends.  If you have any problems,
+please let us know on our [http://rubyforge.org/forum/?group_id=7903
+forum] or [http://rubyforge.org/mail/?group_id=7903 email list].
 
 == Supported Platforms ==
 
-The fundamental systems on which WontoMedia depends (the [http://ruby-lang.org/ Ruby] programming language and the [http://rubyonrails.org/ Ruby-on-Rails] web application framework) are available on and support a wide variety of platforms, operating systems, web servers, and database packages.  However, currently our ''testing'' of WontoMedia is limited to a single system configuration.  It is likely that you can successfully install and run WontoMedia on configurations other than what we've used to test, and we will try to support you in this, but at this point we cannot make any guarantees.  If you do install WontoMedia on a different system configuration, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list], whether you have problems or success.
+The fundamental systems on which WontoMedia depends (the
+[http://ruby-lang.org/ Ruby] programming language and the
+[http://rubyonrails.org/ Ruby-on-Rails] web application framework) are
+available on and support a wide variety of platforms, operating
+systems, web servers, and database packages.  However, currently our
+''testing'' of WontoMedia is limited to a single system configuration.
+It is likely that you can successfully install and run WontoMedia on
+configurations other than what we've used to test, and we will try to
+support you in this, but at this point we cannot make any guarantees.
+If you do install WontoMedia on a different system configuration,
+please let us know on our [http://rubyforge.org/forum/?group_id=7903
+forum] or [http://rubyforge.org/mail/?group_id=7903 email list],
+whether you have problems or success.
 
 === WontoMedia Testing Platform ===
 
-WontoMedia has been developed and tested on the following system configuration:
+WontoMedia has been developed and tested on the following system
+configuration:
 
-* the [http://www.ubuntu.com/ Ubuntu] distribution of the [http://www.gnu.org/gnu/linux-and-gnu.html GNU]/[[Wikipedia:Linux|Linux]]/[http://www.debian.org/ Debian] operating system, 8.04 [https://wiki.ubuntu.com/HardyHeron Hardy Heron] release ([http://www.ubuntu.com/getubuntu/download from here]).  (Although it is likely to run on any Linux, Windows, or Mac OS system that supports Ruby 1.8.)
-* [http://rubyonrails.org/ Ruby-on-Rails] version 2.3.2.  (Although WontoMedia should run with any version of Rails >=2.2.x, and may work with Rails versions >= 2.0.)
+* the [http://www.ubuntu.com/ Ubuntu] distribution of the [http://www.gnu.org/gnu/linux-and-gnu.html GNU]/[[Wikipedia:Linux|Linux]]/[http://www.debian.org/ Debian] operating system, 9.04 [https://wiki.ubuntu.com/JauntyJackalope Jaunty Jackalope] release ([http://www.ubuntu.com/getubuntu/download from here]).  (Although it is likely to run on any Linux, Windows, or Mac OS system that supports Ruby 1.8.)
+* [http://rubyonrails.org/ Ruby-on-Rails] version 2.3.4.
 * [http://www.mysql.com/ MySQL] version 5.0, specifically the <tt>5.051a-3ubuntu5.4</tt> package
 
 === WontoMedia on Commercial Hosting Providers ===
 
-WontoMedia has been installed and tested on shared servers at [http://www.a2hosting.com/ A2 Hosting].  [[InstallingOnA2Hosting]] provides details of the steps involved.
+WontoMedia has been installed and tested on shared servers at
+[http://www.a2hosting.com/ A2 Hosting].  [[InstallingOnA2Hosting]]
+provides details of the steps involved.
 
 == Installation Steps ==
 
 === Preparing for WontoMedia Source
 
-If you have already installed WontoMedia as a gem, it is recommended that you uninstall the gem before setting up a development environment.
+If you have already installed WontoMedia as a gem, it is recommended
+that you uninstall the gem before setting up a development
+environment.
 
  sudo gem uninstall wontomedia
 
-Note that this will not eliminate the contents of any database you have already been using with WontoMedia.  If you configure your new <tt>database.yml</tt> file (below) with the same database-access values you were previously using, your new WontoMedia installation should contain and serve the same data you were already using.  If this isn't desired, you will have to manually drop the content of the old database.
+Note that this will not eliminate the contents of any database you
+have already been using with WontoMedia.  If you configure your new
+<tt>database.yml</tt> file (below) with the same database-access
+values you were previously using, your new WontoMedia installation
+should contain and serve the same data you were already using.  If
+this isn't desired, you will have to manually drop the content of the
+old database.
 
-WontoMedia development uses the [http://www.kernel.org/pub/software/scm/git/docs/ Git] source code management system.  To install the full source tree for WontoMedia, you will have to use Git, which you can install by
+WontoMedia development uses the
+[http://www.kernel.org/pub/software/scm/git/docs/ Git] source code
+management system.  To install the full source tree for WontoMedia,
+you will have to use Git, which you can install by
 
  sudo apt-get install git-core
 
 === Cloning the WontoMedia Source ===
 
-There are several URLs you can install from, depending on your intentions.  Fortunately, changing your "origin" repository later is straight-forward, so there is no problem if your use of WontoMedia changes over time.  In particular:
+There are several URLs you can install from, depending on your
+intentions.  Fortunately, changing your "origin" repository later is
+straight-forward, so there is no problem if your use of WontoMedia
+changes over time.  In particular:
 
 * <tt>git://github.com/gleneivey/wontomedia.git</tt> is the "Public" clone URL for a working repository on GitHub.  If in doubt, use this one.  This repository receives the most frequent updates, and is the primary repository for our continuous integration and automated testing.  The HEAD of this repository should be functional nearly all the time (''e.g.'', barring CI failures), but may contain partial implementations of UI features.
 * <tt>git@github.com:gleneivey/wontomedia.git</tt> points to the same repository as the above, but is for use by people with commit access.  Our policy is to grant committer access to anyone requesting it, in the hope that we'll have few cases where we end up having to revoke access.  To request, email to <code>development at wontology dot org</code> or [http://github.com/inbox/new send a GitHub message] to <tt>gleneivey</tt>.
 * <tt>git://rubyforge.org/wontomedia.git</tt> is the clone URL for the stable/release repository on RubyForge.  Code will be pushed from GitHub to RubyForge on completion of each "user story".
 * ''[your own GitHub repository URL]'' [http://github.com/guides/fork-a-project-and-submit-your-modifications The workflow provided by GitHub], which we hope to use extensively, is based on developers creating their own "forked" repositories, submitting their changes there, and then making "pull requests" against the repository from which they forked.  If you're going to be making more than occasional changes to WontoMedia, you should consider this option.  And when you do create your own WontoMedia fork on GitHub, you will have your own "committer" Git URL for that repository, and should clone from that.
 
-From the directory ''in which'' you want to create your <tt>wontomedia</tt> file tree, execute the command:
+From the directory ''in which'' you want to create your
+<tt>wontomedia</tt> file tree, execute the command:
 
  git clone git://github.com/gleneivey/wontomedia.git
 
-(substituting the Git URL you decided on).  This will create a <tt>wontomedia</tt> directory, and populate it with the WontoMedia source code plus all revision control files.  In your development, you will use <tt>git commit</tt> locally, and then either prepare a patch or push to a network repository when you want to share your changes.  (See [[IveJustGotALittleChange]].)
+(substituting the Git URL you decided on).  This will create a
+<tt>wontomedia</tt> directory, and populate it with the WontoMedia
+source code plus all revision control files.  In your development, you
+will use <tt>git commit</tt> locally, and then either prepare a patch
+or push to a network repository when you want to share your changes.
+(See [[IveJustGotALittleChange]].)
 
 === Configuring with <tt>database.yml</tt> ===
 
-You must create a <tt>database.yml</tt> file in <tt>wontomedia/config</tt> with information matching the content of your local database.  This process is explained well by the [http://guides.rubyonrails.org/getting_started.html#configuring-a-database Rails "Getting Started" Guide], which also gives instructions for databases other than MySQL.  WontoMedia includes the file <tt>database-mysql-development.yml</tt> that you can use as a starting point:
+You must create a <tt>database.yml</tt> file in
+<tt>wontomedia/config</tt> with information matching the content of
+your local database.  This process is explained well by the
+[http://guides.rubyonrails.org/getting_started.html#configuring-a-database Rails "Getting Started" Guide], which also gives instructions for
+databases other than MySQL.  WontoMedia includes the file
+<tt>database-mysql-development.yml</tt> that you can use as a starting
+point:
 
  # MySQL.  Versions 4.1 and 5.0 are recommended.
  &nbsp;
@@ -83,32 +129,66 @@ You must create a <tt>database.yml</tt> file in <tt>wontomedia/config</tt> with 
    password: '''replace-bad-passwd'''
    socket: /var/run/mysqld/mysqld.sock
 
-You will likely want to replace the values of (at least) all the items shown in bold.  Note that, if you are changing from a prior gem-based WontoMedia installation and want to keep any data you have entered, you'll want to use the values from your old <tt>database.yml</tt> file in either the <tt>production</tt> or <tt>development</tt> blocks of the new file.  Whatever database you specify in the <tt>test</tt> block of your new <tt>database.yml</tt> will be automatically emptied each time you run any of WontoMedia's automated tests, so you should not specify the access information for any database whose content you want to keep.
+You will likely want to replace the values of (at least) all the items
+shown in bold.  Note that, if you are changing from a prior gem-based
+WontoMedia installation and want to keep any data you have entered,
+you'll want to use the values from your old <tt>database.yml</tt> file
+in either the <tt>production</tt> or <tt>development</tt> blocks of
+the new file.  Whatever database you specify in the <tt>test</tt>
+block of your new <tt>database.yml</tt> will be automatically emptied
+each time you run any of WontoMedia's automated tests, so you should
+not specify the access information for any database whose content you
+want to keep.
 
-Also, the sample file assumes that you are using the same "database user" (and therefore password) for all three databases.  If you have multiple database users, you may substitute different information into each block in the file.
+Also, the sample file assumes that you are using the same "database
+user" (and therefore password) for all three databases.  If you have
+multiple database users, you may substitute different information into
+each block in the file.
 
-Of course, you will have to actually create the databases and database user(s) that you name in <tt>database.yml</tt> using your database tools.  (Recall that [[InstallFromScratch]] contains instructions for using the <tt>mysql</tt> command-line tool for creating one database if you are using the MySQL database.)
+Of course, you will have to actually create the databases and database
+user(s) that you name in <tt>database.yml</tt> using your database
+tools.  (Recall that [[InstallFromScratch]] contains instructions for
+using the <tt>mysql</tt> command-line tool for creating one database
+if you are using the MySQL database.)
 
 === Install Development Dependencies ===
 
-In addition to the packages you must have installed in order to run WontoMedia (again, see [[InstallFromScratch]]), there are a number of other packages used by WontoMedia's automated test suite and by other developers.  These should be installed prior to attempting to use <tt>rake</tt> on WontoMedia.  The install commands needed are:
+In addition to the packages you must have installed in order to run
+WontoMedia (again, see [[InstallFromScratch]]), there are a number of
+other packages used by WontoMedia's automated test suite and by other
+developers.  These should be installed prior to attempting to use
+<tt>rake</tt> on WontoMedia.  The install commands needed are:
 
  apt-get install libxml2-dev libxslt1-dev
  gem1.8 install nokogiri
  gem1.8 install rspec rspec-rails webrat cucumber
  gem1.8 install rubyforge technicalpickles-jeweler ZenTest
 
-The first three lines are all required in order to install <tt>cucumber</tt>, which WontoMedia uses for automated acceptance testing.  WontoMedia uses <tt>jeweler</tt> (which requires <tt>rubyforge</tt>) to build its <tt>.gemspec</tt> and release gems (the original information for our gem is contained in our <tt>Rakefile</tt>).
+The first three lines are all required in order to install
+<tt>cucumber</tt>, which WontoMedia uses for automated acceptance
+testing.  WontoMedia uses <tt>jeweler</tt> (which requires
+<tt>rubyforge</tt>) to build its <tt>.gemspec</tt> and release gems
+(the original information for our gem is contained in our
+<tt>Rakefile</tt>).
 
-Finally, WontoMedia is configured (<tt>.autotest</tt> file and rake tasks) so that you can use the <tt>autotest</tt> tool contained in the <tt>ZenTest</tt> package.  If you are not interested in using <tt>autotest</tt>, then installing <tt>ZenTest</tt> is not necessary.  If you are going to use <tt>autotest</tt>, then the environment variable <tt>AUTOFEATURE</tt> should be set to <tt>true autospec</tt> before you start it, see [wiki.github.com/aslakhellesoy/cucumber/autotest-integration the autotest page of the Cucumber wiki] for more information.
+Finally, WontoMedia is configured (<tt>.autotest</tt> file and rake
+tasks) so that you can use the <tt>autotest</tt> tool contained in the
+<tt>ZenTest</tt> package.  If you are not interested in using
+<tt>autotest</tt>, then installing <tt>ZenTest</tt> is not necessary.
+If you are going to use <tt>autotest</tt>, then the environment
+variable <tt>AUTOFEATURE</tt> should be set to <tt>true autospec</tt>
+before you start it, see
+[wiki.github.com/aslakhellesoy/cucumber/autotest-integration the autotest page of the Cucumber wiki] for more information.
 
 === Launching WontoMedia ===
 
-Before starting WontoMedia for the first time, you must initialize your development database, which can be done with the command:
+Before starting WontoMedia for the first time, you must initialize
+your development database, which can be done with the command:
 
- rake db:schema:load
+ rake db:reseed
 
-After which you should be able to run WontoMedia's automated test set to verify your install and development environment:
+After which you should be able to run WontoMedia's automated test set
+to verify your install and development environment:
 
  rake
 
@@ -116,4 +196,5 @@ And create an installable gem from your local code:
 
  rake build
 
-If all of these commands run cleanly, you're ready so start making changes in your local environment.  Good hunting!
+If all of these commands run cleanly, you're ready so start making
+changes in your local environment.  Good hunting!
