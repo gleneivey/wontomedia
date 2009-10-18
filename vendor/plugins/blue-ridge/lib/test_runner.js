@@ -16,7 +16,8 @@ if(BlueRidge.loaded != true) {
   Envjs.logLevel = Envjs.ERROR;       // one of: DEBUG, INFO, WARN, ERROR, NONE
 
 
-  function executeTest(testWin, prefix, spec){
+  function executeTest(testWin, prefix, spec,_Envjs){
+    Envjs = _Envjs;
     loadIntoFnsScope(prefix + "command-line.js");
     loadIntoFnsScope(prefix + "jquery-1.3.2.js");
     loadIntoFnsScope(prefix + "jquery.fn.js");
@@ -32,6 +33,7 @@ if(BlueRidge.loaded != true) {
     loadIntoFnsScope(prefix + "consoleReportForRake.js");
     loadIntoFnsScope(spec);
     jQuery(testWin).trigger("load");
+    Envjs.wait();
   }
 
 
@@ -50,7 +52,7 @@ if(BlueRidge.loaded != true) {
     setScope(executeTest, testWindow.__proto__);
     setScope(loadIntoFnsScope, testWindow.__proto__);
     executeTest( testWindow.__proto__, BLUE_RIDGE_LIB_PREFIX,
-                 BlueRidge.CommandLine.specFile );
+                 BlueRidge.CommandLine.specFile, Envjs );
 
     /* turn script-loading in fixtures "back" off in case last fixture turned
      * it "on".  (Otherwise it would try to load blue-ridge.js, oops.) */
