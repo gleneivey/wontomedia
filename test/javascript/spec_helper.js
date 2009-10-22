@@ -48,7 +48,6 @@ function E(elementId){
 
 // other common operations
 function sleep(periodInMilliseconds){
-  Envjs.wait.interval = 10;
   Envjs.wait(periodInMilliseconds);
 }
 
@@ -57,3 +56,4 @@ timeMargin      =  50;
 pollingInterval =  50;
 maxPollAttempts =  30;  // iterations
 
+Envjs.wait.interval = 25;

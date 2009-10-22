@@ -9156,7 +9156,6 @@ window.$wait = $env.wait = $env.wait || function(wait) {
       var f = earliest.fn;
       try {
         earliest.running = true;
-        var h = Date.now();
         f();
       } finally {
         earliest.running = false;
