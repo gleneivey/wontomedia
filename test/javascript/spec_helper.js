@@ -48,6 +48,7 @@ function E(elementId){
 
 // other common operations
 function sleep(periodInMilliseconds){
+  Envjs.wait.interval = 10;
   Envjs.wait(periodInMilliseconds);
 }
 
