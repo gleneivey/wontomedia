@@ -99,11 +99,12 @@ var Envjs = function(){
     
     //resolves location relative to base or window location
     $env.location = function(path, base){};
-    
-    //For Java the window.timer is created using the java.lang.Thread in combination
-    //with the java.lang.Runnable
-    $env.timer = function(fn, time){};	
-    
+  
+    $env.sync = function(fn){
+      var self = this;
+      return function(){ return fn.apply(self,arguments); }
+    }
+  
     $env.javaEnabled = false;	
     
     //Used in the XMLHttpRquest implementation to run a
@@ -307,6 +308,8 @@ var Envjs = function(){
         return e&&e.rhinoException?e.rhinoException.lineSource():"(line ?)";
     };
     
+    $env.sync = sync;
+  
     //For Java the window.location object is a java.net.URL
     $env.location = function(path, base){
       var protocol = new RegExp('(^file\:|^http\:|^https\:)');
@@ -317,48 +320,13 @@ var Envjs = function(){
           return new java.net.URL(new java.net.URL(base), path).toString()+'';
         }else{
             //return an absolute url from a url relative to the window location
-            if(window.location.href.length > 0){
                 base = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
+            if(window.location.href.length > 0){
                 return base + '/' + path;
             }else{
                 return new java.io.File(  path ).toURL().toString()+'';
             }
         }
-    };
-    
-    var timers = [];
-
-    //For Java the window.timer is created using the java.lang.Thread in combination
-    //with the java.lang.Runnable
-    $env.timer = function(fn, time){
-       var running = true;
-        
-        var run = sync(function(){ //while happening only thing in this timer    
-    	    //$env.debug("running timed function");
-            fn();
-        });
-        var _this = this;
-        var thread = new java.lang.Thread(new java.lang.Runnable({
-            run: function(){
-                try {
-                    while (running){
-                        java.lang.Thread.currentThread().sleep(time);
-                        run.apply(_this);
-                    }
-                }catch(e){
-                    $env.debug("interuption running timed function");
-                    _this.stop();
-                    $env.onInterrupt();
-                };
-            }
-        }));
-        this.start = function(){ 
-            thread.start(); 
-        };
-        this.stop = sync(function(num){
-            running = false;
-            thread.interrupt();
-        })
     };
     
     //Since we're running in rhino I guess we can safely assume
@@ -379,15 +347,10 @@ var Envjs = function(){
             fn();
         });
         
-        var async = (new java.lang.Thread(new java.lang.Runnable({
-            run: run
-        })));
-        
         try{
-            async.start();
+            spawn(run);
         }catch(e){
             $env.error("error while running async", e);
-            async.interrupt();
             $env.onInterrupt();
         }
     };
@@ -8932,7 +8895,7 @@ $w.__defineGetter__("location", function(url){
 				this.search + this.hash;
 		},
 		get protocol(){
-			return protocol.exec(this.href)[0];
+			return this.href && protocol.exec(this.href)[0];
 		},
 		set protocol(_protocol){
 			$w.location = _protocol + this.host + this.pathname + 
@@ -9068,49 +9031,174 @@ $w.__defineGetter__("navigator", function(){
 /*
 *	timer.js
 */
-	
 
 $debug("Initializing Window Timer.");
 
 //private
-var $timers = [];
+var $timers = $env.timers = $env.timers || [];
+var $event_loop_running = false;
+$timers.lock = $env.sync(function(fn){fn();});
+
+var $timer = function(fn, interval){
+  this.fn = fn;
+  this.interval = interval;
+  this.at = Date.now() + interval;
+  this.running = false; // allows for calling wait() from callbacks
+};
+  
+$timer.prototype.start = function(){};
+$timer.prototype.stop = function(){};
+
+var convert_time = function(time) {
+  time = time*1;
+  if ( isNaN(time) || time < 0 ) {
+    time = 0;
+  }
+  if ( $event_loop_running && time < 4 ) {
+    time = 4;
+  }
+  return time;
+}
 
 window.setTimeout = function(fn, time){
   var num;
-  return num = window.setInterval(function(){
-    fn();
-    window.clearInterval(num);
-  }, time);
+  time = convert_time(time);
+  $timers.lock(function(){
+    num = $timers.length+1;
+    var tfn;
+    if (typeof fn == 'string') {
+      tfn = function() {
+        try {
+          eval(fn);
+        } catch (e) {
+          $env.error(e);
+        }
+        window.clearInterval(num);          
+      };
+    } else {
+      tfn = function() {
+        try {
+          fn();
+        } catch (e) {
+          $env.error(e);
+        }
+        window.clearInterval(num);
+      };
+    }
+    $debug("Creating timer number "+num);
+    $timers[num] = new $timer(tfn, time);
+    $timers[num].start();
+  });
+  return num;
 };
 
 window.setInterval = function(fn, time){
-	var num = $timers.length;
-	
-    if (typeof fn == 'string') {
-        var fnstr = fn; 
-        fn = function() { 
-            eval(fnstr); 
-        }; 
-    }
-	if(time===0){
-	    fn();
-	}else{
-	    //$debug("Creating timer number "+num);
-    	$timers[num] = new $env.timer(fn, time);
-    	$timers[num].start();
-	}
-	return num;
+  time = convert_time(time);
+  if ( time < 10 ) {
+    time = 10;
+  }
+  if (typeof fn == 'string') {
+    var fnstr = fn; 
+    fn = function() { 
+      eval(fnstr);
+    }; 
+  }
+  var num;
+  $timers.lock(function(){
+    num = $timers.length+1;
+    //$debug("Creating timer number "+num);
+    $timers[num] = new $timer(fn, time);
+    $timers[num].start();
+  });
+  return num;
 };
 
 window.clearInterval = window.clearTimeout = function(num){
-	//$log("clearing interval "+num);
-	if ( $timers[num] ) {
-	    
-		$timers[num].stop();
-		delete $timers[num];
-	}
+  //$log("clearing interval "+num);
+  $timers.lock(function(){
+    if ( $timers[num] ) {
+      $timers[num].stop();
+      delete $timers[num];
+    }
+  });
 };	
-	/*
+
+// wait === null/undefined: execute any timers as they fire, waiting until there are none left
+// wait(n) (n > 0): execute any timers as they fire until there are none left waiting at least n ms
+// but no more, even if there are future events/current threads
+// wait(0): execute any immediately runnable timers and return
+
+// FIX: make a priority queue ...
+
+window.$wait = $env.wait = $env.wait || function(wait) {
+  var start = Date.now();
+  var old_loop_running = $event_loop_running;
+  $event_loop_running = true; 
+  if (wait !== 0 && wait !== null && wait !== undefined){
+    wait += Date.now();
+  }
+  for (;;) {
+    var earliest;
+    $timers.lock(function(){
+      earliest = undefined;
+      for(var i in $timers){
+        if( isNaN(i*0) ) {
+          continue;
+        }
+        var timer = $timers[i];
+        if( !timer.running && ( !earliest || timer.at < earliest.at) ) {
+          earliest = timer;
+        }
+      }
+    });
+    var sleep = earliest && earliest.at - Date.now();
+    if ( earliest && sleep <= 0 ) {
+      var f = earliest.fn;
+      try {
+        earliest.running = true;
+        var h = Date.now();
+        f();
+      } finally {
+        earliest.running = false;
+      }
+      var goal = earliest.at + earliest.interval;
+      var now = Date.now();
+      if ( goal < now ) {
+        earliest.at = now;
+      } else {
+        earliest.at = goal;
+      }
+      continue;
+    }
+
+    // bunch of subtle cases here ...
+    if ( !earliest ) {
+      // no events in the queue (but maybe XHR will bring in events, so ...
+      if ( !wait || wait < Date.now() ) {
+        // Loop ends if there are no events and a wait hasn't been requested or has expired
+        break;
+      }
+      // no events, but a wait requested: fall through to sleep
+    } else {
+      // there are events in the queue, but they aren't firable now
+      if ( wait === 0 || ( wait > 0 && wait < Date.now () ) ) {
+        // loop ends even if there are events but the user specifcally asked not to wait too long
+        break;
+      }
+      // there are events and the user wants to wait: fall through to sleep
+    }
+
+    // Releated to ajax threads ... hopefully can go away ..
+    var interval =  $wait.interval || 100;
+    if ( !sleep || sleep > interval ) {
+      sleep = interval;
+    }
+    java.lang.Thread.currentThread().sleep(sleep);
+  }
+  $event_loop_running = old_loop_running;
+};
+
+/*
 * event.js
 */
 // Window Events
@@ -9260,7 +9348,7 @@ XMLHttpRequest.prototype = {
                                     $debug("parsing response text into xml document");
                                     responseXML = $domparser.parseFromString(_this.responseText+"");
                                     return responseXML;
-                                } catch(e) { 
+                                } catch(e) {
                                     $error('response XML does not apear to be well formed xml', e);
                                     responseXML = $domparser.parseFromString("<html>"+
                                         "<head/><body><p> parse error </p></body></html>");

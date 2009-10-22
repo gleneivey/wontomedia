@@ -48,7 +48,8 @@ function E(elementId){
 
 // other common operations
 function sleep(periodInMilliseconds){
-  java.lang.Thread.currentThread().sleep(periodInMilliseconds);
+  Envjs.wait.interval = 10;
+  Envjs.wait(periodInMilliseconds);
 }
 
 ajaxStartsAfter = 400;  // milliseconds
