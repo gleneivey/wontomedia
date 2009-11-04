@@ -100,7 +100,7 @@ contains:
     'Contains' is actually Child-Of 'Parent Of'.  'Parent Of' and
     'Child Of' are opposites of each other, and 'One Of' is a child of
     'Child Of'.  But this does not make 'Contains' and 'Child Of'
-    opposites of each other, though a approsimation of opposite-ness
+    opposites of each other, though an approximation of opposite-ness
     could be inferred.  WontoMedia will not automatically cause a
     'Child Of' relationship to be created when a 'Contains'
     relationship is.
@@ -176,7 +176,7 @@ predecessor_of:
 
     This relationship states that the subject (left-hand side) of the
     relationship ("A" in the relationship "A is a Predecessor-Of B")
-    preceeds the object in some type of ordered sequence or
+    precedes the object in some type of ordered sequence or
     collection.
 
 
@@ -208,7 +208,7 @@ inverse_relationship:
     Inverse-Relationship to Parent-Of".  WontoMedia will interpret any
     two relationships linked by 'Inverse Relationship' (or by a
     non-built in relationship that is marked as a 'SubProperty Of'
-    'Inverse Relationship') as being indentical antonyms of each
+    'Inverse Relationship') as being identical antonyms of each
     other.  Any time one relationship is created, WontoMedia will
     automatically infer, create, and show the matching opposite
     (inverse) relationship's name.
