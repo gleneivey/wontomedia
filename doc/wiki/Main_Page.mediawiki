@@ -1,3 +1,11 @@
+<!-- Copyright (c)  2009  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+
+
 == Welcome ==
 
 '''Welcome''' to the wiki for the [[WontoMedia]] web application.
@@ -53,7 +61,7 @@ For reference, the tools we use are as follows (all
 * the [http://ruby-lang.org/ Ruby] programming language (v1.8)
 * the [http://rubyonrails.org/ Ruby-on-Rails] web application framework (v2.3.4) on top of the [http://www.mysql.com/ MySQL] database server (v5.0)
 * the [http://www.kernel.org/pub/software/scm/git/docs/ Git] source code management system (v1.6)
-* the [http://www.rubygems.org/ Gem] Ruby software packaging and distribution system (v1.3.5)
+* the [http://www.rubygems.org/ Gems] Ruby software packaging and distribution system (v1.3.5)
 * [http://rubyforge.org/projects/wontomedia/ RubyForge], the open-source Ruby project hosting site, which hosts hosts our [http://wontomedia.rubyforge.org/ project web site]
 * [https://github.com/gleneivey/wontomedia/tree GitHub], the public Git repository web site
 * various Ruby and web-based automated-testing tools, including:
@@ -74,7 +82,8 @@ dictated primarily by developer interest in different feature areas.
 The overall planning process is centered on
 [http://www.mountaingoatsoftware.com/article_view/27 user stories].
 Middle- and long-term feature areas are defined by a collection of
-[[EpicStories]].  These stories are being incrementally defined and
+[[EpicStories]] and our [[WmHelp:MajorRoadmap|major-features
+roadmap]].  These stories are being incrementally defined and
 decomposed into smaller, actionable stories, which we manage using
 [https://www.pivotaltracker.com/projects/9280/stories Pivotal
 Tracker].
