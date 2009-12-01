@@ -19,7 +19,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 
-When /^I fill in "([^\"]*)" with "(.*)"$/ do |field, value|
+When /^(?:|I )fill in "([^\"]*)" with "(.*)"$/ do |field, value|
   while value =~ /\\([0-7]{3})/ do
     octal = Regexp.last_match[1]
     str = " "
@@ -31,7 +31,7 @@ When /^I fill in "([^\"]*)" with "(.*)"$/ do |field, value|
 end
 
 
-When /^I (am on|go to|try to go to) the path "(.+)"$/ do |fu, path|
+When /^(?:|I )(am on|go to|try to go to) the path "(.+)"$/ do |fu, path|
   visit path
   if !@browser.nil?
     Kernel.sleep(1.5)

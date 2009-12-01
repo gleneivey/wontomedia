@@ -16,37 +16,50 @@
 # see <http://www.gnu.org/licenses/>.
 
 <%
-  common  = "--color --strict --format progress --tags ~@invalid "
-  rake    = "--tags ~@invalid --tags ~@extended "
-  static  = "-r features/support/env.rb -r features/support/local.rb " +
-            "-r features/support/static.rb -r features/step_definitions "
-  dynamic = "-r features/support/env.rb -r features/support/local.rb " +
-            "-r features/support/dynamic.rb -r features/step_definitions "
+  uber_common  = "--color --strict "
+  common       = uber_common + "--format progress "
+  tags_common  = "~@invalid"
+  tags_rake    = "~@extended"
+  static       = "-r features/support/env.rb -r features/support/local.rb " +
+                 "-r features/support/static.rb -r features/step_definitions "
+  dynamic      = "-r features/support/env.rb -r features/support/local.rb " +
+                 "-r features/support/dynamic.rb -r features/step_definitions "
   static_only  = "--exclude=dynamic   features "
   dynamic_only = "--exclude=static    features "
 %>
 
-default:            <%= common + rake + dynamic %>
-                       --tags ~@not_for_selenium
-                       --format pretty                             features
+default:            <%= uber_common + dynamic %>
+                       --tags <%= tags_common+","+
+                                  tags_rake+",~@not_for_selenium" %>
+                       --format pretty                               features
 
-selenium:           <%= common +        dynamic %>
-                       --tags ~@not_for_selenium --tags ~@invalid  features
+selenium:           <%= common      + dynamic %>
+                       --tags <%= tags_common+","+
+                                             "~@not_for_selenium" %> features
 
-manual:             <%= common +        dynamic %>
-                       --tags ~@not_for_selenium --tags ~@invalid
-                       --format pretty                             features
+manual:             <%= uber_common + dynamic %>
+                       --tags <%= tags_common+","+
+                                             "~@not_for_selenium" %>
+                       --format pretty
+
 
   # profiles to be used from rake
 static_acceptance:
-  <%= common + rake + static  %> --tags ~@wip        <%= static_only %>
+  <%= common + static  %> --tags
+    <%= tags_common+","+tags_rake+",~@wip        " + static_only %>
 static_unfinished:
-  <%= common + rake + static  %> --tags  @wip        <%= static_only %>
+  <%= common + static  %> --tags
+    <%= tags_common+","+tags_rake+",@wip         " + static_only %>
 dynamic_acceptance:
-  <%= common + rake + dynamic %> --tags ~@wip        <%= dynamic_only %>
+  <%= common + dynamic %> --tags
+    <%= tags_common+","+tags_rake+",~@wip        " + dynamic_only %>
 dynamic_unfinished:
-  <%= common + rake + dynamic %> --tags  @wip        <%= dynamic_only %>
+  <%= common + dynamic %> --tags
+    <%= tags_common+","+tags_rake+",@wip         " + dynamic_only %>
+
 autotest:
-  <%= common + rake + static  %> --tags ~@wip -r lib <%= static_only %>
+  <%= common + static  %> --tags
+    <%= tags_common+","+tags_rake+",~@wip -r lib " + static_only %>
 autotest-all:
-  <%= common +        static  %>              -r lib <%= static_only %>
+  <%= common + static  %> --tags
+    <%= tags_common+","+tags_rake+"       -r lib " + static_only %>

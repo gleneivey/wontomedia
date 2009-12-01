@@ -16,8 +16,11 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-$LOAD_PATH.unshift(RAILS_ROOT + '/vendor/plugins/cucumber/lib') if
-  File.directory?(RAILS_ROOT + '/vendor/plugins/cucumber/lib')
+# Find vendored gem or plugin of cucumber
+vendored_cucumber_dir =
+  Dir["#{RAILS_ROOT}/vendor/{gems,plugins}/cucumber*"].first
+$LOAD_PATH.unshift("#{vendored_cucumber_dir}/lib") unless
+  vendored_cucumber_dir.nil?
 
 unless ARGV.any? {|a| a =~ /^gems/}
 
@@ -27,34 +30,34 @@ begin
   # Use vendored cucumber binary if possible. If it's not vendored,
   # Cucumber::Rake::Task will automatically use installed gem's cucumber binary
   vendored_cucumber_binary =
-    Dir["#{RAILS_ROOT}/vendor/{gems,plugins}/cucumber*/bin/cucumber"].first
+    "#{vendored_cucumber_dir}/bin/cucumber" unless vendored_cucumber_dir.nil?
 
   namespace :cucumber do
     Cucumber::Rake::Task.new({:static_ok => 'db:test:prepare'},
         'Run non-Selenium features that should pass') do |t|
       t.binary = vendored_cucumber_binary
-      t.fork = true
+      t.fork = false
       t.profile = "static_acceptance"
     end
 
     Cucumber::Rake::Task.new({:dynamic_ok => 'db:test:prepare'},
         'Run need-Selenium-to-test features that should pass') do |t|
       t.binary = vendored_cucumber_binary
-      t.fork = true
+      t.fork = false
       t.profile = "dynamic_acceptance"
     end
 
     Cucumber::Rake::Task.new({:static_wip => 'db:test:prepare'},
         'Run non-Selenium features that are being worked on') do |t|
       t.binary = vendored_cucumber_binary
-      t.fork = true
+      t.fork = false
       t.profile = "static_unfinished"
     end
 
     Cucumber::Rake::Task.new({:dynamic_wip => 'db:test:prepare'},
         'Run need-Selenium-to-test features that are being worked on') do |t|
       t.binary = vendored_cucumber_binary
-      t.fork = true
+      t.fork = false
       t.profile = "dynamic_unfinished"
     end
 

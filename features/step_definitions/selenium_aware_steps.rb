@@ -77,14 +77,14 @@ When /^I go to "(.+)"$/ do |page_name|
   end
 end
 
-When /^I press "([^\"]*)"$/ do |button|
+When /^(?:|I )press "([^\"]*)"$/ do |button|
   click_button(button)
   if !@browser.nil?
     Kernel.sleep(1.5)
   end
 end
 
-When /^I follow "([^\"]*)"$/ do |link|
+When /^(?:|I )follow "([^\"]*)"$/ do |link|
   click_link(link)
   if !@browser.nil?
     Kernel.sleep(1.5)
