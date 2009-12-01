@@ -12,7 +12,6 @@ gem install       rspec --install-dir ~/gem-testing --bindir ~/gem-testing/bin
 gem install rspec-rails --install-dir ~/gem-testing --bindir ~/gem-testing/bin
 gem install    cucumber --install-dir ~/gem-testing --bindir ~/gem-testing/bin
 gem install   rubyforge --install-dir ~/gem-testing --bindir ~/gem-testing/bin
-gem install    Selenium --install-dir ~/gem-testing --bindir ~/gem-testing/bin
 gem install     mongrel --install-dir ~/gem-testing --bindir ~/gem-testing/bin
 gem install technicalpickles-jeweler   --install-dir ~/gem-testing --bindir ~/gem-testing/bin
 gem install    migration_test_helper   --install-dir ~/gem-testing --bindir ~/gem-testing/bin
