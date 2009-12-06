@@ -1,22 +1,42 @@
+<%
+# WontoMedia - a wontology web application
+# Copyright (C) 2009 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see "http://www.gnu.org/licenses/".
+%>
+
+
 <p class="inputpara">
   <%= f.label :sti_type, "Type" %>
   <%= if @type == "verb"
-	selections = [ [ "Property",      "PropertyNode" ] ]
-	@node.sti_type = "PropertyNode"
+        selections = [ [ "Property",      "PropertyNode" ] ]
+        @node.sti_type = "PropertyNode"
       else
-	selections = [ [ "- type of node -",          "" ],
-		       [ "Category",         "ClassNode" ],
-		       [ "Item",              "ItemNode" ],
-		       [ "Property",      "PropertyNode" ] ]
+        selections = [ [ "- type of node -",          "" ],
+                       [ "Category",         "ClassNode" ],
+                       [ "Item",              "ItemNode" ],
+                       [ "Property",      "PropertyNode" ] ]
       end
 
       select_tag "node[sti_type]",
-	options_for_select( selections,
-			    @node.sti_type.nil? ? "" : @node.sti_type ),
-	:tabindex => "1"
+        options_for_select( selections,
+                            @node.sti_type.nil? ? "" : @node.sti_type ),
+        :tabindex => "1"
    %>
   <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
-		:alt=>"", :size=>"16x16" %>
+                :alt=>"", :size=>"16x16" %>
 </p><p class="directions">
   <span id="sti_type_required">Selection of a type is required.</span>
 </p>

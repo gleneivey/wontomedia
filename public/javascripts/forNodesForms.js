@@ -331,9 +331,8 @@ function okToSubmitNodeForm(){
   onfocusCommonBehavior(nodeSubmit);
   var errors = genDialog();
 
-  if (errors){
+  if (errors)
     makeButtonSeemDisabled(nodeSubmit);
-  }
   else
     makeButtonSeemEnabled(nodeSubmit);
 
@@ -341,8 +340,12 @@ function okToSubmitNodeForm(){
 }
 
 function plumbEventHandlersToNodeCreationElements(customizationSelector){
-  var test = $('node_sti_type');
-  thereIsATypeControl = (test != null);
+  thereIsATypeControl = ($('node_sti_type') != null);
+  if (thereIsATypeControl){
+    var ck = $(controlNamePrefix + 'node_sti_type').value;
+    if (ck != null && ck != "")
+      nodeFormErrors['node_sti_type'] = false;
+  }
 
   if (!creatingNewNode){
     var arrayOfForms = document.getElementsByTagName('form');

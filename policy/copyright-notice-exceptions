@@ -15,6 +15,7 @@
     # updated periodically with new versions
 vendor
 public/javascripts/modalbox.js
+public/javascripts/event.simulate.js
 config/environments/cucumber.rb
 features/support/paths.rb
 features/support/version_check.rb

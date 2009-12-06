@@ -100,6 +100,7 @@ function nodeCreatePopup_MakeSelection(){
 
     // make new node the selection in the operation-originating <select> control
   nodeSelectElementHavingNewNodeAdded.value = idNo;
+  nodeSelectElementHavingNewNodeAdded.simulate('change');
   // Note: we're being lazy.  Just setting the value will cause an Ajax
   //    fetch to the server for the node's description.  However, we've
   //    already got it in the nodes/show page content that we're
