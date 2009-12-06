@@ -16,18 +16,6 @@
 // see <http://www.gnu.org/licenses/>.
 
 
-    // defaults, real value figured when "plumb"ing
-var thereIsATypeControl = false;
-var controlNamePrefix = "";
-var nodeSubmit;
-
-
-var originalNodeName = "";
-var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
-                          //   wait after Name change before check
-
-
-
 // function to highlight help text based on Type <select> element state
 function typeSelectOnchange(){
   var sel = $('node_sti_type');
@@ -58,8 +46,15 @@ function typeSelectOnchange(){
 
 
 
+var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
+                          //   wait after Name change before check
+
+
+
+
 // package of code to implement required-inputs-can't-be-empty checks
 //   (for nodes/new page)
+
 
     // define fields subject to check, order they occur in form
 var requiredNodeElements = [ "sti_type", "title", "name",
@@ -71,15 +66,194 @@ var indexName        = 2;
 var indexDescription = 3;
 var maxLengths = [ 0, 255, 80, 65535 ];
 
+    // globals w/ defaults, real values figured in plumbEvent...()
+var thereIsATypeControl = false;
+var originalNodeName = "";
+var controlNamePrefix = "";
+var nodeSubmit;
+
     // encoding: -1    -> haven't checked yet
     //           false -> no error
     //           true  -> error condition present
 var nodeFormErrors = {};
-for (var c=0; c < requiredNodeElements.length-2; c++)
-  nodeFormErrors["node_" + requiredNodeElements[c]] =
-    creatingNewNode ? -1 : false;
-for (var c=1; c < requiredNodeElements.length-1; c++)
-  nodeFormErrors["length_" + requiredNodeElements[c]] = false;
+
+
+function plumbEventHandlersToNodeCreationElements(customizationSelector){
+  thereIsATypeControl = ($('node_sti_type') != null);
+  for (var c=0; c < requiredNodeElements.length-2; c++)
+    nodeFormErrors["node_" + requiredNodeElements[c]] =
+      creatingNewNode ? -1 : false;
+  for (var c=1; c < requiredNodeElements.length-1; c++)
+    nodeFormErrors["length_" + requiredNodeElements[c]] = false;
+
+  if (!creatingNewNode){
+    var arrayOfForms = document.getElementsByTagName('form');
+    var newNodeId;
+    for (var c=0; c < arrayOfForms.length; c++){
+      newNodeId = arrayOfForms[c].id;
+      var mtch = newNodeId.match(/node$/);
+      if (mtch != null)
+        break;
+    }
+    controlNamePrefix = newNodeId.replace(/^edit_/, "").
+                                  replace(/node_?[0-9]*$/, "");
+    originalNodeName = $(controlNamePrefix + 'node_name').value;
+  }
+
+
+  nodeSubmit = $(controlNamePrefix + 'node_submit');
+  if (thereIsATypeControl){
+    var ck = $(controlNamePrefix + 'node_sti_type').value;
+    if (ck != null && ck != "")
+      nodeFormErrors['node_sti_type'] = false;
+  }
+
+
+  if (thereIsATypeControl){
+    var a = $('node_sti_type');
+    a.observe('keyup',
+      function(ev){
+        if (ev.keyCode != Event.KEY_TAB){   // onfocus does all we need for this
+          setTimeout(
+            function(){
+              checkFieldRequired(a);
+              maybeClearIcon('sti_type');
+            } ,
+            dly
+          );
+        }
+      }
+    );
+
+    a.observe('change',
+      function(){
+        typeSelectOnchange();
+        checkFieldRequired(a);
+        maybeClearIcon('sti_type');
+      }
+    );
+  }
+
+  var b = $(controlNamePrefix + 'node_title');
+  var c = $(controlNamePrefix + 'node_name');
+  function checkTitle(){
+    // this check is unique to Title, do here
+    var mtch = b.value.match(/\n|\r/m);
+    if (mtch != null && mtch.length > 0){
+      $('title_multi_line').className = "helpTextFlagged";
+      nodeFormErrors['ml_title'] = true;
+      $('title_error_icon').src = "/images/error_error_icon.png";
+    }
+    else {
+      $('title_multi_line').className = "";
+      nodeFormErrors['ml_title'] = false;
+    }
+
+    checkFieldRequired(b);
+    checkFieldLength(b, indexTitle);
+    maybeClearIcon('title');
+    if (creatingNewNode){
+      var emptyToNotEmpty = generateFromTitle(b, c);
+      if (emptyToNotEmpty){
+        nodeFormErrors["node_name"] = false;
+        $('name_required').className = "";
+        maybeClearIcon('name');
+      }
+    }
+    nameFieldValidityCheck();
+  }
+
+  b.observe('change', function(){checkTitle();});
+  b.observe('keyup',
+    function(ev){
+      if (ev.keyCode != Event.KEY_TAB)
+        setTimeout(checkTitle, dly);
+    }
+  );
+
+  function checkName(){
+    nameFieldValidityCheck();
+    checkFieldRequired(c);
+    checkFieldLength(c, indexName);
+    maybeClearIcon('name');
+    if (creatingNewNode)
+      generateToName(b, c);
+
+
+    // do last, because we're going to skip part of this if other errors...
+    maybeCheckNameUniqueness(nameAjaxStart);
+  }
+  c.observe('change', function(){checkName();});
+  c.observe('keyup',
+    function(ev){
+      if (ev.keyCode != Event.KEY_TAB)
+        setTimeout(checkName, dly);
+    }
+  );
+
+  function nameFieldValidityCheck(){
+    var mtch, val = $(controlNamePrefix + 'node_name').value;
+
+    $('name_start_char').className = "";
+    nodeFormErrors['char_1_name'] = false;
+    if (val.length > 0){
+      mtch = val.match(/^[a-zA-Z]/);
+      if (mtch == null || mtch.length == 0){
+        $('name_start_char').className = "helpTextFlagged";
+        nodeFormErrors['char_1_name'] = true;
+        $('name_error_icon').src = "/images/error_error_icon.png";
+      }
+    }
+
+    $('name_nth_char').className = "";
+    nodeFormErrors['char_N_name'] = false;
+    if (val.length > 1){
+      mtch = c.value.match(/^.[a-zA-Z0-9_-]+$/);
+      if (mtch == null || mtch.length == 0){
+        $('name_nth_char').className = "helpTextFlagged";
+        nodeFormErrors['char_N_name'] = true;
+        $('name_error_icon').src = "/images/error_error_icon.png";
+      }
+    }
+  }
+
+
+  var d = $(controlNamePrefix + 'node_description');
+  function checkDescription(){
+    checkFieldRequired(d);
+    checkFieldLength(d, indexDescription);
+    maybeClearIcon('description');
+  }
+  d.observe('change', function(){checkDescription();});
+  d.observe('keyup',
+    function(ev){
+      if (ev.keyCode != Event.KEY_TAB)
+        setTimeout(checkDescription, dly);
+    }
+  );
+
+  if (creatingNewNode)
+    makeButtonSeemDisabled(nodeSubmit);// nodes/new -- can't submit a blank form
+  else
+    makeButtonSeemEnabled(nodeSubmit); // nodes/##/edit -- can submit as-is form
+
+  if (customizationSelector != "submitViaModalbox"){
+    nodeSubmit.observe('click',
+      function(ev){
+        if (!okToSubmitNodeForm())
+          ev.stop();
+      }
+    );
+  }
+
+  if (thereIsATypeControl)
+    a.observe('focus', function(){onfocusCommonBehavior(a);});
+  b.observe('focus', function(){onfocusCommonBehavior(b);});
+  c.observe('focus', function(){onfocusCommonBehavior(c);});
+  d.observe('focus', function(){onfocusCommonBehavior(d);});
+  nodeSubmit.
+    observe('focus', function(){onfocusCommonBehavior(nodeSubmit);});
+}
 
 function flagNodeAsRequired(elemName){
   var req = $(elemName + "_required");
@@ -339,171 +513,3 @@ function okToSubmitNodeForm(){
   return !errors;
 }
 
-function plumbEventHandlersToNodeCreationElements(customizationSelector){
-  thereIsATypeControl = ($('node_sti_type') != null);
-  if (thereIsATypeControl){
-    var ck = $(controlNamePrefix + 'node_sti_type').value;
-    if (ck != null && ck != "")
-      nodeFormErrors['node_sti_type'] = false;
-  }
-
-  if (!creatingNewNode){
-    var arrayOfForms = document.getElementsByTagName('form');
-    var newNodeId;
-    for (var c=0; c < arrayOfForms.length; c++){
-      newNodeId = arrayOfForms[c].id;
-      var mtch = newNodeId.match(/node$/);
-      if (mtch != null)
-        break;
-    }
-    controlNamePrefix = newNodeId.replace(/^edit_/, "").
-                                  replace(/node_?[0-9]*$/, "");
-    originalNodeName = $(controlNamePrefix + 'node_name').value;
-  }
-  nodeSubmit = $(controlNamePrefix + 'node_submit');
-
-  if (thereIsATypeControl){
-    var a = $('node_sti_type');
-    a.observe('keyup',
-      function(ev){
-        if (ev.keyCode != Event.KEY_TAB){   // onfocus does all we need for this
-          setTimeout(
-            function(){
-              checkFieldRequired(a);
-              maybeClearIcon('sti_type');
-            } ,
-            dly
-          );
-        }
-      }
-    );
-
-    a.observe('change',
-      function(){
-        typeSelectOnchange();
-        checkFieldRequired(a);
-        maybeClearIcon('sti_type');
-      }
-    );
-  }
-
-  var b = $(controlNamePrefix + 'node_title');
-  var c = $(controlNamePrefix + 'node_name');
-  function checkTitle(){
-    // this check is unique to Title, do here
-    var mtch = b.value.match(/\n|\r/m);
-    if (mtch != null && mtch.length > 0){
-      $('title_multi_line').className = "helpTextFlagged";
-      nodeFormErrors['ml_title'] = true;
-      $('title_error_icon').src = "/images/error_error_icon.png";
-    }
-    else {
-      $('title_multi_line').className = "";
-      nodeFormErrors['ml_title'] = false;
-    }
-
-    checkFieldRequired(b);
-    checkFieldLength(b, indexTitle);
-    maybeClearIcon('title');
-    if (creatingNewNode){
-      var emptyToNotEmpty = generateFromTitle(b, c);
-      if (emptyToNotEmpty){
-        nodeFormErrors["node_name"] = false;
-        $('name_required').className = "";
-        maybeClearIcon('name');
-      }
-    }
-    nameFieldValidityCheck();
-  }
-
-  b.observe('change', function(){checkTitle();});
-  b.observe('keyup',
-    function(ev){
-      if (ev.keyCode != Event.KEY_TAB)
-        setTimeout(checkTitle, dly);
-    }
-  );
-
-  function checkName(){
-    nameFieldValidityCheck();
-    checkFieldRequired(c);
-    checkFieldLength(c, indexName);
-    maybeClearIcon('name');
-    if (creatingNewNode)
-      generateToName(b, c);
-
-
-    // do last, because we're going to skip part of this if other errors...
-    maybeCheckNameUniqueness(nameAjaxStart);
-  }
-  c.observe('change', function(){checkName();});
-  c.observe('keyup',
-    function(ev){
-      if (ev.keyCode != Event.KEY_TAB)
-        setTimeout(checkName, dly);
-    }
-  );
-
-  function nameFieldValidityCheck(){
-    var mtch, val = $(controlNamePrefix + 'node_name').value;
-
-    $('name_start_char').className = "";
-    nodeFormErrors['char_1_name'] = false;
-    if (val.length > 0){
-      mtch = val.match(/^[a-zA-Z]/);
-      if (mtch == null || mtch.length == 0){
-        $('name_start_char').className = "helpTextFlagged";
-        nodeFormErrors['char_1_name'] = true;
-        $('name_error_icon').src = "/images/error_error_icon.png";
-      }
-    }
-
-    $('name_nth_char').className = "";
-    nodeFormErrors['char_N_name'] = false;
-    if (val.length > 1){
-      mtch = c.value.match(/^.[a-zA-Z0-9_-]+$/);
-      if (mtch == null || mtch.length == 0){
-        $('name_nth_char').className = "helpTextFlagged";
-        nodeFormErrors['char_N_name'] = true;
-        $('name_error_icon').src = "/images/error_error_icon.png";
-      }
-    }
-  }
-
-
-  var d = $(controlNamePrefix + 'node_description');
-  function checkDescription(){
-    checkFieldRequired(d);
-    checkFieldLength(d, indexDescription);
-    maybeClearIcon('description');
-  }
-  d.observe('change', function(){checkDescription();});
-  d.observe('keyup',
-    function(ev){
-      if (ev.keyCode != Event.KEY_TAB)
-        setTimeout(checkDescription, dly);
-    }
-  );
-
-  if (creatingNewNode)
-    makeButtonSeemDisabled(nodeSubmit);// nodes/new -- can't submit a blank form
-  else
-    makeButtonSeemEnabled(nodeSubmit); // nodes/##/edit -- can submit as-is form
-
-  if (customizationSelector != "submitViaModalbox"){
-    nodeSubmit.observe('click',
-      function(ev){
-        if (!okToSubmitNodeForm())
-          ev.stop();
-      }
-    );
-  }
-
-  if (thereIsATypeControl)
-    a.observe('focus', function(){onfocusCommonBehavior(a);});
-  b.observe('focus', function(){onfocusCommonBehavior(b);});
-  c.observe('focus', function(){onfocusCommonBehavior(c);});
-  d.observe('focus', function(){onfocusCommonBehavior(d);});
-  nodeSubmit.
-    observe('focus', function(){onfocusCommonBehavior(nodeSubmit);});
-}
