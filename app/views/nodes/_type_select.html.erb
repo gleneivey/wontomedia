@@ -1,0 +1,25 @@
+<p class="inputpara">
+  <%= f.label :sti_type, "Type" %>
+  <%= if @type == "verb"
+	selections = [ [ "Property",      "PropertyNode" ] ]
+	@node.sti_type = "PropertyNode"
+      else
+	selections = [ [ "- type of node -",          "" ],
+		       [ "Category",         "ClassNode" ],
+		       [ "Item",              "ItemNode" ],
+		       [ "Property",      "PropertyNode" ] ]
+      end
+
+      select_tag "node[sti_type]",
+	options_for_select( selections,
+			    @node.sti_type.nil? ? "" : @node.sti_type ),
+	:tabindex => "1"
+   %>
+  <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
+		:alt=>"", :size=>"16x16" %>
+</p><p class="directions">
+  <span id="sti_type_required">Selection of a type is required.</span>
+</p>
+<script type="text/javascript">
+  $('node_sti_type').focus();
+</script>

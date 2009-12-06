@@ -26,29 +26,7 @@
    form_for(@node, options) do |f|
  %>
   <%= f.error_messages %>
-  <p class="inputpara">
-    <%= f.label :sti_type, "Type" %>
-    <%= if @type == "noun"
-          selections = [ [ "- type of node -",          "" ],
-                         [ "Category",         "ClassNode" ],
-                         [ "Item",              "ItemNode" ],
-                         [ "Property",      "PropertyNode" ] ]
-        else
-          selections = [ [ "Property",      "PropertyNode" ] ]
-          @node.sti_type = "PropertyNode"
-        end
-
-        select_tag "node[sti_type]",
-          options_for_select( selections,
-                              @node.sti_type.nil? ? "" : @node.sti_type ),
-          :tabindex => "1"
-     %>
-    <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
-                  :alt=>"", :size=>"16x16" %>
-  </p><p class="directions">
-    <span id="sti_type_required">Selection of a type is required.</span>
-  </p>
-
+  <%= render :partial => "type_select", :locals => { :f => f } %>
   <%= render :partial => "form_fields", :locals => { :f => f } %>
 
   <p id="create_button_container" style="text-align: center">
@@ -67,7 +45,6 @@
      popped us up.  Call function to wire library functions to the form
      elements we've just loaded. -->
 <script type="text/javascript">
-  $('node_sti_type').focus();
   genNameFromTitleOk = true;
   plumbEventHandlersToNodeCreationElements("submitViaModalbox");
 </script>
