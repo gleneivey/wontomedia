@@ -23,12 +23,13 @@ require 'selenium'
 Webrat.configure do |config|
   config.mode = :selenium
   config.application_environment = :test
+  config.selenium_browser_startup_timeout = 40
 end
 Cucumber::Rails::World.use_transactional_fixtures = false
 
 
 # "before all"
-browser = Selenium::SeleniumDriver.new("localhost", 4444, "*chrome",
+browser = Selenium::SeleniumDriver.new("localhost", 4444, "*firefox",
                                        "http://localhost", 15000)
 
 
