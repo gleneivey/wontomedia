@@ -39,25 +39,22 @@ Feature:  Edit individual nodes through non-Ajax pages
     Then I should see "error"
 
 
-  Scenario: When I delete a node, edges that use it go too
-    Given there are 2 existing properties like "propFamily"
-    And there is an existing edge "propFamily1" "child_of" "propFamily0"
+  Scenario: When I try to delete a node, it deletes
+    Given there is 1 existing property like "propFamily"
     And I am on the show nodes page for "propFamily0"
     And I follow "Delete this node", accepting confirmation
     When I try to go to the show nodes page for "propFamily0"
     Then I should see "doesn't exist"
-    When I try to go to the show edges page for "propFamily1" "child_of" "propFamily0"
-    Then I should see "doesn't exist"
 
 
-  Scenario: No delete links for built-in nodes
+  Scenario: Delete links for user nodes, not for built-in nodes
     Given there is 1 existing item like "anItem"
     When I go to the index nodes page
     Then there should be a node container for "anItem0" including the tag "a[href="/nodes/?anItem0?"][onclick*="delete"]"
     And there should not be a node container for "sub_property_of" including the tag "a[href="/nodes/?sub_property_of?"][onclick*="delete"]"
 
 
-  Scenario: No edit links for built-in nodes
+  Scenario: Edit links for user nodes, not for built-in nodes
     Given there is 1 existing class like "aClass"
     When I go to the index nodes page
     Then there should be a node container for "aClass0" including the tag "a[href="/nodes/?aClass0?/edit"]"

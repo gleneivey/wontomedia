@@ -399,7 +399,7 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should delete node" do
-    n = nodes(:one)
+    n = nodes(:two)
     name = n.name
     assert_difference('Node.count', -1) do
       delete :destroy, :id => n.id
@@ -409,13 +409,11 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should not delete builtin node" do
-    name = "value_relationship"
-    n = Node.find_by_name(name)
-    assert_difference('Node.count', 0) do
-      delete :destroy, :id => n.id
-    end
-    assert_redirected_to node_path(n)
-    assert_not_nil n == Node.find_by_name(name)
+    assert_node_wont_delete(Node.find_by_name("value_relationship"))
+  end
+
+  test "should not delete node in use by an edge" do
+    assert_node_wont_delete(nodes(:testItem))
   end
 
   test "should lookup existing node" do
@@ -445,5 +443,14 @@ private
     node = assigns(:node)
     assert_not_nil node
     assert_equal id, node.id
+  end
+
+  def assert_node_wont_delete(n)
+    name = n.name
+    assert_difference('Node.count', 0) do
+      delete :destroy, :id => n.id
+    end
+    assert_redirected_to node_path(n)
+    assert_not_nil n == Node.find_by_name(name)
   end
 end

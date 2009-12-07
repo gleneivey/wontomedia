@@ -256,6 +256,13 @@ class NodesController < ApplicationController
     if (@node.flags & Node::DATA_IS_UNALTERABLE) != 0
       flash[:error] = 'This Node cannot be altered.'
       redirect_to node_path(@node)
+    elsif !(Edge.all( :conditions =>
+                      [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
+                        @node.id, @node.id, @node.id ]).
+            empty?)
+      flash[:error] = 'This Node is in use by 1+ Edges. ' +
+                      'Those must be modified or deleted first.'
+      redirect_to node_path(@node)
     else
       @node.destroy
       redirect_to nodes_url
