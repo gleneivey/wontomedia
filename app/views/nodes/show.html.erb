@@ -58,7 +58,7 @@
             </td><td>
               <% if (e.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
                 <%= link_to 'Edit&nbsp;edge', edit_edge_path(e) %>
-                <%= link_to 'Destroy&nbsp;edge', edge_path(e),
+                <%= link_to 'Delete&nbsp;edge', edge_path(e),
                             :confirm => 'Are you sure?', :method => :delete %>
               <% end %>
             </td>

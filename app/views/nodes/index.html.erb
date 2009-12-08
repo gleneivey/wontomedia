@@ -42,7 +42,7 @@
       <td>
         <% if (node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
           <%= link_to 'Edit&nbsp;node', edit_node_path(node) %>
-          <%= link_to 'Destroy&nbsp;node', node_path(node),
+          <%= link_to 'Delete&nbsp;node', node_path(node),
                       :confirm => 'Are you sure?', :method => :delete %>
         <% end %>
       </td>
