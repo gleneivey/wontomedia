@@ -63,8 +63,15 @@ class NodesIndexViewTest < ActionController::TestCase
         # edit link present/absent
         assert_select( "*##{node.name} a[href=\"#{edit_node_path(node)}\"]",
           test_sense   )
+
         # delete link present/absent
         # (attribute check is very Rails specific and a little sloppy, alas...)
+        node_not_in_use =
+          Edge.all( :conditions =>
+                    [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
+                      node.id, node.id, node.id ]).
+            empty?
+        test_sense &= node_not_in_use
         assert_select(
           "*##{node.name} a[href=\"#{node_path(node)}\"][onclick*=\"delete\"]",
           test_sense   )

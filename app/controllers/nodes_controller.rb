@@ -38,6 +38,15 @@ class NodesController < ApplicationController
   # GET /nodes
   def index
     @nodes = Node.all.reverse
+    @not_in_use_hash = {}
+    @nodes.each do |node|
+      @not_in_use_hash[node.id] =
+        Edge.all( :conditions =>
+                  [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
+                    node.id, node.id, node.id ]).
+          empty?
+    end
+
     respond_to do |wants|
       wants.html
       wants.yaml do

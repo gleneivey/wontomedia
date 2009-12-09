@@ -29,6 +29,7 @@ class NodesControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:nodes)
+    assert_not_nil assigns(:not_in_use_hash)
   end
 
   test "sould get YAML-format all-nodes download/index" do
