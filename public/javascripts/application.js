@@ -29,3 +29,14 @@ function makeButtonSeemEnabled(button){
 function makeButtonSeemDisabled(button){
   button.className = "inactiveButton";
 }
+
+
+    // common uses for modalbox
+function cantDeleteNode_Popup(){
+  Modalbox.show(
+    "<p>A node cannot be deleted as long as it is referenced by an edge. " +
+      "Change or delete all of the edges referencing this node first " +
+      "if you want to delete this node.</p>",
+    { title: "Cannot delete this node now",
+      slideDownDuration: 0.25, slideUpDuration: 0.1 } );
+}

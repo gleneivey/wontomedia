@@ -69,3 +69,7 @@ p.directions {
   color: #d0d0d0;
   background-color: #ffffff;
 }
+
+.inactiveLink {
+  font-size: 80%
+}

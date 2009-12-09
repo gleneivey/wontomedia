@@ -47,6 +47,14 @@ Feature:  Edit individual nodes through non-Ajax pages
     Then I should see "doesn't exist"
 
 
+  Scenario: When I try to delete an in-use node, it doesn't
+    Given there are 2 existing properties like "propFamily"
+    And there is an existing edge "propFamily1" "child_of" "propFamily0"
+    And I am on the show nodes page for "propFamily0"
+    When I follow "Can't delete this node", accepting confirmation
+    Then I should see all of "propFamily0", "propFamily node number 0", "Lorem ipsum dolor sit propFamily amet, consectetur adipiscing elit. Suspendisse 0 tincidunt mauris vitae lorem."
+
+
   Scenario: Delete links for user nodes, not for built-in nodes
     Given there is 1 existing item like "anItem"
     When I go to the index nodes page

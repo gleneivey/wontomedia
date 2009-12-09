@@ -85,9 +85,14 @@ class NodesShowViewTest < ActionController::TestCase
     assert_select "a[href=?]", edit_node_path(n)
   end
 
-  test "node-show page should contain node-delete link" do
+  test "node-show page 4 unused nodes should contain node-delete link" do
     n = get_nodes_show(:two)
     assert_select "a[href=?]", node_path(n) #sloppy, should verify :method
+  end
+
+  test "node-show page 4 in-use nodes should contain cant-delete-node link" do
+    n = get_nodes_show(:one)
+    assert_select "a[href=\"#\"][onclick*=\"cantDelete\"]"
   end
 
   test "node-show page should contain nodes-index link" do
@@ -131,16 +136,24 @@ class NodesShowViewTest < ActionController::TestCase
         # other node types all listed
         assert_select "body", /#{node.name}/
 
+
         test_sense = (node.flags & Node::DATA_IS_UNALTERABLE) == 0
 
         # edit link present/absent
-        assert_select( "a[href=\"#{edit_node_path(node)}\"]",
-          test_sense   )
+        assert_select( "a[href=\"#{edit_node_path(node)}\"]", test_sense )
+
         # delete link present/absent
-        # (attribute check is very Rails specific and a little sloppy, alas...)
+        node_not_in_use =
+          Edge.all( :conditions =>
+                    [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
+                      node.id, node.id, node.id ]).
+            empty?
         assert_select(
           "a[href=\"#{node_path(node)}\"][onclick*=\"delete\"]",
-          test_sense   )
+          test_sense && node_not_in_use )
+        assert_select(
+          "a[href=\"#\"][onclick*=\"cantDelete\"]",
+          test_sense && !node_not_in_use )
       end
     end
   end

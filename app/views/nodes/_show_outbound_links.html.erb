@@ -20,8 +20,15 @@
 
 <% if (@node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
   <%= link_to 'Edit this node', edit_node_path(@node) %> &mdash;
-  <%= link_to 'Delete this node', node_path(@node),
-              :confirm => 'Are you sure?', :method => :delete %> &mdash;
+  <% if @edge_list.empty? %>
+    <%= link_to 'Delete this node', node_path(@node),
+                :confirm => 'Are you sure?', :method => :delete %>
+  <% else %>
+    <span class="inactiveLink">
+      <%= link_to_function "Can't delete this node", "cantDeleteNode_Popup()" %>
+    </span>
+  <% end %>
+  &mdash;
 <% end %>
 
 <%= link_to 'Show node list', nodes_path %> &mdash;
