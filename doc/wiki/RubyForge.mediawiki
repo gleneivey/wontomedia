@@ -6,9 +6,7 @@
   -->
 
 
-'''''RubyForge''''' (http://rubyforge.org/) is a public site providing
-free hosting resources for open-source software development projects.
-[[WontoMedia]]'s main project page on RubyForge is at:
+'''''RubyForge''''' (http://rubyforge.org/) is a public site providing free hosting resources for open-source software development projects. [[WontoMedia]]'s main project page on RubyForge is at:
 
  http://rubyforge.org/projects/wontomedia/
 

@@ -6,35 +6,8 @@
   -->
 
 
-'''''WontoMedia''''' &mdash; WontoMedia is a web application package
-for hosting a Wontology (a
-[[Wikipedia:Wiki|Wiki]]-[[Wikipedia:Ontology_(information_science)|Ontology]]):
-a classification scheme created and maintained by a community. From
-categories in a bug-tracker or RubyForge's "Trove", to a document
-repository's controlled vocabulary, a species taxonomy, or
-thesaurus. ("''wontology''" comes from '''w'''iki plus
-'''ontology'''. "''WontoMedia''" is a '''wonto'''logy web app in the
-same way that '''Media'''Wiki is a wiki web app.)
+'''''WontoMedia''''' &mdash; WontoMedia is a web application package for hosting a Wontology (a [[Wikipedia:Wiki|Wiki]]-[[Wikipedia:Ontology_(information_science)|Ontology]]): a classification scheme created and maintained by a community. From categories in a bug-tracker or RubyForge's "Trove", to a document repository's controlled vocabulary, a species taxonomy, or thesaurus. ("''wontology''" comes from '''w'''iki plus '''ontology'''. "''WontoMedia''" is a '''wonto'''logy web app in the same way that '''Media'''Wiki is a wiki web app.)
 
-Development of WontoMedia is hosted on
-[http://rubyforge.org/projects/wontomedia/ RubyForge], including the
-package's [http://wontomedia.rubyforge.org/ main web site], although
-not [http://wiki.wontology.org/Main_Page this wiki].
+Development of WontoMedia is hosted on [http://rubyforge.org/projects/wontomedia/ RubyForge], including the package's [http://wontomedia.rubyforge.org/ main web site], although not [[Main_Page|this wiki]].
 
-WontoMedia is a free/libre/open-source ([[Wikipedia:FLOSS|FLOSS]])
-[http://rubyonrails.org/ Ruby-on-Rails] web application, written in
-the language [http://ruby-lang.org/ Ruby]. It is being developed using
-FLOSS tools for TDD
-([[Wikipedia:Test_driven_development|Test-Driven Development]]) and
-[http://testdrivendeveloper.com/2008/04/02/AcceptanceTestDrivenDevelopmentExplained.aspx ATDD]
-([http://testobsessed.com/wordpress/wp-content/uploads/2008/12/atddexample.pdf Acceptance-Test Driven Development]), and supporting
-distribution/installation via
-[http://www.kernel.org/pub/software/scm/git/docs/ Git],
-[http://www.rubygems.org/ rubygems], and
-[http://pkg-ruby-extras.alioth.debian.org/upstream-devs.html
-tar/setup.rb]. It is intended for websites that are, or that use,
-wontologies. That is, websites which are (in whole or in part)
-community-produced ontologies, or simpler structures like lists,
-hierarchies, taxonomies, thesauri, controlled vocabularies, etc. This
-is analogous to how a wiki is used for community production of prose
-or to how freebase.com is a "community database" site.
+WontoMedia is a free/libre/open-source ([[Wikipedia:FLOSS|FLOSS]]) [http://rubyonrails.org/ Ruby-on-Rails] web application, written in the language [http://ruby-lang.org/ Ruby]. It is being developed using FLOSS tools for TDD ([[Wikipedia:Test_driven_development|Test-Driven Development]]) and [http://testdrivendeveloper.com/2008/04/02/AcceptanceTestDrivenDevelopmentExplained.aspx ATDD] ([http://testobsessed.com/wordpress/wp-content/uploads/2008/12/atddexample.pdf Acceptance-Test Driven Development]), and supporting distribution/installation via [http://www.kernel.org/pub/software/scm/git/docs/ Git], [http://www.rubygems.org/ rubygems], and [http://pkg-ruby-extras.alioth.debian.org/upstream-devs.html tar/setup.rb]. It is intended for websites that are, or that use, wontologies. That is, websites which are (in whole or in part) community-produced ontologies, or simpler structures like lists, hierarchies, taxonomies, thesauri, controlled vocabularies, etc. This is analogous to how a wiki is used for community production of prose or to how freebase.com is a "community database" site.

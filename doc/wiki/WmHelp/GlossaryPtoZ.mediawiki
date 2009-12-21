@@ -1,0 +1,87 @@
+<!-- Copyright (c)  2009  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+
+
+Previous: [[WmHelp:GlossaryAtoO|Glossary page for A through O]]
+
+[[WmHelp:GlossaryAtoO#anchor_Node|Node]]
+[[WmHelp:GlossaryAtoO#anchor_Edge|Edge]]
+[[WmHelp:GlossaryPtoZ#anchor_Subject|Subject]]
+[[WmHelp:GlossaryPtoZ#anchor_Predicate|Predicate]]
+[[WmHelp:GlossaryAtoO#anchor_Object|Object]]
+
+[[WmHelp:GlossaryAtoO#anchor_C|C]]
+[[WmHelp:GlossaryAtoO#anchor_D|D]]
+[[WmHelp:GlossaryAtoO#anchor_E|E]]
+[[WmHelp:GlossaryAtoO#anchor_H|H]]
+[[WmHelp:GlossaryAtoO#anchor_I|I]]
+[[WmHelp:GlossaryAtoO#anchor_L|L]]
+[[WmHelp:GlossaryAtoO#anchor_M|M]]
+[[WmHelp:GlossaryAtoO#anchor_N|N]]
+[[WmHelp:GlossaryAtoO#anchor_O|O]]
+[[WmHelp:GlossaryPtoZ#anchor_P|P]]
+[[WmHelp:GlossaryPtoZ#anchor_R|R]]
+[[WmHelp:GlossaryPtoZ#anchor_S|S]]
+[[WmHelp:GlossaryPtoZ#anchor_T|T]]
+[[WmHelp:GlossaryPtoZ#anchor_W|W]]
+[[WmHelp:GlossaryPtoZ#anchor_X|X]]
+
+
+<span id="anchor_P"></span>
+<span id="anchor_Parent"></span>
+;Parent
+:A "parent" is a [[WmHelp:GlossaryAtoO#anchor_Node|node]] that is in a parent-[[WmHelp:GlossaryAtoO#anchor_Child|child]] [[WmHelp:GlossaryPtoZ#anchor_Relationship|relationship]] with one or more other nodes, the "children."  Parent-child is a [[WmHelp:GlossaryAtoO#anchor_Hierarchy|hierarchical]] relationship, and implies that the children are below or subsidiary-to the parent within the hierarchy.  (If the hierarchy is a tree, the parent is closer to the "root" than the "leaves.")  Being a parent in relationship with some nodes does not prevent the parent from having other relationships with other nodes, including also being a child.  While the parent-child relationship would obviously be used in a [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]] for expressing genealogy and family relationships between people, it is also commonly used to express more general hierarchical relations when other specific relationship types are not applicable.
+<span id="anchor_Peer"></span>
+;Peer Relationship
+:Within a wontology, a peer [[WmHelp:GlossaryPtoZ#anchor_Relationship|relationship]] implies that the related [[WmHelp:GlossaryAtoO#anchor_Node|nodes]] are at the same level in a [[WmHelp:GlossaryAtoO#anchor_Hierarchy|hierarchy]].  That is, neither node is closer to the "root" (top, base, start, origin, etc.) than the other.  Any relationship may be a peer relationship, regardless of the name used for it (the [[WmHelp:GlossaryAtoO#anchor_Name|Name]] field of the [[WmHelp:GlossaryPtoZ#anchor_Property|Property]]-type node that is used to represent it).  [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] is told that a relationship denotes that nodes are peers by creating an [[WmHelp:GlossaryAtoO#anchor_Edge|edge]] using the <tt>sub_property_of</tt> type between the new property and another property that already indicates "peer-ship."  (WontoMedia provides the built-in <tt>peer_relationship</tt> property to provide the base of a chain of peer properties.)  Apart from any inferences that could be drawn from the peer nature of a relationship, WontoMedia takes into account whether nodes are peers when creating pages that display the relationships between nodes.  A [[WmHelp:GlossaryAtoO#anchor_Hierarchical|hierarchical relationship]] implies the opposite of a peer relationship, and is also treated specially for display by WontoMedia.  A property node ''cannot'' represent both a peer and a hierarchical relationship, but can represent (be <tt>sub_property_of</tt>) neither.
+<span id="anchor_Predecessor"></span>
+;Predecessor
+:A "predecessor" is a [[WmHelp:GlossaryAtoO#anchor_Node|node]] that is in a predecessor-[[WmHelp:GlossaryPtoZ#anchor_Successor|successor]] relationship with another node.  Predecessor-successor implies that one node "comes before the other" when ordered relative to some criteria.  It is also a [[WmHelp:GlossaryPtoZ#anchor_Peer|peer]] relationship which implies that in addition to their relative order, the two related nodes are otherwise comparable (in position, in level, etc.) in any hierarchy that contains both.
+<span id="anchor_Predicate"></span>
+;Predicate
+:In an [[WmHelp:GlossaryAtoO#anchor_Ontology|ontology]], a predicate is the second [[WmHelp:GlossaryAtoO#anchor_Node|node]] referred to by an [[WmHelp:GlossaryAtoO#anchor_Edge|edge]], and specifies the type of [[WmHelp:GlossaryPtoZ#anchor_Relationship|relationship]] that the edge represents between its other two nodes (the first node, the [[WmHelp:GlossaryPtoZ#anchor_Subject|subject]], and the third node, the [[WmHelp:GlossaryAtoO#anchor_Object|object]]).  Each edge asserts a single fact within the ontology, and can be "read" by analogy with a sentence:  "subject predicate object", like "vehicles include cars".  Within [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]], each node has a type, and the predicate node of an edge has to be a [[WmHelp:GlossaryPtoZ#anchor_Property|Property]]-type node.  The other nodes an edge references can be any type, Property, [[WmHelp:GlossaryAtoO#anchor_Category|Category]], or [[#category_Item|Item]].
+<span id="anchor_Property"></span>
+;Property
+:"Property" is one of the three types of [[WmHelp:GlossaryAtoO#anchor_Node|nodes]], along with [[WmHelp:GlossaryAtoO#anchor_Category|Category]] and [[WmHelp:GlossaryAtoO#anchor_Item|Item]].  Property nodes are used exclusively to represent the types of [[WmHelp:GlossaryPtoZ#anchor_Relationships|relationships]] between ([[WmHelp:GlossaryAtoO#anchor_Edge|edges]] connecting) other nodes.  A property is not a particular relationship, but the definition of a type of relationship.  Individual relationships are represented by [[WmHelp:GlossaryAtoO#anchor_Edge|edges]]:  ordered triplets of nodes, a [[WmHelp:GlossaryPtoZ#anchor_Subject|subject]], a [[WmHelp:GlossaryPtoZ#anchor_Predicate|predicate]], and an [[WmHelp:GlossaryAtoO#anchor_Object|object]].  In an edge triplet, the predicate must by a Property-type node to determine the type of relationship the edge indicates, but the subject and object can be any kind of node.  Note that Property-type nodes may also be subjects and objects, which allows the creation of edges that define the relationships of different properties to each other.
+<span id="anchor_R"></span>
+<span id="anchor_RDF"></span>
+;RDF
+:"RDF" is the "[http://www.w3.org/RDF/ Resource Description Framework]," a standard developed by the [http://www.w3.org/ World Wide Web Consortium] (W3C) for encoding information for automated consumption (as opposed to reading by humans) on the web.  RDF provides for several standard representations of data "triples" (essentially the same as an [[WmHelp:GlossaryAtoO#anchor_Edge|edge]] in a [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]].  The types of information that can be expressed in RDF is more restricted than is supported by the [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] web application, but RDF is an important way to understand the fundamentals of capturing information in a set of [[WmHelp:GlossaryAtoO#anchor_Node|nodes]] and [[WmHelp:GlossaryAtoO#anchor_Edge|edges]], and it is the foundation on which the Web Ontology Language ([[WmHelp:GlossaryAtoO#anchor_OWL|OWL]]) is built.  For more information, consider reading [http://www.amazon.com/gp/product/0596002637?ie=UTF8&tag=wontology-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0596002637 Practical RDF] http://www.assoc-amazon.com/e/ir?t=wontology-20&l=as2&o=1&a=0596002637
+<span id="anchor_RDFa"></span>
+;RDFa
+:"RDFa" is the "[http://www.w3.org/TR/xhtml-rdfa-primer/ Resource Description Framework in attributes]," a standard developed by the [http://www.w3.org/ World Wide Web Consortium] (W3C) as a follow-on to [[WmHelp:GlossaryPtoZ#anchor_RDF|RDF]].  RDFa is much like RDF, but where RDF addresses encoding information in stand-alone sets, RDFa addresses the interweaving of machine-readable information (as expressed by RDF) with human-readable information on the web.  In some ways, RDFa can be thought of as "a [[WmHelp:GlossaryAtoO#anchor_Microformat|microformat]] for RDF" or as an replacement for "[http://www.w3.org/2001/sw/BestPractices/HTML/ RDF in HTML]."
+<span id="anchor_Relationship"></span>
+;Relationship
+:In a [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]] information is represented as a [http://en.wikipedia.org/wiki/Directed_graph directed graph] of [[WmHelp:GlossaryAtoO#anchor_Node|nodes]] and [[WmHelp:GlossaryAtoO#anchor_Edge|edges]].  It is important to distinguish the nodes and edges stored from what they ''represent'' in the real world.  A node is a representation of some''thing'', usually a physical entity or a concept.  An edge is a representation of the ''relationship'' between two nodes.  Edges can represent actual relationships ("head-bone is-connected-to [the] neck-bone"), or "relationships" between things and facts about them ("number-of-items-in-list is 42").  When putting information into a wontology, it is important to keep in mind the difference between the real relationship and the edge (or multiple edges) created to represent it--after all, [http://en.wikipedia.org/wiki/Map%E2%80%93territory_relation "the map is not the territory"].
+<span id="anchor_S"></span>
+<span id="anchor_Subject"></span>
+;Subject
+:A "subject," in the context of an individual [[WmHelp:GlossaryAtoO#anchor_Edge|edge]] in a [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]], is the ''first'' [[WmHelp:GlossaryAtoO#anchor_Node|node]] that the edge references.  An edge's subject node is named that way by analogy, from viewing an edge as a sentence making a statement about the [[WmHelp:GlossaryPtoZ#anchor_Relationship|relationship]] between nodes.  Thus, an edge is composed "subject [[WmHelp:GlossaryPtoZ#anchor_Predicate|predicate]] [[WmHelp:GlossaryAtoO#anchor_Object|object]]" like the sentence fragment "ball is red".  Virtually all nodes will be both subjects and objects of different edges.  Note that, unlike the object of an edge, the subject will always be a node.  Some edges make factual statements about the subject in which the object is not another node.  For example, in the statement "Fred was-born-on December 14, 1919", "Fred" is the subject and refers to a node (which itself presumably represents an individual in the real world, or even a fictional world if that's what the current wontology describes).  However, in this example, "December 14, 1919" is simply a constant value, rather than a node itself.  This may be the case for objects, but never for subjects.
+<span id="anchor_Successor"></span>
+;Successor
+:A "successor" is a [[WmHelp:GlossaryAtoO#anchor_Node|node]] that is in a [[WmHelp:GlossaryPtoZ#anchor_Predecessor|predecessor]]-successor relationship with another node.  Predecessor-successor implies that one node "comes before the other" when ordered relative to some criteria.  It is also a [[WmHelp:GlossaryPtoZ#anchor_Peer|peer]] relationship which implies that in addition to their relative order, the two related nodes are otherwise comparable (in position, in level, etc.) in any hierarchy that contains both.
+<span id="anchor_T"></span>
+<span id="anchor_Thesaurus"></span>
+;Thesaurus
+:A thesaurus is a model for an information categorization scheme that, in terms of complexity and expressiveness, falls between a [[WmHelp:GlossaryAtoO#anchor_Controlled|controlled vocabulary]] and an [[WmHelp:GlossaryAtoO#anchor_Ontology|ontology]].  Typically a thesaurus is used to express the organization of and relationships between words in a language.  Thesauri may be created for an entire language, or for a subset of one.  Thesauri may also be created to represent the relationships between words in two different languages, providing simple mappings between synonyms or otherwise-related words.  (Although a thesaurus is not expressive enough to capture the full semantic differences between related words in different languages that would be needed for translation.)  Having been designed to express ontologies, [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] can be used to store and maintain any thesaurus.
+<span id="anchor_Title"></span>
+;Title
+:In the context of a [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]], a "Title" is a data field associated with a [[WmHelp:GlossaryAtoO#anchor_Node|node]].  All nodes have a Title, which should be a brief, meaningful (to a person) description for that node.  Nodes also have a required data field called "[[WmHelp:GlossaryAtoO#anchor_Name|Name]]", which serves a purpose similar to Title.  Names must be shorter than titles, and are restricted to a narrower set of text characters.  In [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] a Title may be no more than 255 characters and can only be a single line.  When formatting a page that refers to a node, WontoMedia will show the node's Title, the node's Name, or both, depending on the amount of space available.  A node's Title should be an accurate enough reference to what the node represents that anyone who's read the node's [[WmHelp:GlossaryAtoO#anchor_Description|Description]] will know exactly what the node means, and most other people will have a good guess.
+<span id="anchor_Tree"></span>
+;Tree
+:In the context of information organization, a tree is a structure in which items ([[WmHelp:GlossaryAtoO#anchor_Node|nodes]] in an [[WmHelp:GlossaryAtoO#anchor_Ontology|ontology]]) are arranged so that each has one [[WmHelp:GlossaryPtoZ#anchor_Parent|parent]] item (containing, more general, larger, more important, etc.) and zero or more [[WmHelp:GlossaryAtoO#anchor_Child|child]] items (contained, more specific, less important, controlled-by, etc.).  For the purposes of the [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] web application, "tree" can be considered a synonym of "[[WmHelp:GlossaryAtoO#anchor_Hierarchy|hierarchy]]."
+<span id="anchor_W"></span>
+<span id="anchor_Wontology"></span>
+;Wontology
+:A wontology is an [[WmHelp:GlossaryAtoO#anchor_Ontology|ontology]] created or maintained by a community.  The word was coined by borrowing the "w" from "[http://en.wikipedia.org/wiki/Wiki wiki]", which has come to be a generic term for a community-maintained collection of articles or other documents.  This glossary is part of the documentation of the [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] web application software, a [http://en.wikipedia.org/wiki/Free_software Free Software] package implementing a wontology for web sites, and information about [http://wontomedia.rubyforge.org/ WontoMedia's development and use] is separate.
+<span id="anchor_WontoMedia"></span>
+;WontoMedia
+:[[WontoMedia]] is a [http://en.wikipedia.org/wiki/Free_software Free] software package that implements a [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]] as web site.  WontoMedia is intended to allow anyone to set up their own wontology, with information about any topic or topics, and to inter-reference their information with wontologies created and published by others.  WontoMedia can be installed to provide a large public repository of information, like http://wontology.org, or as a small component of another web site or application, providing easy management of lists or category hierarchies for the containing system.
+<span id="anchor_X"></span>
+<span id="anchor_XML"></span>
+;XML
+:XML is the [http://en.wikipedia.org/wiki/XML "eXtensible Markup Language"], [http://www.w3.org/TR/2006/REC-xml11-20060816/ standardized] by the [http://www.w3.org/ World Wide Web Consortium].  It is a derivation of the earlier [http://en.wikipedia.org/wiki/Standard_Generalized_Markup_Language SGML] standard.  XML has become widely used for encoding information in text documents that can be read by both people and computers.  XML is important to the [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]] web application [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] because the most important general standards for the exchange of ontological information, [[WmHelp:GlossaryPtoZ#anchor_RDF|RDF]] and [[WmHelp:GlossaryAtoO#anchor_OWL|OWL]], have mechanisms for capturing information as XML.  If you're interested in more information on XML in general, consider the books [http://www.amazon.com/gp/product/0596007647?ie=UTF8&tag=wontology-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0596007647 XML in a Nutshell, Third Edition] http://www.assoc-amazon.com/e/ir?t=wontology-20&l=as2&o=1&a=0596007647 and [http://www.amazon.com/gp/product/0596004206?ie=UTF8&tag=wontology-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0596004206 Learning XML, Second Edition].http://www.assoc-amazon.com/e/ir?t=wontology-20&l=as2&o=1&a=0596004206  If you're interested in more about how XML is used in ontologies, consider the books referenced in the [[WmHelp:GlossaryPtoZ#anchor_RDF|RDF]] and [[WmHelp:GlossaryAtoO#anchor_OWL|OWL]] glossary entries above.

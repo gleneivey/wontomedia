@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="765"
+   height="990"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="informationAsRelationships-Shape-Hierarchy.svg"
+   version="1.0"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/gei/Repos/Mainlines/wontomedia/doc/wiki/WmHelp/informationAsRelationships-Shape-List.png"
+   inkscape:export-xdpi="72"
+   inkscape:export-ydpi="72">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3475"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.0487244"
+     inkscape:cx="118.47581"
+     inkscape:cy="945.71785"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1143"
+     inkscape:window-height="771"
+     inkscape:window-x="5"
+     inkscape:window-y="49"
+     units="px" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2529"
+       transform="translate(91.67589,-0.9762172)">
+      <path
+         transform="matrix(1.4169655,0,0,0.4821238,-69.576028,-28.196457)"
+         d="M 134.71798,85.046623 A 41.977341,22.452997 0 1 1 50.763298,85.046623 A 41.977341,22.452997 0 1 1 134.71798,85.046623 z"
+         sodipodi:ry="22.452997"
+         sodipodi:rx="41.977341"
+         sodipodi:cy="85.046623"
+         sodipodi:cx="92.740639"
+         id="path2650"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <text
+         id="text2463"
+         y="17.843462"
+         x="37.982292"
+         style="font-size:13.51094627px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           y="17.843462"
+           x="37.982292"
+           id="tspan2465"
+           sodipodi:role="line">Vehicle</tspan></text>
+    </g>
+    <g
+       id="g2534"
+       transform="translate(0,-0.7321777)">
+      <path
+         transform="matrix(1.9269932,0,0,0.4791321,-97.684551,17.452103)"
+         d="M 134.71798,85.046623 A 41.977341,22.452997 0 1 1 50.763298,85.046623 A 41.977341,22.452997 0 1 1 134.71798,85.046623 z"
+         sodipodi:ry="22.452997"
+         sodipodi:rx="41.977341"
+         sodipodi:cy="85.046623"
+         sodipodi:cx="92.740639"
+         id="path2474"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <text
+         id="text2476"
+         y="63.237587"
+         x="42.739517"
+         style="font-size:13.51094627px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           y="63.237587"
+           x="42.739517"
+           id="tspan2478"
+           sodipodi:role="line">Automobile</tspan></text>
+    </g>
+    <g
+       id="g2508"
+       transform="translate(37.584369,0)">
+      <path
+         transform="matrix(1.0230726,0,0,0.4848458,-51.438746,61.872161)"
+         d="M 134.71798,85.046623 A 41.977341,22.452997 0 1 1 50.763298,85.046623 A 41.977341,22.452997 0 1 1 134.71798,85.046623 z"
+         sodipodi:ry="22.452997"
+         sodipodi:rx="41.977341"
+         sodipodi:cy="85.046623"
+         sodipodi:cx="92.740639"
+         id="path2490"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <text
+         id="text2492"
+         y="108.14358"
+         x="22.413271"
+         style="font-size:13.51094627px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           y="108.14358"
+           x="22.413271"
+           id="tspan2494"
+           sodipodi:role="line">Sedan</tspan></text>
+    </g>
+    <g
+       id="g2524"
+       transform="translate(0,-1.7083956)">
+      <path
+         transform="matrix(1.0230726,0,0,0.4848458,131.11387,17.94239)"
+         d="M 134.71798,85.046623 A 41.977341,22.452997 0 1 1 50.763298,85.046623 A 41.977341,22.452997 0 1 1 134.71798,85.046623 z"
+         sodipodi:ry="22.452997"
+         sodipodi:rx="41.977341"
+         sodipodi:cy="85.046623"
+         sodipodi:cx="92.740639"
+         id="path2515"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         sodipodi:type="arc" />
+      <text
+         id="text2517"
+         y="64.213806"
+         x="211.18039"
+         style="font-size:13.51094627px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           y="64.213806"
+           x="211.18039"
+           id="tspan2519"
+           sodipodi:role="line">Ship</tspan></text>
+    </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 81.026029,44.045521 L 154.24232,25.497394 L 227.45861,43.557413"
+       id="path2539" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 80.53792,71.379603 L 80.53792,89.92773"
+       id="path2543" />
+  </g>
+</svg>

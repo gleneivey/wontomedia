@@ -6,124 +6,37 @@
   -->
 
 
-This page describes our goals for testing [[WontoMedia]], how that
-forms a part of the development process, and some high-level
-guidelines.  Information about the location and purpose of specific
-test types and files can be found in [[TestingTypesAndDirectories]].
+This page describes our goals for testing [[WontoMedia]], how that forms a part of the development process, and some high-level guidelines.  Information about the location and purpose of specific test types and files can be found in [[TestingTypesAndDirectories]].
 
 
 
 == Categories of Testing (TDD and ATDD) ==
 
-The least flexible aspect of our intent to develop WontoMedia in an
-agile style is the use of
-[[Wikipedia:Test_driven_development|Test-Driven Development]] (TDD) and
-[http://testdrivendeveloper.com/2008/04/02/AcceptanceTestDrivenDevelopmentExplained.aspx Acceptance-Test Driven Development]
-([http://testobsessed.com/wordpress/wp-content/uploads/2008/12/atddexample.pdf ATDD]).
-Submissions to WontoMedia's code base will ''not'' be integrated until
-they include new or changed automated test cases that verify the
-functional change intended by the submission.
+The least flexible aspect of our intent to develop WontoMedia in an agile style is the use of [[Wikipedia:Test_driven_development|Test-Driven Development]] (TDD) and [http://testdrivendeveloper.com/2008/04/02/AcceptanceTestDrivenDevelopmentExplained.aspx Acceptance-Test Driven Development] ([http://testobsessed.com/wordpress/wp-content/uploads/2008/12/atddexample.pdf ATDD]). Submissions to WontoMedia's code base will ''not'' be integrated until they include new or changed automated test cases that verify the functional change intended by the submission.
 
-In brief, the process of test-driven development consists of ''first''
-creating an automated test for the functionality that is to be
-implemented.  When run against the existing source code, this test
-should report a ''failure'', because the desired functionality is not
-yet present.  ''Then'' the new functionality is implemented, and the
-completion of implementation ("done") is indicated by the new test
-passing.  In addition, all existing tests are also required to still
-pass, to ensure that the new functionality hasn't broken some other
-portion of the code.  This, then, is the TDD cycle: First create a
-failing test, then write code until the test passes, and then possibly
-rewrite new and/or surrounding code to improve the structure while
-keeping all tests passing; repeat.  Ideally, a particular development
-task will be accomplished incrementally, with several passes through
-the TDD cycle.
+In brief, the process of test-driven development consists of ''first'' creating an automated test for the functionality that is to be implemented.  When run against the existing source code, this test should report a ''failure'', because the desired functionality is not yet present.  ''Then'' the new functionality is implemented, and the completion of implementation ("done") is indicated by the new test passing.  In addition, all existing tests are also required to still pass, to ensure that the new functionality hasn't broken some other portion of the code.  This, then, is the TDD cycle: First create a failing test, then write code until the test passes, and then possibly rewrite new and/or surrounding code to improve the structure while keeping all tests passing; repeat.  Ideally, a particular development task will be accomplished incrementally, with several passes through the TDD cycle.
 
-We refer to the tests used for the TDD cycle as
-'''''development tests'''''.  Many people refer to them as "unit"
-tests, but because the standard Rails directory structure uses
-<tt>test/unit</tt> for a specific subset of development tests, a more
-general term was needed.  All development tests are located under
-<tt>wontomedia/test</tt>, as described in
-[[TestingTypesAndDirectories]] and [[DevelopmentTesting]].
+We refer to the tests used for the TDD cycle as '''''development tests'''''.  Many people refer to them as "unit" tests, but because the standard Rails directory structure uses <tt>test/unit</tt> for a specific subset of development tests, a more general term was needed.  All development tests are located under <tt>wontomedia/test</tt>, as described in [[TestingTypesAndDirectories]] and [[DevelopmentTesting]].
 
-Acceptance-test driven development (ATDD) is a development cycle
-analogous to TDD, but at a higher-level.  In the context of an agile
-development process, and for our use on WontoMedia,
-'''''acceptance tests''''' are a detailed criteria determined by the
-[[Customer]] in collaboration with the development team.  The atomic
-unit of system functionality is the
-"[http://www.mountaingoatsoftware.com/article_view/27 user story]",
-and as each story is defined, it is characterized by a number of
-acceptance tests.  The set of acceptance tests for a story will not be
-exhaustive from a classic QA point of view (all possible values,
-corner cases, etc.), but should include examples of all of the
-behaviors (positive and negative) that need to be present when
-implementation of the story is "done".
+Acceptance-test driven development (ATDD) is a development cycle analogous to TDD, but at a higher-level.  In the context of an agile development process, and for our use on WontoMedia, '''''acceptance tests''''' are a detailed criteria determined by the [[Customer]] in collaboration with the development team.  The atomic unit of system functionality is the "[http://www.mountaingoatsoftware.com/article_view/27 user story]", and as each story is defined, it is characterized by a number of acceptance tests.  The set of acceptance tests for a story will not be exhaustive from a classic QA point of view (all possible values, corner cases, etc.), but should include examples of all of the behaviors (positive and negative) that need to be present when implementation of the story is "done".
 
-Our use of "acceptance testing" should not be confused with the type
-of acceptance tests/testing that is often an ending step in a
-"[[Wikipedia:Waterfall_model|waterfall]]" development process.  As
-with TDD, the ATDD cycle should be repeated many times during
-development.  Not only is development broken down into many user
-stories, but each story is likely to be characterized by many
-acceptance test cases, and is likely to be developed incrementally by
-many passes through the ATDD cycle.  And each ATDD cycle is likely to
-itself "contain" several incremental passes through the TDD cycle.
+Our use of "acceptance testing" should not be confused with the type of acceptance tests/testing that is often an ending step in a "[[Wikipedia:Waterfall_model|waterfall]]" development process.  As with TDD, the ATDD cycle should be repeated many times during development.  Not only is development broken down into many user stories, but each story is likely to be characterized by many acceptance test cases, and is likely to be developed incrementally by many passes through the ATDD cycle.  And each ATDD cycle is likely to itself "contain" several incremental passes through the TDD cycle.
 
-All acceptance tests are located under <tt>wontomedia/features</tt>,
-as described in [[TestingTypesAndDirectories]] and
-[[AcceptanceTesting]].  Note that the name "features" is the default
-created/used by the [http://cukes.info/ Cucumber] literate
-"behavior-driven development" framework, our primary acceptance
-testing tool.
+All acceptance tests are located under <tt>wontomedia/features</tt>, as described in [[TestingTypesAndDirectories]] and [[AcceptanceTesting]].  Note that the name "features" is the default created/used by the [http://cukes.info/ Cucumber] literate "[http://en.wikipedia.org/wiki/Behavior_Driven_Development behavior-driven development]" framework, our primary acceptance testing tool.
 
-There are also a handfull of automated '''''policy tests''''', which
-are responsible for ensuring that the WontoMedia codebase continues to
-conform to project policies.  These tests are run by the top-level
-<tt>rake test</tt> task, and must pass before a developer pushes their
-changes to a shared [[Git]] repository.  Tests in this category
-include things like verifying that all source files contain the
-correct copyright and licensing notice, and that the directory tree
-will build cleanly into a <tt>gem</tt>.  Should we ever adopt any
-formal coding standards, scripts to verify compliance would be
-included in the policy tests.  (Informally, the goal is to style
-WontoMedia's source to match the Rails source.  As such, if you need a
-written style guide, we suggest
-[http://www.pathf.com/blogs/ruby-and-rails-style-guide/ Ruby and
-Rails], [http://www.pathf.com/blogs/2008/10/ruby-stylista/ Ruby
-Stylista], and [http://www.caliban.org/ruby/rubyguide.shtml Unofficial
-Ruby Usage] ''in that order or precedence''.)
+There are also a handfull of automated '''''policy tests''''', which are responsible for ensuring that the WontoMedia codebase continues to conform to project policies.  These tests are run by the top-level <tt>rake test</tt> task, and must pass before a developer pushes their changes to a shared [[Git]] repository.  Tests in this category include things like verifying that all source files contain the correct copyright and licensing notice, and that the directory tree will build cleanly into a <tt>gem</tt>.  Should we ever adopt any formal coding standards, scripts to verify compliance would be included in the policy tests.  (Informally, the goal is to style WontoMedia's source to match the Rails source.  As such, if you need a written style guide, we suggest [http://www.pathf.com/blogs/ruby-and-rails-style-guide/ Ruby and Rails], [http://www.pathf.com/blogs/2008/10/ruby-stylista/ Ruby Stylista], and [http://www.caliban.org/ruby/rubyguide.shtml Unofficial Ruby Usage] ''in that order or precedence''.)
 
-Finally, we also have '''''deployment tests''''', defined as
-those (still automated) tests which cannot or need not be performed by
-developers within the TDD and ATDD cycles.  For example, verifying
-that a version of WontoMedia that includes a new feature will still
-install correctly on a "clean" server system, and that it will install
-as an upgrade to a deployed system, are both deployment tests.
+Finally, we also have '''''deployment tests''''', defined as those (still automated) tests which cannot or need not be performed by developers within the TDD and ATDD cycles.  For example, verifying that a version of WontoMedia that includes a new feature will still install correctly on a "clean" server system, and that it will install as an upgrade to a deployed system, are both deployment tests.
 
-This list of automated tests is not meant to exclude or minimize the
-importance of interactive and exploratory testing.  However, while we
-hope we'll eventually have many people contributing to the project by
-performing this type of testing, this list is intended to make clear
-our expectations for testing activities by developers.
+This list of automated tests is not meant to exclude or minimize the importance of interactive and exploratory testing.  However, while we hope we'll eventually have many people contributing to the project by performing this type of testing, this list is intended to make clear our expectations for testing activities by developers.
 
 == What to  Test ==
 
-In short, every change to WontoMedia's source.  More specifically, we
-operate under the principle that every change made to the project's
-functional (non-test) code should be preceded by the creation of one
-or more meaningful tests (one: "just TDD", more: "at least one
-acceptance test and one development test") that ''fail'' when run
-against the existing code.  The code change(s) then "correct" the
-code's behavior so that the new test passes.  Unless you're working in
-a very special area of the code (see "Exclusions", below), all
-functional code changes will be accompanied by testing code changes.
+In short, every change to WontoMedia's source.  More specifically, we operate under the principle that every change made to the project's functional (non-test) code should be preceded by the creation of one or more meaningful tests (one: "just TDD", more: "at least one acceptance test and one development test") that ''fail'' when run against the existing code.  The code change(s) then "correct" the code's behavior so that the new test passes.  Unless you're working in a very special area of the code (see "Exclusions", below), all functional code changes will be accompanied by testing code changes.
 
 === Don't Test Rails ===
 
-Another key principle is "''test the application, don't test the framework''."
-Consider the Rails scaffolding command,
+Another key principle is "''test the application, don't test the framework''." Consider the Rails scaffolding command,
 
  $ script/generate scaffold Post name:string title:string content:text
 
@@ -148,61 +61,20 @@ and the matching generated database migration:
    end
  end
 
-(Ignoring the fact that the scaffold generation is inherently non-TDD
-as it generates both tests and code simultaneously.)
+(Ignoring the fact that the scaffold generation is inherently non-TDD as it generates both tests and code simultaneously.)
 
-A great many "unit" tests could be written to verify the functionality
-of the Post model object.  However, most of the possible tests are
-unnecessary ''assuming'' that the Rails framework is working.  For
-example, tests to confirm the range and capacity of each data field,
-the fact that model objects can be stored to the database, can be
-retrieved based on field values, etc. would all be tests of the
-framework, and are a waste to include in a WontoMedia test.  The tests
-that would be appropriate and useful are those that verify things
-particular to the application code: that a model object called
-<tt>Post</tt> actually does exist, and that the intended fields
-(<tt>name</tt>, <tt>title</tt>, and <tt>content</tt>) are all
-available and of the desired type.  These tests confirm that Post was
-actually created as intended, and anything beyond that is framework
-testing.  As the functionality of the model is incrementally expanded,
-development tests should be created to ensure that the intended
-behavior is present, but for aspects of WontoMedia's behavior that
-come from Rails, only the ''use'' of the Rails feature need be
-verified.
+A great many "unit" tests could be written to verify the functionality of the Post model object.  However, most of the possible tests are unnecessary ''assuming'' that the Rails framework is working.  For example, tests to confirm the range and capacity of each data field, the fact that model objects can be stored to the database, can be retrieved based on field values, etc. would all be tests of the framework, and are a waste to include in a WontoMedia test.  The tests that would be appropriate and useful are those that verify things particular to the application code: that a model object called <tt>Post</tt> actually does exist, and that the intended fields (<tt>name</tt>, <tt>title</tt>, and <tt>content</tt>) are all available and of the desired type.  These tests confirm that Post was actually created as intended, and anything beyond that is framework testing.  As the functionality of the model is incrementally expanded, development tests should be created to ensure that the intended behavior is present, but for aspects of WontoMedia's behavior that come from Rails, only the ''use'' of the Rails feature need be verified.
 
-For another example, consider the development testing of a view.  The
-aesthetics of the page produced from a view should be checked
-interactively.  (Confirming that <tt>left_pointing_arrow.jpg</tt> and
-<right_pointing_arrow.jpg</tt> actually look the way they are supposed
-to is not something worth automating.)  But the portions of the page's
-content that are dictated by the system's functionality should be
-verified by a development test.  Considering the following possible
-statement from within a view:
+For another example, consider the development testing of a view.  The aesthetics of the page produced from a view should be checked interactively.  (Confirming that <tt>left_pointing_arrow.jpg</tt> and <tt>right_pointing_arrow.jpg</tt> actually look the way they are supposed to is not something worth automating.)  But the portions of the page's content that are dictated by the system's functionality should be verified by a development test.  Considering the following possible statement from within a view:
 
  <%= link_to 'New post', new_post_path %>
 
-There is no need for a development test to determine the type of HTML
-element in which this is displayed, how it is styled, etc.  However, a
-development test should confirm that pages produced by such a view
-actually do contain the desired link.  This ensures that the
-development tests fufill their role of guarding against functional
-regression, without tying the development tests to a particular page
-layout or appearance.  Of course, if the page's functionality is
-changed to, for example, create this link dynamically within the
-browser, such a development test would fail.  However, this is a
-functional change rather than simply a change in appearance, and it is
-appropriate both that existing tests would have to be revised (prior
-to actually changing the view), and that new development tests would
-be created for the JavaScript that is now responsible for creating the
-link.
+There is no need for a development test to determine the type of HTML element in which this is displayed, how it is styled, etc.  However, a development test should confirm that pages produced by such a view actually do contain the desired link.  This ensures that the development tests fulfill their role of guarding against functional regression, without tying the development tests to a particular page layout or appearance.  Of course, if the page's functionality is changed to, for example, create this link dynamically within the browser, such a development test would fail.  However, this is a functional change rather than simply a change in appearance, and it is appropriate both that existing tests would have to be revised (prior to actually changing the view), and that new development tests would be created for the JavaScript that is now responsible for creating the link.
 
 
 === Testing Exclusions ===
 
-Because of the structure of Rails, there are a handfull of files whose
-content cannot be verified through automated testing, plus a set of
-directories that are not actually part of WontoMedia's code base.  In
-particular:
+Because of the structure of Rails, there are a handful of files whose content cannot be verified through automated testing, plus a set of directories that are not actually part of WontoMedia's code base.  In particular:
 
 ; <tt>config/database.yml</tt> : The content of this file must typically be customized for each system on which a Rails application is installed.  A sample <tt>database.yml</tt> is contained in WontoMedia's Git repositories for distribution, but our project's <tt>.gitignore</tt> file prevents the repository version from being passed to or updated from developers.
 ; <tt>Rakefile</tt>, <tt>**/*.rake</tt> : The rakefiles for WontoMedia are managed by Git and shared between all developers and installations, but do not have automated tests.  There are few WontoMedia-specific rake tasks, they change infrequently, and can be tested interactively when necessary.
@@ -212,6 +84,4 @@ particular:
 ; <tt>doc/*</tt>, <tt>README</tt>, etc. : Human-readable documentation is, of course, not subject to automated testing.  However, API documentation should be encapsulated in RDoc comments, development and acceptance tests, and public static web pages (for user and administrator document available directly from WontoMedia when it is running) wherever possible.  The <tt>doc</tt> directory should be used for original material that doesn't fit into one of these other environments, and for pointers into them.
 ; <tt>tmp/*</tt>, <tt>log/*</tt> : Obviously, generated files don't need to be "tested".  (Although some automated tests might eventually examine these files to confirm assertions.)  For a complete list of generated files, see <tt>wontomedia/.gitignore</tt>.
 
-Finally, the contents of the <tt>test</tt>, <tt>features</tt>,
-<tt>policy</tt>, and <tt>deploy</tt> directories ''are'' the automated
-tests.
+Finally, the contents of the <tt>test</tt>, <tt>features</tt>, <tt>policy</tt>, and <tt>deploy</tt> directories ''are'' the automated tests.

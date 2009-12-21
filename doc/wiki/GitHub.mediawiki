@@ -6,24 +6,15 @@
   -->
 
 
-'''''GitHub''''' (https://github.com/) is a website that provides
-network-based repositories that can be accessed using the
-[http://www.kernel.org/pub/software/scm/git/docs/ Git]
-revision-control tool.
+'''''GitHub''''' (https://github.com/) is a website that provides network-based repositories that can be accessed using the [http://www.kernel.org/pub/software/scm/git/docs/ Git] revision-control tool.
 
 The central web page for our primary repository on GitHub is at:
 
  https://github.com/gleneivey/wontomedia/tree
 
-If you are a GitHub user, this is the preferred repository for you to
-clone from.  Pull requests can be made to this repository, and your
-changes will be integrated and tested from GitHub, then pushed to the
-repository on [[RubyForge]].
+If you are a GitHub user, this is the preferred repository for you to clone from.  Pull requests can be made to this repository, and your changes will be integrated and tested from GitHub, then pushed to the repository on [[RubyForge]].
 
-These are the URLs for use to do a <tt>Git-clone</tt> to your local
-development system.  The first if you are doing an "anonymous" public
-clone, and the second if you are committer (a "collaborator" on
-GitHub).
+These are the URLs for use to do a <tt>Git-clone</tt> to your local development system.  The first if you are doing an "anonymous" public clone, and the second if you are committer (a "collaborator" on GitHub).
 
  git://github.com/gleneivey/wontomedia.git
  git@github.com:gleneivey/wontomedia.git

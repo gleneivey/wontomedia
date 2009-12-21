@@ -1,0 +1,18 @@
+<!-- Copyright (c)  2009  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+
+
+<tt>wontology.org</tt> is the primary public-testing deployment of the [[WontoMedia|WontoMedia]] web application software.
+
+As WontoMedia matures, related sets of information hosted at <tt>wontology.org</tt> will be moved to their own separate sites, and <tt>wontology.org</tt> will gradually focus on lists and category hierarchies that can be referenced from ''other'' wontologies and reused as components of other information sets.  For example, the list of countries in the world, the set of international standard language names, definitions of numeric constants and unit conversions, etc.
+
+There are quite a few [[WmHelp:MajorRoadmap|features planned by not yet implemented]].  If you find yourself frustrated or confused because you can't figure out how to do something, that's probably because you can't yet.  Please check the list to be sure.
+
+If you are interested in how WontoMedia works, there is a [[WmHelp:Technologies|brief overview of the technologies/software used]].  If you are interested in using WontoMedia on your own system or in contributing to its development, there is extensive information available starting from the [http://wontomedia.rubyforge.org/ WontoMedia project web site].
+
+The WontoMedia application that runs <tt>wontology.org</tt> is [http://en.wikipedia.org/wiki/Free_software Free Software], so you are welcome to run it on your own system, and/or to modify it in any way you like (as long as you publish your modifications as Free Software in turn).  The <tt>wontology.org</tt> web site is also free (as in "zero cost") to use, but in order to cover costs of deployment and to subsidize some of the development, advertisements are displayed on information pages.
+
