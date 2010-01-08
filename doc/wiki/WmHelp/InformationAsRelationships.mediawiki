@@ -34,7 +34,7 @@ The information in an ontology can be "shaped like" any simpler information cate
 [[File:InformationAsRelationships-Shape-OrgChart.png]]
 [[File:InformationAsRelationships-Shape-FamilyTree.png]]
 [[File:InformationAsRelationships-Shape-Table.png]]
-[[File:InformationAsRelationships-Shape-Peers.png]]
+[[File:InformationAsRelationships-Shape-Peer.png]]
 [[File:InformationAsRelationships-Shape-Thesaurus.png]]
 
-The first example is a simple list.  The next three examples are all hierarchies.  The first hierarchy, involving nodes descended from "Vehicle" is the same as the previous example, it simply looks more like a hierarchy in this case then before because of its layout.  The next two examples are both arranged like hierarchies, but actually contain both hierarchical relationships ("worksFor" and "childOf") and peer relationships ("worksWith" and "siblingOf").  Finally, the last examples show arrangements where peer relationships dominate, with the final example being a ''fragment'' of a thesaurus--the complete set of relationships for just one node.
+The first example is a simple list.  The next three examples are all hierarchies.  The first hierarchy, involving nodes descended from "Vehicle" is the same as the previous example, it simply looks more like a hierarchy in this case then before because of its layout.  The organization chart and family tree are both arranged like hierarchies, but actually contain both hierarchical relationships ("worksFor" and "childOf") and peer relationships ("worksWith" and "marriedTo").  The last examples show arrangements where peer relationships dominate, with the final example being a ''fragment'' of a thesaurus&mdash;the complete set of relationships for just one node.
