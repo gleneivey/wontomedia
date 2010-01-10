@@ -27,6 +27,11 @@ features/step_definitions/webrat_steps.rb
 db/schema.rb
 VERSION.yml
 
+    # frozen source files, have headers compliant with policies when written
+!lock            d596633a320426fb533290dcfc17daed0e374525
+db/migrate/2009*.rb
+!unlock
+
     # one-time auto-generated files, never to be modified
     #  "lock" directive contains git commit # of acceptable version
 !lock            4b45222d3f846a9bac9c1317657799862f13a1ba
@@ -61,6 +66,7 @@ COPYING.DOCUMENTATION
     # can't embed license notice in binary files--our originals still
     # AGPL'ed, though
 *.ico
+*.svg
 *.png
 
     # not worth hassle of license notice

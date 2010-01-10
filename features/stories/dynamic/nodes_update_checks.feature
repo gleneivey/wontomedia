@@ -185,7 +185,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
 
 # WontoMedia - a wontology web application
-# Copyright (C) 2009 - Glen E. Ivey
+# Copyright (C) 2010 - Glen E. Ivey
 #    www.wontology.com
 #
 # This program is free software: you can redistribute it and/or modify
