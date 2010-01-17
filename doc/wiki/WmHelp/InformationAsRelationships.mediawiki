@@ -4,9 +4,13 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
+<css>
+  img {
+    padding: 15px;
+  }
+</css>
 <!-- ads: "Practical Ontology" -->
+<amazonwidget adcode="d85041b4-0913-44a6-8a38-eb6aeb49d05f" />
 [[WmHelp:GlossaryAtoO#anchor_Ontology|Ontologies]], like the one stored at this web site, are structured representations of information.  Unlike more limited structures like database tables, an ontology is composed of a set of relationships between things.  The things described by an ontology are represented by "[[WmHelp:GlossaryAtoO#anchor_Node|nodes]]" and the relationships between them are represented by "[[WmHelp:GlossaryAtoO#anchor_Edge|edges]]."
 
 [[File:InformationAsRelationships-NodeEdgeNode.png|center]]
@@ -21,7 +25,7 @@ A node is any named entity in an ontology.  Nodes can represent abstract concept
 
 [[File:InformationAsRelationships-NetworkSeparate.png|center]]
 
-but the ontology as a whole is the composite off all the edges it contains:
+but the ontology as a whole is the composite of all the edges it contains:
 
 [[File:InformationAsRelationships-NetworkMerged.png|center]]
 

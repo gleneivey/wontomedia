@@ -4,9 +4,8 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 <!-- ads: "Information Architecture with Ontologies" -->
+<amazonwidget adcode="ed7d9394-e0d3-450a-bebb-ca632b7b99d6" />
 This is a brief summary that relates key concepts within a wontology.  There is a more narrative introduction in the help page describing how [[WmHelp:InformationAsRelationships|information is represented as relationships]], and each term defined below links to that term's entry in our [[WmHelp:GlossaryAtoO|Glossary]].
 
 * A [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]] is made up of [[WmHelp:GlossaryAtoO#anchor_Node|nodes]] and [[WmHelp:GlossaryAtoO#anchor_Edge|edges]].
