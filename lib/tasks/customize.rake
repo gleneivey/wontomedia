@@ -42,6 +42,13 @@ task :customize, :path_list do |t, args|
           File.delete( to_name )
         end
 
+        path_so_far = File.expand_path( '.' )
+        relative.split( File::SEPARATOR ).each do |dir_name|
+          path_so_far = File.join( path_so_far, dir_name )
+          unless File.exists?( path_so_far )
+            Dir.mkdir( path_so_far )
+          end
+        end
         File.symlink( from_absolute, to_name )
       end
     end
