@@ -52,7 +52,8 @@ class FileExceptions
   end
 
   def symbolic_links()
-    Dir.glob( "**/*", File::FNM_DOTMATCH ).select { |f| File.symlink?(f) }
+    Dir.glob( File.join("**", "*"), File::FNM_DOTMATCH ).
+      select { |f| File.symlink?(f) }
   end
 private
 
