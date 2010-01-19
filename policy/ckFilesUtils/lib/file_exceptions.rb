@@ -50,6 +50,10 @@ class FileExceptions
     Dir.glob( File.join("**", "*.png"), File::FNM_DOTMATCH ) +
     Dir.glob( File.join("**", "*.gif"), File::FNM_DOTMATCH )
   end
+
+  def symbolic_links()
+    Dir.glob( "**/*", File::FNM_DOTMATCH ).select { |f| File.symlink?(f) }
+  end
 private
 
   def process_an_exceptions_file(file_name)

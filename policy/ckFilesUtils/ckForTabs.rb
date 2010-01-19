@@ -68,6 +68,7 @@ end
 files_for_header_check  = Files.all_files_in_this_tree
 files_for_header_check -= exceptions.files_excepted_from_header_checks
 files_for_header_check -= exceptions.binary_files
+files_for_header_check -= exceptions.symbolic_links
 files_for_header_check.each do |file|
   @tabFail   = false
   @eofFail   = false

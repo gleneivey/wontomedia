@@ -47,6 +47,7 @@ files_for_header_check  = Files.all_files_in_this_tree
 files_for_header_check -= Files.template_files
 files_for_header_check -= exceptions.exception_definition_files
 files_for_header_check -= exceptions.files_excepted_from_header_checks
+files_for_header_check -= exceptions.symbolic_links
 files_for_header_check.each do |file|
   unless file.meets_header?(@policies) then failure(file) end
 end
