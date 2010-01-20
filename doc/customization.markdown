@@ -60,13 +60,13 @@ We have reconciled these conflicting needs as follows:
    prevent customization files they added to their system from being
    listed in Git commits they share with others.
 
- * a script is executed by rake rake (run as part of "rake
-   test:policies") that recurses through the "default-custom"
-   directory and fails that a symbolic link exists in the
-   application directory hierarchy for each file under default-custom.
-   In this way, the content of default-custom not only provides a
-   sample of customization files, but serves as the definition for all
-   of the files referenced from portions of the core application.
+ * a script is executed by rake (run as part of "rake test:policies")
+   that recurses through the "default-custom" directory and fails that
+   a symbolic link exists in the application directory hierarchy for
+   each file under default-custom.  In this way, the content of
+   default-custom not only provides a sample of customization files,
+   but serves as the definition for all of the files referenced from
+   portions of the core application.
 
 The "customize" rake task is documented in
 

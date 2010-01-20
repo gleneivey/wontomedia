@@ -46,16 +46,19 @@ ENDOSTRING
 
     s.email = "gleneivey@wontology.org"
     s.homepage = "http://wontomedia.rubyforge.org"
-    s.authors = ["Glen Ivey"]
+    s.authors = ["Glen E. Ivey"]
 
     s.has_rdoc = true
     s.extra_rdoc_files = ["README"]
 
     s.files =  FileList["[A-Z]*",
       "{app,config,bin,db,generators,lib,public,script}/**/*"].
-        exclude("database.yml")
-    # Note: 1) Include any non-testing packages under 'vendor' explicitly
-    # 2)
+        exclude("database.yml") do |maybe_exclude|
+          File.symlink?( maybe_exclude )
+        end
+    # Note: 1) Explicitly add any future non-testing packages under 'vendor'
+    # 2) Exclude all of our symbolic links
+    # 3)
     #     .autotest cucumber.yml .gitignore
     # the testing directories
     #     deploy features policy test
@@ -156,8 +159,10 @@ namespace :test do
 
   desc "Execute all project-policy audit tests."
   task :policies do
+    ruby File.join( "policy", "ckFilesUtils", "buildLinksIgnoreFile.rb" )
     ruby File.join( "policy", "ckFilesUtils", "ckForTabs.rb" )
     ruby File.join( "policy", "ckFilesUtils", "ckCopyrightNotices.rb" )
+    ruby File.join( "policy", "ckFilesUtils", "ckCustomizationFilesPresent.rb" )
   end
 end # namespace :test
 

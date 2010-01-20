@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version = "0.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Glen Ivey"]
-  s.date = %q{2010-01-10}
+  s.authors = ["Glen E. Ivey"]
+  s.date = %q{2010-01-19}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.files = [
@@ -40,7 +40,6 @@ Gem::Specification.new do |s|
      "app/views/edges/show.html.erb",
      "app/views/layouts/application.html.erb",
      "app/views/nodes/_form_fields.html.erb",
-     "app/views/nodes/_home_introductory_text.html.erb",
      "app/views/nodes/_list_outbound_links.html.erb",
      "app/views/nodes/_show_outbound_links.html.erb",
      "app/views/nodes/_type_select.html.erb",
@@ -80,6 +79,7 @@ Gem::Specification.new do |s|
      "lib/helpers/node_helper.rb",
      "lib/helpers/tripple_navigation.rb",
      "lib/tasks/cucumber.rake",
+     "lib/tasks/customize.rake",
      "lib/tasks/db.rake",
      "lib/tasks/javascript_testing_tasks.rake",
      "public/404.html",
