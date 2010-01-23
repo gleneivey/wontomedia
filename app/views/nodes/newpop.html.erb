@@ -20,6 +20,7 @@
 
 <% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
 
+
 <h1>Make a new node</h1>
 
 <% options = @node.sti_type.nil? ? {} : { :url => nodes_path() }
@@ -28,6 +29,7 @@
   <%= f.error_messages %>
   <%= render :partial => "type_select", :locals => { :f => f } %>
   <%= render :partial => "form_fields", :locals => { :f => f } %>
+  <input type="hidden" id="popup_flag" value="yes" />
 
   <p id="create_button_container" style="text-align: center">
     <%= button_to_function "Create",

@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<%
+# WontoMedia - a wontology web application
+# Copyright (C) 2010 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see "http://www.gnu.org/licenses/".
+%>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <% if @title_text %>
+      <title><%= @title_text + " &mdash; " + WontoMedia.site_title -%></title>
+    <% else %>
+      <title><%= WontoMedia.site_title -%></title>
+    <% end %>
+    <%= stylesheet_link_tag 'scaffold' %>
+    <%= stylesheet_link_tag 'wm' %>
+    <%= stylesheet_link_tag 'modalbox' %>
+    <%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag 'modalbox' %>
+    <%= yield :head %>
+  </head>
+  <body style="margin-top: 0">
+    <div id="whole-page">
+      <%= yield(:page_body) or yield %>
+
+      <div id="block-footer" style="width: 100%; clear: both">
+        <p style="font-size: 60%; color: grey; text-align: center;">
+Copyright &copy; 2010, Glen E. Ivey (system design and behavior currently
+confidential &amp; proprietary) &mdash;
+
+Powered by <a href="http://wontomedia.rubyforge.org/">WontoMedia</a> &mdash;
+
+Software and page templates licensed under
+<a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a> &mdash;
+
+Page content licensed under
+<a href="http://www.gnu.org/licenses/fdl-1.3.html">GNU FDL v1.3</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -22,10 +22,12 @@ require 'yaml'
 class AdminController < ApplicationController
   # GET /admin/
   def index
+    @this_is_non_information_page = true
   end
 
   # POST /admin/node_up
   def node_up
+    @this_is_non_information_page = true
     count = 0
     flash[:error] ||= ""
     YAML::load(params[:node_upload][:nodefile]).each do |node|
@@ -78,6 +80,7 @@ class AdminController < ApplicationController
 
   # POST /admin/edge_up
   def edge_up
+    @this_is_non_information_page = true
     count = unparsed = 0
     flash[:error] =""
 

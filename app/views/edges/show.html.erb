@@ -17,7 +17,14 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<h1>Edge Contents</h1>
+
+<%
+  @title_text = (h @subject.title) + " : " +
+                (h @predicate.title) + " : " +
+                (h @obj.title)
+ %>
+<div class="headline">Edge content</div>
+
 
 <table>
   <tr><td>

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-01-19}
+  s.date = %q{2010-01-23}
   s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
   s.email = %q{gleneivey@wontology.org}
   s.files = [
@@ -32,6 +32,13 @@ Gem::Specification.new do |s|
      "app/models/property_node.rb",
      "app/models/reiffied_node.rb",
      "app/views/admin/index.html.erb",
+     "app/views/common/_amazon_ads.html.erb",
+     "app/views/common/_google_ads.html.erb",
+     "app/views/common/_language_select.html.erb",
+     "app/views/common/_login_controls.html.erb",
+     "app/views/common/_master_help.html.erb",
+     "app/views/common/_search_box.html.erb",
+     "app/views/common/_status_msgs.html.erb",
      "app/views/edges/_index_outbound_links.html.erb",
      "app/views/edges/_spo_select_controls.html.erb",
      "app/views/edges/edit.html.erb",
@@ -39,6 +46,8 @@ Gem::Specification.new do |s|
      "app/views/edges/new.html.erb",
      "app/views/edges/show.html.erb",
      "app/views/layouts/application.html.erb",
+     "app/views/layouts/base.html.erb",
+     "app/views/layouts/popup.html.erb",
      "app/views/nodes/_form_fields.html.erb",
      "app/views/nodes/_list_outbound_links.html.erb",
      "app/views/nodes/_show_outbound_links.html.erb",
@@ -61,6 +70,7 @@ Gem::Specification.new do |s|
      "config/initializers/inflections.rb",
      "config/initializers/mime_types.rb",
      "config/initializers/new_rails_defaults.rb",
+     "config/initializers/wontomedia.rb",
      "config/locales/en.yml",
      "config/routes.rb",
      "db/fixtures/edges.yml",

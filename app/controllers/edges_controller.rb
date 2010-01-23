@@ -49,6 +49,7 @@ class EdgesController < ApplicationController
 
   # GET /edges/new
   def new
+    @this_is_non_information_page = true
     @edge = Edge.new
     populate_for_new_update
   end
@@ -63,6 +64,7 @@ class EdgesController < ApplicationController
       redirect_to(@edge)
     else
       populate_for_new_update
+      @this_is_non_information_page = true
       render :action => "new"
     end
   end
@@ -87,6 +89,7 @@ class EdgesController < ApplicationController
   # GET /edges/1/edit
   def edit
     begin
+      @this_is_non_information_page = true
       @edge = Edge.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
@@ -110,6 +113,7 @@ class EdgesController < ApplicationController
       redirect_to edge_path(@edge)
     elsif !@edge.update_attributes(params[:edge])
       populate_for_new_update
+      @this_is_non_information_page = true
       render :action => "edit"
     else
       flash[:notice] = 'Edge was successfully updated.'

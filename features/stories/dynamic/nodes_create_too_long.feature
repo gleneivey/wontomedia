@@ -32,7 +32,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "title_error_icon" is "error_error_icon"
     And the image "name_error_icon" is "error_error_icon"
     And the image "description_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     # now set fields to maximum length; observe clearing of errors flags
     When I fill in "Title" with "This text is 255 characters long.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX."
@@ -49,7 +49,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "title_error_icon" is "blank_error_icon"
     And the image "name_error_icon" is "blank_error_icon"
     And the image "description_error_icon" is "blank_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "node_submit" has the format "background-color=$active_button_color;"
 
 
 # WontoMedia - a wontology web application

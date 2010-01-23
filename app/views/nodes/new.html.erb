@@ -18,9 +18,11 @@
 %>
 
 
-<% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
+<%
+  require Rails.root.join( 'lib', 'helpers', 'node_helper')
+  @title_text = 'Make a new node'
+ %>
 
-<h1>Make a new node</h1>
 
 <% options = @node.sti_type.nil? ? {} : { :url => nodes_path() }
    form_for(@node, options) do |f|
@@ -32,9 +34,18 @@
     <script type="text/javascript">
       genNameFromTitleOk = true;
     </script>
+
+    <p id="create_button_container" style="text-align: center">
+      <%= f.submit "Create", :tabindex => "10" %>
+    </p>
+
+    <p style="text-align: center">
+      <%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path %> &mdash;
+      <%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path %>
+    </p>
   </div>
 
-  <div style="width: 55%; float: right;">
+  <div class="noncontent" style="width: 55%; float: right;">
     <dl><dt id="category_title">Category</dt><dd id="category_desc">
 
       "Category" is for groups of things, for concepts, and for the
@@ -68,15 +79,6 @@
       is not defined explicitly.
 
     </dd></dl>
-
-    <p id="create_button_container" style="text-align: center">
-      <%= f.submit "Create", :tabindex => "10" %>
-    </p>
-
-    <p style="text-align: center">
-      <%= link_to 'Cancel, show node list', nodes_path %> &mdash;
-      <%= link_to 'Cancel, show edge list', edges_path %>
-    </p>
   </div>
 <% end %>  <!-- of form_for -->
 

@@ -18,7 +18,11 @@
 %>
 
 
-<% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
+<%
+  require Rails.root.join( 'lib', 'helpers', 'node_helper')
+  @title_text = 'Home'
+ %>
+
 
 <%= render :partial => "home_introductory_text" %>
 

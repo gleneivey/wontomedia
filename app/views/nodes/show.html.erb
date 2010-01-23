@@ -17,7 +17,10 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<h1>Node Contents</h1>
+
+<% @title_text = h @node.title %>
+<div class="headline">Node content</div>
+
 
 <p>
   <b>Name:</b>  <span id="node_name"><%=h @node.name %></span>
@@ -55,10 +58,10 @@
               <%= self_string_or_other_link(e.predicate_id) %>
             </td><td>
               <%= self_string_or_other_link(e.obj_id) %>
-            </td><td>
+            </td><td style="font-size: 80%">
               <% if (e.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
-                <%= link_to 'Edit&nbsp;edge', edit_edge_path(e) %>
-                <%= link_to 'Delete&nbsp;edge', edge_path(e),
+                <%= link_to 'Edit', edit_edge_path(e) %>
+                <%= link_to 'Delete', edge_path(e),
                             :confirm => 'Are you sure?', :method => :delete %>
               <% end %>
             </td>

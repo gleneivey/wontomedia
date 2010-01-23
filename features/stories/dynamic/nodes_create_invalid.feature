@@ -24,7 +24,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     When I select "Property" from "Type"
     And I fill in "Title" with "A property's title"
     And I fill in "Name" with "temporaryGoodName0-_"
-    Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    Then the element "node_submit" has the format "background-color=$active_button_color;"
 
     When I fill in "Name" with " badNameStartsWithASpace"
     Then the element "name_start_char" has the format "font-weight=bold"
@@ -32,7 +32,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "name_nth_char" has the format "font-weight=400"
     And the element "name_too_long" has the format "font-weight=400"
     And the image "name_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
 
   @extended
@@ -44,7 +44,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     When I fill in "Name" with <badName>
     Then the element "name_start_char" has the format "font-weight=bold"
     And the image "name_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     Examples:
       |             badName                   |
@@ -71,7 +71,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "name_required" has the format "font-weight=400"
     And the element "name_too_long" has the format "font-weight=400"
     And the image "name_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     Examples:
       |             badName             |
@@ -100,14 +100,14 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "title_too_long" has the format "font-weight=400"
     And the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     When I fill in "Title" with "a different newline\015 character (CR)"
     Then the element "title_multi_line" has the format "font-weight=bold"
     And the element "title_too_long" has the format "font-weight=400"
     And the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     # also that transition from one error to another correctly flags new error
     When I fill in "Title" with "A title that is way, way too long.  A title that is way, way too long.  A title that is way, way too long.  A title that is way, way too long.  A title that is way, way too long.  A title that is way, way too long.  A title that is way, way too long.  A title that is way, way too long."
@@ -115,28 +115,28 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "title_too_long" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     When I fill in "Title" with "a classic\015\012CR-LF pair"
     Then the element "title_multi_line" has the format "font-weight=bold"
     And the element "title_too_long" has the format "font-weight=400"
     And the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     When I fill in "Title" with ""
     Then the element "title_multi_line" has the format "font-weight=400"
     And the element "title_too_long" has the format "font-weight=400"
     And the element "title_required" has the format "font-weight=bold"
     And the image "title_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     When I fill in "Title" with "An acceptable title string"
     Then the element "title_multi_line" has the format "font-weight=400"
     And the element "title_too_long" has the format "font-weight=400"
     And the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "node_submit" has the format "background-color=$active_button_color;"
 
 
 

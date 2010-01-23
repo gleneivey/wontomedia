@@ -36,7 +36,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     # edit page: focus on Title, all inputs filled in, none flagged
     Given there is 1 existing reiffied-property like "someNode"
     When I am on the edit nodes page for "someNode0"
-    Then the element "reiffied_node_submit" has the format "background-color=rgb(192, 192, 255)"
+    Then the element "reiffied_node_submit" has the format "background-color=$active_button_color;"
     And the element "title_required" has the format "font-weight=400"
     And the element "name_required" has the format "font-weight=400"
     And the element "description_recommended" has the format "font-weight=400"
@@ -46,7 +46,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
     When I fill in "Title" with ""
     And I pause
-    Then the element "reiffied_node_submit" has the format "background-color=rgb(255, 255, 255)"
+    Then the element "reiffied_node_submit" has the format "background-color=$inactive_button_color;"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=400"
     And the element "description_recommended" has the format "font-weight=400"
@@ -56,7 +56,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
     When I fill in "Name" with ""
     And I pause
-    Then the element "reiffied_node_submit" has the format "background-color=rgb(255, 255, 255)"
+    Then the element "reiffied_node_submit" has the format "background-color=$inactive_button_color;"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=bold"
     And the element "description_recommended" has the format "font-weight=400"
@@ -66,7 +66,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
     When I fill in "Description" with ""
     And I pause
-    Then the element "reiffied_node_submit" has the format "background-color=rgb(255, 255, 255)"
+    Then the element "reiffied_node_submit" has the format "background-color=$inactive_button_color;"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=bold"
     And the element "description_recommended" has the format "font-weight=bold"
@@ -77,7 +77,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     When I fill in "Title" with "second title for some node #0"
     And I fill in "Name" with "someNode0"
     And I pause
-    Then the element "reiffied_node_submit" has the format "background-color=rgb(192, 192, 255)"
+    Then the element "reiffied_node_submit" has the format "background-color=$active_button_color;"
     And the element "title_required" has the format "font-weight=400"
     And the element "name_required" has the format "font-weight=400"
     And the element "description_recommended" has the format "font-weight=bold"
@@ -100,7 +100,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the image "title_error_icon" is "error_error_icon"
     And the image "name_error_icon" is "error_error_icon"
     And the image "description_error_icon" is "warn_error_icon"
-    And the element "reiffied_node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "reiffied_node_submit" has the format "background-color=$inactive_button_color;"
     And the "MB_content" element should match "Title[^\.]+required"
     And the "MB_content" element should match "Name[^\.]+required"
 
@@ -122,7 +122,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the image "title_error_icon" is "error_error_icon"
     And the image "name_error_icon" is "error_error_icon"
     And the image "description_error_icon" is "error_error_icon"
-    And the element "property_node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "property_node_submit" has the format "background-color=$inactive_button_color;"
 
     # now set fields to maximum length; observe clearing of errors flags
     When I fill in "Title" with "This text is 255 characters long.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX."
@@ -137,7 +137,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the image "title_error_icon" is "blank_error_icon"
     And the image "name_error_icon" is "blank_error_icon"
     And the image "description_error_icon" is "blank_error_icon"
-    And the element "property_node_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "property_node_submit" has the format "background-color=$active_button_color;"
 
 
   Scenario: error flagged if nodes/##/edit's Name has bad Nth character
@@ -152,7 +152,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the element "name_start_char" has the format "font-weight=400"
     And the element "name_too_long" has the format "font-weight=400"
     And the image "name_error_icon" is "error_error_icon"
-    And the element "property_node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "property_node_submit" has the format "background-color=$inactive_button_color;"
 
 
   Scenario: Name check identifies unique and already-used values

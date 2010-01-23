@@ -18,7 +18,13 @@
 %>
 
 
-<h1>Editing edge </h1>
+<%
+  @title_text = (h @edge.subject.title) + " : " +
+                (h @edge.predicate.title) + " : " +
+                (h @edge.obj.title)
+ %>
+<div class="headline">Editing edge</div>
+
 
 <% form_for(@edge) do |f| %>
   <%= f.error_messages %>
@@ -38,5 +44,11 @@
 
 <script type="text/javascript">
   creatingNewEdge = false;
+  creatingNewNode = true;
 </script>
 <%= javascript_include_tag "forEdgesForms" %>
+<%= javascript_include_tag "event.simulate" %> <!-- used by following -->
+<%= javascript_include_tag "nodeCreatePopup" %>
+    <!-- following used by /nodes/new-pop if loaded by nodeCreatePopup.js -->
+<%= javascript_include_tag "forNodesForms" %>
+<%= javascript_include_tag "nodeTitleToName" %>

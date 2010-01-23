@@ -60,6 +60,7 @@ class NodesController < ApplicationController
 
   # GET /nodes/new
   def new
+    @this_is_non_information_page = true
     @node = Node.new
   end
 
@@ -67,6 +68,7 @@ class NodesController < ApplicationController
   def newpop
     @node = Node.new
     @type = params[:type]
+    render :layout => "popup"
   end
 
   # POST /nodes
@@ -79,14 +81,20 @@ class NodesController < ApplicationController
       flash[:error] = 'Could not create. Node must have a type of either "Category" or "Item".'
       @node = Node.new(params[:node]) # keep info already entered
       @node.sti_type = type_string
-      render :action => "new"
+      @this_is_non_information_page = true
+      render :action => (params[:popup_flag] ? "newpop" : "new" )
     elsif @node.name =~ /[:.]/                     ||
           !@node.save
       @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
-      render :action => "new"
+      @this_is_non_information_page = true
+      render :action => (params[:popup_flag] ? "newpop" : "new" )
     else
-      flash[:notice] = 'Node was successfully created.'
-      redirect_to node_path(@node)
+      if params[:popup_flag]
+        render :action => "show", :layout => "popup"
+      else
+        flash[:notice] = 'Node was successfully created.'
+        redirect_to node_path(@node)
+      end
     end
   end
 
@@ -215,6 +223,7 @@ class NodesController < ApplicationController
   # GET /nodes/1/edit
   def edit
     begin
+      @this_is_non_information_page = true
       @node = Node.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
@@ -246,6 +255,7 @@ class NodesController < ApplicationController
           params[:node][:name] =~ /[:.]/                     )  ||
         !@node.update_attributes(params[:node])
       @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      @this_is_non_information_page = true
       render :action => "edit"
     else
       flash[:notice] = 'Node was successfully updated.'

@@ -1,4 +1,53 @@
 
+/* color palette:
+  page background:         very light blue       #f8f8ff
+  content background:      white
+  content border:          2nd-darkest blue      #b0b0ff
+  active area background:  light blue            #d0d0ff
+*/
+body {
+  color: black;
+  font-family: sans-serif;
+  font-size: small;
+  font-size-adjust: none;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: normal;
+
+  background-color: #f8f8ff;
+}
+div {
+  overflow: hidden;
+}
+
+.content {
+  padding: 2px;
+  background-color: white;
+  border-top: solid 1px #b0b0ff;
+}
+.box {
+  padding: 0;
+  background-color: white;
+  border: solid 1px #b0b0ff;
+}
+.noncontent {
+  margin: 6px;
+  padding: 2px;
+  background-color: #f8f8ff;
+  border: none;
+}
+.headline {
+  font-size: 140%;
+  margin-left: 2em;
+  margin-top: 0;
+}
+
+
+p {
+  margin-top: 0;
+}
+
 
         /* styles first intended for node & edge info tables:
          *   app/views/ ** /index, home, show                                 */
@@ -19,7 +68,7 @@ td {
 
 .edgecolumn {
   border-width: thin;
-  border-color: black;
+  border-color: #b0b0ff;
   border-style: none solid;
 }
 
@@ -34,6 +83,7 @@ p.directions {
   margin-top: 0;
   padding-bottom: 2ex;
   font-size: 80%;
+  line-height: normal;
 }
 
 
@@ -63,10 +113,10 @@ p.directions {
 
 .activeButton {
   color: black;
-  background-color: #c0c0ff;
+  background-color: #d0d0ff;
 }
 .inactiveButton {
-  color: #d0d0d0;
+  color: #d0d0ff;
   background-color: #ffffff;
 }
 

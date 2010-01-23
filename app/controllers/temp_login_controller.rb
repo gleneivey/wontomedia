@@ -20,10 +20,12 @@
 class TempLoginController < ApplicationController
   # GET /temporary-login/new
   def login_form
+    @this_is_non_information_page = true
   end
 
   # POST /temporary-login/verify
   def login_verify
+    @this_is_non_information_page = true
     people = {
       "gei@mcn.org"         => "1968",
       "barth3141@gmail.com" => "1992",

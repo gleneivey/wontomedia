@@ -17,7 +17,7 @@ Feature:  Verify inputs for editing of edges dynamically within the page
     When I am on the edit edges page for "apollo0" "child_of" "adama0"
     And I pause
     Then the focus is on the "edge_subject_id" element
-    And the element "edge_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "edge_submit" has the format "background-color=$active_button_color;"
 
   Scenario: Form incrementally flags/unflags text/icons when selections changed
     Given there is 1 existing item like "athena"
@@ -60,7 +60,7 @@ Feature:  Verify inputs for editing of edges dynamically within the page
     And the image "subject_error_icon" is "blank_error_icon"
     And the image "predicate_error_icon" is "blank_error_icon"
     And the image "obj_error_icon" is "error_error_icon"
-    And the element "edge_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "edge_submit" has the format "background-color=$inactive_button_color;"
 
     When I select "boomer0 : boomer node number 0" from "Object"
     Then the element "subject_required" has the format "font-weight=400"
@@ -69,7 +69,7 @@ Feature:  Verify inputs for editing of edges dynamically within the page
     And the image "subject_error_icon" is "blank_error_icon"
     And the image "predicate_error_icon" is "blank_error_icon"
     And the image "obj_error_icon" is "blank_error_icon"
-    And the element "edge_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "edge_submit" has the format "background-color=$active_button_color;"
 
     When I press "Update"
     Then I should see "successfully updated"

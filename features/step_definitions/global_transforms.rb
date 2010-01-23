@@ -16,8 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-$KCODE = "u"
-
-require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
-require File.join( File.dirname(__FILE__), 'style_info' )
-load_wontomedia_app_seed_data
+Transform /^\$([a-zA-Z_-]+);$/ do |rbVar|
+#puts "in Transform: #{rbVar}"
+#puts "  " + eval(rbVar)
+  eval rbVar
+end

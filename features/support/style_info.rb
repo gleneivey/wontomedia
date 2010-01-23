@@ -16,8 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-$KCODE = "u"
 
-require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
-require File.join( File.dirname(__FILE__), 'style_info' )
-load_wontomedia_app_seed_data
+active_button_color   = "rgb(208, 208, 255)"
+inactive_button_color = "rgb(255, 255, 255)"

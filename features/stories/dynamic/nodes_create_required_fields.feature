@@ -92,7 +92,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     # by default, a new/empty form can't be submitted
     When I am on the new nodes page
     And I pause
-    Then the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    Then the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     # all the messages/icons should be in "unflagged" state, but rely
     # on the preceding case for that
@@ -113,7 +113,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the "MB_content" element should match "Type[^\.]+required"
     And the "MB_content" element should match "Title[^\.]+required"
     And the "MB_content" element should match "Name[^\.]+required"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
 
   Scenario: Inputs flagged for being empty are unflagged when filled in
@@ -166,14 +166,14 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Then the element "name_required" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
 
-    And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "node_submit" has the format "background-color=$active_button_color;"
 
 
   @extended
   Scenario: Re-empty fields in filled-out form
     When I am on the new nodes page
     And I pause
-    Then the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    Then the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     When I select "Category" from "Type"
     And I type the "Tab" special key
@@ -190,7 +190,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "title_error_icon" is "blank_error_icon"
     And the element "name_required" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
     When I type "NodeName"
     And I type the "Tab" special key
@@ -199,18 +199,18 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "name_error_icon" is "blank_error_icon"
     And the element "description_recommended" has the format "font-weight=400"
     And the image "description_error_icon" is "blank_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "node_submit" has the format "background-color=$active_button_color;"
 
     When I type the "Tab" special key
     And I pause
-    Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    Then the element "node_submit" has the format "background-color=$active_button_color;"
     And the element "description_recommended" has the format "font-weight=bold"
     And the image "description_error_icon" is "warn_error_icon"
 
     When I put the focus on the "node_description" element
     And I type "Here is a very simple description."
     And I pause
-    Then the element "node_submit" has the format "background-color=rgb(192, 192, 255)"
+    Then the element "node_submit" has the format "background-color=$active_button_color;"
     And the element "description_recommended" has the format "font-weight=400"
     And the image "description_error_icon" is "blank_error_icon"
 
@@ -218,7 +218,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And I pause
     Then the element "name_required" has the format "font-weight=bold"
     And the image "name_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
     And the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "blank_error_icon"
 
@@ -240,7 +240,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the image "sti_type_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "node_submit" has the format "background-color=$inactive_button_color;"
 
 
 # WontoMedia - a wontology web application

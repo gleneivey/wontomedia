@@ -21,7 +21,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
     When I am on the new edges page
     And I pause
     Then the focus is on the "edge_subject_id" element
-    And the element "edge_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "edge_submit" has the format "background-color=$inactive_button_color;"
 
   Scenario: Empty form incrementally displays flag text/icons
     When I am on the new edges page
@@ -59,7 +59,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
     And the image "predicate_error_icon" is "error_error_icon"
     And the image "obj_error_icon" is "error_error_icon"
 
-    And the element "edge_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "edge_submit" has the format "background-color=$inactive_button_color;"
 
   Scenario: Empty form displays flags & dialog on (disabled) Create click
     Given I am on the new edges page
@@ -76,7 +76,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
     And the "MB_content" element should match "Subject[^\.]+must have"
     And the "MB_content" element should match "Relationship[^\.]+must have"
     And the "MB_content" element should match "Object[^\.]+must have"
-    And the element "edge_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "edge_submit" has the format "background-color=$inactive_button_color;"
 
   Scenario: Inputs flagged for empty are unflagged when filled, Create enabled
     Given there is 1 existing class like "category"
@@ -90,7 +90,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
     And the image "subject_error_icon" is "error_error_icon"
     And the image "predicate_error_icon" is "error_error_icon"
     And the image "obj_error_icon" is "error_error_icon"
-    And the element "edge_submit" has the format "background-color=rgb(255, 255, 255)"
+    And the element "edge_submit" has the format "background-color=$inactive_button_color;"
 
     When I select "category0 : category node number 0" from "Subject"
     And I select "contains : Contains (wm built-in relationship)" from "Relates to"
@@ -101,7 +101,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
     And the image "subject_error_icon" is "blank_error_icon"
     And the image "predicate_error_icon" is "blank_error_icon"
     And the image "obj_error_icon" is "blank_error_icon"
-    And the element "edge_submit" has the format "background-color=rgb(192, 192, 255)"
+    And the element "edge_submit" has the format "background-color=$active_button_color;"
 
 
 

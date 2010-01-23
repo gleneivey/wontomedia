@@ -17,25 +17,6 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-
-<% @title_text = h @node.title %>
-<div class="headline">Editing node</div>
-
-
-<% form_for(@node, :url => node_path(@node)) do |f| %>
-  <%= f.error_messages %>
-  <%= render :partial => "form_fields", :locals => { :f => f } %>
-  <p><%= f.submit "Update" %></p>
+<% if @display_unimplemented %>
+[top-level "Help" link]
 <% end %>
-
-<%= link_to 'Cancel, show node', node_path(@node) %> |
-<%= link_to 'Cancel, show node list', nodes_path %>
-
-<script type="text/javascript">
-  creatingNewNode = false;
-</script>
-<%= javascript_include_tag "forNodesForms" %>
-<script type="text/javascript">
-  plumbEventHandlersToNodeCreationElements();
-  $(controlNamePrefix + 'node_title').focus();
-</script>

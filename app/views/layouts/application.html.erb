@@ -1,6 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <%
 # WontoMedia - a wontology web application
 # Copyright (C) 2010 - Glen E. Ivey
@@ -19,36 +16,49 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see "http://www.gnu.org/licenses/".
 %>
+<% @display_unimplemented = true %>
 
+<% content_for :page_body do %>
+  <% if @title_text %>
+    <div id="page-title" style="position: absolute; top: 0; left: 15.5%;">
+      <h1><%= @title_text -%></h1>
+    </div>
+  <% end %>
+  <div id="float-center-right"
+       style="float: right; width: 85%; margin-top: 8ex;">
+    <div id="column-content" class="content" style="float: left; width: 81%;">
+      <%= render :partial => "common/status_msgs" %>
+      <%= yield %>
+    </div>
+    <%= render :partial => "common/google_ads" %>
+  </div>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <title><%= controller.controller_name -%>:
-           <%= controller.action_name -%></title>
-    <%= stylesheet_link_tag 'scaffold' %>
-    <%= stylesheet_link_tag 'wm' %>
-    <%= stylesheet_link_tag 'modalbox' %>
-    <%= javascript_include_tag :defaults %>
-    <%= javascript_include_tag "modalbox" %>
-  </head>
-  <body>
+  <div id="float-left" style="float: left; width: 14.4%;">
+    <div id="container-absolutes">
+      <div id="block-search"
+           style="width: 19%; position: absolute; top: 0; right: 0;">
+        <div>
+          <%= render :partial => "common/search_box" %>
+        </div>
+      </div>
+      <div id="page-top-controls"
+           style="position: absolute; top: 0; right: 16.9%;">
+        <div id="block-help" style="float: right;">
+          <%= render :partial => "common/master_help" %>
+        </div>
+        <div id="block-language" style="float: right;">
+          <%= render :partial => "common/language_select" %>
+        </div>
+        <div id="block-login" style="float: right;">
+          <%= render :partial => "common/login_controls" %>
+        </div>
+      </div>
+    </div>
+    <div id="column-left">
+      <img src="/images/working_status_icon.gif" alt="Logo" width="96%" />
+      <%= render :partial => "common/amazon_ads" %>
+    </div>
+  </div>
+<% end -%>
 
-    <p style="color: red"><%= flash[:error] %></p>
-    <p style="color: green"><%= flash[:notice] %></p>
-    <%= yield %>
-
-    <p style="font-size: 60%; color: grey; clear: both">
-Copyright &copy; 2009, Glen E. Ivey (system design and behavior currently confidential &amp; proprietary) &mdash;
-
-Powered by <a href="http://wontomedia.rubyforge.org/">WontoMedia</a> &mdash;
-
-Software and page templates licensed under
-<a href="http://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a> &mdash;
-
-Page content licensed under
-<a href="http://www.gnu.org/licenses/fdl-1.3.html">GNU FDL v1.3</a>
-    </p>
-
-  </body>
-</html>
+<%= render :file => 'layouts/base' %>

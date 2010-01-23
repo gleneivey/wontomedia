@@ -36,11 +36,6 @@ module AssertCurrentSchema
         t.column    :edge_desc_id,    :integer
         t.column    :flags,           :integer, :null => false, :default => 0
       end
-
-      # expect this won't be needed for future upgrade to m_t_h
-      s.table "schema_migrations" do |t|
-        t.column    :version,         :string
-      end
     end
   end
 end
