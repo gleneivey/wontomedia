@@ -52,7 +52,7 @@ ENDOSTRING
     s.extra_rdoc_files = ["README"]
 
     s.files =  FileList["[A-Z]*",
-      "{app,config,bin,db,generators,lib,public,script}/**/*"].
+      "{app,config,bin,db,default-custom,generators,lib,public,script}/**/*"].
         exclude("database.yml") do |maybe_exclude|
           File.symlink?( maybe_exclude )
         end

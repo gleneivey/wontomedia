@@ -18,10 +18,8 @@ public/javascripts/modalbox.js
 public/javascripts/event.simulate.js
 config/environments/cucumber.rb
 features/support/paths.rb
-features/support/version_check.rb
 features/support/env.rb
-features/step_definitions/webrat_steps.rb
-
+features/step_definitions/web_steps.rb
 
     # repeatedly auto-generated from other files
 db/schema.rb
@@ -35,7 +33,6 @@ db/migrate/2009*.rb
     # one-time auto-generated files, never to be modified
     #  "lock" directive contains git commit # of acceptable version
 !lock            4b45222d3f846a9bac9c1317657799862f13a1ba
-script
 config/database-sample-mysql.yml
 config/environments/development.rb
 config/environments/production.rb
@@ -49,6 +46,8 @@ public/dispatch.rb
 public/stylesheets/scaffold.css
 !lock            d6865e2d0348cf0bcd928eec0c8aac98dbc6fbbd
 config/boot.rb
+!lock            651adf6bc0e0700e310dca8cc99069cb7261d5b9
+script
 !unlock
 
     # unmodified (and never to be modified) third-party components we include

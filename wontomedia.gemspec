@@ -9,8 +9,12 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-01-23}
-  s.description = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme.  WontoMedia is free software (licensed under the AGPL v3), and is being developed by a dispersed volunteer team using agile methods.}
+  s.date = %q{2010-01-25}
+  s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
+      an information classification scheme.  WontoMedia is free
+      software (licensed under the AGPL v3), and is being developed by
+      a dispersed volunteer team using agile methods.
+}
   s.email = %q{gleneivey@wontology.org}
   s.files = [
     "COPYING",
@@ -23,7 +27,6 @@ Gem::Specification.new do |s|
      "app/controllers/application_controller.rb",
      "app/controllers/edges_controller.rb",
      "app/controllers/nodes_controller.rb",
-     "app/controllers/temp_login_controller.rb",
      "app/helpers/nodes_show_helper.rb",
      "app/models/class_node.rb",
      "app/models/edge.rb",
@@ -58,8 +61,8 @@ Gem::Specification.new do |s|
      "app/views/nodes/new.html.erb",
      "app/views/nodes/newpop.html.erb",
      "app/views/nodes/show.html.erb",
-     "app/views/temp_login/login_form.html.erb",
      "config/boot.rb",
+     "config/cucumber.yml",
      "config/database-mysql-development.yml",
      "config/database-mysql.yml",
      "config/environment.rb",
@@ -85,6 +88,9 @@ Gem::Specification.new do |s|
      "db/migrate/20090605213800_flags_columns_not_null.rb",
      "db/migrate/20090605215028_flags_columns_default_zero.rb",
      "db/schema.rb",
+     "default-custom/app/views/nodes/_home_extern_list.html.erb",
+     "default-custom/app/views/nodes/_home_introductory_text.html.erb",
+     "default-custom/public/stylesheets/wm.css",
      "lib/helpers/edge_helper.rb",
      "lib/helpers/node_helper.rb",
      "lib/helpers/tripple_navigation.rb",
@@ -122,7 +128,6 @@ Gem::Specification.new do |s|
      "public/stylesheets/modalbox.css",
      "public/stylesheets/scaffold.css",
      "public/stylesheets/spinner.gif",
-     "public/stylesheets/wm.css",
      "script/about",
      "script/console",
      "script/cucumber",
@@ -139,12 +144,11 @@ Gem::Specification.new do |s|
      "script/runner",
      "script/server"
   ]
-  s.has_rdoc = true
   s.homepage = %q{http://wontomedia.rubyforge.org}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{wontomedia}
-  s.rubygems_version = %q{1.3.1}
+  s.rubygems_version = %q{1.3.5}
   s.summary = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme}
   s.test_files = [
     "test/unit/db/schema_test.rb",
@@ -186,7 +190,7 @@ Gem::Specification.new do |s|
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 2
+    s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rails>, ["~> 2.2"])
