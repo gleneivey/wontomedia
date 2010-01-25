@@ -16,7 +16,7 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see "http://www.gnu.org/licenses/".
 %>
-<% @display_unimplemented = true %>
+<% @display_unimplemented = false %>
 
 <% content_for :page_body do %>
   <% if @title_text %>
@@ -55,7 +55,8 @@
       </div>
     </div>
     <div id="column-left">
-      <img src="/images/working_status_icon.gif" alt="Logo" width="96%" />
+      <img src="/images/logo.png" alt="Logo" width="96%"
+           style="margin-bottom: 0.5ex;" />
       <%= render :partial => "common/amazon_ads" %>
     </div>
   </div>

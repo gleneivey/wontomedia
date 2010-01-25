@@ -4,6 +4,7 @@
   content background:      white
   content border:          2nd-darkest blue      #b0b0ff
   active area background:  light blue            #d0d0ff
+                           dk blue               #4040ff
 */
 body {
   color: black;
@@ -43,6 +44,11 @@ div {
   margin-top: 0;
 }
 
+.fine-print {
+  font-size: 60%;
+  color: #4040ff;
+  text-align: center;
+}
 
 p {
   margin-top: 0;

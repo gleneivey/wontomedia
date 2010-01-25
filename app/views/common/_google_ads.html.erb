@@ -18,7 +18,7 @@
 %>
 <% if @display_unimplemented %>
 
-<% unless @this_is_non_information_page %>
+<% unless @this_is_non_information_page or ENV['RAILS_ENV']=='test' %>
   <% if WontoMedia.ads.google %>
     <div id="column-google" class="box"
          style="float: right; width: 16.9%; text-align: center;">
