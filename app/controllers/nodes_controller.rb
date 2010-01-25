@@ -21,15 +21,6 @@ require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 require 'yaml'
 
 class NodesController < ApplicationController
-  before_filter :temporary_page_protection
-  def temporary_page_protection
-    if RAILS_ENV != 'test' && session[:who_am_i].nil?
-      render :file => "#{RAILS_ROOT}/public/not_logged_in.html"
-      return
-    end
-  end
-
-
   # GET /
   def home
     @nouns = NodeHelper.nouns

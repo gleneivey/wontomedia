@@ -17,11 +17,6 @@
 
 
 ActionController::Routing::Routes.draw do |map|
-  map.login_form   '/temporary-login/new',
-    :controller => 'temp_login', :action => 'login_form'
-  map.login_verify '/temporary-login/verify',
-    :controller => 'temp_login', :action => 'login_verify'
-
   map.admin_index   '/admin', :controller => 'admin', :action => 'index'
   map.admin_node_up '/admin/node_up', :controller => 'admin',
     :action => 'node_up'
