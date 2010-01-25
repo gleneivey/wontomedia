@@ -15,3 +15,9 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
 
+Webrat.configure do |config|
+  config.mode = :rails
+  config.open_error_files = false
+end
+
+Cucumber::Rails::World.use_transactional_fixtures = true

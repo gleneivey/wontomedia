@@ -20,9 +20,9 @@
   common       = uber_common + "--format progress "
   tags_common  = "~@invalid"
   tags_rake    = "~@extended"
-  static       = "-r features/support/env.rb -r features/support/local.rb " +
+  static       = "-r features/support/local.rb " +
                  "-r features/support/static.rb -r features/step_definitions "
-  dynamic      = "-r features/support/env.rb -r features/support/local.rb " +
+  dynamic      = "-r features/support/local.rb " +
                  "-r features/support/dynamic.rb -r features/step_definitions "
   static_only  = "--exclude=dynamic   features "
   dynamic_only = "--exclude=static    features "

@@ -16,8 +16,12 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-Transform /^\$([a-zA-Z_-]+);$/ do |rbVar|
-#puts "in Transform: #{rbVar}"
-#puts "  " + eval(rbVar)
-  eval rbVar
+
+Transform /\$[a-zA-Z_-]+;/ do |wholeArg|
+  varRe = /\$([a-zA-Z_-]+);/
+  while wholeArg =~ varRe
+    result = eval( "$" + $~[1] )
+    wholeArg.sub!( varRe, result )
+  end
+  wholeArg
 end

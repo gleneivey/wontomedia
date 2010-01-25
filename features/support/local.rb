@@ -16,8 +16,43 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+#### lines copied from env.rb, which we don't use directly any more
+
+ENV["RAILS_ENV"] ||= "cucumber"
+require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
+
+require 'cucumber/formatter/unicode'
+require 'cucumber/rails/rspec'
+require 'cucumber/rails/world'
+require 'cucumber/rails/active_record'
+require 'cucumber/web/tableish'
+
+require 'webrat'
+require 'webrat/core/matchers'
+# see "static.rb" and "dynamic.rb" for Webrat.configure....
+
+ActionController::Base.allow_rescue = false
+
+
+######## really local stuff
+
 $KCODE = "u"
 
 require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
 require File.join( File.dirname(__FILE__), 'style_info' )
 load_wontomedia_app_seed_data
+
+
+######## Cucumber doesn't have a switch to prevent use of DatabaseCleaner,
+########  so we stub it out here
+
+module DatabaseCleaner
+  class << self
+    def start
+      nil
+    end
+    def clean
+      nil
+    end
+  end
+end

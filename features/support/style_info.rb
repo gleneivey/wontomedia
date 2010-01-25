@@ -17,5 +17,6 @@
 
 
 
-active_button_color   = "rgb(208, 208, 255)"
-inactive_button_color = "rgb(255, 255, 255)"
+   # have to use global variables....
+$active_button_color   = "rgb(208, 208, 255)"
+$inactive_button_color = "rgb(255, 255, 255)"

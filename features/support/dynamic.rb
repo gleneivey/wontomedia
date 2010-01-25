@@ -28,6 +28,8 @@ end
 Cucumber::Rails::World.use_transactional_fixtures = false
 
 
+
+
 # "before all"
 browser = Selenium::SeleniumDriver.new("localhost", 4444, "*firefox",
                                        "http://localhost", 15000)
