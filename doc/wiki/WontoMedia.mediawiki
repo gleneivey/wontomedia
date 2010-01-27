@@ -4,9 +4,7 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
-'''''WontoMedia''''' &mdash; WontoMedia is a web application package for hosting a Wontology (a [[Wikipedia:Wiki|Wiki]]-[[Wikipedia:Ontology_(information_science)|Ontology]]): a classification scheme created and maintained by a community. From categories in a bug-tracker or RubyForge's "Trove", to a document repository's controlled vocabulary, a species taxonomy, or thesaurus. ("''wontology''" comes from '''w'''iki plus '''ontology'''. "''WontoMedia''" is a '''wonto'''logy web app in the same way that '''Media'''Wiki is a wiki web app.)
+'''''WontoMedia''''' is a web application package for hosting a Wontology (a [[Wikipedia:Wiki|Wiki]]-[[Wikipedia:Ontology_(information_science)|Ontology]]): a classification scheme created and maintained by a community. The types of information WontoMedia is designed to work with ranges from simple single lists, like categories in a bug-tracker, to simple hierarchies, like RubyForge's software package categorization scheme, to a document repository's controlled vocabulary, a species taxonomy, or thesaurus. ("''wontology''" comes from '''w'''iki plus '''ontology'''. "''WontoMedia''" is a '''wonto'''logy web app in the same way that '''Media'''Wiki is a wiki web app.)
 
 Development of WontoMedia is hosted on [http://rubyforge.org/projects/wontomedia/ RubyForge], including the package's [http://wontomedia.rubyforge.org/ main web site], although not [[Main_Page|this wiki]].
 

@@ -39,7 +39,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="21.874333"
+     inkscape:cx="179.03128"
      inkscape:cy="992.81755"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -63,27 +63,12 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <g
-       id="g3159"
-       transform="translate(-22.020305,-237.99456)">
-      <rect
-         y="245.3663"
-         x="29.861275"
-         height="364.05673"
-         width="597.87744"
-         id="rect2383"
-         style="opacity:0.35700001;fill:#ffffff;stroke:#4040c4;stroke-width:14.29398632;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <text
-         id="text3155"
-         y="492.71835"
-         x="22.813267"
-         style="font-size:71.64704132px;font-style:normal;font-weight:normal;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-         xml:space="preserve"><tspan
-           style="font-size:250.76463318px;fill:#ffff00"
-           y="492.71835"
-           x="22.813267"
-           id="tspan3157"
-           sodipodi:role="line">Logo</tspan></text>
-    </g>
+    <rect
+       style="opacity:1;fill:#ffffff;stroke:#f8f8ff;stroke-width:14.29398632000000013;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:0"
+       id="rect2383"
+       width="597.87744"
+       height="364.05673"
+       x="7.8409696"
+       y="7.3717427" />
   </g>
 </svg>

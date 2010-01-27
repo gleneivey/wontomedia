@@ -5,7 +5,7 @@
   in-content divider:      very light blue       #e8e8ff
   active area background:  light blue            #d0d0ff
   content border:          2nd-darkest blue      #b0b0ff
-                           dk blue               #4040ff
+                           dk blue               #1010a0
 */
 body {
   color: black;
@@ -48,7 +48,7 @@ div {
 }
 .fine-print {
   font-size: 60%;
-  color: #4040ff;
+  color: #1010a0;
   text-align: center;
 }
 

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-01-25}
+  s.date = %q{2010-01-27}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
      "app/views/common/_language_select.html.erb",
      "app/views/common/_login_controls.html.erb",
      "app/views/common/_master_help.html.erb",
+     "app/views/common/_navigation_menu.html.erb",
      "app/views/common/_search_box.html.erb",
      "app/views/common/_status_msgs.html.erb",
      "app/views/edges/_index_outbound_links.html.erb",
@@ -50,13 +51,16 @@ Gem::Specification.new do |s|
      "app/views/edges/show.html.erb",
      "app/views/layouts/application.html.erb",
      "app/views/layouts/base.html.erb",
+     "app/views/layouts/home.html.erb",
      "app/views/layouts/popup.html.erb",
+     "app/views/nodes/_content_examples.html.erb",
+     "app/views/nodes/_core_tasks.html.erb",
      "app/views/nodes/_form_fields.html.erb",
      "app/views/nodes/_list_outbound_links.html.erb",
+     "app/views/nodes/_screen_select.html.erb",
      "app/views/nodes/_show_outbound_links.html.erb",
      "app/views/nodes/_type_select.html.erb",
      "app/views/nodes/edit.html.erb",
-     "app/views/nodes/home.html.erb",
      "app/views/nodes/index.html.erb",
      "app/views/nodes/new.html.erb",
      "app/views/nodes/newpop.html.erb",
@@ -90,6 +94,9 @@ Gem::Specification.new do |s|
      "db/schema.rb",
      "default-custom/app/views/nodes/_home_extern_list.html.erb",
      "default-custom/app/views/nodes/_home_introductory_text.html.erb",
+     "default-custom/app/views/nodes/home.html.erb",
+     "default-custom/public/images/logo.png",
+     "default-custom/public/images/logo.svg",
      "default-custom/public/stylesheets/wm.css",
      "lib/helpers/edge_helper.rb",
      "lib/helpers/node_helper.rb",
@@ -110,6 +117,7 @@ Gem::Specification.new do |s|
      "public/images/error_error_icon.png",
      "public/images/error_status_icon.png",
      "public/images/good_status_icon.png",
+     "public/images/twitter_icon.png",
      "public/images/warn_error_icon.png",
      "public/images/working_status_icon.gif",
      "public/javascripts/application.js",
