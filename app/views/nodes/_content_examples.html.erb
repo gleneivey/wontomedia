@@ -1,0 +1,60 @@
+<%
+# WontoMedia - a wontology web application
+# Copyright (C) 2010 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see "http://www.gnu.org/licenses/".
+%>
+
+<% if @display_unimplemented %>
+  <p class="unimplemented">[The purpose of this area is to highlight
+    "samples" of the local installation's content.  For now, we're
+    displaying the complete set of non-Property nodes.]</p>
+<% end %>
+
+<h1>Current Categories and Items</h1>
+
+<p style="margin: 0; padding: 0;">
+  &nbsp;Click on a name to view details &rarr;</p>
+
+<table class="tight-table">
+  <tr>
+    <th>Name</th>
+    <th>Title</th>
+  </tr>
+  <tr>
+    <th colspan="2" style="padding-left: 1em;">Description</th>
+  </tr>
+
+  <% @nouns.each do |node| %>
+    <tr>
+      <td><%= link_to "#{h node.name}", node_path(node) %></td>
+      <td style="padding-left: 0.5em;"><%=h node.title %></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="dividerrow" style="padding-left: 1em;">
+        <span style="font-size: 60%;">
+          <%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:
+        </span><%=h node.description %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p>
+  Click on a name to view details &mdash;
+  <%= render :partial => "list_outbound_links" %>
+</p>
+
+
+

@@ -24,6 +24,7 @@ class NodesController < ApplicationController
   # GET /
   def home
     @nouns = NodeHelper.nouns
+    render :layout => "home"
   end
 
   # GET /nodes

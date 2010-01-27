@@ -16,10 +16,9 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see "http://www.gnu.org/licenses/".
 %>
+<% if @display_unimplemented %>
+  <p class="unimplemented">[area containing links which select among
+    the different types of information presentation/edit screens]</p>
+<% end -%>
 
 
-
-<%= link_to 'View all nodes',    nodes_path %> &mdash;
-<%= link_to 'Create a new node', new_node_path %> &mdash;
-<%= link_to 'View all edges',    edges_path %> &mdash;
-<%= link_to 'Create a new edge', new_edge_path %>

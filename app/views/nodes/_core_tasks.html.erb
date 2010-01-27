@@ -16,10 +16,11 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see "http://www.gnu.org/licenses/".
 %>
+<% if @display_unimplemented %>
+  <hr />
+  <p class="unimplemented">[area to list/"invite users to" core
+    wontology tasks: browsing, searching, contributing]</p>
+<% end -%>
+<p><%= render :partial => "list_outbound_links" %></p>
 
 
-
-<%= link_to 'View all nodes',    nodes_path %> &mdash;
-<%= link_to 'Create a new node', new_node_path %> &mdash;
-<%= link_to 'View all edges',    edges_path %> &mdash;
-<%= link_to 'Create a new edge', new_edge_path %>

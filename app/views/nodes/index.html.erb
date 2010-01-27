@@ -31,14 +31,15 @@
 <table>
   <tr>
     <th></th>
-    <th>&nbsp;&nbsp;Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-    <th>&nbsp;&nbsp;Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-    <th>&nbsp;&nbsp;Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    <th>&nbsp;&nbsp;Name</th>
+    <th>&nbsp;&nbsp;Title</th>
+    <th>&nbsp;&nbsp;Description</th>
   </tr>
 
   <% @nodes.each do |node| %>
     <% content_tag :tr, :id => node.name do %>
-      <td><%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
+      <td style="font-size: 70%">
+        <%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
       <td><%= link_to "#{h node.name}", node_path(node) %></td>
       <td class="edgecolumn"><%=h node.title %></td>
       <td><%=h node.description %></td>

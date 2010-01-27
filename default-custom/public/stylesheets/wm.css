@@ -1,9 +1,10 @@
 
 /* color palette:
-  page background:         very light blue       #f8f8ff
   content background:      white
-  content border:          2nd-darkest blue      #b0b0ff
+  page background:         almost-white blue     #f8f8ff
+  in-content divider:      very light blue       #e8e8ff
   active area background:  light blue            #d0d0ff
+  content border:          2nd-darkest blue      #b0b0ff
                            dk blue               #4040ff
 */
 body {
@@ -31,6 +32,8 @@ div {
   padding: 0;
   background-color: white;
   border: solid 1px #b0b0ff;
+  margin-top: 0.7ex;
+  margin-bottom: 0.7ex;
 }
 .noncontent {
   margin: 6px;
@@ -43,15 +46,30 @@ div {
   margin-left: 2em;
   margin-top: 0;
 }
-
 .fine-print {
   font-size: 60%;
   color: #4040ff;
   text-align: center;
 }
 
+.unimplemented {
+  font-style: italic;
+}
+p.unimplemented {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+
 p {
   margin-top: 0;
+}
+hr {
+  width: 62%;
+  height: 1px;
+  border: 0px solid #b0b0ff;
+  text-align: center;
+  color: #b0b0ff;
+  background-color: #b0b0ff;
 }
 
 
@@ -77,6 +95,20 @@ td {
   border-color: #b0b0ff;
   border-style: none solid;
 }
+.dividerrow {
+  border-bottom: 1px solid #e8e8ff;
+}
+
+.tight-table td {
+  margin: 0;
+  padding: 0;
+}
+.tight-table th {
+  margin: 0;
+  padding: 0;
+}
+
+
 
 
         /* used for input controls & matching instruction text                */
