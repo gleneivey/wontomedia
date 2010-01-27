@@ -18,11 +18,11 @@ In short, the deployment procedure is as follows:
       $ ./deploy/wontology-on-a2hosting/deploy-to-a2.sh
 
  * from the root of the A2 user account:
-     [  shutdown WontoMedia via cPanel RoR widget ]
+     [  shutdown WontoMedia via web/cPanel RoR widget ]
       $ ./install-wontomedia.sh
       $ cd etc/rails_apps/WontoMedia                   # if necessary
       $ RAILS_ENV=production rake db:reseed            # if necessary
-     [  start WontoMedia via cPanel RoR widget ]
+     [  start WontoMedia via web/cPanel RoR widget ]
      [  restore from nodes.yaml edges.n3 ]             # if necessary
 
 
@@ -36,16 +36,17 @@ These scripts make the following assumption about the A2 host's configuration:
  * the cPanel RoR configuration for the app's home directory is:
       /home/glenivey/etc/rails_apps/WontoMedia
    (the A2 default path for an app named "WontoMedia")
- * the correct contents for the app's config/database.yml file is
+ * the correct content for the app's local config-directory files is
    located at:
-      /home/glenivey/wm.database.yml
+      /home/glenivey/wm.*
 
 At a high level, installation is accomplished by:
  * building a release gem locally
  * scp'ing the gem to the A2 host
  * performing "gem install -l" on the new gem
- * copying in the config/database.yml file
+ * copying in the config/* files
  * updating the config/environment.rb file to include the account-specific
    gem directory
- * ensuring that the symbolic link from ~/etc for the RoR app points
-   to the correct directory in the local gem directory
+ * ensuring that there is symbolic link from the point in ~/etc where A2
+   expects the RoR app that points to the correct place in the local
+   gem directory

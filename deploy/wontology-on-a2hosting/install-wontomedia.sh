@@ -1,14 +1,24 @@
 
-cat /home/glenivey/etc/rails_apps/WontoMedia/log/mongrel.log    >> /home/glenivey/WmLogs/mongrel.log
-cat /home/glenivey/etc/rails_apps/WontoMedia/log/production.log >> /home/glenivey/WmLogs/production.log
-rm /home/glenivey/etc/rails_apps/WontoMedia
+# execute this script from the directory containing the wontomedia*.gem file
+
+INSTALL_DIR=/home/glenivey/etc/rails_apps/WontoMedia
+HOSTING_HOME_DIR=/home/glenivey
+GEMPATH_SED_COMMAND='/^RAILS_GEM_VERSION/aGem.use_paths "/home/glenivey/ruby/gems", [ "/home/glenivey/ruby/gems", "/usr/lib/ruby/gems/1.8" ]'
+
+cat $INSTALL_DIR/log/mongrel.log    >> $HOSTING_HOME_DIR/WmLogs/mongrel.log
+cat $INSTALL_DIR/log/production.log >> $HOSTING_HOME_DIR/WmLogs/production.log
+rm $INSTALL_DIR
 gem uninstall wontomedia
 
 gem install -l wontomedia
-ln -s /home/glenivey/ruby/gems/gems/wontomed* /home/glenivey/etc/rails_apps/WontoMedia
+ln -s $HOSTING_HOME_DIR/ruby/gems/gems/wontomed* $INSTALL_DIR
 
-cp /home/glenivey/wm.database.yml /home/glenivey/etc/rails_apps/WontoMedia/config/database.yml
-sed --in-place=.backup -e '/^RAILS_GEM_VERSION/aGem.use_paths "/home/glenivey/ruby/gems", [ "/home/glenivey/ruby/gems", "/usr/lib/ruby/gems/1.8" ]' /home/glenivey/etc/rails_apps/WontoMedia/config/environment.rb
+cd $INSTALL_DIR
+mkdir log
+mkdir tmp
 
-mkdir /home/glenivey/etc/rails_apps/WontoMedia/log
-mkdir /home/glenivey/etc/rails_apps/WontoMedia/tmp
+cp $HOSTING_HOME_DIR/wm.database.yml config/database.yml
+cp $HOSTING_HOME_DIR/wm.wontomedia.rb config/initializers/wontomedia.rb
+sed --in-place=.backup -e $GEMPATH_SED_COMMAND config/environment.rb
+
+RAILS_ENV=production rake customize[default-custom]
