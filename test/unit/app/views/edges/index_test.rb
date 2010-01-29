@@ -27,19 +27,19 @@ class EdgesIndexViewTest < ActionController::TestCase
     assert_template "edges/index"
   end
 
-  test "should show Name of subject node for known edge" do
+  test "should show Title of subject node for known edge" do
     get :index
-    assert_select "body", /#{Edge.first.subject.name}/
+    assert_select "body", /#{regex_escape Edge.first.subject.title}/
   end
 
-  test "should show Name of predicate node for known edge" do
+  test "should show Title of predicate node for known edge" do
     get :index
-    assert_select "body", /#{Edge.last.predicate.name}/
+    assert_select "body", /#{regex_escape Edge.last.predicate.title}/
   end
 
-  test "should show Name of object node for known edge" do
+  test "should show Title of object node for known edge" do
     get :index
-    assert_select "body", /#{Edge.all[1].obj.name}/
+    assert_select "body", /#{regex_escape Edge.all[1].obj.title}/
   end
 
   test "should show Name of self node for known edge" do
@@ -73,5 +73,11 @@ class EdgesIndexViewTest < ActionController::TestCase
         "*##{edge.id} a[href=\"#{edge_path(edge)}\"][onclick*=\"delete\"]",
         test_sense   )
     end
+  end
+
+  def regex_escape(inStr)    # trivial, just what we need for the seed data
+    inStr.sub!( /\(/, "\\(" );
+    inStr.sub!( /\)/, "\\)" );
+    inStr
   end
 end

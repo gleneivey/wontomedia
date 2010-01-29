@@ -61,8 +61,8 @@
             </td><td style="font-size: 80%">
               <%= link_to 'Show', edge_path(e) %>
               <% if (e.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
-                <%= link_to 'Edit', edit_edge_path(e) %>
-                <%= link_to 'Delete', edge_path(e),
+                <%= link_to 'Edit', edit_edge_path(e), :rel => 'nofollow' %>
+                <%= link_to 'Delete', edge_path(e), :rel => 'nofollow',
                             :confirm => 'Are you sure?', :method => :delete %>
               <% end %>
             </td>

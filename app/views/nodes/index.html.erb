@@ -34,13 +34,13 @@
 
   <% @nodes.each do |node| %>
     <% content_tag :tr, :id => node.name do %>
-      <td><%= link_to "#{h node.name}", node_path(node) %></td>
-      <td><%=h node.title %></td>
+      <td><%= h node.name %></td>
+      <td><%= link_to "#{h node.title}", node_path(node) %></td>
       <td rowspan="2" class="dividerrow" style="font-size: 80%;">
         <% if (node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
-          <%= link_to 'Edit', edit_node_path(node) %>
+          <%= link_to 'Edit', edit_node_path(node), :rel => 'nofollow' %>
           <% if @not_in_use_hash[node.id] %>
-            <%= link_to 'Delete', node_path(node),
+            <%= link_to 'Delete', node_path(node), :rel => 'nofollow',
                         :confirm => 'Are you sure?', :method => :delete %>
           <% end %>
         <% end %>

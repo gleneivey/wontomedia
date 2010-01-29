@@ -39,8 +39,9 @@
 
   <% @nouns.each do |node| %>
     <tr>
-      <td><%= link_to "#{h node.name}", node_path(node) %></td>
-      <td style="padding-left: 0.5em;"><%=h node.title %></td>
+      <td><%= h node.name %></td>
+      <td style="padding-left: 0.5em;">
+        <%= link_to "#{h node.title}", node_path(node) %></td>
     </tr>
     <tr>
       <td colspan="2" class="dividerrow" style="padding-left: 1em;">

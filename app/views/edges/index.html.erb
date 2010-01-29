@@ -34,17 +34,17 @@
 
   <% @edges.each do |edge| %>
     <% content_tag :tr, :id => edge.id do %>
-      <td><%= link_to "#{h edge.subject.name}", node_path(edge.subject) %></td>
+      <td><%= link_to "#{h edge.subject.title}", node_path(edge.subject) %></td>
       <td>
-        <%=   link_to "#{h edge.predicate.name}", node_path(edge.predicate) %>
+        <%=   link_to "#{h edge.predicate.title}", node_path(edge.predicate) %>
       </td>
-      <td><%= link_to "#{h edge.obj.name}", node_path(edge.obj) %></td>
+      <td><%= link_to "#{h edge.obj.title}", node_path(edge.obj) %></td>
       <td style="font-size: 80%">
         <%= link_to 'Show', edge_path(edge) %>
         <% if (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
-          <%= link_to 'Edit', edit_edge_path(edge) %>
-          <%= link_to 'Delete', edge, :confirm => 'Are you sure?',
-                      :method => :delete %>
+          <%= link_to 'Edit', edit_edge_path(edge), :rel => 'nofollow' %>
+          <%= link_to 'Delete', edge, :rel => 'nofollow',
+                      :confirm => 'Are you sure?', :method => :delete %>
         <% end %>
       </td>
 <!--

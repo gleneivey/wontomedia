@@ -65,14 +65,10 @@ Screw.Unit(function(){
         var allAnchors = D().getElementsByTagName("a");
         for (var c=0; c < allAnchors.length; c++){
           var href = allAnchors[c].href;
-          var mtch = allAnchors[c].innerHTML.match(/^([a-zA-Z][a-zA-Z0-9_-]*)/);
-          if (href != null && href != "" &&
-              mtch != null && mtch.length > 1){
-            var key = mtch[1];
-            mtch = href.match(/nodes\/([0-9]+)/);
-            if (mtch != null && mtch.length > 0)
-              nodeNamesToIdsHash[key] = mtch[1];
-          }
+          var key = allAnchors[c].innerHTML;
+          mtch = href.match(/nodes\/([0-9]+)/);
+          if (mtch != null && mtch.length > 0)
+            nodeNamesToIdsHash[key] = mtch[1];
         }
 
         IFrame("http://localhost:3001/edges/new");
@@ -87,7 +83,7 @@ Screw.Unit(function(){
       }
 
       it( "fetches node description when Subject selected", function(){
-        expectAjaxStart("subject", "bNode");
+        expectAjaxStart("subject", "A second node");
         waitForAjax('subject_status_icon');
         expectDescriptionText("subject",
           /This category could contain anything/);
@@ -108,7 +104,7 @@ Screw.Unit(function(){
       }
 
       it( "fetches node description when Predicate selected", function(){
-        expectAjaxStart("predicate", "parent_of");
+        expectAjaxStart("predicate", "Parent Of (wm built-in relationship)");
         waitForAjax('predicate_status_icon');
         expectDescriptionText("predicate", new RegExp(
           "the subject .left-hand side. of the relationship " +
@@ -116,7 +112,7 @@ Screw.Unit(function(){
       });
 
       it( "fetches node description when Object selected", function(){
-        expectAjaxStart("obj", "aNode");
+        expectAjaxStart("obj", "My first node");
         waitForAjax('obj_status_icon');
         expectDescriptionText("obj", /This node could be anything/);
       });
@@ -134,7 +130,7 @@ Screw.Unit(function(){
       }
 
       it( "updates node description for multiple changes", function(){
-        expectAjaxStart("predicate", "child_of");
+        expectAjaxStart("predicate", "Child Of (wm built-in relationship)");
         waitForAjax('predicate_status_icon');
         expectDescriptionText("predicate", new RegExp(
           "This is the fundamental type of hierarchical relationship.+" +
@@ -146,7 +142,7 @@ Screw.Unit(function(){
       });
 
       it( "clears node description on change-to-unselected", function(){
-        expectAjaxStart("obj", "contains");
+        expectAjaxStart("obj", "Contains (wm built-in relationship)");
         waitForAjax('obj_status_icon');
         expectDescriptionText("obj", /&quot;A Contains B&quot;/);
 

@@ -18,6 +18,11 @@
 %>
 
 
+<% content_for :head do %>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+<% end %>
+
 <%
   require Rails.root.join( 'lib', 'helpers', 'node_helper')
   @title_text = 'Make a new node'
@@ -40,8 +45,10 @@
     </p>
 
     <p style="text-align: center">
-      <%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path %> &mdash;
-      <%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path %>
+      <%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
+                  :rel => 'nofollow' %> &mdash;
+      <%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
+                  :rel => 'nofollow' %>
     </p>
   </div>
 

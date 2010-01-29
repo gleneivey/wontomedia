@@ -18,6 +18,11 @@
 %>
 
 
+<% content_for :head do %>
+  <meta name="robots" content="noindex" />
+  <meta name="googlebot" content="noindex" />
+<% end %>
+
 <% @title_text = 'Make a new edge' %>
 
 
@@ -31,8 +36,10 @@
   <p><%= f.submit 'Create' %></p>
 <% end %>
 
-<%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path %> &mdash;
-<%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path %>
+<%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
+      :rel => 'nofollow' %> &mdash;
+<%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
+      :rel => 'nofollow' %>
 
 
 <script type="text/javascript">
