@@ -27,7 +27,6 @@
 
 <table>
   <tr>
-    <th></th>
     <th>Subject</th>
     <th>Predicate</th>
     <th>Object</th>
@@ -35,24 +34,25 @@
 
   <% @edges.each do |edge| %>
     <% content_tag :tr, :id => edge.id do %>
-      <td style="font-size: 80%"><%=link_to 'Show', edge_path(edge) %></td>
-      <td><%=link_to "#{h edge.subject.name}", node_path(edge.subject) %></td>
+      <td><%= link_to "#{h edge.subject.name}", node_path(edge.subject) %></td>
       <td>
-        <%=link_to "#{h edge.predicate.name}", node_path(edge.predicate) %>
+        <%=   link_to "#{h edge.predicate.name}", node_path(edge.predicate) %>
       </td>
-      <td><%=link_to "#{h edge.obj.name}", node_path(edge.obj) %></td>
-      <% if (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
-        <td style="font-size: 80%">
+      <td><%= link_to "#{h edge.obj.name}", node_path(edge.obj) %></td>
+      <td style="font-size: 80%">
+        <%= link_to 'Show', edge_path(edge) %>
+        <% if (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
           <%= link_to 'Edit', edit_edge_path(edge) %>
           <%= link_to 'Delete', edge, :confirm => 'Are you sure?',
                       :method => :delete %>
-        </td>
-      <% else %>
-        <td></td>
-      <% end %>
-      <td><%=unless edge.edge_desc.nil?
-               link_to "#{h edge.edge_desc.name}", node_path(edge.edge_desc)
-             end %></td>
+        <% end %>
+      </td>
+<!--
+      <td><%= unless edge.edge_desc.nil?
+                link_to "#{h edge.edge_desc.name}", node_path(edge.edge_desc)
+             end %>
+      </td>
+  -->
     <% end %>
   <% end %>
 </table>

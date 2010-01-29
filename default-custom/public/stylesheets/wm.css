@@ -5,11 +5,14 @@
   in-content divider:      very light blue       #e8e8ff
   active area background:  light blue            #d0d0ff
   content border:          2nd-darkest blue      #b0b0ff
-                           dk blue               #1010a0
+                           dk blue               #040460
 */
+
+
+        /* global settings */
 body {
   color: black;
-  font-family: sans-serif;
+  font-family: verdana, georgia, "times new roman", arial, helvetica, sans-serif;
   font-size: small;
   font-size-adjust: none;
   font-style: normal;
@@ -23,6 +26,8 @@ div {
   overflow: hidden;
 }
 
+
+        /* settings for the basic division of pages into areas and boxes */
 .content {
   padding: 2px;
   background-color: white;
@@ -48,20 +53,8 @@ div {
 }
 .fine-print {
   font-size: 60%;
-  color: #1010a0;
+  color: #040460;
   text-align: center;
-}
-
-.unimplemented {
-  font-style: italic;
-}
-p.unimplemented {
-  padding-left: 0.3em;
-  padding-right: 0.3em;
-}
-
-p {
-  margin-top: 0;
 }
 hr {
   width: 62%;
@@ -71,6 +64,24 @@ hr {
   color: #b0b0ff;
   background-color: #b0b0ff;
 }
+
+
+        /* set apart stuff that is in development */
+.unimplemented {
+  font-style: italic;
+}
+p.unimplemented {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+}
+
+
+        /* "universal special cases" .... or something like that */
+p {
+  margin-top: 0;
+}
+table + p {   margin-top:    1.5em;  }
+p + table {   margin-bottom: 1.5em;  }
 
 
         /* styles first intended for node & edge info tables:

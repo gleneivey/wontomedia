@@ -18,8 +18,11 @@
 %>
 
 
-
-<%= link_to 'View all nodes',    nodes_path %> &mdash;
-<%= link_to 'Create a new node', new_node_path %> &mdash;
-<%= link_to 'View all edges',    edges_path %> &mdash;
-<%= link_to 'Create a new edge', new_edge_path %>
+<p>
+  <% unless defined? generating_index_page and generating_index_page %>
+    <%= link_to 'View&nbsp;all&nbsp;nodes', nodes_path %> &mdash;
+  <% end -%>
+  <%= link_to 'Create&nbsp;a&nbsp;new&nbsp;node', new_node_path %> &mdash;
+  <%= link_to 'View&nbsp;all&nbsp;edges', edges_path %> &mdash;
+  <%= link_to 'Create&nbsp;a&nbsp;new&nbsp;edge', new_edge_path %>
+</p>

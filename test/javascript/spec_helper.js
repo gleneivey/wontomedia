@@ -54,6 +54,6 @@ function sleep(periodInMilliseconds){
 ajaxStartsAfter = 400;  // milliseconds
 timeMargin      =  50;
 pollingInterval =  50;
-maxPollAttempts =  30;  // iterations
+maxPollAttempts =  60;  // iterations
 
 Envjs.wait.interval = 25;

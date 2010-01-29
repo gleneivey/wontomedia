@@ -31,7 +31,7 @@ Feature:  Show existing ontology information in app home and index pages
     Given there are 4 existing properties like "fufubarfu2"
     Given there are 1 existing reiffied-properties like "fufubarfu3"
     When I go to the index nodes page
-      # three instances of string for each node created
+      # three instances of string for each node created; 13 nodes
     Then I should see 39 matches of "fufubarfu" in "td"
 
 

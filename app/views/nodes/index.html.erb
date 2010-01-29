@@ -25,25 +25,18 @@
 <div class="headline">Listing all defined nodes</div>
 
 
-<%= render :partial => "list_outbound_links" %>
-<br/>
+<%= render :partial => "list_outbound_links",
+           :locals => { :generating_index_page => true } %>
 
-<table>
-  <tr>
-    <th></th>
-    <th>&nbsp;&nbsp;Name</th>
-    <th>&nbsp;&nbsp;Title</th>
-    <th>&nbsp;&nbsp;Description</th>
-  </tr>
+<table class="tight-table">
+  <tr>  <th>Name</th><th>Title</th>                                  </tr>
+  <tr>  <th colspan="2" style="padding-left: 2.2em;">Description</th>  </tr>
 
   <% @nodes.each do |node| %>
     <% content_tag :tr, :id => node.name do %>
-      <td style="font-size: 70%">
-        <%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</td>
       <td><%= link_to "#{h node.name}", node_path(node) %></td>
-      <td class="edgecolumn"><%=h node.title %></td>
-      <td><%=h node.description %></td>
-      <td style="font-size: 80%">
+      <td><%=h node.title %></td>
+      <td rowspan="2" class="dividerrow" style="font-size: 80%;">
         <% if (node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
           <%= link_to 'Edit', edit_node_path(node) %>
           <% if @not_in_use_hash[node.id] %>
@@ -53,7 +46,14 @@
         <% end %>
       </td>
     <% end %>
+    <tr>
+      <td colspan="2" class="dividerrow" style="padding-left: 2.2em;">
+        <span style="font-size: 70%">
+          <%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</span>
+        <%=h node.description %></td>
+    </tr>
   <% end %>
 </table>
 
-<%= render :partial => "list_outbound_links" %>
+<%= render :partial => "list_outbound_links",
+           :locals => { :generating_index_page => true } %>

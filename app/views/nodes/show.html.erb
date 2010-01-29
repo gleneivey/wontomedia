@@ -59,6 +59,7 @@
             </td><td>
               <%= self_string_or_other_link(e.obj_id) %>
             </td><td style="font-size: 80%">
+              <%= link_to 'Show', edge_path(e) %>
               <% if (e.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
                 <%= link_to 'Edit', edit_edge_path(e) %>
                 <%= link_to 'Delete', edge_path(e),
@@ -72,4 +73,4 @@
   </table>
 <% end %>
 
-<%= render :partial => "show_outbound_links" %>
+<p><%= render :partial => "show_outbound_links" %></p>
