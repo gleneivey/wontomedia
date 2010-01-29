@@ -73,23 +73,16 @@ private
 def exact_count_match_helper(response_fragment, compare_string, i)
   response_parts = response_fragment.split(/#{compare_string}/m)
 
-  original_i = i
   if (i == 0)
     assert response_parts.length == 1,
       "Expected no match for '#{compare_string}'"
   elsif response_fragment =~ /\A#{compare_string}\Z/m
     assert i == 1,
-      "Got one match of '#{compare_string}', expecting #{original_i}"
+      "Got one match of '#{compare_string}', expecting #{i}"
   else
-    i += 1     # normally, we'll have one more "part" than the matches between
-    if response_fragment =~ /\A#{compare_string}/m
-      i -= 1   # won't have a string-before-first-occurance in _parts
-    end
-    if response_fragment =~ /#{compare_string}\Z/m
-      i -= 1   # won't have a string-after-last-occurance in _parts
-    end
-    assert response_parts.length == i,
-      "Expected #{original_i} match(es) of '#{compare_string}', " +
-      "got #{response_parts.length} parts."
+            # we'll have one more "part" than the matches between
+    assert response_parts.length == i+1,
+      "Expected #{i} match(es) of '#{compare_string}', " +
+      "found #{response_parts.length-1} instances."
   end
 end
