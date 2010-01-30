@@ -16,15 +16,26 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see "http://www.gnu.org/licenses/".
 %>
-<% if @display_unimplemented %>
+
 
 <% unless @this_is_non_information_page or ENV['RAILS_ENV']=='test' %>
-  <% if WontoMedia.ads.google %>
-    <div id="column-google" class="box"
-         style="float: right; width: 16.9%; text-align: center;">
-[Google ads here]
-    </div>
-  <% end %>
-<% end %>
+  <% if WontoMedia.ads.google and
+        WontoMedia.ads.google.publisher_id and
+        WontoMedia.ads.google.data_page_slot %>
 
+    <div id="column-google" class="box"
+         style="float: right; width: 16.9%; text-align: center; margin-top: 0;">
+      <script type="text/javascript"><!--
+        google_ad_client = "<%= WontoMedia.ads.google.publisher_id -%>";
+          /* Wontology Column */
+        google_ad_slot = "<%= WontoMedia.ads.google.data_page_slot -%>";
+        google_ad_width = 160;
+        google_ad_height = 600;
+        //--></script>
+      <script type="text/javascript"
+              src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+      </script>
+    </div>
+
+  <% end %>
 <% end %>

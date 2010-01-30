@@ -20,7 +20,7 @@
 
 <% unless @this_is_non_information_page or ENV['RAILS_ENV']=='test' %>
   <% if WontoMedia.ads.amazon and
-        WontoMedia.ads.amazon.associateId %>
+        WontoMedia.ads.amazon.associate_id %>
 
     <div id="block-amazon" class="box"
          style="width: 98%; text-align: center;">
@@ -42,7 +42,7 @@
           amazon_ad_product_images = "hide";
 
           // boiler-plate from Amazon
-        amazon_ad_tag = "<%= WontoMedia.ads.amazon.associateId -%>";
+        amazon_ad_tag = "<%= WontoMedia.ads.amazon.associate_id -%>";
         amazon_ad_width = "160";
         amazon_ad_height = "600";
         amazon_ad_logo = "hide";
