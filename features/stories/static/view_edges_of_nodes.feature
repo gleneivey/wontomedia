@@ -46,7 +46,7 @@ Feature:  View edges related to a node on that node's "resource" page
     And there is an existing edge "friendlyNode0" "peer_of" "friendlyNode1"
     When I am on the show nodes page for "friendlyNode0"
     Then I should see "Edges for this node"
-    And I should see "peer_of"
+    And I should see "Peer Of (wm built-in relationship)"
 
 
 # WontoMedia - a wontology web application

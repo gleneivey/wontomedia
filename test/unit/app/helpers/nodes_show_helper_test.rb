@@ -19,26 +19,26 @@
 require 'test_helper'
 
 class NodesShowHelperTest < ActionView::TestCase
-  test "generate self-node name text" do
-    name = "test_node"
-    @node = Node.new( :name => name, :title => "a test node")
+  test "generate self-node title text" do
+    title = "a test node"
+    @node = Node.new( :name => "test_node", :title => title)
     @node.save
     @node_hash= {}
     @node_hash[@node.id] = @node
 
-    assert name == self_string_or_other_link(@node.id)
+    assert title == self_string_or_other_link(@node.id)
   end
 
-  test "generate link to other node including name text" do
-    name = "one_node"
-    n = Node.new( :name => name, :title => "one test node")
+  test "generate link to other node including title text" do
+    title = "one test node"
+    n = Node.new( :name => "one_node", :title => title )
     @node = Node.new( :name => "another_node", :title => "another test node")
     n.save; @node.save
     @node_hash= {}
     @node_hash[n.id] = n
     @node_hash[@node.id] = @node
 
-    assert "<a href=\"#{node_path(n)}\">#{name}</a>" ==
+    assert "<a href=\"#{node_path(n)}\">#{title}</a>" ==
       self_string_or_other_link(n.id)
   end
 end

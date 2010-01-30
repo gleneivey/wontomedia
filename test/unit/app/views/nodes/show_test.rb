@@ -105,14 +105,14 @@ class NodesShowViewTest < ActionController::TestCase
     assert_select "a[href=?]", new_edge_path
   end
 
-  test "node-show page should contain names & links of each edge's nodes" do
+  test "node-show page should contain titles & links of each edge's nodes" do
     [ nodes(:one),                          # aReiffiedEdge
       nodes(:testCategory),
       nodes(:testSubcategory),              # subcategoryHasValue
       nodes(:isAssigned)
     ].each do |n|
       get_nodes_show(:testItem)
-      assert_select "body", /#{n.name}/
+      assert_select "body", /#{n.title}/
       assert_select "a[href=?]", node_path(n)
     end
   end

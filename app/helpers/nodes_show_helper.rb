@@ -19,11 +19,11 @@
 module NodesShowHelper
   def self_string_or_other_link(node_id)
     n = @node_hash[node_id]
-    name = h n.name
+    title = h n.title
     if node_id == @node.id    # self
-      name
+      title
     else                      # other
-      link_to name, node_path(n)
+      link_to title, node_path(n)
     end
   end
 end
