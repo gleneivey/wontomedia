@@ -61,13 +61,8 @@
       </div>
     </div>
     <div id="column-left" style="width: 98%">
-<% if @display_unimplemented %>
-      <img src="/images/dummy_logo.png" alt="Logo" width="100%"
-           style="margin-bottom: 0.5ex;" />
-<% else %>
       <img src="/images/logo.png" alt="Logo" width="100%"
            style="margin-bottom: 0.5ex;" />
-<% end -%>
       <%= yield( :left_column ) %>
     </div>
   </div>
