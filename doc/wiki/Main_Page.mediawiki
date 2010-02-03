@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 == Welcome ==
 
 '''Welcome''' to the wiki for the [[WontoMedia]] web application. WontoMedia is free/libre/open-source software (FLOSS, licensed under the [http://www.fsf.org/licensing/licenses/agpl-3.0.html AGPL v3]), being developed by a distributed/dispersed volunteer team using agile methods.  Additional introductory and contact information can be found [http://wontomedia.rubyforge.org/ on the project's home page].
@@ -38,18 +36,17 @@ Our latest source code is on GitHub (we push to the [http://rubyforge.org/scm/?g
 For reference, the tools we use are as follows (all [http://www.fsf.org/about/what-is-free-software free software]):
 
 * the [http://ruby-lang.org/ Ruby] programming language (v1.8)
-* the [http://rubyonrails.org/ Ruby-on-Rails] web application framework (v2.3.4) on top of the [http://www.mysql.com/ MySQL] database server (v5.0)
+* the [http://rubyonrails.org/ Ruby-on-Rails] web application framework (v2.3.5) on top of the [http://www.mysql.com/ MySQL] database server (v5.0)
 * the [http://www.kernel.org/pub/software/scm/git/docs/ Git] source code management system (v1.6)
 * the [http://www.rubygems.org/ Gems] Ruby software packaging and distribution system (v1.3.5)
 * [http://rubyforge.org/projects/wontomedia/ RubyForge], the open-source Ruby project hosting site, which hosts hosts our [http://wontomedia.rubyforge.org/ project web site]
 * [https://github.com/gleneivey/wontomedia/tree GitHub], the public Git repository web site
 * various Ruby and web-based automated-testing tools, including:
-** [http://cukes.info/ Cucumber] for our automated acceptance testing framework (v0.4.2)
+** [http://cukes.info/ Cucumber] for our automated acceptance testing framework (v0.6.2)
 *** [http://github.com/brynary/webrat/tree/master Webrat] for browser simulation for acceptance testing of Rails-based code (v0.5.3)
-*** [http://rspec.info/ RSpec] for test assertions in Cucumber steps (v1.2.9)
-*** [http://seleniumhq.org/projects/remote-control/ Selenium RC] for automated in-browser Ajax testing
-** [http://zentest.rubyforge.org/ZenTest ZenTest] primarily for "continuous testing (i.e., its <tt>autotest</tt> tool) (v4.1.4)
-
+*** [http://rspec.info/ RSpec] for test assertions in Cucumber steps (v1.3.0)
+*** [http://seleniumhq.org/projects/remote-control/ Selenium RC] for automated in-browser Ajax testing (selenium-client gem v1.2.16)
+** [http://zentest.rubyforge.org/ZenTest ZenTest] primarily for "continuous testing (i.e., its <tt>autotest</tt> tool) (v4.2.1)
 
 == WontoMedia Design and Architecture ==
 

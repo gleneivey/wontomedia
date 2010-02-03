@@ -233,14 +233,15 @@ There are two scripts to support your use of your local development
 system as a server for installing to other systems.  Both should be
 executed while logged in to your development user account.
 
-First is `preload_gem_cache`.  This script will create and populate an
-isolated gem repository under your home directory.  This is separate
-from the default repository normally used by the `gem` command, and
-will not interfere with the configuration of tool and gem versions
-that you regularly use.  The isolated set of gems this creates will be
-served, along with your locally-created WontoMedia gem, to your target
-installation test system, allowing you to avoid repeated download of
-dependency gems from RubyForge, GitHub, etc.
+First is `preload_gem_cache`.  This script will populate an isolated
+gem repository in the directory /home/gem-testing (which you must
+pre-create).  This is separate from the default repository normally
+used by the `gem` command, and will not interfere with the
+configuration of tool and gem versions that you regularly use.  The
+isolated set of gems this creates will be served, along with your
+locally-created WontoMedia gem, to your target installation test
+system, allowing you to avoid repeated download of dependency gems
+from RubyForge, GitHub, etc.
 
 The second script is `serve_gem`.  When you have completed a change in
 your local WontoMedia development area, you can do the following:

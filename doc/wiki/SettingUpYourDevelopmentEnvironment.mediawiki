@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 == Introduction ==
 
 This page provides detailed instructions for setting up a [[WontoMedia]] development environment, including setting up a directory tree and repository using Git, and installing all of the Ruby gems on which WontoMedia's automated test suite depends.  If you have any problems, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list].
@@ -34,7 +32,7 @@ If you have already installed WontoMedia as a gem, it is recommended that you un
 
  sudo gem uninstall wontomedia
 
-Note that this will not eliminate the contents of any database you have already been using with WontoMedia.  If you configure your new <tt>database.yml</tt> file (below) with the same database-access values you were previously using, your new WontoMedia installation should contain and serve the same data you were already using.  If this isn't desired, you will have to manually drop the content of the old database.
+Note that this will not eliminate the contents of any database you have already been using with WontoMedia.  If you configure your new <tt>database.yml</tt> file (below) with the same database-access values you were previously using, your new WontoMedia installation should contain and serve the same data you had.  If this isn't desired, you will have to manually drop the content of the old database.
 
 WontoMedia development uses the [http://www.kernel.org/pub/software/scm/git/docs/ Git] source code management system.  To install the full source tree for WontoMedia, you will have to use Git, which you can install by
 
@@ -47,7 +45,7 @@ There are several URLs you can install from, depending on your intentions.  Fort
 * <tt>git://github.com/gleneivey/wontomedia.git</tt> is the "Public" clone URL for a working repository on GitHub.  If in doubt, use this one.  This repository receives the most frequent updates, and is the primary repository for our continuous integration and automated testing.  The HEAD of this repository should be functional nearly all the time (''e.g.'', barring CI failures), but may contain partial implementations of UI features.
 * <tt>git@github.com:gleneivey/wontomedia.git</tt> points to the same repository as the above, but is for use by people with commit access.  Our policy is to grant committer access to anyone requesting it, in the hope that we'll have few cases where we end up having to revoke access.  To request, email to <code>development at wontology dot org</code> or [http://github.com/inbox/new send a GitHub message] to <tt>gleneivey</tt>.
 * <tt>git://rubyforge.org/wontomedia.git</tt> is the clone URL for the stable/release repository on RubyForge.  Code will be pushed from GitHub to RubyForge on completion of each "user story".
-* ''[your own GitHub repository URL]'' [http://github.com/guides/fork-a-project-and-submit-your-modifications The workflow provided by GitHub], which we hope to use extensively, is based on developers creating their own "forked" repositories, submitting their changes there, and then making "pull requests" against the repository from which they forked.  If you're going to be making more than occasional changes to WontoMedia, you should consider this option.  And when you do create your own WontoMedia fork on GitHub, you will have your own "committer" Git URL for that repository, and should clone from that.
+* ''[your own GitHub repository URL]'' [http://github.com/guides/fork-a-project-and-submit-your-modifications The work flow provided by GitHub], which we hope to use extensively, is based on developers creating their own "forked" repositories, submitting their changes there, and then making "pull requests" against the repository from which they forked.  If you're going to be making more than occasional changes to WontoMedia, you should consider this option.  And when you do create your own WontoMedia fork on GitHub, you will have your own "committer" Git URL for that repository, and should clone from that.
 
 From the directory ''in which'' you want to create your <tt>wontomedia</tt> file tree, execute the command:
 
@@ -55,7 +53,9 @@ From the directory ''in which'' you want to create your <tt>wontomedia</tt> file
 
 (substituting the Git URL you decided on).  This will create a <tt>wontomedia</tt> directory, and populate it with the WontoMedia source code plus all revision control files.  In your development, you will use <tt>git commit</tt> locally, and then either prepare a patch or push to a network repository when you want to share your changes. (See [[IveJustGotALittleChange]].)
 
-=== Configuring with <tt>database.yml</tt> ===
+=== Configuring ===
+
+==== <tt>database.yml</tt> ====
 
 You must create a <tt>database.yml</tt> file in <tt>wontomedia/config</tt> with information matching the content of your local database.  This process is explained well by the [http://guides.rubyonrails.org/getting_started.html#configuring-a-database Rails "Getting Started" Guide], which also gives instructions for databases other than MySQL.  WontoMedia includes the file <tt>database-mysql-development.yml</tt> that you can use as a starting point:
 
@@ -97,13 +97,17 @@ Also, the sample file assumes that you are using the same "database user" (and t
 
 Of course, you will have to actually create the databases and database user(s) that you name in <tt>database.yml</tt> using your database tools.  (Recall that [[InstallFromScratch]] contains instructions for using the <tt>mysql</tt> command-line tool for creating one database if you are using the MySQL database.)
 
+==== <tt>wontomedia.rb</tt> ====
+
+As described in [[InstallFromScratch]], you must create a <tt>config/initializers/wontomedia.rb</tt> file, which you can do by copying and customizing <tt>config/initializers/wontomedia-sample.rb</tt>.
+
 === Install Development Dependencies ===
 
 In addition to the packages you must have installed in order to run WontoMedia (again, see [[InstallFromScratch]]), there are a number of other packages used by WontoMedia's automated test suite and by other developers.  These should be installed prior to attempting to use <tt>rake</tt> on WontoMedia.  The install commands needed are:
 
  apt-get install libxml2-dev libxslt1-dev
  gem1.8 install nokogiri
- gem1.8 install rspec rspec-rails webrat cucumber
+ gem1.8 install rspec rspec-rails webrat cucumber cucumber-rails
  gem1.8 install rubyforge technicalpickles-jeweler ZenTest
 
 The first three lines are all required in order to install <tt>cucumber</tt>, which WontoMedia uses for automated acceptance testing.  WontoMedia uses <tt>jeweler</tt> (which requires <tt>rubyforge</tt>) to build its <tt>.gemspec</tt> and release gems (the original information for our gem is contained in our <tt>Rakefile</tt>).
@@ -116,11 +120,28 @@ Before starting WontoMedia for the first time, you must initialize your developm
 
  rake db:reseed
 
-After which you should be able to run WontoMedia's automated test set to verify your install and development environment:
+if you have not done this already and/or you'd like to discard any data you've added to earlier WontoMedia installations on this system.
+
+You must also configure the links from the standard Ruby-on-Rails directories in your WontoMedia source tree to the customization files you wish to use.  To use the sample/default customization files included with WontoMedia (a good starting point), run the command:
+
+ rake customize[default-custom]
+
+You can find instructions on using alternative customization files and different parameters to the "customize" rake task in the file <tt>doc/customization.markdown</tt>.  Also, a few notes on making changes to customization files during your development:
+
+# Never commit a symbolic link to your Git repository.  The built-in rake tasks should prevent this from happening, but you shouldn't "fix" your local versions of these to circumvent this rule.
+# If you are making a change in appearance or behavior that you believe would be appropriate to include in other people's initial WontoMedia installations, feel free to make the changes under the <tt>default-custom</tt> directory and to contribute them back to the public.
+# If you are making a change that is specific to your installation of WontoMedia, you should create a separate, parallel directory structure entirely ''outside of'' your WontoMedia source tree for your local version of the customization file(s).  Keep in mind that you only need to make copies of the customization files that you actually want to modify, and can use the <tt>rake customize[default-custom:your-directory]</tt> form of the command to combine your local changes with the default customization files you want to use unmodified.  It would likely be wise to place your customization directory(ies) under (Git) revision control, but WontoMedia does not necessitate this.
+# If your are making your change(s) in order to incorporate a new installation-specific string or parameter, consider whether it would be appropriate to add a new customization value in <tt>config/initializers/wontomedia.rb</tt> (with matching changes in all of the core and <tt>default-custom</tt> files that are appropriate) instead of hard-coding your customization directly into your local WontoMedia source.
+# Be very cautious of making changes to WontoMedia that involve moving files from one of the standard Ruby-on-Rails directories into <tt>default-custom</tt>.  If you have decided that you need to make part of the WontoMedia core into customizable files, consider dividing the core file(s) into parts.  For an example, see the division between <tt>app/views/nodes/home.html.erb</tt> and <tt>app/views/layouts/home.html.erb</tt>.  The view in <tt>nodes</tt> is customizable, to control what content is placed in the home page and how it is ordered, but home-page in <tt>layouts</tt> is not customizable to provide the common structure through which the desired content is presented.  If you do make a new customizable file, if it is based on an existing "core" WontoMedia file, remember to use <tt>git mv</tt> (instead of <tt>git rm</tt> followed by <tt>git add</tt>) to preserve the revision history for the portions of the file that you do not modify.
+# Remember that WontoMedia is open-source software distributed under the "copy-left" Affero General Public License (the [http://www.gnu.org/licenses/agpl-3.0.html|GNU AGPLv3]).  This license requires that you make the modified versions of any WontoMedia files you change publicly available.  This doesn't apply to the sample files for the <tt>config</tt> files that you ''have'' to create (<tt>database.yml</tt> and <tt>initializers/wontomedia.rb</tt>), but it ''does'' apply to the default customization files under the <tt>default-custom</tt> directory.
+
+=== Validating Your Installation ===
+
+After all of the preceding steps, you should be able to run WontoMedia's automated test set to verify your install and development environment:
 
  rake
 
-And create an installable gem from your local code:
+To create an installable gem from your local code (which is automatically done as part of the default rake task executed by "rake"-with-no-options), use the command:
 
  rake build
 

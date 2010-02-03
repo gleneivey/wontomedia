@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 == Introduction ==
 
 This page provides detailed instructions for installing [[WontoMedia]] on your system, so that the system (server) you install it on will provide a wontology ([[WmHelp:GlossaryPtoZ#anchor_Wontology|glossary entry]]) for you or others to use.  If you have any problems, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list].
@@ -14,11 +12,13 @@ This page provides detailed instructions for installing [[WontoMedia]] on your s
 
 The platform on which WontoMedia depends (the [http://ruby-lang.org/ Ruby] programming language and the [http://rubyonrails.org/ Ruby-on-Rails] web application framework) are available on and support a wide variety of platforms, operating systems, web servers, and database packages.  However, currently our ''testing'' of WontoMedia is limited to a single system configuration.  It is likely that you can successfully install and run WontoMedia on configurations other than what we've used to test, and we will try to support you in this, but at this point we cannot make any guarantees.  If you do install WontoMedia on a different system configuration, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list], whether you have problems or success.
 
+Note that the mechanism we use to support installation-specific customization of WontoMedia's operation and appearance depends on symbolic links in the file system.  Do not attempt WontoMedia development except on an operating system and within a file system that supports symbolic links.  It is also strongly recommended that you do not install and run WontoMedia in an environment that doesn't support symbolic links (although it might be possible with sufficient investment of manual labor upon each WontoMedia install and upgrade).
+
 === WontoMedia Testing Platform ===
 
 WontoMedia has been developed and tested on the following system configuration:
 
-* the [http://www.ubuntu.com/ Ubuntu] distribution of the [http://www.gnu.org/gnu/linux-and-gnu.html GNU]/[[Wikipedia:Linux|Linux]]/[http://www.debian.org/ Debian] operating system, 9.04 [https://wiki.ubuntu.com/JauntyJackalope Jaunty Jackalope] release ([http://www.ubuntu.com/getubuntu/download from here]).  (Although it is likely to run on any Linux, Windows, or Mac OS system that supports Ruby 1.8.)
+* the [http://www.ubuntu.com/ Ubuntu] distribution of the [http://www.gnu.org/gnu/linux-and-gnu.html GNU]/[[Wikipedia:Linux|Linux]]/[http://www.debian.org/ Debian] operating system, 9.04 [https://wiki.ubuntu.com/JauntyJackalope Jaunty Jackalope] release ([http://www.ubuntu.com/getubuntu/download from here]).  (Although it is likely to run on any Linux, Windows, or Mac OS system that supports Ruby 1.8, provided a version of Windows supporting symbolic links to files is used.)
 * [http://rubyonrails.org/ Ruby-on-Rails] version 2.3.5.
 * [http://www.mysql.com/ MySQL] version 5.0, specifically the <tt>5.051a-3ubuntu5.4</tt> package
 
@@ -102,9 +102,9 @@ Install WontoMedia as a gem.  Execute the command
 
 which will install WontoMedia to your local gem install directory.  If you don't know where this is located on your system, you can find out by executing the command <tt>sudo gem1.8 environment</tt>.  The directory will be shown on the line labeled ''INSTALLATION DIRECTORY''.
 
-==== WontoMedia Database Connection ====
+==== WontoMedia Database Configuration ====
 
-In order to run WontoMedia, it has to be configured to access your local database.  This is accomplished by creating the file
+Like any other Ruby-on-Rails web application, in order to run WontoMedia, it has to be configured to access your local database.  This is accomplished by creating the file
 
  config/database.yml
 
@@ -129,6 +129,63 @@ Once <tt>database.yml</tt> is in place, the database must be initialized with th
 
  cd ''[your gem installation dir]''/gems/wontomedia-''[version]''
  sudo RAILS_ENV=production rake db:reseed
+
+==== WontoMedia Application Configuration ====
+
+WontoMedia is designed to be installed for a wide variety of purposes, and includes several provisions for you to customize its appearance and operation.  There are two mechanisms for this:  First, a Ruby source file with key constants located in the directory <tt>config/initializers</tt> called <tt>wontomedia.rb</tt>.  Second, a number of the files that make up the WontoMedia application itself are actually integrated into the application via symbolic links.  The standard WontoMedia gem includes default versions of all of these files, in the directory <tt>default-custom</tt> which you can either use as-is or as the basis for creating versions of your own.
+
+===== Creating Your <tt>wontomedia.rb</tt> File =====
+
+The WontoMedia distribution gem contains a sample file,
+
+ config/initializers/wontomedia-sample.rb
+
+which contains a set of Ruby configuration structure definitions like:
+
+ require "ostruct"
+
+ WontoMedia = OpenStruct.new({
+   :site_title => "",                           # last item in page <title>
+   :site_tagline => "",                         # top of home page
+   :ads => OpenStruct.new({
+ #    :amazon => OpenStruct.new({
+ #      :associate_id => "your-amazon-id-here"
+ #    }),
+ #    :google => OpenStruct.new({
+ #      :publisher_id => "your-google-id-here",
+ #              # "data page" is used in the partial common/_google_ads,
+ #              # which is used in [nodes or edges]/[index or show] pages
+ #      :data_page_slot => "your-google-slot-number-here"
+ #              # create additional _slot variables for different Google ad units
+ #    })
+   })
+ })
+
+The items which are commented out are optional, and should be included only if you have values for them particular to your installation.  The remaining lines are required, and you should fill in between the empty quotation-mark pairs, <tt>""</tt>, for your installation.  You may use the file exactly as it is if you want a minimal WontoMedia setup.
+
+For your first installation, start by copying the sample file to
+
+ config/initializers/wontomedia.rb
+
+and make your local modifications there.  For occasions where you are upgrading WontoMedia, you should copy your local version of <tt>wontomedia.rb</tt> from your old gem directory (installation directory) to your new one before you remove the old.  Or, you may use the customization mechanism below to keep a permanent, local version of <tt>wontomedia.rb</tt> in a location outside of your gem directory, and establish a symbolic link that makes it appear to be in the correct directory/under the correct file name.
+
+===== Customizing Your Installation =====
+
+Unlike the <tt>wontomedia.rb</tt> file, which you should create uniquely for your WontoMedia installation, the distribution WontoMedia gem includes all of the customization files you need, in a state that you can use without modification.  These files are located under the directory <tt>default-custom</tt>, in a directory tree that mirrors the standard Ruby-on-Rails application structure (containing <tt>app</tt>, <tt>public</tt>, etc.).
+
+To run, WontoMedia must have access to some version of each file named/contained in the <tt>default-custom</tt> directory.  A WontoMedia installation is configured by making symbolic links from within the main Rails directories (those contained at the top level of the WontoMedia gem's install directory) to your desired version of each customization file.  For your initial installation of WontoMedia, you should start by using all of the customization files exactly as they are included in <tt>default-custom</tt>, in order to ensure that you can get a basic setup running before starting to experiment with customization.  To accomplish this, execute the command:
+
+ rake customize[default-custom]
+
+Depending on how you installed the WontoMedia gem and your systems local permission settings, you may need to execute the command with "root" permissions by using it with "sudo":
+
+ sudo rake customize[default-custom]
+
+The <tt>customize</tt> rake task can be used to combine together the standard version of the various customization files with local versions you create stored in any number of different (but all parallel) directory trees.  The documentation for the WontoMedia customization mechanism, including pointers to instructions on using this particular rake task in more complicated settings, can be found in your WontoMedia install directory at:
+
+ doc/customization.markdown
+
+with the latest version of [http://github.com/gleneivey/wontomedia/blob/master/doc/customization.markdown customization.markdown available from GitHub].
 
 ==== Running WontoMedia ====
 

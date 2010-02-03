@@ -1,5 +1,6 @@
+TESTING_GEMS=/home/gem-testing
 
-gem   install wontomedia --install-dir ~/gem-testing --bindir ~/gem-testing/bin --local
+gem install   wontomedia --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin --local
 git daemon --user-path --export-all &
-gem server                       --dir ~/gem-testing
-gem uninstall wontomedia --install-dir ~/gem-testing --bindir ~/gem-testing/bin -x
+gem server                       --dir $TESTING_GEMS
+gem uninstall wontomedia --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin -x

@@ -55,12 +55,14 @@ exc "apt-get -y #{apt_load_options} install sun-java6-bin sun-java6-jre java-com
 
 
 exc "gem1.8 install nokogiri"
-exc "gem1.8 install rspec rspec-rails webrat cucumber"
+exc "gem1.8 install rspec rspec-rails webrat cucumber cucumber-rails"
 exc "gem1.8 install rubyforge technicalpickles-jeweler ZenTest"
 exc "gem1.8 install migration_test_helper selenium-client mongrel"
 
 exc "ln -s /usr/lib/firefox-3.0.11/firefox /usr/bin/firefox-bin"
 
 puts "If you want autotest to execute Cucumber tests, remember to add 'export AUTOFEATURE=\"true autospec\"' to the bottom of your .bashrc file (or the equivalent for your shell)."
-puts "Don't forget to run 'rake db:reseed' (for a new installation) prior to starting development."
+puts "Don't forget to run initialzing rake commands:"
+puts "    'rake db:reseed' (for a new installation) prior to starting development."
+puts "    'rake customize[default-custom]' (or equivalent for your local customizations)"
 

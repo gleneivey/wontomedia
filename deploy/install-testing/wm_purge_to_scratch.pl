@@ -4,7 +4,7 @@
 system "gem1.8 uninstall mongrel --all --executables -I";
 system "gem1.8 uninstall migration_test_helper Selenium selenium-client --all --executables -I";
 system "gem1.8 uninstall technicalpickles-jeweler ZenTest --all --executables -I";
-system "gem1.8 uninstall rspec rspec-rails webrat cucumber --all --executables -I";
+system "gem1.8 uninstall rspec rspec-rails webrat cucumber cucumber-rails --all --executables -I";
 system "gem1.8 uninstall builder diff-lcs peterwald-git polyglot treetop term-ansicolor --all --executables -I";
 system "gem1.8 uninstall nokogiri --all --executables -I";
 system "apt-get -y purge avahi-daemon gsfonts-x11 libavahi-core5 libdaemon0 ";

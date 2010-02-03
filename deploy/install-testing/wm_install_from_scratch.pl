@@ -6,6 +6,7 @@
     # Note, when this changes, DUPLICATE in wm_purge_to_scratch.pl
     #  AND the rubygems download URL probably has to, too
 $RUBY_GEMS_WITH_VERSION= "rubygems-1.3.5";
+$RUBY_GEMS_DOWNLOAD_NUM= "60718";
 
 
 sub DoASystemCommand {
@@ -21,7 +22,8 @@ sub DoASystemCommand {
 DoASystemCommand( "apt-get -y $aptLoadOptions install ruby rdoc ri" );
         # now the RubyGems package manager
 if (!-e "$RUBY_GEMS_WITH_VERSION.tgz"){
-    DoASystemCommand( "wget http://rubyforge.org/frs/download.php/45905f/" .
+    DoASystemCommand( "wget http://rubyforge.org/frs/download.php/" .
+                           "$RUBY)GEMS_DOWNLOAD_NUM/" .
                            "$RUBY_GEMS_WITH_VERSION.tgz" );
 }
 DoASystemCommand( "tar -xzf $RUBY_GEMS_WITH_VERSION.tgz" );
@@ -102,6 +104,9 @@ DoASystemCommand(
     # initialize the database
 DoASystemCommand( "cd $gemInstallDir; " .
                   "RAILS_ENV=production rake db:reseed" );
+    # put in place links to customization files
+DoASystemCommand( "cd $gemInstallDir; " .
+                  "rake customize[default-custom]" );
 
 
 print "\n\nInstallation appears to have completed successfully,\n";
