@@ -22,26 +22,43 @@
   require Rails.root.join( 'lib', 'helpers', 'node_helper')
   @title_text = 'All Nodes'
  %>
-<div class="headline">Listing all defined nodes</div>
+<div class="headline">Listing all defined
+  nodes<a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeEdit"
+     style="font-size: small;" target="_blank" ><%= image_tag "help_icon.png",
+      :alt=>"Help edit nodes", :class=>"image-in-text" -%></a>
+</div>
 
-
-<%= render :partial => "list_outbound_links",
-           :locals => { :generating_index_page => true } %>
+<p>
+  <%= render :partial => "list_outbound_links",
+             :locals => { :generating_index_page => true } %>
+</p>
 
 <table class="tight-table">
-  <tr>  <th>Name</th><th>Title</th>                                  </tr>
-  <tr>  <th colspan="2" style="padding-left: 2.2em;">Description</th>  </tr>
+  <tr><th>Name</th><th>Title</th></tr>
+  <tr><th colspan="2" style="padding-left: 2.2em;">Description</th></tr>
 
   <% @nodes.each do |node| %>
     <% content_tag :tr, :id => node.name do %>
-      <td><%= h node.name %></td>
-      <td><%= link_to "#{h node.title}", node_path(node) %></td>
+      <td><%= h node.name -%></td>
+      <td><%= link_to "#{h node.title}", node_path(node) -%></td>
       <td rowspan="2" class="dividerrow" style="font-size: 80%;">
         <% if (node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
-          <%= link_to 'Edit', edit_node_path(node), :rel => 'nofollow' %>
-          <% if @not_in_use_hash[node.id] %>
+          <span style="white-space: nowrap;"><%=
+            link_to 'Edit&hellip;', edit_node_path(node),
+                    :rel => 'nofollow' -%><a
+            href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeEdit"
+            target="_blank" ><%=
+              image_tag "help_icon.png",
+                        :alt=>"Help edit nodes",
+                        :class=>"image-in-text" -%></a></span>
+          <% if @not_in_use_hash[node.id] %><span style="white-space: nowrap;">
             <%= link_to 'Delete', node_path(node), :rel => 'nofollow',
-                        :confirm => 'Are you sure?', :method => :delete %>
+                        :confirm => 'Are you sure?', :method => :delete -%><a
+              href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeDelete"
+              target="_blank" ><%=
+                image_tag "help_icon.png",
+                          :alt=>"Help delete nodes",
+                          :class=>"image-in-text" -%></a></span>
           <% end %>
         <% end %>
       </td>
@@ -55,5 +72,7 @@
   <% end %>
 </table>
 
-<%= render :partial => "list_outbound_links",
-           :locals => { :generating_index_page => true } %>
+<p>
+  <%= render :partial => "list_outbound_links",
+             :locals => { :generating_index_page => true } %>
+</p>

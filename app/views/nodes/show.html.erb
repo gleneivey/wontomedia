@@ -23,15 +23,28 @@
 
 
 <p>
-  <b>Name:</b>  <span id="node_name"><%=h @node.name %></span>
+  <a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NameDef"
+     target="_blank" ><%=
+    image_tag "help_icon.png", :alt=>"Help, node Name definition",
+              :class=>"image-in-text"
+  -%></a><b>Name:</b>
+  <span id="node_name"><%=h @node.name %></span>
 </p>
 
 <p>
-  <b>Title:</b>  <span id="node_title"><%=h @node.title %></span>
+  <a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/TitleDef"
+     target="_blank" ><%=
+    image_tag "help_icon.png", :alt=>"Help, node Title definition",
+              :class=>"image-in-text"
+  -%></a><b>Title:</b>  <span id="node_title"><%=h @node.title %></span>
 </p>
 
 <p>
-  <b>Description:</b>
+  <a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/DescriptionDef"
+     target="_blank" ><%=
+    image_tag "help_icon.png", :alt=>"Help, node Description definition",
+              :class=>"image-in-text"
+  -%></a><b>Description:</b>
   <span id="node_description"><%=h @node.description %></span>
 </p>
 <span id="node_id" style="display: none"><%=h @node.id %></span>

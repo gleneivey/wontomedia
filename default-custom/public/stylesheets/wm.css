@@ -25,6 +25,13 @@ body {
 div {
   overflow: hidden;
 }
+a:link img,
+a:active img,
+a:visited img {
+  border: 0;
+}
+
+
 
 
         /* settings for the basic division of pages into areas and boxes */
@@ -55,6 +62,11 @@ div {
   font-size: 60%;
   color: #040460;
   text-align: center;
+}
+.image-in-text {
+  height: 1.9ex;
+  position: relative;
+  top: 0.25ex;
 }
 hr {
   width: 62%;

@@ -20,23 +20,49 @@
 
 <% if (@node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
   <%= link_to 'Edit&nbsp;this&nbsp;node', edit_node_path(@node),
-              :rel => 'nofollow' %> &mdash;
+              :rel => 'nofollow' %><a
+    href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeEdit"
+    target="_blank" ><%= image_tag "help_icon.png",
+      :alt=>"Help edit nodes", :class=>"image-in-text" -%></a>
+  &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
   <% if @edge_list.empty? %>
     <%= link_to 'Delete&nbsp;this&nbsp;node', node_path(@node),
                 :rel => 'nofollow',
-                :confirm => 'Are you sure?', :method => :delete %>
+                :confirm => 'Are you sure?', :method => :delete %><a
+      href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeDelete"
+      target="_blank" ><%= image_tag "help_icon.png",
+        :alt=>"Help delete nodes", :class=>"image-in-text" -%></a>
   <% else %>
     <span class="inactiveLink">
       <%= link_to_function "Can't&nbsp;delete&nbsp;this&nbsp;node",
-                           "cantDeleteNode_Popup()" %>
+                           "cantDeleteNode_Popup()" %><a
+        href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeCantDelete"
+        target="_blank" ><%= image_tag "help_icon.png",
+          :alt=>"Help with can't-be-deleted nodes",
+          :class=>"image-in-text" -%></a>
     </span>
   <% end %>
-  &mdash;
+  &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
 <% end %>
 
-<%= link_to 'Show&nbsp;node&nbsp;list', nodes_path %> &mdash;
+<%= link_to 'Show&nbsp;node&nbsp;list', nodes_path %><a
+  href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/ShowNodes"
+  target="_blank" ><%= image_tag "help_icon.png", :alt=>"Help, node list",
+    :class=>"image-in-text" -%></a>
+&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
 <%= link_to 'Add&nbsp;a&nbsp;new&nbsp;node', new_node_path,
-            :rel => 'nofollow' %> &mdash;
-<%= link_to 'Show&nbsp;edge&nbsp;list', edges_path %> &mdash;
+            :rel => 'nofollow' %><a
+  href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeAdd"
+  target="_blank" ><%= image_tag "help_icon.png", :alt=>"Help, create node",
+    :class=>"image-in-text" -%></a>
+&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+<%= link_to 'Show&nbsp;edge&nbsp;list', edges_path %><a
+  href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/ShowEdges"
+  target="_blank" ><%= image_tag "help_icon.png", :alt=>"Help, edge list",
+    :class=>"image-in-text" -%></a>
+&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
 <%= link_to 'Add&nbsp;a&nbsp;new&nbsp;edge', new_edge_path,
-            :rel => 'nofollow' %>
+            :rel => 'nofollow' %><a
+  href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/EdgeAdd"
+  target="_blank" ><%= image_tag "help_icon.png", :alt=>"Help, create edge",
+    :class=>"image-in-text" -%></a>
