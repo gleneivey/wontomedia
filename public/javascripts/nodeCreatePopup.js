@@ -75,7 +75,7 @@ function nodeCreatePopup_Cancel(){
 }
 
 function nodeCreatePopup_MakeSelection(){
-  if (!($('MB_content').innerHTML.match(/Node content/))){
+  if (!($('MB_content').innerHTML.match(/Node\s+content/))){
     nodeSelectElementHavingNewNodeAdded.value =
       priorValueOfSelectElementHavingNewNodeAdded;
     return;

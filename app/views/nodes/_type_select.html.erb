@@ -21,7 +21,7 @@
 <p class="inputpara">
   <%= f.label :sti_type, "Type" %>
   <a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeType"
-     target="_blank" ><%=
+     target="_blank" tabindex="0" ><%=
     image_tag "help_icon.png", :alt=>"Help for type",
               :class=>"image-in-text" -%></a>
   <%= if @type == "verb"

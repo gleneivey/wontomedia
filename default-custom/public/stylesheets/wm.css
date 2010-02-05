@@ -56,6 +56,9 @@ a:visited img {
 .headline {
   font-size: 140%;
   margin-left: 2em;
+  margin-top: 2ex;
+}
+.headline:first-child {
   margin-top: 0;
 }
 .fine-print {

@@ -82,6 +82,7 @@ class NodesController < ApplicationController
       render :action => (params[:popup_flag] ? "newpop" : "new" )
     else
       if params[:popup_flag]
+        @edge_list = []; @node_hash = {}; @edge_hash = {}
         render :action => "show", :layout => "popup"
       else
         flash[:notice] = 'Node was successfully created.'

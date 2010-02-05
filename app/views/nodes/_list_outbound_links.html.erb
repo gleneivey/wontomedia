@@ -18,30 +18,52 @@
 %>
 
 
-<% unless defined? generating_index_page and generating_index_page %>
-  <%= link_to 'View&nbsp;all&nbsp;nodes', nodes_path %><a
-      href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/ShowNodes"
-      target="_blank" ><%=
-    image_tag "help_icon.png", :alt=>"Help for nodes list",
-	      :class=>"image-in-text" -%></a>
-  &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
-<% end -%>
-<%= link_to 'Create&nbsp;a&nbsp;new&nbsp;node', new_node_path,
-	    :rel => 'nofollow' %><a
+<% if defined? generating_index_page and generating_index_page %>
+  <span style="white-space: nowrap;">
+    Click on a Title to view a node's details<a
+      href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/ClickShowNode"
+      target="_blank" tabindex="0" ><%=
+    image_tag "help_icon.png", :alt=>"Help, viewing individual node",
+              :class=>"image-in-text" -%></a>
+  </span>
+<% else %>
+  <span style="white-space: nowrap;">
+    <%= link_to 'View all nodes', nodes_path -%><a
+        href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/ShowNodes"
+        target="_blank" tabindex="0" ><%=
+      image_tag "help_icon.png", :alt=>"Help for nodes list",
+                :class=>"image-in-text" -%></a>
+  </span>
+<% end %>
+
+&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+
+<span style="white-space: nowrap;">
+  <%= link_to 'Create a new node', new_node_path,
+              :rel => 'nofollow' -%><a
     href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeAdd"
-    target="_blank" ><%=
+    target="_blank" tabindex="0" ><%=
   image_tag "help_icon.png", :alt=>"Help for nodes create/new",
-	    :class=>"image-in-text" -%></a>
+            :class=>"image-in-text" -%></a>
+</span>
+
 &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
-<%= link_to 'View&nbsp;all&nbsp;edges', edges_path %><a
+
+<span style="white-space: nowrap;">
+  <%= link_to 'View all edges', edges_path -%><a
     href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/ShowEdges"
-    target="_blank" ><%=
+    target="_blank" tabindex="0" ><%=
   image_tag "help_icon.png", :alt=>"Help for edges list",
-	    :class=>"image-in-text" -%></a>
+            :class=>"image-in-text" -%></a>
+</span>
+
 &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
-<%= link_to 'Create&nbsp;a&nbsp;new&nbsp;edge', new_edge_path,
-	    :rel => 'nofollow' %><a
+
+<span style="white-space: nowrap;">
+  <%= link_to 'Create a new edge', new_edge_path,
+              :rel => 'nofollow' -%><a
     href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/EdgeAdd"
-    target="_blank" ><%=
+    target="_blank" tabindex="0" ><%=
   image_tag "help_icon.png", :alt=>"Help for edges create/new",
-	    :class=>"image-in-text" -%></a>
+            :class=>"image-in-text" -%></a>
+</span>

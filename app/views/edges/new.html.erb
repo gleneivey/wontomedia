@@ -33,7 +33,7 @@
                  :f => f, :edge => @edge,
                  :nodes => @nodes, :verbs => @verbs
                } %>
-  <p><%= f.submit 'Create' %></p>
+  <p><%= f.submit 'Create', :tabindex=>'40' %></p>
 <% end %>
 
 <%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,

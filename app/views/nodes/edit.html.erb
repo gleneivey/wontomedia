@@ -24,13 +24,18 @@
 <% end %>
 
 <% @title_text = h @node.title %>
-<div class="headline">Editing node</div>
+<div class="headline">Editing
+  node<a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/LinkNodeEdit"
+     style="font-size: small;" target="_blank" tabindex="0" ><%=
+    image_tag "help_icon.png", :alt=>"Help node edit",
+              :class=>"image-in-text" -%></a>
+</div>
 
 
 <% form_for(@node, :url => node_path(@node)) do |f| %>
   <%= f.error_messages %>
   <%= render :partial => "form_fields", :locals => { :f => f } %>
-  <p><%= f.submit "Update" %></p>
+  <p><%= f.submit "Update", :tabindex => "10" %></p>
 <% end %>
 
 <%= link_to 'Cancel,&nbsp;show&nbsp;node', node_path(@node),

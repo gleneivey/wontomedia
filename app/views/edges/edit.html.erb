@@ -28,7 +28,12 @@
                 (h @edge.predicate.title) + " : " +
                 (h @edge.obj.title)
  %>
-<div class="headline">Editing edge</div>
+<div class="headline">Editing
+  edge<a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/LinkEdgeEdit"
+     style="font-size: small;" target="_blank" tabindex="0" ><%=
+    image_tag "help_icon.png", :alt=>"Help edge edit",
+              :class=>"image-in-text" -%></a>
+</div>
 
 
 <% form_for(@edge) do |f| %>
@@ -38,7 +43,7 @@
                  :f => f, :edge => @edge,
                  :nodes => @nodes, :verbs => @verbs
                } %>
-  <p><%= f.submit 'Update' %></p>
+  <p><%= f.submit 'Update', :tabindex=>'40' %></p>
 <% end %>
 
 

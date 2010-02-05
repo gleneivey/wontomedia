@@ -34,7 +34,7 @@
   <%= f.error_messages %>
   <%= render :partial => "type_select", :locals => { :f => f } %>
   <%= render :partial => "form_fields", :locals => { :f => f } %>
-  <input type="hidden" id="popup_flag" value="yes" />
+  <%= hidden_field_tag 'popup_flag', 'yes' %>
 
   <p id="create_button_container" style="text-align: center">
     <%= button_to_function "Create",
