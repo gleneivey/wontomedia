@@ -30,7 +30,10 @@
       <%= render :partial => "common/status_msgs" %>
       <%= yield %>
     </div>
-    <%= render :partial => "common/google_ads" %>
+    <div id="column-right"
+         style="float: right; width: 16.9%; text-align: center; margin-top: 0;">
+      <%= render :partial => "common/google_ads" %>
+    </div>
   </div>
 
   <div id="float-left" style="float: left; width: 14.4%;">
@@ -56,7 +59,7 @@
     </div>
     <div id="column-left">
       <img src="/images/logo.png" alt="Logo" width="96%"
-           style="margin-bottom: 0.5ex; margin-top: 0.5ex;" />
+           style="margin-bottom: 0.7ex; margin-top: 0.5ex;" />
       <%= render :partial => "common/amazon_ads" %>
     </div>
   </div>
