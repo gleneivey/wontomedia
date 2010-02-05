@@ -18,7 +18,19 @@
 %>
 
 
-<% @title_text = 'All Edges' %>
+<%
+  @title_text = 'All Edges'
+
+  # initialize array to define "Glossary Help" box of links:
+  @glossary_help_entries = [
+    [ 'Subject', 'WmHelp:GlossaryPtoZ#anchor_Subject' ],
+    [ 'Predicate', 'WmHelp:GlossaryPtoZ#anchor_Predicate' ],
+    [ 'Object', 'WmHelp:GlossaryAtoO#anchor_Object' ],
+    [ 'Title', 'WmHelp:GlossaryPtoZ#anchor_Title' ]
+  ]
+ %>
+
+
 <div class="headline">Listing all defined
   edges<a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/LinkEdgesIndex"
      style="font-size: small;" target="_blank" tabindex="0" ><%=

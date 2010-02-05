@@ -23,7 +23,15 @@
   <meta name="googlebot" content="noindex" />
 <% end %>
 
-<% @title_text = 'Make a new edge' %>
+<%
+  @title_text = 'Make a new edge'
+
+  # initialize array to define "Glossary Help" box of links:
+  @glossary_help_entries = [
+    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ],
+    [ 'Edge', 'WmHelp:GlossaryAtoO#anchor_Edge' ]
+  ]
+ %>
 
 
 <% form_for(@edge) do |f| %>

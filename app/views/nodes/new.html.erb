@@ -26,6 +26,13 @@
 <%
   require Rails.root.join( 'lib', 'helpers', 'node_helper')
   @title_text = 'Make a new node'
+
+  # initialize array to define "Glossary Help" box of links:
+  @glossary_help_entries = [
+    [ 'Category', 'WmHelp:GlossaryAtoO#anchor_Category' ],
+    [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ],
+    [ 'Property', 'WmHelp:GlossaryAtoO#anchor_Property' ]
+  ]
  %>
 
 
