@@ -99,7 +99,7 @@ Of course, you will have to actually create the databases and database user(s) t
 
 ==== <tt>wontomedia.rb</tt> ====
 
-As described in [[InstallFromScratch]], you must create a <tt>config/initializers/wontomedia.rb</tt> file, which you can do by copying and customizing <tt>config/initializers/wontomedia-sample.rb</tt>.
+As described in [[InstallFromScratch]], you must create a <tt>config/initializers/wontomedia.rb</tt> file, which you can do by copying and customizing <tt>assets/wontomedia-sample.rb</tt>.
 
 === Install Development Dependencies ===
 

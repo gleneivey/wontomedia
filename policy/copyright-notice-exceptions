@@ -16,6 +16,9 @@
 vendor
 public/javascripts/modalbox.js
 public/javascripts/event.simulate.js
+public/javascripts/jquery.js
+public/javascripts/fancybox.js
+public/stylesheets/fancybox.css
 config/environments/cucumber.rb
 features/support/paths.rb
 features/support/env.rb

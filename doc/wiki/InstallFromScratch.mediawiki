@@ -138,7 +138,7 @@ WontoMedia is designed to be installed for a wide variety of purposes, and inclu
 
 The WontoMedia distribution gem contains a sample file,
 
- config/initializers/wontomedia-sample.rb
+ assets/wontomedia-sample.rb
 
 which contains a set of Ruby configuration structure definitions like:
 
