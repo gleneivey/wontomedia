@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-02-05}
+  s.date = %q{2010-02-07}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -66,6 +66,7 @@ Gem::Specification.new do |s|
      "app/views/nodes/new.html.erb",
      "app/views/nodes/newpop.html.erb",
      "app/views/nodes/show.html.erb",
+     "assets/wontomedia-sample.rb",
      "config/boot.rb",
      "config/cucumber.yml",
      "config/database-mysql-development.yml",
@@ -78,7 +79,6 @@ Gem::Specification.new do |s|
      "config/initializers/inflections.rb",
      "config/initializers/mime_types.rb",
      "config/initializers/new_rails_defaults.rb",
-     "config/initializers/wontomedia-sample.rb",
      "config/initializers/wontomedia.rb",
      "config/locales/en.yml",
      "config/routes.rb",
@@ -128,14 +128,33 @@ Gem::Specification.new do |s|
      "public/javascripts/dragdrop.js",
      "public/javascripts/effects.js",
      "public/javascripts/event.simulate.js",
+     "public/javascripts/fancybox.js",
      "public/javascripts/forEdgesForms.js",
      "public/javascripts/forNodesForms.js",
+     "public/javascripts/jquery.js",
      "public/javascripts/modalbox.js",
      "public/javascripts/nodeCreatePopup.js",
      "public/javascripts/nodeTitleToName.js",
      "public/javascripts/prototype.js",
-     "public/not_logged_in.html",
      "public/robots.txt",
+     "public/stylesheets/blank.gif",
+     "public/stylesheets/fancy_close.png",
+     "public/stylesheets/fancy_loading.png",
+     "public/stylesheets/fancy_nav_left.png",
+     "public/stylesheets/fancy_nav_right.png",
+     "public/stylesheets/fancy_shadow_e.png",
+     "public/stylesheets/fancy_shadow_n.png",
+     "public/stylesheets/fancy_shadow_ne.png",
+     "public/stylesheets/fancy_shadow_nw.png",
+     "public/stylesheets/fancy_shadow_s.png",
+     "public/stylesheets/fancy_shadow_se.png",
+     "public/stylesheets/fancy_shadow_sw.png",
+     "public/stylesheets/fancy_shadow_w.png",
+     "public/stylesheets/fancy_title_left.png",
+     "public/stylesheets/fancy_title_main.png",
+     "public/stylesheets/fancy_title_over.png",
+     "public/stylesheets/fancy_title_right.png",
+     "public/stylesheets/fancybox.css",
      "public/stylesheets/modalbox.css",
      "public/stylesheets/scaffold.css",
      "public/stylesheets/spinner.gif",

@@ -25,6 +25,9 @@ body {
 div {
   overflow: hidden;
 }
+div#fancybox-outer {                /* but don't clip div from fancybox.js */
+  overflow: visible;
+}
 a:link img,
 a:active img,
 a:visited img {
@@ -65,6 +68,9 @@ a:visited img {
   font-size: 60%;
   color: #040460;
   text-align: center;
+}
+.blue-text {
+  color: #040460;
 }
 .image-in-text {
   height: 1.9ex;

@@ -19,9 +19,7 @@
 
 
 jQuery.noConflict();
-require("../../public/javascripts/prototype.js", {onload: function(){
-  require("../../public/javascripts/application.js");
-}});
+require("../../public/javascripts/prototype.js");
 
 
 // because we need to manipulate focus to trigger an onchange event:

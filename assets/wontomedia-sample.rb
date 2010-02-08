@@ -21,6 +21,11 @@ require "ostruct"
 WontoMedia = OpenStruct.new({
   :site_title => "",                           # last item in page <title>
   :site_tagline => "",                         # top of home page
+
+    # change these if you use a local wiki, but will work to use public
+  :help_url_prefix  => "http://wiki.wontology.org/wiki/help.php?title=",
+  :popup_url_prefix => "http://wiki.wontology.org/wiki/popup.php?title=",
+
   :ads => OpenStruct.new({
 #    :amazon => OpenStruct.new({
 #      :associate_id => "your-amazon-id-here"

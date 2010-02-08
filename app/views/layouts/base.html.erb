@@ -32,6 +32,28 @@
     <%= stylesheet_link_tag 'scaffold' %>
     <%= stylesheet_link_tag 'wm' %>
     <%= stylesheet_link_tag 'modalbox' %>
+    <%= stylesheet_link_tag 'fancybox.css' %>
+    <%= javascript_include_tag 'jquery' %>
+    <% if RAILS_ENV == 'test'               # patch compatibility between
+                                            # jQuery/fancybox and env.js
+     %>
+      <script>
+        if (HTMLImageElement){
+          var hackImageConstructor = function(){
+            this.HTMLImageElement = HTMLImageElement;
+            this.HTMLImageElement(document); // note closure
+          }
+          hackImageConstructor.prototype = new HTMLImageElement;
+          window.Image = hackImageConstructor;
+          jQuery.support.opacity = true;     // short-circuit junk in 'fancybox'
+        }
+      </script>
+    <% end %>
+    <%= javascript_include_tag 'fancybox'   # load while '$' == 'jQuery' in JS
+     %>
+    <script>
+      jQuery.noConflict();         // free-up '$' for 'prototype' (in :defaults)
+    </script>
     <%= javascript_include_tag :defaults %>
     <%= javascript_include_tag 'modalbox' %>
     <%= yield :head %>

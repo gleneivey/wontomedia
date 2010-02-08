@@ -40,3 +40,17 @@ function cantDeleteNode_Popup(){
     { title: "Cannot delete this node now",
       slideDownDuration: 0.25, slideUpDuration: 0.1 } );
 }
+
+
+    // establish special class making links use fancybox
+jQuery(document).ready(function() {
+  jQuery('.iframeBox').fancybox({
+    'titlePosition' : 'inside',
+    'titleFormat'   : function(){ return "<span class='blue-text'>" +
+                        "Click outside box or type 'ESC' to close</span>"; },
+    'transitionIn'  : 'elastic',
+    'transitionOut' : 'elastic',
+    'type'          : 'iframe'
+  });
+});
+

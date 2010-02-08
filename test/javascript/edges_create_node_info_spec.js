@@ -65,10 +65,12 @@ Screw.Unit(function(){
         var allAnchors = D().getElementsByTagName("a");
         for (var c=0; c < allAnchors.length; c++){
           var href = allAnchors[c].href;
-          var key = allAnchors[c].innerHTML;
-          mtch = href.match(/nodes\/([0-9]+)/);
-          if (mtch != null && mtch.length > 0)
-            nodeNamesToIdsHash[key] = mtch[1];
+          if (href){
+            var key = allAnchors[c].innerHTML;
+            mtch = href.match(/nodes\/([0-9]+)/);
+            if (mtch != null && mtch.length > 0)
+              nodeNamesToIdsHash[key] = mtch[1];
+          }
         }
 
         IFrame("http://localhost:3001/edges/new");
