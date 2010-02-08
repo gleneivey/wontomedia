@@ -24,16 +24,16 @@
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
-    [ 'Title', 'WmHelp:GlossaryPtoZ#anchor_Title' ],
     [ 'Name', 'WmHelp:GlossaryAtoO#anchor_Name' ],
+    [ 'Title', 'WmHelp:GlossaryPtoZ#anchor_Title' ],
     [ 'Description', 'WmHelp:GlossaryAtoO#anchor_Description' ],
     [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ],
     [ 'Edge', 'WmHelp:GlossaryAtoO#anchor_Edge' ]
   ]
  %>
 <div class="headline">Listing all defined
-  nodes<a href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/LinkNodesIndex"
-     style="font-size: small;" target="_blank" tabindex="0" ><%=
+  nodes<a class="iframeBox" style="font-size: small;" tabindex="0"
+    href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/LinkNodesIndex" ><%=
   image_tag "help_icon.png", :alt=>"Help, nodes list",
             :class=>"image-in-text" -%></a>
 </div>
@@ -56,15 +56,15 @@
           <span style="white-space: nowrap;"><%=
             link_to 'Edit&hellip;', edit_node_path(node),
                     :rel => 'nofollow' -%><a
-            href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeEdit"
-            target="_blank" tabindex="0" ><%=
+            href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeEdit"
+            class="iframeBox" tabindex="0" ><%=
               image_tag "help_icon.png", :alt=>"Help edit nodes",
                         :class=>"image-in-text" -%></a></span>
           <% if @not_in_use_hash[node.id] %><span style="white-space: nowrap;">
             <%= link_to 'Delete', node_path(node), :rel => 'nofollow',
                         :confirm => 'Are you sure?', :method => :delete -%><a
-              href="<%= WontoMedia.help_url_prefix -%>WmHelp:Popup/NodeDelete"
-              target="_blank" tabindex="0" ><%=
+              href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeDelete"
+              class="iframeBox" tabindex="0" ><%=
                 image_tag "help_icon.png", :alt=>"Help delete nodes",
                           :class=>"image-in-text" -%></a></span>
           <% end %>
