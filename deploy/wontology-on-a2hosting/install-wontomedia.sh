@@ -21,4 +21,4 @@ cp $HOSTING_HOME_DIR/wm.database.yml config/database.yml
 cp $HOSTING_HOME_DIR/wm.wontomedia.rb config/initializers/wontomedia.rb
 sed --in-place=.backup -e "$GEMPATH_SED_COMMAND" config/environment.rb
 
-RAILS_ENV=production rake customize[default-custom]
+RAILS_ENV=production rake customize[default-custom:~/wontology.org]
