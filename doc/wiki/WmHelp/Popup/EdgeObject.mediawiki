@@ -1,0 +1,7 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+This control allows you to select the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Node node] which will be the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Object object] of this edge.  The "object" is the node which is the "value" of the fact that the edge expresses; it is the description of the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Subject subject] of this edge.  For example, in an edge which encapsulates the fact that "the sky is blue", "blue" is the object.
