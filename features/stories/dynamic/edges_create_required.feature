@@ -93,7 +93,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
     And the element "edge_submit" has the format "background-color=$inactive_button_color;"
 
     When I select "category0 : category node number 0" from "Subject"
-    And I select "contains : Contains (wm built-in relationship)" from "Relates to"
+    And I select "contains : Contains (basic relationship)" from "Relates to"
     And I select "item0 : item node number 0" from "Object"
     Then the element "subject_required" has the format "font-weight=400"
     And the element "predicate_required" has the format "font-weight=400"

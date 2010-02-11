@@ -106,7 +106,7 @@ Screw.Unit(function(){
       }
 
       it( "fetches node description when Predicate selected", function(){
-        expectAjaxStart("predicate", "Parent Of (wm built-in relationship)");
+        expectAjaxStart("predicate", "Parent Of (basic relationship)");
         waitForAjax('predicate_status_icon');
         expectDescriptionText("predicate", new RegExp(
           "the subject .left-hand side. of the relationship " +
@@ -132,7 +132,7 @@ Screw.Unit(function(){
       }
 
       it( "updates node description for multiple changes", function(){
-        expectAjaxStart("predicate", "Child Of (wm built-in relationship)");
+        expectAjaxStart("predicate", "Child Of (basic relationship)");
         waitForAjax('predicate_status_icon');
         expectDescriptionText("predicate", new RegExp(
           "This is the fundamental type of hierarchical relationship.+" +
@@ -144,7 +144,7 @@ Screw.Unit(function(){
       });
 
       it( "clears node description on change-to-unselected", function(){
-        expectAjaxStart("obj", "Contains (wm built-in relationship)");
+        expectAjaxStart("obj", "Contains (basic relationship)");
         waitForAjax('obj_status_icon');
         expectDescriptionText("obj", /&quot;A Contains B&quot;/);
 

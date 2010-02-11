@@ -51,7 +51,7 @@ Feature:  Create new nodes in the process of creating an edge
 
   Scenario: Can cancel the creation of a node during edge creation
     Given I am on the new edges page
-    And I select "peer_of : Peer Of (wm built-in relationship)" from "Relates to"
+    And I select "peer_of : Peer Of (basic relationship)" from "Relates to"
     When I select "- create a new property for this relationship -" from "Relates to"
     And I wait for Ajax requests to complete
     Then the "MB_content" element should match "Describe what this node"
@@ -61,7 +61,7 @@ Feature:  Create new nodes in the process of creating an edge
     And I fill in "Description" with "Too lazy to write one"
     When I follow "Cancel node creation"
     Then there should not be an element "MB_content"
-    And "peer_of : Peer Of (wm built-in relationship)" is selected from "edge_predicate_id"
+    And "peer_of : Peer Of (basic relationship)" is selected from "edge_predicate_id"
 
 
   Scenario: Node created during cancelled edge creation still persists

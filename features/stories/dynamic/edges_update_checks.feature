@@ -53,7 +53,7 @@ Feature:  Verify inputs for editing of edges dynamically within the page
     And the image "obj_error_icon" is "blank_error_icon"
 
     When I select "- to this object -" from "Object"
-    And I select "peer_of : Peer Of (wm built-in relationship)" from "Relates to"
+    And I select "peer_of : Peer Of (basic relationship)" from "Relates to"
     Then the element "subject_required" has the format "font-weight=400"
     And the element "predicate_required" has the format "font-weight=400"
     And the element "obj_required" has the format "font-weight=bold"

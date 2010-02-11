@@ -29,7 +29,7 @@ peer_of:
   name: peer_of
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: Peer Of (wm built-in relationship)
+  title: Peer Of (basic relationship)
   description: >-
     A relationship of this type between two nodes indicates a
     relationship between equals.  This would be appropriate, for
@@ -49,7 +49,7 @@ one_of:
   name: one_of
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: One Of (wm built-in relationship)
+  title: One Of (basic relationship)
   description: >-
     A relationship of this type between two nodes is hierarchical.
     This relationship states that the subject (left-hand side) of the
@@ -79,7 +79,7 @@ contains:
   name: contains
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: Contains (wm built-in relationship)
+  title: Contains (basic relationship)
   description: >-
 
     A relationship of this type between two nodes is hierarchical.
@@ -110,7 +110,7 @@ parent_of:
   name: parent_of
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: Parent Of (wm built-in relationship)
+  title: Parent Of (basic relationship)
   description: >-
 
     This is the fundamental type of hierarchical relationship.  This
@@ -141,7 +141,7 @@ child_of:
   name: child_of
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: Child Of (wm built-in relationship)
+  title: Child Of (basic relationship)
   description: >-
 
     This is the fundamental type of hierarchical relationship.  This
@@ -171,7 +171,7 @@ predecessor_of:
   name: predecessor_of
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: Predecessor Of (wm built-in relationship)
+  title: Predecessor Of (basic relationship)
   description: >-
 
     This relationship states that the subject (left-hand side) of the
@@ -184,7 +184,7 @@ successor_of:
   name: successor_of
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: Successor Of (wm built-in relationship)
+  title: Successor Of (basic relationship)
   description: >-
 
     This relationship states that the subject (left-hand side) of the
@@ -198,7 +198,7 @@ inverse_relationship:
   name: inverse_relationship
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: Inverse Relationship (wm built-in type of relationship)
+  title: Inverse Relationship (basic relationship type)
   description: >-
 
     This relationship is used to characterize how two other
@@ -218,7 +218,7 @@ sub_property_of:
   name: sub_property_of
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: SubProperty Of (wm built-in type of relationship)
+  title: SubProperty Of (basic relationship type)
   description: >-
 
     This relationship is used to relate two other relationships to
@@ -243,7 +243,7 @@ symmetric_relationship:
   name: symmetric_relationship
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: generic Symmetric Relationship (wm built-in root type)
+  title: Symmetric Relationship (root relationship type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
     relationship (property) classes are children of one of three root
@@ -253,7 +253,7 @@ value_relationship:
   name: value_relationship
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: generic Value Relationship (wm built-in root type)
+  title: Value Relationship (root relationship type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
     relationship (property) classes are children of one of three root
@@ -263,7 +263,7 @@ hierarchical_relationship:
   name: hierarchical_relationship
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: generic Hierarchical Relationship (wm built-in root type)
+  title: Hierarchical Relationship (root relationship type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
     relationship (property) classes are children of one of three root
@@ -273,7 +273,7 @@ ordered_relationship:
   name: ordered_relationship
   sti_type: PropertyNode
   flags: <%= Node::DATA_IS_UNALTERABLE %>
-  title: generic Ordered Relationship (wm built-in root type)
+  title: Ordered Relationship (root relationship type)
   description: >-
     This is a root element in WontoMedia's internal schema.
     Properties should be made sub_property_of  this property if they
