@@ -19,9 +19,9 @@
 
 
 <%
-  @title_text = (h @subject.title) + " : " +
-                (h @predicate.title) + " : " +
-                (h @obj.title)
+  @title_text = (h filter_parenthetical @subject.title) + " : " +
+                (h filter_parenthetical @predicate.title) + " : " +
+                (h filter_parenthetical @obj.title)
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [

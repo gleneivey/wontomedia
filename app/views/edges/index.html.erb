@@ -54,11 +54,14 @@
 
   <% @edges.each do |edge| %>
     <% content_tag :tr, :id => edge.id do %>
-      <td><%= link_to "#{h edge.subject.title}", node_path(edge.subject) %></td>
+      <td><%= link_to "#{h filter_parenthetical edge.subject.title}",
+                      node_path(edge.subject) %></td>
       <td>
-        <%=   link_to "#{h edge.predicate.title}", node_path(edge.predicate) %>
+        <%=   link_to "#{h filter_parenthetical edge.predicate.title}",
+                      node_path(edge.predicate) %>
       </td>
-      <td><%= link_to "#{h edge.obj.title}", node_path(edge.obj) %></td>
+      <td><%= link_to "#{h filter_parenthetical edge.obj.title}",
+                      node_path(edge.obj) %></td>
       <td style="font-size: 80%">
         <span style="white-space: nowrap;"><%= link_to 'Show',
           edge_path(edge) %><a

@@ -18,6 +18,8 @@
 
 
 require 'test_helper'
+require Rails.root.join( 'app', 'helpers', 'nodes_show_helper' )
+include(NodesShowHelper)
 
 class EdgesIndexViewTest < ActionController::TestCase
   tests EdgesController
@@ -34,12 +36,14 @@ class EdgesIndexViewTest < ActionController::TestCase
 
   test "should show Title of predicate node for known edge" do
     get :index
-    assert_select "body", /#{regex_escape Edge.last.predicate.title}/
+    assert_select "body",
+      /#{regex_escape NodesShowHelper.filter_parenthetical Edge.last.predicate.title}/
   end
 
   test "should show Title of object node for known edge" do
     get :index
-    assert_select "body", /#{regex_escape Edge.all[1].obj.title}/
+    assert_select "body",
+      /#{regex_escape NodesShowHelper.filter_parenthetical Edge.all[1].obj.title}/
   end
 
   test "should show Name of self node for known edge" do

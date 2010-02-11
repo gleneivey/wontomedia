@@ -5,3 +5,5 @@
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
 This text-entry box is used to supply the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Title Title] of the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Node node] you are creating.  Titles are single-line descriptions of what the node represents, and if you haven't supplied a Name yet, the Title is used to automatically generate a suggested Name.
+
+If you use parentheses to enclose part of your title, the portion in parentheses will <em>not</em> always be shown.  In order to save space and make for cleaner pages, the parenthesized portion of a title will be omitted in most references to the node, and shown only on pages specifically about that node.
