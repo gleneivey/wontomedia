@@ -24,7 +24,7 @@
   </div>
   <div id="float-center-right"
        style="float: right; width: 85%; margin-top: 8ex;">
-    <div id="column-content" class="content" style="float: left; width: 81%;">
+    <div id="column-content" class="content" style="float: left; width: 81.8%;">
       <%= render :partial => "common/status_msgs" %>
       <%= yield( :content_full ) %>
       <div id="content-lower-wide" class="content" style="float: left; width: 61%;">
@@ -43,21 +43,13 @@
     <div id="container-absolutes">
       <div id="block-search"
            style="width: 19%; position: absolute; top: 0; right: 0;">
-        <div>
-          <%= render :partial => "common/search_box" %>
-        </div>
+        <%= render :partial => "common/search_box" %>
       </div>
       <div id="page-top-controls"
            style="position: absolute; top: 0; right: 16.9%;">
-        <div id="block-help" style="float: right;">
-          <%= render :partial => "common/master_help" %>
-        </div>
-        <div id="block-language" style="float: right;">
-          <%= render :partial => "common/language_select" %>
-        </div>
-        <div id="block-login" style="float: right;">
-          <%= render :partial => "common/login_controls" %>
-        </div>
+        <%= render :partial => "common/master_help" %>
+        <%= render :partial => "common/language_select" %>
+        <%= render :partial => "common/login_controls" %>
       </div>
     </div>
     <div id="column-left" style="width: 98%">

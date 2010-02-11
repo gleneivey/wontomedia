@@ -97,12 +97,41 @@ p.unimplemented {
 }
 
 
+        /* configure our CSS "tool tips" */
+.texthastip {
+  position: relative;
+  text-decoration: none;
+}
+.texthastip:visited {      /* undo the standard Rails :hover behavior */
+  color: black;
+}
+.texthastip:hover {        /* undo the standard Rails :hover behavior */
+  color: black;
+  background-color: transparent;
+}
+.tip {
+  display: none;
+}
+.texthastip:hover .tip {
+  display: block;
+  z-index: 100;
+  color: #040460;
+  background: #f8f8ff;
+  border: solid 1px #e8e8ff;
+  position: absolute;
+  top: 1ex;
+  left: 3em;
+}
+
+
         /* "universal special cases" .... or something like that */
 p {
   margin-top: 0;
 }
 table + p {   margin-top:    1.5em;  }
 p + table {   margin-bottom: 1.5em;  }
+#block-glossary-help + div { display: inline; }
+
 
 
         /* styles first intended for node & edge info tables:

@@ -17,6 +17,8 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<% if @display_unimplemented %><span class="unimplemented">
-[language selection controls]
-</span><% end %>
+<% if @display_unimplemented %>
+<div id="block-language" style="float: right;">
+  <span class="unimplemented">[language selection controls]</span>
+</div>
+<% end %>

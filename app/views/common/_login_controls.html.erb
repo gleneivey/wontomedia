@@ -17,6 +17,8 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<% if @display_unimplemented %><span class="unimplemented">
-[login/out; who-am-i controls]
-</span><% end %>
+<% if @display_unimplemented %>
+<div id="block-login" style="float: right;">
+  <span class="unimplemented">[login/out; who-am-i controls]</span>
+</div>
+<% end %>

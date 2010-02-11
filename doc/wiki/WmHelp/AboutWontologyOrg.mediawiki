@@ -10,7 +10,7 @@
 
 As WontoMedia matures, related sets of information hosted at <tt>wontology.org</tt> will be moved to their own separate sites, and <tt>wontology.org</tt> will gradually focus on lists and category hierarchies that can be referenced from ''other'' wontologies and reused as components of other information sets.  For example, the list of countries in the world, the set of international standard language names, definitions of numeric constants and unit conversions, etc.
 
-There are quite a few [[WmHelp:MajorRoadmap|features planned by not yet implemented]].  If you find yourself frustrated or confused because you can't figure out how to do something, that's probably because you can't yet.  Please check the list to be sure.
+There are quite a few [[MajorRoadmap|features planned by not yet implemented]].  If you find yourself frustrated or confused because you can't figure out how to do something, that's probably because you can't yet.  Please check the list to be sure.
 
 If you are interested in how WontoMedia works, there is a [[WmHelp:Technologies|brief overview of the technologies/software used]].  If you are interested in using WontoMedia on your own system or in contributing to its development, there is extensive information available starting from the [http://wontomedia.rubyforge.org/ WontoMedia project web site].
 

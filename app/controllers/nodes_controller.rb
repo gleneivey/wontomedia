@@ -68,6 +68,7 @@ class NodesController < ApplicationController
     type_string = params[:node][:sti_type]
     params[:node].delete :sti_type # don't mass-assign protected blah, blah
     @node = NodeHelper.new_typed_node(type_string, params[:node])
+    @popup_flag = true if params[:popup_flag]
 
     if @node.nil?
       flash[:error] = 'Could not create. Node must have a type of either "Category" or "Item".'
@@ -81,11 +82,11 @@ class NodesController < ApplicationController
       @this_is_non_information_page = true
       render :action => (params[:popup_flag] ? "newpop" : "new" )
     else
+      flash[:notice] = 'Node was successfully created.'
       if params[:popup_flag]
         @edge_list = []; @node_hash = {}; @edge_hash = {}
         render :action => "show", :layout => "popup"
       else
-        flash[:notice] = 'Node was successfully created.'
         redirect_to node_path(@node)
       end
     end

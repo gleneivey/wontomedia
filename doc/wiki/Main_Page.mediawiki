@@ -52,7 +52,7 @@ For reference, the tools we use are as follows (all [http://www.fsf.org/about/wh
 
 === Planned Functionality ===
 
-There are many different directions in which we can expand [[WontoMedia]]'s functionality.  How development will proceed will be dictated primarily by developer interest in different feature areas. The overall planning process is centered on [http://www.mountaingoatsoftware.com/article_view/27 user stories]. Middle- and long-term feature areas are defined by a collection of [[EpicStories]] and our [[WmHelp:MajorRoadmap|major-features road map]].  These stories are being incrementally defined and decomposed into smaller, actionable stories, which we manage using [https://www.pivotaltracker.com/projects/9280/stories Pivotal Tracker].
+There are many different directions in which we can expand [[WontoMedia]]'s functionality.  How development will proceed will be dictated primarily by developer interest in different feature areas. The overall planning process is centered on [http://www.mountaingoatsoftware.com/article_view/27 user stories]. Middle- and long-term feature areas are defined by a collection of [[EpicStories]] and our [[MajorRoadmap|major-features road map]].  These stories are being incrementally defined and decomposed into smaller, actionable stories, which we manage using [https://www.pivotaltracker.com/projects/9280/stories Pivotal Tracker].
 
 === Architecture ===
 

@@ -62,7 +62,7 @@
               end,
             edge.subject.nil? ? "" : edge.subject.id
           ),
-          :tabindex=>'10'
+          :tabindex=>'10', :style=>'width: 90%;'
      %>
     <script type="text/javascript">
       $('edge_subject_id').focus();
@@ -99,7 +99,7 @@
               end,
             edge.predicate.nil? ? "" : edge.predicate.id
           ),
-          :tabindex=>'20'
+          :tabindex=>'20', :style=>'width: 90%;'
      %>
     <a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgePredicate"
        class="iframeBox" tabindex="0" ><%=
@@ -133,7 +133,7 @@
               end,
             edge.obj.nil? ? "" : edge.obj.id
           ),
-          :tabindex=>'30'
+          :tabindex=>'30', :style=>'width: 90%;'
      %>
     <a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeObject"
        class="iframeBox" tabindex="0" ><%=

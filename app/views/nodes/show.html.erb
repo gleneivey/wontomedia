@@ -19,94 +19,191 @@
 
 
 <%
-  @title_text = h @node.title
+  @title_text = h( filter_parenthetical( @node.title ) )
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
     [ 'Name', 'WmHelp:GlossaryAtoO#anchor_Name' ],
     [ 'Title', 'WmHelp:GlossaryPtoZ#anchor_Title' ],
-    [ 'Description', 'WmHelp:GlossaryAtoO#anchor_Description' ]
+    [ 'Description', 'WmHelp:GlossaryAtoO#anchor_Description' ],
+    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ]
   ]
  %>
 
 
-<div class="headline">Node
-  content<a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNode"
-     style="font-size: small;" class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help, node content",
-              :class=>"image-in-text" -%></a>
-</div>
-
-
-<p><b>Name:</b> <span id="node_name"><%= h @node.name %></span></p>
-<p><b>Title:</b> <span id="node_title"><%= h @node.title %></span></p>
-<p><b>Description:</b>
-  <span id="node_description"><%= h @node.description %></span>
-</p>
-<span id="node_id" style="display: none"><%= h @node.id %></span>
-
-<% unless @edge_list.empty? %>
-  <%= render :partial => "show_outbound_links" %>
-
-  <div class="headline">Edges for this node<a
-     href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeList"
-     style="font-size: small;" class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help, edges referencing a node",
-              :class=>"image-in-text" -%></a>
-  </div>
-
-
-  <table>
-    <thead><tr>
-      <th>&nbsp;&nbsp;<em>this</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-      <th>&nbsp;&nbsp;<em>is</em> or <em>has</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-      <th>&nbsp;&nbsp;<em>to</em> or <em>with</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-    </tr></thead>
-
-    <% @edge_list.each do |edge_array| %>
-      <tbody>
-        <% edge_array.each do |edge_id| %>
-          <tr>
-            <td>
-              <%= e = @edge_hash[edge_id]
-                  self_string_or_other_link(e.subject_id) %>
-            </td><td class="edgecolumn">
-              <%= self_string_or_other_link(e.predicate_id) %>
-            </td><td>
-              <%= self_string_or_other_link(e.obj_id) %>
-            </td><td style="font-size: 80%">
-              <span style="white-space: nowrap;"><%= link_to 'Show',
-                edge_path(e) %><a
-                  href="<%=
-                    WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeShow"
-                  class="iframeBox" tabindex="0" ><%=
-                    image_tag "help_icon.png",
-                              :alt=>"Help edit nodes",
-                              :class=>"image-in-text" -%></a></span>
-
-              <% if (e.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
-
-                <span style="white-space: nowrap;"><%= link_to 'Edit&hellip;',
-                  edit_edge_path(e), :rel => 'nofollow' %><a
-                  href="<%=
-                    WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeEdit"
-                  class="iframeBox" tabindex="0" ><%= image_tag "help_icon.png",
-                    :alt=>"Help edit nodes",
-                    :class=>"image-in-text" -%></a></span>
-                <span style="white-space: nowrap;"><%= link_to 'Delete',
-                  edge_path(e), :rel => 'nofollow', :confirm => 'Are you sure?',
-                  :method => :delete %><a
-href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeDelete"
-class="iframeBox" tabindex="0" ><%= image_tag "help_icon.png",
-  :alt=>"Help edit nodes", :class=>"image-in-text" -%></a></span>
-
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    <% end %>
-  </table>
+<% # question-icon for title/name/desc pop-up help
+   unless @popup_flag %>
+     <div style="height: 600px; float: left; padding-right: 1em;">&nbsp;</div>
+     <div style="position: absolute; left: 15.7%;">
+       <a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNode"
+          style="font-size: small;" class="iframeBox" tabindex="0" ><%=
+         image_tag "help_icon.png", :alt=>"Help, node content",
+                   :class=>"image-in-text" -%></a>
+     </div>
 <% end %>
 
-<p><%= render :partial => "show_outbound_links" %></p>
+
+<% # populate top (title/name/desc) section of page
+ %>
+<p style="margin-bottom: 0;"><a href="#" class="texthastip" tabindex="0">
+  <span id="node_title"><%= h @node.title -%></span>
+  <span class="tip" style="white-space: nowrap;">
+    &nbsp;<b>Title</b> of this <b>Node</b>&nbsp;</span>
+</a></p>
+
+<p style="margin-bottom: 0.5ex; margin-left: 5em;"><a href="#"
+   class="texthastip" tabindex="0">
+  <span id="node_name"><%= h @node.name -%></span>
+  <span class="tip" style="white-space: nowrap;">
+    &nbsp;<b>Name</b> of this <b>Node</b>&nbsp;</span>
+</a></p>
+
+<p><a href="#" class="texthastip" tabindex="0">
+  <span id="node_description"><%= h @node.description -%></span>
+  <span class="tip" style="white-space: nowrap;">
+    &nbsp;<b>Description</b> of this <b>Node</b>&nbsp;</span>
+</a></p>
+
+<%    # embed this for testability and future JavaScript
+ %>
+<div id="node_id" style="display: none"><%= h @node.id -%></div>
+
+
+
+<% # links to global pages/actions
+ %>
+<p style="clear: right">
+  <% unless @popup_flag %>
+    <%= render :partial => "show_outbound_links" -%>
+  <% end %>
+  &nbsp;
+</p>
+
+<% # populate bottom (edges referencing this node) section of page
+   unless @edge_list.empty? %>
+
+
+  <% # track things to do only once:
+     list_open_output = false
+     last_predicate_id = nil
+     last_obj_id = nil
+     table_open_output = false
+     @show_help_icon_used = false
+     @edit_help_icon_used = false
+     @delete_help_icon_used = false
+
+     array_of_arrays_of_edges = @edge_list.to_enum
+
+
+     # first, put all edges where current node is the subject into indented list
+     begin
+       while true do               # exit via break or exception
+
+         edge_array = array_of_arrays_of_edges.next
+
+         # check ID of first edge's subject node against "this" node's ID
+         break if @edge_hash[edge_array[0]].subject_id != @node.id
+
+         edge_array.each do |edge_id|
+           e = @edge_hash[edge_id]
+
+           unless list_open_output
+             list_open_output = true
+
+             # question-icon for edges-list pop-up help
+             unless @popup_flag  %>
+               <div style="position: absolute; left: 15.7%;">
+                 <a style="font-size: small;" class="iframeBox" tabindex="0"
+  href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeList" ><%=
+                   image_tag "help_icon.png", :class=>"image-in-text",
+                             :alt=>"Help, edges referencing a node" -%></a>
+               </div>
+<%           end  %>
+
+             <ul>
+               <%= h filter_parenthetical @node.title %>
+               <ul style="list-style-type: none;">
+<%         end
+
+           if last_predicate_id != e.predicate_id
+             if last_predicate_id %>
+                 </ul>
+               </li>
+<%           end %>
+             <li>
+               <%= n = @node_hash[e.predicate_id]
+                   link_to (h filter_parenthetical n.title), node_path(n) %>
+               <ul style="list-style-type: none;">
+<%         end %>
+
+           <li>
+             <div style="float: right; font-size: 80%; margin-right: 6em;">
+               <%  generate_edge_links(e) %>
+             </div>
+             <%= n = @node_hash[e.obj_id]
+                 link_to (h filter_parenthetical n.title), node_path(n) %>
+           </li>
+
+<%         last_predicate_id = e.predicate_id
+
+         end                       # .each over edge_array
+       end                         # while over array-of-edge_array's
+     rescue StopIteration          # out of edges
+       edge_array = nil            #   none for table
+     end
+
+
+     if list_open_output %>
+             </ul>
+           </li>
+         </ul>
+       </ul><p>&nbsp;</p>
+<%   end
+
+     # now put any remaining edges into a table
+     if edge_array
+       loop do                     # until exception on .next at loop's end
+
+         unless table_open_output
+           table_open_output = true
+
+           # question-icon for edges-table pop-up help
+           unless @popup_flag  %>
+             <div style="position: absolute; left: 15.7%;">
+               <a style="font-size: small;" class="iframeBox" tabindex="0"
+  href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeTable" ><%=
+                 image_tag "help_icon.png", :class=>"image-in-text",
+                           :alt=>"Help, edges referencing a node" -%></a>
+             </div>
+<%         end
+
+           output_table_open
+         end %>
+
+         <tbody>
+           <% edge_array.each do |edge_id| %>
+             <tr>
+               <td>
+                 <%= e = @edge_hash[edge_id]
+                     self_string_or_other_link(e.subject_id) %>
+               </td><td class="edgecolumn">
+                 <%= self_string_or_other_link(e.predicate_id) %>
+               </td><td>
+                 <%= self_string_or_other_link(e.obj_id) %>
+               </td><td style="font-size: 80%">
+                 <% generate_edge_links(e) %>
+               </td>
+             </tr>
+           <% end %>
+         </tbody>
+    <%
+         edge_array = array_of_arrays_of_edges.next
+
+       end                      # loop over ..._edges iterator
+     end                        # if any edges to put in table
+
+     if table_open_output
+       output_table_close
+     end
+   end                          # unless @edge_list.empty?
+ %>

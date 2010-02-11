@@ -39,22 +39,25 @@
       text-decoration: none;
     }
   </style>
-  <div id="block-glossary-help" class="box"
-    style="width: 98%; text-align: left;">
+  <% if @this_is_non_information_page %>
+    <div id="block-glossary-help" class="box"
+      style="width: 98%; text-align: left;">
+  <% else %>
+    <div id="block-glossary-help" class="noncontent"
+      style="width: 19.5%; float: right; display: inline;">
+  <% end %>
 
-    <p>
-      <span style="font-size: 80%;">See the following</span>
-      <a href="<%= WontoMedia.help_url_prefix -%>WmHelp:GlossaryAtoO"
-         target="_blank">Glossary</a>
-      <span style="font-size: 80%;">entries:</span>
-    </p>
-
+    <p style="font-size: 80%;">See the glossary entries for:</p>
     <ul>
       <% @glossary_help_entries.each do |link| %>
         <li><a href="<%=
             WontoMedia.help_url_prefix + link[1]
-          -%>" target="_blank"><%= link[0] -%></a></li>
+          -%>" class="iframeBox" tabindex="0" ><%= link[0] -%></a></li>
       <% end %>
     </ul>
+
+    <p style="font-size: 80%; padding-bottom: 1.4ex;">or the
+      <a href="<%= WontoMedia.help_url_prefix -%>WmHelp:GlossaryAtoO"
+         target="_blank">entire glossary</a>.</p>
   </div>
 <% end %>

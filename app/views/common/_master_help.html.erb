@@ -17,6 +17,8 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<% if @display_unimplemented %><span class="unimplemented">
-[top-level "Help" link]
-</span><% end %>
+<% if @display_unimplemented %>
+<div id="block-help" style="float: right;">
+  <span class="unimplemented">[top-level "Help" link]</span>
+</div>
+<% end %>
