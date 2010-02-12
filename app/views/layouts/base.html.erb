@@ -29,10 +29,10 @@
     <% else %>
       <title><%= WontoMedia.site_title -%></title>
     <% end %>
-    <%= stylesheet_link_tag 'wm' %>
     <%= stylesheet_link_tag 'scaffold' %>
     <%= stylesheet_link_tag 'modalbox' %>
     <%= stylesheet_link_tag 'fancybox.css' %>
+    <%= stylesheet_link_tag 'wm' %>
     <%= javascript_include_tag 'jquery' %>
     <% if RAILS_ENV == 'test'               # patch compatibility between
                                             # jQuery/fancybox and env.js

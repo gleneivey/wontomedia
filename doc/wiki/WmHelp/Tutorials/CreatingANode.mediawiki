@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 The most fundamental action for adding to the content of a [[WmHelp:GlossaryPtoZ#anchcor_Wontology|wontology]] is to create a new [[WmHelp:GlossaryAtoO#anchor_Node|node]].  To start the process of creating a node, click one of the <tt>Create a new node</tt> links.  One of these links is located on virtually all pages of a wontology.  If you don't see such a link on the wontology page you're currently viewing, go to the wontology's home page.  For example, the page http://wontology.org/.  There are lists of links immediately before and after the listing of the wontology's current content on the home page, and each list includes a <tt>Create a new node</tt> link.
 
 Clicking <tt>Create a new node</tt> will take you to the new-node form.  This form contains for fields:

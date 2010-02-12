@@ -6,6 +6,8 @@
   active area background:  light blue            #d0d0ff
   content border:          2nd-darkest blue      #b0b0ff
                            dk blue               #040460
+  unvisited link color:                          #1d43c0
+  visited link color:                            #64439d
 */
 
 
@@ -22,16 +24,29 @@ body {
 
   background-color: #f8f8ff;
 }
+
+a:link img,
+a:active img,
+a:visited img {
+  border: 0;
+}
+a:link {
+  color: #1d43c0;
+  text-decoration: none;
+}
+a:active {
+  color: #2759ff;
+}
+a:visited {
+  color: #64439d;
+  text-decoration: none;
+}
+
 div {
   overflow: hidden;
 }
 div#fancybox-outer {                /* but don't clip div from fancybox.js */
   overflow: visible;
-}
-a:link img,
-a:active img,
-a:visited img {
-  border: 0;
 }
 
 
