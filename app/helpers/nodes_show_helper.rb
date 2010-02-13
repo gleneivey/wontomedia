@@ -49,17 +49,17 @@ module NodesShowHelper
   end
 
   def output_table_open
-    header_style = 'display: block; position: relative; left: -2em;'
+    header_style = 'display: block; position: relative;'
     concat(tag 'table', nil, true)  # generate an "open" table tag
     concat(content_tag( 'thead',
       content_tag( 'tr',
         content_tag( 'th', '' ) +
         content_tag( 'th',
           content_tag( 'span', '<em>is</em> or <em>has</em>',
-            :style => header_style )) +
+            :style => "#{header_style} left: -3em;" )) +
         content_tag( 'th',
           content_tag( 'span', '<em>to</em> or <em>with</em>',
-            :style => header_style ))
+            :style => "#{header_style} left: -1em;" ))
       )
     ))
   end

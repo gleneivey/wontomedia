@@ -93,7 +93,6 @@
   <% unless @popup_flag %>
     <%= render :partial => "show_outbound_links" -%>
   <% end %>
-  &nbsp;
 </p>
 
 <% # populate bottom (edges referencing this node) section of page
@@ -174,7 +173,8 @@ href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeList" ><%=
              </ul>
            </li>
          </ul>
-       </ul><p>&nbsp;</p>
+       </ul>
+       <p style="line-height: 50%; font-size: 50%;">&nbsp;</p>
 <%   end
 
      # now put any remaining edges into a table
@@ -188,7 +188,7 @@ href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeList" ><%=
            unless @popup_flag  %>
              <div style="position: absolute; left: 15.7%;">
                <a style="font-size: small;" class="iframeBox" tabindex="0"
-  href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeTable" ><%=
+href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeTable" ><%=
                  image_tag "help_icon.png", :class=>"image-in-text",
                            :alt=>"Help, edges referencing a node" -%></a>
              </div>

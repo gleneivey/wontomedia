@@ -71,22 +71,24 @@ class NodesController < ApplicationController
     @popup_flag = true if params[:popup_flag]
 
     if @node.nil?
-      flash[:error] = 'Could not create. Node must have a type of either "Category" or "Item".'
+      flash.now[:error] =
+'Could not create. Node must have a type of either "Category" or "Item".'
       @node = Node.new(params[:node]) # keep info already entered
       @node.sti_type = type_string
       @this_is_non_information_page = true
-      render :action => (params[:popup_flag] ? "newpop" : "new" )
+      render :action => (@popup_flag ? "newpop" : "new" )
     elsif @node.name =~ /[:.]/                     ||
           !@node.save
       @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
       @this_is_non_information_page = true
-      render :action => (params[:popup_flag] ? "newpop" : "new" )
+      render :action => (@popup_flag ? "newpop" : "new" )
     else
-      flash[:notice] = 'Node was successfully created.'
-      if params[:popup_flag]
+      if @popup_flag
         @edge_list = []; @node_hash = {}; @edge_hash = {}
+        flash.now[:notice] = 'Node was successfully created.'
         render :action => "show", :layout => "popup"
       else
+        flash[:notice] = 'Node was successfully created.'
         redirect_to node_path(@node)
       end
     end
