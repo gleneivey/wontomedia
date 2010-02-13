@@ -27,11 +27,6 @@ class NodesHomeViewTest < ActionController::TestCase
     assert_template "nodes/home"
   end
 
-  test "should show Name of known node" do
-    get :home
-    assert_select "body", /#{nodes(:one).name}/
-  end
-
   test "should show Title of known node" do
     get :home
     assert_select "body", /#{nodes(:one).title}/

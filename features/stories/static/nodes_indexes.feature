@@ -16,7 +16,7 @@ Feature:  Show existing ontology information in app home and index pages
     Given there are 1 existing reiffied-properties like "kirgagh3"
     When I go to "the homepage"
       # three instances each of strings for "class" and "item", none for others
-    Then I should see 15 matches of "kirgagh" in "td"
+    Then I should see 10 matches of "kirgagh"
 
 
   Scenario: Node index shows property nodes

@@ -45,18 +45,35 @@
 
 <% # populate top (title/name/desc) section of page
  %>
-<p style="margin-bottom: 0;"><a href="#" class="texthastip" tabindex="0">
-  <span id="node_title"><%= h @node.title -%></span>
-  <span class="tip" style="white-space: nowrap;">
-    &nbsp;<b>Title</b> of this <b>Node</b>&nbsp;</span>
-</a></p>
+<p style="margin-bottom: 0; font-weight: bold;">
+  <a href="#" class="texthastip" tabindex="0">
+    <span id="node_title"><%= h @node.title -%></span>
+    <span class="tip" style="white-space: nowrap;">
+      &nbsp;<b>Title</b> of this <b>Node</b>&nbsp;</span>
+  </a>
+</p>
 
-<p style="margin-bottom: 0.5ex; margin-left: 5em;"><a href="#"
-   class="texthastip" tabindex="0">
-  <span id="node_name"><%= h @node.name -%></span>
-  <span class="tip" style="white-space: nowrap;">
-    &nbsp;<b>Name</b> of this <b>Node</b>&nbsp;</span>
-</a></p>
+<style>
+  #node_name_para {
+    margin-bottom: 1.5ex;
+    margin-left: 3em;
+    position: relative;
+    z-index: 101;
+  }
+  #node_name, #node_name:link, #node_name:hover, #node_name:visited, #node_name:active {
+    padding: 0.3ex;
+    padding-right: 1em;
+    color: black;
+    background-color: white;
+  }
+</style>
+<p id="node_name_para">
+  <a href="#" class="texthastip" tabindex="0">
+    <span id="node_name"><%= h @node.name -%></span>
+    <span class="tip" style="white-space: nowrap;">
+      &nbsp;<b>Name</b> of this <b>Node</b>&nbsp;</span>
+  </a>
+</p>
 
 <p><a href="#" class="texthastip" tabindex="0">
   <span id="node_description"><%= h @node.description -%></span>
@@ -114,7 +131,7 @@
              unless @popup_flag  %>
                <div style="position: absolute; left: 15.7%;">
                  <a style="font-size: small;" class="iframeBox" tabindex="0"
-  href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeList" ><%=
+href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeList" ><%=
                    image_tag "help_icon.png", :class=>"image-in-text",
                              :alt=>"Help, edges referencing a node" -%></a>
                </div>

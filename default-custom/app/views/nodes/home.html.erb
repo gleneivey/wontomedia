@@ -37,15 +37,40 @@
   <%= render :partial => "core_tasks" %>
 <% end -%>
 
+
 <% content_for :content_lower_wide do %>
   <%= render :partial => "content_examples" %>
 <% end -%>
-
 <% content_for :content_lower_narrow do %>
   <%= render :partial => "screen_select" %>
 <% end -%>
+<% content_for :content_bottom do %>
+  <style>
+      #content-bottom .outbound-links-list {
+        padding-left: 0;
+      }
+      #content-bottom .outbound-links-list li {
+        display: inline;
+      }
+      #content-bottom .outbound-links-list li + li {
+        margin-left: 1.5em;
+      }
+  </style>
+  <%= render :partial => "list_outbound_links" %>
+<% end -%>
 
 <% content_for :right_column do %>
+  <div id="block-action-links" class="box">
+    <style>
+      #block-action-links .outbound-links-list {
+        padding: 0; margin: 0; margin-bottom: 0.5ex;
+      }
+      #block-action-links .outbound-links-list li {
+        margin-left: 1.5em;
+      }
+    </style>
+    <%= render :partial => "list_outbound_links" %>
+  </div>
 <% if @display_unimplemented %>
   <div id="block-active" class="box">
     <p class="unimplemented">[area to highlight sections of the

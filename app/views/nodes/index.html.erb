@@ -31,48 +31,51 @@
     [ 'Edge', 'WmHelp:GlossaryAtoO#anchor_Edge' ]
   ]
  %>
-<div class="headline">Listing all defined
-  nodes<a class="iframeBox" style="font-size: small;" tabindex="0"
-    href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodesIndex" ><%=
-  image_tag "help_icon.png", :alt=>"Help, nodes list",
-            :class=>"image-in-text" -%></a>
+
+
+<div class="headline">
+
+  <style>
+    #top-box .outbound-links-list {
+      padding: 0; margin: 0; margin-bottom: 0.5ex;  }
+    #top-box .outbound-links-list li {
+      margin-left: 1.5em;                           }
+  </style>
+  <a class="iframeBox" style="font-size: small;" tabindex="0"
+     href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodesIndex"
+    ><%=
+    image_tag "help_icon.png", :alt=>"Help, nodes list",
+              :class=>"image-in-text" -%></a>Listing all defined nodes
+  <div id="top-box" class="noncontent" style="float: left; margin-left: 2em;">
+    <%= render :partial => "list_outbound_links",
+               :locals => { :generating_index_page => true } %>
+  </div>
 </div>
 
-<p>
-  <%= render :partial => "list_outbound_links",
-             :locals => { :generating_index_page => true } %>
-</p>
+<style>
+  .tight-table .firstrow {
+    padding-top: 1ex;
+  }
+  .tight-table .secondrow {
+    border-bottom: 1px solid #e8e8ff;
+    padding-left: 2.2em;
+  }
+</style>
+<table class="tight-table" style="clear: both;">
+  <% @edit_help_icon_used = false
+     @delete_help_icon_used = false
 
-<table class="tight-table">
-  <tr><th>Name</th><th>Title</th></tr>
-  <tr><th colspan="2" style="padding-left: 2.2em;">Description</th></tr>
-
-  <% @nodes.each do |node| %>
-    <% content_tag :tr, :id => node.name do %>
-      <td><%= h node.name -%></td>
-      <td><%= link_to "#{h node.title}", node_path(node) -%></td>
-      <td rowspan="2" class="dividerrow" style="font-size: 80%;">
-        <% if (node.flags & Node::DATA_IS_UNALTERABLE) == 0 %>
-          <span style="white-space: nowrap;"><%=
-            link_to 'Edit&hellip;', edit_node_path(node),
-                    :rel => 'nofollow' -%><a
-            href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeEdit"
-            class="iframeBox" tabindex="0" ><%=
-              image_tag "help_icon.png", :alt=>"Help edit nodes",
-                        :class=>"image-in-text" -%></a></span>
-          <% if @not_in_use_hash[node.id] %><span style="white-space: nowrap;">
-            <%= link_to 'Delete', node_path(node), :rel => 'nofollow',
-                        :confirm => 'Are you sure?', :method => :delete -%><a
-              href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeDelete"
-              class="iframeBox" tabindex="0" ><%=
-                image_tag "help_icon.png", :alt=>"Help delete nodes",
-                          :class=>"image-in-text" -%></a></span>
-          <% end %>
-        <% end %>
+     @nodes.each do |node| %>
+    <% content_tag :tr, :id => h(node.name) do %>
+      <td class="firstrow"><%= wrap_node_name h node.name -%></td>
+      <td class="firstrow" style="font-weight: bold; width: 62%;">
+        <%= link_to filter_parenthetical(h node.title), node_path(node) -%></td>
+      <td class="firstrow" style="font-size: 80%;">
+        <% generate_node_links(node, @not_in_use_hash[node.id]) %>
       </td>
     <% end %>
     <tr>
-      <td colspan="2" class="dividerrow" style="padding-left: 2.2em;">
+      <td colspan="3" class="secondrow">
         <span style="font-size: 70%">
           <%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</span>
         <%=h node.description %></td>
@@ -80,7 +83,19 @@
   <% end %>
 </table>
 
-<p>
+<style>
+    #bottom-row .outbound-links-list {
+      padding-left: 0;
+    }
+    #bottom-row .outbound-links-list li {
+      display: inline;
+    }
+    #bottom-row .outbound-links-list li + li {
+      margin-left: 1.5em;
+    }
+</style>
+<div id="bottom-row" style="text-align: center;">
   <%= render :partial => "list_outbound_links",
              :locals => { :generating_index_page => true } %>
-</p>
+</div>
+

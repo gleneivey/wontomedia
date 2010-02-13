@@ -17,53 +17,55 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
+<% @have_displayed_out_links = false unless defined? @have_displayed_out_links
+ %>
 
-<% if defined? generating_index_page and generating_index_page %>
-  <span style="white-space: nowrap;">
-    Click on a Title to view a node's details<a
-      href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/ClickShowNode"
-      class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help, viewing individual node",
-              :class=>"image-in-text" -%></a>
-  </span>
-<% else %>
-  <span style="white-space: nowrap;">
-    <%= link_to 'View all nodes', nodes_path -%><a
-        href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/ShowNodes"
-        class="iframeBox" tabindex="0" ><%=
-      image_tag "help_icon.png", :alt=>"Help for nodes list",
-                :class=>"image-in-text" -%></a>
-  </span>
-<% end %>
+<ul class="outbound-links-list">
+  <% if !defined? generating_index_page or !generating_index_page %>
+    <li><span style="white-space: nowrap;">
+      <%= link_to 'View all nodes', nodes_path -%><%
+      unless @have_displayed_out_links %><%=
+        content_tag( 'a',
+          image_tag( "help_icon.png", :alt=>"Help for nodes list",
+                     :class=>"image-in-text" ),
+          :href=>"#{WontoMedia.popup_url_prefix}WmHelp:Popup/ShowNodes",
+          :class=>'iframeBox', :tabindex=>'0' ) -%><%
+      end %>
+    </span></li>
+  <% end %>
 
-&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+  <li><span style="white-space: nowrap;">
+    <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' -%><%
+    unless @have_displayed_out_links %><%=
+      content_tag( 'a',
+        image_tag( "help_icon.png", :alt=>"Help for nodes create/new",
+                   :class=>"image-in-text" ),
+        :href=>"#{WontoMedia.popup_url_prefix}WmHelp:Popup/NodeAdd",
+        :class=>'iframeBox', :tabindex=>'0' ) -%><%
+    end %>
+  </span></li>
 
-<span style="white-space: nowrap;">
-  <%= link_to 'Create a new node', new_node_path,
-              :rel => 'nofollow' -%><a
-    href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeAdd"
-    class="iframeBox" tabindex="0" ><%=
-  image_tag "help_icon.png", :alt=>"Help for nodes create/new",
-            :class=>"image-in-text" -%></a>
-</span>
+  <li><span style="white-space: nowrap;">
+    <%= link_to 'View all edges', edges_path -%><%
+    unless @have_displayed_out_links %><%=
+      content_tag( 'a',
+        image_tag( "help_icon.png", :alt=>"Help for edges list",
+                   :class=>"image-in-text" ),
+        :href=>"#{WontoMedia.popup_url_prefix}WmHelp:Popup/ShowEdges",
+        :class=>'iframeBox', :tabindex=>'0' ) -%><%
+    end %>
+  </span></li>
 
-&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+  <li><span style="white-space: nowrap;">
+    <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' -%><%
+    unless @have_displayed_out_links %><%=
+      content_tag( 'a',
+        image_tag( "help_icon.png", :alt=>"Help for edges create/new",
+                   :class=>"image-in-text" ),
+        :href=>"#{WontoMedia.popup_url_prefix}WmHelp:Popup/EdgeAdd",
+        :class=>'iframeBox', :tabindex=>'0' ) -%><%
+    end %>
+  </span></li>
+</ul>
 
-<span style="white-space: nowrap;">
-  <%= link_to 'View all edges', edges_path -%><a
-    href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/ShowEdges"
-    class="iframeBox" tabindex="0" ><%=
-  image_tag "help_icon.png", :alt=>"Help for edges list",
-            :class=>"image-in-text" -%></a>
-</span>
-
-&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
-
-<span style="white-space: nowrap;">
-  <%= link_to 'Create a new edge', new_edge_path,
-              :rel => 'nofollow' -%><a
-    href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeAdd"
-    class="iframeBox" tabindex="0" ><%=
-  image_tag "help_icon.png", :alt=>"Help for edges create/new",
-            :class=>"image-in-text" -%></a>
-</span>
+<% @have_displayed_out_links = true %>

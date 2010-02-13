@@ -12,7 +12,7 @@
 
 
         /* global settings */
-body {
+body, p, ol, ul, td {
   color: black;
   font-family: verdana, georgia, "times new roman", arial, helvetica, sans-serif;
   font-size: small;
@@ -21,7 +21,8 @@ body {
   font-variant: normal;
   font-weight: normal;
   line-height: normal;
-
+}
+body {
   background-color: #f8f8ff;
 }
 
@@ -41,11 +42,16 @@ a:visited {
   color: #64439d;
   text-decoration: none;
 }
+a:hover {
+  background-color: transparent;
+  text-decoration: underline;
+}
 
 div {
   overflow: hidden;
 }
-div#fancybox-outer {                /* but don't clip div from fancybox.js */
+div#fancybox-outer,
+div#column-content {
   overflow: visible;
 }
 
@@ -72,12 +78,18 @@ div#fancybox-outer {                /* but don't clip div from fancybox.js */
   border: none;
 }
 .headline {
-  font-size: 140%;
+  font-size: 150%;
   margin-left: 2em;
   margin-top: 2ex;
 }
 .headline:first-child {
   margin-top: 0;
+}
+.subheading {
+  font-size: 150%;
+  font-weight: bold;
+  color: #b0b0ff;
+  margin-bottom: 1.3ex;
 }
 .fine-print {
   font-size: 60%;
@@ -115,14 +127,19 @@ p.unimplemented {
         /* configure our CSS "tool tips" */
 .texthastip {
   position: relative;
+}
+.texthastip:link {        /* undo the standard Rails link behaviors */
+  color: black;
   text-decoration: none;
 }
-.texthastip:visited {      /* undo the standard Rails :hover behavior */
+.texthastip:visited {
   color: black;
 }
-.texthastip:hover {        /* undo the standard Rails :hover behavior */
+.texthastip:hover,
+.texthastip:active {
   color: black;
   background-color: transparent;
+  text-decoration: none;
 }
 .tip {
   display: none;
@@ -140,13 +157,14 @@ p.unimplemented {
 
 
         /* "universal special cases" .... or something like that */
-p {
-  margin-top: 0;
-}
+p {           margin-top:      0;    }
 table + p {   margin-top:    1.5em;  }
 p + table {   margin-bottom: 1.5em;  }
 #block-glossary-help + div { display: inline; }
-
+.wrapper {
+  color: #ffff00;
+  letter-spacing: -0.3em;
+}
 
 
         /* styles first intended for node & edge info tables:
@@ -170,9 +188,6 @@ td {
   border-width: thin;
   border-color: #b0b0ff;
   border-style: none solid;
-}
-.dividerrow {
-  border-bottom: 1px solid #e8e8ff;
 }
 
 .tight-table td {
