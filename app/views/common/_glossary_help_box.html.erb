@@ -45,14 +45,14 @@
     <p style="font-size: 80%;">See the glossary entries for:</p>
     <ul>
       <% @glossary_help_entries.each do |link| %>
-        <li><a href="<%=
-            WontoMedia.help_url_prefix + link[1]
-          -%>" class="iframeBox" tabindex="0" ><%= link[0] -%></a></li>
+        <li><%= link_to link[0], WontoMedia.help_url_prefix + link[1],
+          :class=>'iframeBox', :tabindex=>'0' -%></li>
       <% end %>
     </ul>
 
     <p style="font-size: 80%; padding-bottom: 1.4ex;">or the
-      <a href="<%= WontoMedia.help_url_prefix -%>WmHelp:GlossaryAtoO"
-         target="_blank">entire glossary</a>.</p>
+      <%= link_to 'entire glossary',
+            "#{WontoMedia.help_url_prefix}WmHelp:GlossaryAtoO",
+            :target=>'_blank' -%>.</p>
   </div>
 <% end %>

@@ -42,9 +42,9 @@ module NodesShowHelper
     n = @node_hash[node_id]
     title = h filter_parenthetical n.title
     if node_id == @node.id    # self
-      title
+      text_has_tip nil, title, h( n.name )
     else                      # other
-      link_to title, node_path(n)
+      link_has_tip nil, title, node_path(n), h( n.name )
     end
   end
 
@@ -119,9 +119,22 @@ module NodesShowHelper
   end
 
   def popup_help_icon( alt, target )
-    content_tag( 'a', image_tag(
-        "help_icon.png", :alt=>alt, :class=>"image-in-text" ),
-      :href => WontoMedia.popup_url_prefix + target,
-      :class => "iframeBox", :tabindex => "0" )
+    link_to( image_tag( 'help_icon.png', :alt=>alt, :class=>'image-in-text' ),
+      WontoMedia.popup_url_prefix + target, :tabindex => '0',
+      :class => 'iframeBox' )
+  end
+
+  def text_has_tip( id, text, tip )
+    span = id.nil? ? '<span>' : "<span id='#{id}'>"
+    inner = "#{span}#{text}</span>" +
+            "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
+    link_to inner, "#", :class=>'texthastip', :tabindex=>'0'
+  end
+
+  def link_has_tip( id, text, href, tip )
+    span = id.nil? ? '<span>' : "<span id='#{id}'>"
+    inner = "#{span}#{text}</span>" +
+            "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
+    link_to inner, href, :class=>'linkhastip', :tabindex=>'0'
   end
 end

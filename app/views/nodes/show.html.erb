@@ -43,11 +43,8 @@
 <% # populate top (title/name/desc) section of page
  %>
 <p style="margin-bottom: 0; font-weight: bold;">
-  <a href="#" class="texthastip" tabindex="0">
-    <span id="node_title"><%= h @node.title -%></span>
-    <span class="tip" style="white-space: nowrap;">
-      &nbsp;<b>Title</b> of this <b>Node</b>&nbsp;</span>
-  </a>
+  <%= text_has_tip 'node_title', h( @node.title ),
+        '&nbsp;<b>Title</b> of this <b>Node</b>&nbsp;' %>
 </p>
 
 <style>
@@ -57,7 +54,8 @@
     position: relative;
     z-index: 101;
   }
-  #node_name, #node_name:link, #node_name:hover, #node_name:visited, #node_name:active {
+  #node_name, #node_name:link, #node_name:hover, #node_name:visited,
+      #node_name:active {
     padding: 0.3ex;
     padding-right: 1em;
     color: black;
@@ -65,18 +63,14 @@
   }
 </style>
 <p id="node_name_para">
-  <a href="#" class="texthastip" tabindex="0">
-    <span id="node_name"><%= h @node.name -%></span>
-    <span class="tip" style="white-space: nowrap;">
-      &nbsp;<b>Name</b> of this <b>Node</b>&nbsp;</span>
-  </a>
+  <%= text_has_tip 'node_name', h( @node.name ),
+        '&nbsp;<b>Name</b> of this <b>Node</b>&nbsp;' %>
 </p>
 
-<p><a href="#" class="texthastip" tabindex="0">
-  <span id="node_description"><%= h @node.description -%></span>
-  <span class="tip" style="white-space: nowrap;">
-    &nbsp;<b>Description</b> of this <b>Node</b>&nbsp;</span>
-</a></p>
+<p>
+  <%= text_has_tip 'node_description', h( @node.description ),
+        '&nbsp;<b>Description</b> of this <b>Node</b>&nbsp;' %>
+</p>
 
 <%    # embed this for testability and future JavaScript
  %>
@@ -132,7 +126,8 @@
 <%           end  %>
 
              <ul>
-               <%= h filter_parenthetical @node.title %>
+               <%= text_has_tip nil, (h filter_parenthetical @node.title),
+                     (h @node.name) %>
                <ul style="list-style-type: none;">
 <%         end
 
@@ -143,7 +138,8 @@
 <%           end %>
              <li>
                <%= n = @node_hash[e.predicate_id]
-                   link_to (h filter_parenthetical n.title), node_path(n) %>
+                   link_has_tip nil, (h filter_parenthetical n.title ),
+                                node_path(n), h( n.name ) %>
                <ul style="list-style-type: none;">
 <%         end %>
 
@@ -152,7 +148,8 @@
                <%  generate_edge_links(e) %>
              </div>
              <%= n = @node_hash[e.obj_id]
-                 link_to (h filter_parenthetical n.title), node_path(n) %>
+                 link_has_tip nil, (h filter_parenthetical n.title ),
+                              node_path(n), h( n.name ) %>
            </li>
 
 <%         last_predicate_id = e.predicate_id

@@ -45,7 +45,7 @@ Feature:  View edges related to a node on that node's "resource" page
     Given there is 2 existing items like "friendlyNode"
     And there is an existing edge "friendlyNode0" "peer_of" "friendlyNode1"
     When I am on the show nodes page for "friendlyNode0"
-    Then I should see 7 matches of "friendlyNode"
+    Then I should see 9 matches of "friendlyNode"
     And I should see "Peer Of"
 
 

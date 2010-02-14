@@ -156,10 +156,14 @@ p.unimplemented {
   background-color: transparent;
   text-decoration: none;
 }
+.linkhastip {
+  position: relative;
+}
 .tip {
   display: none;
 }
-.texthastip:hover .tip {
+.texthastip:hover .tip,
+.linkhastip:hover .tip {
   display: block;
   z-index: 100;
   color: #040460;
