@@ -112,12 +112,16 @@ module NodesShowHelper
     help_link = ''
     unless used_flag
       used_flag = true
-      help_link = content_tag( 'a', image_tag(
-          "help_icon.png", :alt=>help_alt, :class=>"image-in-text" ),
-        :href => WontoMedia.popup_url_prefix + "WmHelp:Popup/" + which_help,
-        :class => "iframeBox", :tabindex => "0" )
+      help_link = popup_help_icon help_alt, ("WmHelp:Popup/" + which_help)
     end
     return used_flag, ( content_tag( 'span', action_link + help_link,
                                      :style => "white-space: nowrap;" ) + " " )
+  end
+
+  def popup_help_icon( alt, target )
+    content_tag( 'a', image_tag(
+        "help_icon.png", :alt=>alt, :class=>"image-in-text" ),
+      :href => WontoMedia.popup_url_prefix + target,
+      :class => "iframeBox", :tabindex => "0" )
   end
 end

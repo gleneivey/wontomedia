@@ -34,11 +34,8 @@
  %>
 
 
-<div class="headline">Edge
-  content<a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderEdge"
-     style="font-size: small;" class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help, edge content",
-              :class=>"image-in-text" -%></a>
+<div class="headline">Edge content<%=
+  popup_help_icon "Help, edge content", "WmHelp:Popup/HeaderEdge" %>
 </div>
 
 
@@ -77,60 +74,35 @@
 <p style="margin-top: 1.5em;">
   <% if (@edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
     <span style="white-space: nowrap;">
-      <%= link_to 'Edit&hellip;', edit_edge_path(@edge), :rel => 'nofollow' %><a
-        href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeEdit"
-        class="iframeBox" tabindex="0" ><%=
-      image_tag "help_icon.png", :alt=>"Help edit nodes",
-                :class=>"image-in-text" -%></a></span>
-
-    &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+      <%= link_to 'Edit&hellip;', edit_edge_path(@edge),
+                  :rel => 'nofollow' -%><%=
+      popup_help_icon "Help edit nodes", "WmHelp:Popup/NodeEdit"
+    -%></span>
 
     <span style="white-space: nowrap;">
       <%= link_to 'Delete', edge_path(@edge), :rel => 'nofollow',
-                  :confirm => 'Are you sure?', :method => :delete %><a
-        href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeDelete"
-        class="iframeBox" tabindex="0" ><%=
-      image_tag "help_icon.png", :alt=>"Help delete nodes",
-                :class=>"image-in-text" -%></a></span>
-
-    &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+                  :confirm => 'Are you sure?', :method => :delete -%><%=
+      popup_help_icon "Help delete nodes", "WmHelp:Popup/NodeDelete"
+    -%></span>
   <% end %>
 
   <span style="white-space: nowrap;">
-    <%= link_to 'Show edge list', edges_path %><a
-      href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/ShowEdges"
-      class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help for nodes list",
-              :class=>"image-in-text" -%></a>
-  </span>
-
-  &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+    <%= link_to 'Show edge list', edges_path -%><%=
+    popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowEdges"
+  -%></span>
 
   <span style="white-space: nowrap;">
-    <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' %><a
-      href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeAdd"
-      class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help for edges create/new",
-              :class=>"image-in-text" -%></a>
-  </span>
-
-  &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+    <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' -%><%=
+    popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd"
+  -%></span>
 
   <span style="white-space: nowrap;">
-    <%= link_to 'Show node list', nodes_path %><a
-      href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/ShowNodes"
-      class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help for nodes list",
-              :class=>"image-in-text" -%></a>
-  </span>
-
-  &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
+    <%= link_to 'Show node list', nodes_path -%><%=
+    popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes"
+  -%></span>
 
   <span style="white-space: nowrap;">
-    <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' %><a
-      href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeAdd"
-      class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help for nodes create/new",
-              :class=>"image-in-text" -%></a>
-  </span>
+    <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' -%><%=
+    popup_help_icon "Help for nodes create/new", "WmHelp:Popup/NodeAdd"
+  -%></span>
 </p>

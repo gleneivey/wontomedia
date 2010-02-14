@@ -54,6 +54,7 @@ Feature:  Create new nodes in the process of creating an edge
     And I select "peer_of : Peer Of (basic relationship)" from "Relates to"
     When I select "- create a new property for this relationship -" from "Relates to"
     And I wait for Ajax requests to complete
+    And I pause
     Then the "MB_content" element should match "Describe what this node"
 
     Given I fill in "Name" with "congruent_with"

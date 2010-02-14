@@ -35,10 +35,7 @@
    unless @popup_flag %>
      <div style="height: 600px; float: left; padding-right: 1em;">&nbsp;</div>
      <div style="position: absolute; left: 15.7%;">
-       <a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNode"
-          style="font-size: small;" class="iframeBox" tabindex="0" ><%=
-         image_tag "help_icon.png", :alt=>"Help, node content",
-                   :class=>"image-in-text" -%></a>
+       <%= popup_help_icon "Help, node content", "WmHelp:Popup/HeaderNode" %>
      </div>
 <% end %>
 
@@ -129,10 +126,8 @@
              # question-icon for edges-list pop-up help
              unless @popup_flag  %>
                <div style="position: absolute; left: 15.7%;">
-                 <a style="font-size: small;" class="iframeBox" tabindex="0"
-href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeList" ><%=
-                   image_tag "help_icon.png", :class=>"image-in-text",
-                             :alt=>"Help, edges referencing a node" -%></a>
+                 <%= popup_help_icon "Help, edges referencing a node",
+                                     "WmHelp:Popup/HeaderNodeEdgeList" %>
                </div>
 <%           end  %>
 
@@ -187,10 +182,8 @@ href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeList" ><%=
            # question-icon for edges-table pop-up help
            unless @popup_flag  %>
              <div style="position: absolute; left: 15.7%;">
-               <a style="font-size: small;" class="iframeBox" tabindex="0"
-href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdgeTable" ><%=
-                 image_tag "help_icon.png", :class=>"image-in-text",
-                           :alt=>"Help, edges referencing a node" -%></a>
+               <%= popup_help_icon "Help, edges referencing a node",
+                                   "WmHelp:Popup/HeaderNodeEdgeTable" %>
              </div>
 <%         end
 

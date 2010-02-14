@@ -45,18 +45,9 @@
   <%= render :partial => "screen_select" %>
 <% end -%>
 <% content_for :content_bottom do %>
-  <style>
-      #content-bottom .outbound-links-list {
-        padding-left: 0;
-      }
-      #content-bottom .outbound-links-list li {
-        display: inline;
-      }
-      #content-bottom .outbound-links-list li + li {
-        margin-left: 1.5em;
-      }
-  </style>
-  <%= render :partial => "list_outbound_links" %>
+  <div class="horizontal-link-list">
+    <%= render :partial => "list_outbound_links" %>
+  </div>
 <% end -%>
 
 <% content_for :right_column do %>

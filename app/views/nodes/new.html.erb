@@ -31,7 +31,8 @@
   @glossary_help_entries = [
     [ 'Category', 'WmHelp:GlossaryAtoO#anchor_Category' ],
     [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ],
-    [ 'Property', 'WmHelp:GlossaryAtoO#anchor_Property' ]
+    [ 'Property', 'WmHelp:GlossaryAtoO#anchor_Property' ],
+    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ]
   ]
  %>
 
@@ -40,7 +41,7 @@
    form_for(@node, options) do |f|
  %>
   <%= f.error_messages %>
-  <div style="width: 40%; float: left;">
+  <div style="width: 37%; float: left;">
     <%= render :partial => "type_select", :locals => { :f => f } %>
     <%= render :partial => "form_fields", :locals => { :f => f } %>
     <script type="text/javascript">
@@ -51,21 +52,24 @@
       <%= f.submit "Create", :tabindex => "10" %>
     </p>
 
-    <p style="text-align: center">
-      <%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
-                  :rel => 'nofollow' %> &mdash;
-      <%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
-                  :rel => 'nofollow' %>
-    </p>
+    <div class="horizontal-link-list"><ul>
+      <li><%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
+                      :rel => 'nofollow' -%></li>
+      <li><%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
+                      :rel => 'nofollow' -%></li>
+    </ul></div>
   </div>
 
-  <div class="noncontent" style="width: 55%; float: right;">
+  <div class="noncontent" style="width: 61%; float: right; margin-left: 0;">
     <dl><dt id="category_title">Category</dt><dd id="category_desc">
 
       "Category" is for groups of things, for concepts, and for the
-      upper levels of hierarchies.  (Though a hierarchy made up entirely
-      of concepts could be all Categories.)  Categories can "contain"
-      other categories or items.
+      upper levels of hierarchies<%=
+        popup_help_icon 'Definition of hierarchies in a wontology',
+                        'WmHelp:GlossaryAtoO#anchor_Hierarchy' -%>.
+      (Though a hierarchy made up entirely of concepts could be all
+      Categories.)  Categories can "contain" other categories or
+      items.
 
     </dd><dt id="item_title">Item</dt><dd id="item_desc">
 
@@ -76,21 +80,33 @@
 
     </dd><dt id="property_title">Property</dt><dd id="property_desc">
 
-      "Property" is used to define relationships between other nodes.
-      Once you create a new Property node, you should create one or
-      more edges that relate that property to other existing
-      properties.  In general, you will use the "sub_property_of"
-      property in order to create these edges.  For example, if you
-      were creating a description of famillial relations between
-      people, you might create a new property named "spouseOf".  To
-      define what the creation of edges using this new property
-      <em>means</em>, you can create the edge "<code>spouseOf
-      sub_property_of symmetric_relationship</code>".  This example
-      will cause "spouseOf" to be treated as a "peer" relationship
+      "Property" is used to define relationships<%=
+        popup_help_icon 'Definition of relationships in a wontology',
+                        'WmHelp:GlossaryPtoZ#anchor_Relationship' -%>
+      between other nodes.  Once you create a new Property node<%=
+        popup_help_icon 'Definition of Node',
+                        'WmHelp:GlossaryAtoO#anchor_Node' -%>,
+      you should create one or more edges<%=
+        popup_help_icon 'Definition of Edge',
+                        'WmHelp:GlossaryAtoO#anchor_Edge' -%>
+      that relate that property to other existing properties.  In
+      general, you will use the "sub_property_of" property in order to
+      create these edges.  For example, if you were creating a
+      description of famillial relations between people, you might
+      create a new property named "spouseOf".  To define what the
+      creation of edges using this new property <em>means</em>, you
+      can create the edge "<code>spouseOf sub_property_of
+      symmetric_relationship</code>".  This example will cause
+      "spouseOf" to be treated as a "peer" relationship<%=
+        popup_help_icon 'Peer relationships in a wontology',
+                        'WmHelp:GlossaryPtoZ#anchor_Peer' -%>
       (rather than a hierarchical one), and as a symmetric
-      relationship, so that creating a "spouseOf" edge from one node
-      to another implies an edge going the other direction even if it
-      is not defined explicitly.
+      relationship<%=
+        popup_help_icon 'Symmetric relationships in a wontology',
+                        'WmHelp:GlossaryPtoZ#anchor_Symmetric' -%>,
+      so that creating a "spouseOf" edge from one node to another
+      implies an edge going the other direction even if it is not
+      defined explicitly.
 
     </dd></dl>
   </div>

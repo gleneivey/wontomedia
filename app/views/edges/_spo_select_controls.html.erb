@@ -67,10 +67,8 @@
     <script type="text/javascript">
       $('edge_subject_id').focus();
     </script>
-    <a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeSubject"
-       class="iframeBox" tabindex="0" ><%=
-      image_tag "help_icon.png", :alt=>"Help for edge's subject selection",
-                :class=>"image-in-text" -%></a>
+    <%= popup_help_icon "Help for edge's subject selection",
+                        "WmHelp:Popup/EdgeSubject" %>
     <%= image_tag "blank_error_icon.png", :id=>"subject_error_icon", :alt=>"",
                   :size=>"16x16" %>
 
@@ -101,10 +99,8 @@
           ),
           :tabindex=>'20', :style=>'width: 90%;'
      %>
-    <a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgePredicate"
-       class="iframeBox" tabindex="0" ><%=
-      image_tag "help_icon.png", :alt=>"Help for edge's predicate selection",
-                :class=>"image-in-text" -%></a>
+    <%= popup_help_icon "Help for edge's predicate selection",
+                        "WmHelp:Popup/EdgePredicate" %>
     <%= image_tag "blank_error_icon.png", :id=>"predicate_error_icon", :alt=>"",
                   :size=>"16x16" %>
 
@@ -135,10 +131,8 @@
           ),
           :tabindex=>'30', :style=>'width: 90%;'
      %>
-    <a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeObject"
-       class="iframeBox" tabindex="0" ><%=
-      image_tag "help_icon.png", :alt=>"Help for edge's object selection",
-                :class=>"image-in-text" -%></a>
+    <%= popup_help_icon "Help for edge's object selection",
+                        "WmHelp:Popup/EdgeObject" %>
     <%= image_tag "blank_error_icon.png", :id=>"obj_error_icon", :alt=>"",
                   :size=>"16x16" %>
 

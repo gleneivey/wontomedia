@@ -113,6 +113,21 @@ hr {
   background-color: #b0b0ff;
 }
 
+/*.vertical-link-list*/
+.horizontal-link-list {        /* empty CSS rule affects stuff--my head hurts */
+}                              /*   at least on Firefox 3.0.17 */
+.horizontal-link-list ul {
+  margin: 0;
+  text-align: center;
+  padding-left: 0;
+}
+.horizontal-link-list ul li {
+  display: inline;
+}
+.horizontal-link-list ul li + li {
+  margin-left: 1.5em;
+}
+
 
         /* set apart stuff that is in development */
 .unimplemented {

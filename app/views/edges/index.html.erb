@@ -31,12 +31,9 @@
  %>
 
 
-<div class="headline">Listing all defined
-  edges<a href="<%=
-       WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderEdgesIndex"
-     style="font-size: small;" class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help, edges list",
-              :class=>"image-in-text" -%></a>
+<div class="headline">
+  <%= popup_help_icon "Help, edges list", "WmHelp:Popup/HeaderEdgesIndex"
+  -%>Listing all defined edges
 </div>
 
 
@@ -63,28 +60,23 @@
       <td><%= link_to "#{h filter_parenthetical edge.obj.title}",
                       node_path(edge.obj) %></td>
       <td style="font-size: 80%">
-        <span style="white-space: nowrap;"><%= link_to 'Show',
-          edge_path(edge) %><a
-            href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeShow"
-            class="iframeBox" tabindex="0" ><%=
-              image_tag "help_icon.png",
-                        :alt=>"Help edit nodes",
-                        :class=>"image-in-text" -%></a></span>
+        <span style="white-space: nowrap;"><%=
+          link_to 'Show', edge_path(edge) %><%=
+          popup_help_icon "Help, show edges", "WmHelp:Popup/EdgeShow"
+        -%></span>
 
         <% if (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
 
-          <span style="white-space: nowrap;"><%= link_to 'Edit&hellip;',
-            edit_edge_path(edge), :rel => 'nofollow' %><a
-            href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeEdit"
-            class="iframeBox" tabindex="0" ><%= image_tag "help_icon.png",
-              :alt=>"Help edit nodes", :class=>"image-in-text" -%></a></span>
-          <span style="white-space: nowrap;"><%= link_to 'Delete',
-            edge, :rel => 'nofollow', :confirm => 'Are you sure?',
-            :method => :delete %><a
-              href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeDelete"
-              class="iframeBox" tabindex="0" ><%= image_tag "help_icon.png",
-                :alt=>"Help delete nodes", :class=>"image-in-text"
-          -%></a></span>
+          <span style="white-space: nowrap;"><%=
+            link_to 'Edit&hellip;', edit_edge_path(edge),
+                    :rel => 'nofollow' %><%=
+            popup_help_icon "Help, edit edges", "WmHelp:Popup/EdgeEdit"
+          -%></span>
+          <span style="white-space: nowrap;"><%=
+            link_to 'Delete', edge, :rel => 'nofollow',
+                    :confirm => 'Are you sure?', :method => :delete %><%=
+            popup_help_icon "Help, delete edge", "WmHelp:Popup/EdgeDelete"
+          -%></span>
         <% end %>
       </td>
 <!--

@@ -21,14 +21,18 @@
 <% content_for :head do %>
   <meta name="robots" content="noindex" />
   <meta name="googlebot" content="noindex" />
-<% end %>
+<% end
 
-<% @title_text = h @node.title %>
-<div class="headline">Editing
-  node<a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodeEdit"
-     style="font-size: small;" class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help node edit",
-              :class=>"image-in-text" -%></a>
+   @title_text = filter_parenthetical h @node.title
+
+  # initialize array to define "Glossary Help" box of links:
+  @glossary_help_entries = [
+    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ]
+  ]
+ %>
+
+<div class="headline">Editing node<%=
+  popup_help_icon "Help node edit", "WmHelp:Popup/HeaderNodeEdit" %>
 </div>
 
 
@@ -38,10 +42,12 @@
   <p><%= f.submit "Update", :tabindex => "10" %></p>
 <% end %>
 
-<%= link_to 'Cancel,&nbsp;show&nbsp;node', node_path(@node),
-            :rel => 'nofollow' %> |
-<%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
-            :rel => 'nofollow' %>
+<div class="horizontal-link-list"><ul>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;node', node_path(@node),
+                  :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
+                  :rel => 'nofollow' -%></li>
+</ul></div>
 
 <script type="text/javascript">
   creatingNewNode = false;

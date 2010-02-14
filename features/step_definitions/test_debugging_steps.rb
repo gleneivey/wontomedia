@@ -19,3 +19,7 @@
 When /^I dump the HTML from the completed page$/ do
   puts @response.body
 end
+
+When /^I fetch and dump the current page's DOM content$/ do
+  puts selenium.get_eval "window.document.body.innerHTML;"
+end

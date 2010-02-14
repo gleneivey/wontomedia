@@ -20,10 +20,7 @@
 
 <p class="inputpara">
   <%= f.label :sti_type, "Type" %>
-  <a href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/NodeType"
-     class="iframeBox" tabindex="0" ><%=
-    image_tag "help_icon.png", :alt=>"Help for type",
-              :class=>"image-in-text" -%></a>
+  <%= popup_help_icon "Help for type", "WmHelp:Popup/NodeType" %>
   <%= if @type == "verb"
         selections = [ [ "Property",      "PropertyNode" ] ]
         @node.sti_type = "PropertyNode"

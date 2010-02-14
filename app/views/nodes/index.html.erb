@@ -41,11 +41,9 @@
     #top-box .outbound-links-list li {
       margin-left: 1.5em;                           }
   </style>
-  <a class="iframeBox" style="font-size: small;" tabindex="0"
-     href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/HeaderNodesIndex"
-    ><%=
-    image_tag "help_icon.png", :alt=>"Help, nodes list",
-              :class=>"image-in-text" -%></a>Listing all defined nodes
+  <%= popup_help_icon "Help, nodes list", "WmHelp:Popup/HeaderNodesIndex"
+  -%>Listing all defined nodes
+
   <div id="top-box" class="noncontent" style="float: left; margin-left: 2em;">
     <%= render :partial => "list_outbound_links",
                :locals => { :generating_index_page => true } %>

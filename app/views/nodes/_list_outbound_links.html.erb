@@ -25,11 +25,7 @@
     <li><span style="white-space: nowrap;">
       <%= link_to 'View all nodes', nodes_path -%><%
       unless @have_displayed_out_links %><%=
-        content_tag( 'a',
-          image_tag( "help_icon.png", :alt=>"Help for nodes list",
-                     :class=>"image-in-text" ),
-          :href=>"#{WontoMedia.popup_url_prefix}WmHelp:Popup/ShowNodes",
-          :class=>'iframeBox', :tabindex=>'0' ) -%><%
+        popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes" -%><%
       end %>
     </span></li>
   <% end %>
@@ -37,33 +33,21 @@
   <li><span style="white-space: nowrap;">
     <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
-      content_tag( 'a',
-        image_tag( "help_icon.png", :alt=>"Help for nodes create/new",
-                   :class=>"image-in-text" ),
-        :href=>"#{WontoMedia.popup_url_prefix}WmHelp:Popup/NodeAdd",
-        :class=>'iframeBox', :tabindex=>'0' ) -%><%
+      popup_help_icon "Help for nodes create/new", "WmHelp:Popup/NodeAdd" -%><%
     end %>
   </span></li>
 
   <li><span style="white-space: nowrap;">
     <%= link_to 'View all edges', edges_path -%><%
     unless @have_displayed_out_links %><%=
-      content_tag( 'a',
-        image_tag( "help_icon.png", :alt=>"Help for edges list",
-                   :class=>"image-in-text" ),
-        :href=>"#{WontoMedia.popup_url_prefix}WmHelp:Popup/ShowEdges",
-        :class=>'iframeBox', :tabindex=>'0' ) -%><%
+      popup_help_icon "Help for edges list", "WmHelp:Popup/ShowEdges" -%><%
     end %>
   </span></li>
 
   <li><span style="white-space: nowrap;">
     <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
-      content_tag( 'a',
-        image_tag( "help_icon.png", :alt=>"Help for edges create/new",
-                   :class=>"image-in-text" ),
-        :href=>"#{WontoMedia.popup_url_prefix}WmHelp:Popup/EdgeAdd",
-        :class=>'iframeBox', :tabindex=>'0' ) -%><%
+      popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd" -%><%
     end %>
   </span></li>
 </ul>

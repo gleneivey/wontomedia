@@ -20,25 +20,17 @@
 
 
 <span style="white-space: nowrap;">
-  Click on a Title to view a node's details<a
-    href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/ClickShowNode"
-    class="iframeBox" tabindex="0" ><%=
-  image_tag "help_icon.png", :alt=>"Help, viewing individual node",
-            :class=>"image-in-text" -%></a>
+  Click on a Title to view a node's details<%=
+    popup_help_icon "Help, viewing individual node",
+                    "WmHelp:Popup/ClickShowNode" %>
+</span>
+
+<span style="white-space: nowrap;">
+  <%= link_to 'Create a new edge', new_edge_path %><%=
+    popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd" %>
 </span>
 &nbsp;&nbsp;&mdash;&nbsp;&nbsp;
 <span style="white-space: nowrap;">
-  <%= link_to 'Create a new edge', new_edge_path %><a
-    href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/EdgeAdd"
-    class= "iframeBox" tabindex="0" ><%=
-  image_tag "help_icon.png", :alt=>"Help for edges create/new",
-            :class=>"image-in-text" -%></a>
-</span>
-&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
-<span style="white-space: nowrap;">
-  <%= link_to 'View all nodes', nodes_path %><a
-    href="<%= WontoMedia.popup_url_prefix -%>WmHelp:Popup/ShowNodes"
-    class="iframeBox" tabindex="0" ><%=
-  image_tag "help_icon.png", :alt=>"Help for nodes list",
-            :class=>"image-in-text" -%></a>
+  <%= link_to 'View all nodes', nodes_path %><%=
+    popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes" %>
 </span>
