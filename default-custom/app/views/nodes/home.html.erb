@@ -54,24 +54,19 @@
   <div id="block-action-links" class="box">
     <style>
       #block-action-links .outbound-links-list {
-        padding: 0; margin: 0; margin-bottom: 0.5ex;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 0.5ex;
       }
       #block-action-links .outbound-links-list li {
         margin-left: 1.5em;
+        font-size: 80%;
       }
     </style>
-    <%= render :partial => "list_outbound_links" %>
+    <%= render :partial => 'list_outbound_links' %>
   </div>
-<% if @display_unimplemented %>
-  <div id="block-active" class="box">
-    <p class="unimplemented">[area to highlight sections of the
-      wontology that have recent/heavy activity]</p>
-  </div>
-  <div id="block-topics" class="box">
-    <p class="unimplemented">[area to list all Topics in the
-      wontology, sorted by size/activity]</p>
-  </div>
-<% end -%>
+  <%= render :partial => 'active_content' %>
+  <%= render :partial => 'topic_list' %>
 <% end -%>
 
 <% content_for :left_column do %>

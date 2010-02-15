@@ -17,20 +17,30 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
+<% @have_displayed_out_links = false unless defined? @have_displayed_out_links
+ %>
 
+<ul class="outbound-links-list">
+  <li><span style="white-space: nowrap;">
+    <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' -%><%
+      unless @have_displayed_out_links %><%=
+        popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd"
+      -%><% end %>
+  </span></li>
 
-<span style="white-space: nowrap;">
-  Click on a Title to view a node's details<%=
-    popup_help_icon "Help, viewing individual node",
-                    "WmHelp:Popup/ClickShowNode" %>
-</span>
+  <li><span style="white-space: nowrap;">
+    <%= link_to 'View all nodes', nodes_path -%><%
+      unless @have_displayed_out_links %><%=
+        popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes" -%><%
+      end %>
+  </span></li>
 
-<span style="white-space: nowrap;">
-  <%= link_to 'Create a new edge', new_edge_path %><%=
-    popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd" %>
-</span>
-&nbsp;&nbsp;&mdash;&nbsp;&nbsp;
-<span style="white-space: nowrap;">
-  <%= link_to 'View all nodes', nodes_path %><%=
-    popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes" %>
-</span>
+  <li><span style="white-space: nowrap;">
+    <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' -%><%
+    unless @have_displayed_out_links %><%=
+      popup_help_icon "Help for nodes create/new", "WmHelp:Popup/NodeAdd" -%><%
+    end %>
+  </span></li>
+</ul>
+
+<% @have_displayed_out_links = true %>

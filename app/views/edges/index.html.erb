@@ -34,50 +34,37 @@
 <div class="headline">
   <%= popup_help_icon "Help, edges list", "WmHelp:Popup/HeaderEdgesIndex"
   -%>Listing all defined edges
+  <%= render :partial => 'common/top_box'    # contains an opening <div>
+   %>
+    <%= render :partial => "index_outbound_links" %>
+  </div>
 </div>
 
+<table class="tight-table index-table" style="clear: both;">
+  <% @show_help_icon_used = false
+     @edit_help_icon_used = false
+     @delete_help_icon_used = false
+   %>
 
-<p>
-  <%= render :partial => "index_outbound_links" %>
-</p>
-<br/>
-
-<table>
-  <tr>
-    <th>Subject</th>
-    <th>Predicate</th>
-    <th>Object</th>
+  <tr style="color: #b0b0ff;">
+    <th style="text-decoration: underline;">Subject</th>
+    <th style="text-decoration: underline;">Predicate</th>
+    <th style="text-decoration: underline;">Object</th>
   </tr>
 
   <% @edges.each do |edge| %>
     <% content_tag :tr, :id => edge.id do %>
-      <td><%= link_to "#{h filter_parenthetical edge.subject.title}",
-                      node_path(edge.subject) %></td>
-      <td>
-        <%=   link_to "#{h filter_parenthetical edge.predicate.title}",
-                      node_path(edge.predicate) %>
-      </td>
-      <td><%= link_to "#{h filter_parenthetical edge.obj.title}",
-                      node_path(edge.obj) %></td>
-      <td style="font-size: 80%">
-        <span style="white-space: nowrap;"><%=
-          link_to 'Show', edge_path(edge) %><%=
-          popup_help_icon "Help, show edges", "WmHelp:Popup/EdgeShow"
-        -%></span>
-
-        <% if (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
-
-          <span style="white-space: nowrap;"><%=
-            link_to 'Edit&hellip;', edit_edge_path(edge),
-                    :rel => 'nofollow' %><%=
-            popup_help_icon "Help, edit edges", "WmHelp:Popup/EdgeEdit"
-          -%></span>
-          <span style="white-space: nowrap;"><%=
-            link_to 'Delete', edge, :rel => 'nofollow',
-                    :confirm => 'Are you sure?', :method => :delete %><%=
-            popup_help_icon "Help, delete edge", "WmHelp:Popup/EdgeDelete"
-          -%></span>
-        <% end %>
+      <td class='firstrow secondrow'><%=
+        link_to "#{h filter_parenthetical edge.subject.title}",
+                node_path(edge.subject) -%></td>
+      <td class='firstrow secondrow'><%=
+        link_to "#{h filter_parenthetical edge.predicate.title}",
+                node_path(edge.predicate) -%></td>
+      <td class='firstrow secondrow'><%=
+        link_to "#{h filter_parenthetical edge.obj.title}",
+                node_path(edge.obj) -%></td>
+      <td class='firstrow secondrow' style="font-size: 80%">
+        <% generate_edge_links(edge) %>
       </td>
 <!--
       <td><%= unless edge.edge_desc.nil?
@@ -89,7 +76,8 @@
   <% end %>
 </table>
 
-<p>
-  <%= render :partial => "index_outbound_links" %>
-</p>
 
+<%= render :partial => 'common/bottom_line'    # contains an opening <div>
+ %>
+  <%= render :partial => 'index_outbound_links' %>
+</div>

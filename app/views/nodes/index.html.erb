@@ -35,31 +35,16 @@
 
 <div class="headline">
 
-  <style>
-    #top-box .outbound-links-list {
-      padding: 0; margin: 0; margin-bottom: 0.5ex;  }
-    #top-box .outbound-links-list li {
-      margin-left: 1.5em;                           }
-  </style>
   <%= popup_help_icon "Help, nodes list", "WmHelp:Popup/HeaderNodesIndex"
   -%>Listing all defined nodes
-
-  <div id="top-box" class="noncontent" style="float: left; margin-left: 2em;">
+  <%= render :partial => 'common/top_box'    # contains an opening <div>
+   %>
     <%= render :partial => "list_outbound_links",
                :locals => { :generating_index_page => true } %>
   </div>
 </div>
 
-<style>
-  .tight-table .firstrow {
-    padding-top: 1ex;
-  }
-  .tight-table .secondrow {
-    border-bottom: 1px solid #e8e8ff;
-    padding-left: 2.2em;
-  }
-</style>
-<table class="tight-table" style="clear: both;">
+<table class="tight-table index-table" style="clear: both;">
   <% @edit_help_icon_used = false
      @delete_help_icon_used = false
 
@@ -73,7 +58,7 @@
       </td>
     <% end %>
     <tr>
-      <td colspan="3" class="secondrow">
+      <td colspan="3" class="secondrow" style="padding-left: 2.2em;">
         <span style="font-size: 70%">
           <%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</span>
         <%=h node.description %></td>
@@ -81,19 +66,9 @@
   <% end %>
 </table>
 
-<style>
-    #bottom-row .outbound-links-list {
-      padding-left: 0;
-    }
-    #bottom-row .outbound-links-list li {
-      display: inline;
-    }
-    #bottom-row .outbound-links-list li + li {
-      margin-left: 1.5em;
-    }
-</style>
-<div id="bottom-row" style="text-align: center;">
-  <%= render :partial => "list_outbound_links",
+<%= render :partial => 'common/bottom_line'    # contains an opening <div>
+ %>
+  <%= render :partial => 'list_outbound_links',
              :locals => { :generating_index_page => true } %>
 </div>
 

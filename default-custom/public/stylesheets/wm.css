@@ -217,6 +217,12 @@ td {
   margin: 0;
   padding: 0;
 }
+.index-table .firstrow {
+  padding-top: 1ex;
+}
+.index-table .secondrow {
+  border-bottom: 1px solid #e8e8ff;
+}
 
 
 

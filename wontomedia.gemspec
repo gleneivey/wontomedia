@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-02-07}
+  s.date = %q{2010-02-14}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
      "app/models/reiffied_node.rb",
      "app/views/admin/index.html.erb",
      "app/views/common/_amazon_ads.html.erb",
+     "app/views/common/_bottom_line.html.erb",
      "app/views/common/_glossary_help_box.html.erb",
      "app/views/common/_google_ads.html.erb",
      "app/views/common/_language_select.html.erb",
@@ -44,6 +45,7 @@ Gem::Specification.new do |s|
      "app/views/common/_navigation_menu.html.erb",
      "app/views/common/_search_box.html.erb",
      "app/views/common/_status_msgs.html.erb",
+     "app/views/common/_top_box.html.erb",
      "app/views/edges/_index_outbound_links.html.erb",
      "app/views/edges/_spo_select_controls.html.erb",
      "app/views/edges/edit.html.erb",
@@ -54,12 +56,14 @@ Gem::Specification.new do |s|
      "app/views/layouts/base.html.erb",
      "app/views/layouts/home.html.erb",
      "app/views/layouts/popup.html.erb",
+     "app/views/nodes/_active_content.html.erb",
      "app/views/nodes/_content_examples.html.erb",
      "app/views/nodes/_core_tasks.html.erb",
      "app/views/nodes/_form_fields.html.erb",
      "app/views/nodes/_list_outbound_links.html.erb",
      "app/views/nodes/_screen_select.html.erb",
      "app/views/nodes/_show_outbound_links.html.erb",
+     "app/views/nodes/_topic_list.html.erb",
      "app/views/nodes/_type_select.html.erb",
      "app/views/nodes/edit.html.erb",
      "app/views/nodes/index.html.erb",

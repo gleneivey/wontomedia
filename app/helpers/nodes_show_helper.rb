@@ -108,6 +108,26 @@ module NodesShowHelper
     end
   end
 
+  def generate_edge_links(e)
+    @show_help_icon_used, fragment =
+      a_help_link( link_to( 'Show', edge_path(e) ),
+        @show_help_icon_used, 'Help show edge', 'EdgeShow' )
+    concat( fragment )
+
+    if (e.flags & Edge::DATA_IS_UNALTERABLE) == 0
+      @edit_help_icon_used, fragment =
+        a_help_link( link_to( 'Edit&hellip;', edit_edge_path(e) ),
+          @edit_help_icon_used, 'Help edit edge', 'EdgeEdit' )
+      concat( fragment )
+
+      @delete_help_icon_used, fragment =
+        a_help_link( link_to( 'Delete', edge_path(e), :rel => 'nofollow',
+                    :confirm => 'Are you sure?', :method => :delete ),
+          @delete_help_icon_used, 'Help delete edge', 'EdgeDelete' )
+      concat( fragment )
+    end
+  end
+
   def a_help_link( action_link, used_flag, help_alt, which_help )
     help_link = ''
     unless used_flag
