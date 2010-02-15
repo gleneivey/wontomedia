@@ -21,7 +21,7 @@
 <% content_for :page_body do %>
   <% if @title_text %>
     <div id="page-title" style="position: absolute; top: 0; left: 15.5%; height: 8ex; width: 69.7%; overflow: hidden;">
-      <h1><%= @title_text -%></h1>
+      <h1 style="white-space: nowrap;"><%= @title_text -%></h1>
     </div>
   <% end %>
   <div id="float-center-right"

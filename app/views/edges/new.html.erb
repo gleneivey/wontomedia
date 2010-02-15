@@ -44,10 +44,12 @@
   <p><%= f.submit 'Create', :tabindex=>'40' %></p>
 <% end %>
 
-<%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
-      :rel => 'nofollow' %> &mdash;
-<%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
-      :rel => 'nofollow' %>
+<div class="horizontal-link-list"><ul>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
+                  :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
+                  :rel => 'nofollow' -%></li>
+</ul></div>
 
 
 <script type="text/javascript">

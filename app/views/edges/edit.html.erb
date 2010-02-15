@@ -24,9 +24,9 @@
 <% end %>
 
 <%
-  @title_text = (h filter_parenthetical @edge.subject.title) + " : " +
-                (h filter_parenthetical @edge.predicate.title) + " : " +
-                (h filter_parenthetical @edge.obj.title)
+  @title_text = (h @edge.subject.name) + " : " +
+                (h @edge.predicate.name) + " : " +
+                (h @edge.obj.name)
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
@@ -52,12 +52,14 @@
 <% end %>
 
 
-<%= link_to 'Cancel,&nbsp;show&nbsp;edge', edge_path(@edge),
-      :rel => 'nofollow' %> &mdash;
-<%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
-      :rel => 'nofollow' %> &mdash;
-<%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
-      :rel => 'nofollow' %>
+<div class="horizontal-link-list"><ul>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;edge', edge_path(@edge),
+                  :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
+                  :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
+                  :rel => 'nofollow' -%></li>
+</ul></div>
 
 
 <script type="text/javascript">

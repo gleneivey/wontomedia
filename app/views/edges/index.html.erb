@@ -36,7 +36,7 @@
   -%>Listing all defined edges
   <%= render :partial => 'common/top_box'    # contains an opening <div>
    %>
-    <%= render :partial => "index_outbound_links" %>
+    <%= render :partial => 'index_outbound_links' %>
   </div>
 </div>
 
@@ -55,22 +55,20 @@
   <% @edges.each do |edge| %>
     <% content_tag :tr, :id => edge.id do %>
       <td class='firstrow secondrow'><%=
-        link_to "#{h filter_parenthetical edge.subject.title}",
-                node_path(edge.subject) -%></td>
+        link_has_tip nil, "#{h filter_parenthetical edge.subject.title}",
+                     node_path(edge.subject), h( edge.subject.name ) %></td>
       <td class='firstrow secondrow'><%=
-        link_to "#{h filter_parenthetical edge.predicate.title}",
-                node_path(edge.predicate) -%></td>
+        link_has_tip nil, "#{h filter_parenthetical edge.predicate.title}",
+                     node_path(edge.predicate), h( edge.predicate.name ) %></td>
       <td class='firstrow secondrow'><%=
-        link_to "#{h filter_parenthetical edge.obj.title}",
-                node_path(edge.obj) -%></td>
+        link_has_tip nil, "#{h filter_parenthetical edge.obj.title}",
+                     node_path(edge.obj), h( edge.obj.name ) %></td>
       <td class='firstrow secondrow' style="font-size: 80%">
-        <% generate_edge_links(edge) %>
-      </td>
+        <% generate_edge_links(edge) %></td>
 <!--
       <td><%= unless edge.edge_desc.nil?
                 link_to "#{h edge.edge_desc.name}", node_path(edge.edge_desc)
-             end %>
-      </td>
+              end %></td>
   -->
     <% end %>
   <% end %>

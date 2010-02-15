@@ -19,9 +19,9 @@
 
 
 <%
-  @title_text = (h filter_parenthetical @subject.title) + " : " +
-                (h filter_parenthetical @predicate.title) + " : " +
-                (h filter_parenthetical @obj.title)
+  @title_text = (h @subject.name) + " : " +
+                (h @predicate.name) + " : " +
+                (h @obj.name)
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
@@ -43,8 +43,8 @@
   <tr><td>
     <b>Subject:</b>
   </td><td>
-      <%= link_to "#{h @subject.title}", node_path(@subject) %> &mdash;
-      (<%= h @subject.name %>)
+      <%= link_to "<b>#{h @subject.title}</b>", node_path(@subject) %> &mdash;
+      (<b><%= h @subject.name %></b>)
     <p>
       <%= h @subject.description %>
     </p>
@@ -53,8 +53,8 @@
   <tr><td>
     <b>Predicate:</b>
   </td><td>
-      <%= link_to "#{h @predicate.title}", node_path(@predicate) %> &mdash;
-      (<%= h @predicate.name %>)
+      <%= link_to "<b>#{h @predicate.title}</b>", node_path(@predicate) %>
+      &mdash; (<b><%= h @predicate.name %></b>)
     <p>
       <%= h @predicate.description %>
     </p>
@@ -63,46 +63,49 @@
   <tr><td>
     <b>Object:</b>
   </td><td>
-      <%= link_to "#{h @obj.title}", node_path(@obj) %> &mdash;
-      (<%= h @obj.name %>)
+      <%= link_to "<b>#{h @obj.title}</b>", node_path(@obj) %> &mdash;
+      (<b><%= h @obj.name %></b>)
     <p>
       <%= h @obj.description %>
     </p>
   </td></tr>
 </table>
 
-<p style="margin-top: 1.5em;">
-  <% if (@edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
-    <span style="white-space: nowrap;">
-      <%= link_to 'Edit&hellip;', edit_edge_path(@edge),
-                  :rel => 'nofollow' -%><%=
-      popup_help_icon "Help edit nodes", "WmHelp:Popup/NodeEdit"
-    -%></span>
+<%= render :partial => 'common/bottom_line'    # contains an opening <div>
+ %>
+  <ul class="outbound-links-list">
+    <% if (@edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
+      <li><span style="white-space: nowrap;">
+        <%= link_to 'Edit&hellip;', edit_edge_path(@edge),
+                    :rel => 'nofollow' -%><%=
+        popup_help_icon "Help edit nodes", "WmHelp:Popup/NodeEdit"
+      -%></span></li>
 
-    <span style="white-space: nowrap;">
-      <%= link_to 'Delete', edge_path(@edge), :rel => 'nofollow',
-                  :confirm => 'Are you sure?', :method => :delete -%><%=
-      popup_help_icon "Help delete nodes", "WmHelp:Popup/NodeDelete"
-    -%></span>
-  <% end %>
+      <li><span style="white-space: nowrap;">
+        <%= link_to 'Delete', edge_path(@edge), :rel => 'nofollow',
+                    :confirm => 'Are you sure?', :method => :delete -%><%=
+        popup_help_icon "Help delete nodes", "WmHelp:Popup/NodeDelete"
+      -%></span></li>
+    <% end %>
 
-  <span style="white-space: nowrap;">
-    <%= link_to 'Show edge list', edges_path -%><%=
-    popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowEdges"
-  -%></span>
+    <li><span style="white-space: nowrap;">
+      <%= link_to 'Show edge list', edges_path -%><%=
+      popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowEdges"
+    -%></span></li>
 
-  <span style="white-space: nowrap;">
-    <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' -%><%=
-    popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd"
-  -%></span>
+    <li><span style="white-space: nowrap;">
+      <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' -%><%=
+      popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd"
+    -%></span></li>
 
-  <span style="white-space: nowrap;">
-    <%= link_to 'Show node list', nodes_path -%><%=
-    popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes"
-  -%></span>
+    <li><span style="white-space: nowrap;">
+      <%= link_to 'Show node list', nodes_path -%><%=
+      popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes"
+    -%></span></li>
 
-  <span style="white-space: nowrap;">
-    <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' -%><%=
-    popup_help_icon "Help for nodes create/new", "WmHelp:Popup/NodeAdd"
-  -%></span>
-</p>
+    <li><span style="white-space: nowrap;">
+      <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' -%><%=
+      popup_help_icon "Help for nodes create/new", "WmHelp:Popup/NodeAdd"
+    -%></span></li>
+  </ul>
+</div>
