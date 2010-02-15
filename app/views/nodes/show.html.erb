@@ -31,10 +31,17 @@
  %>
 
 
+<style>
+  .margin-help-icon {
+    position: absolute;
+    left: 15.7%;
+    overflow: visible;
+  }
+</style>
 <% # question-icon for title/name/desc pop-up help
    unless @popup_flag %>
      <div style="height: 600px; float: left; padding-right: 1em;">&nbsp;</div>
-     <div style="position: absolute; left: 15.7%;">
+     <div class="margin-help-icon">
        <%= popup_help_icon "Help, node content", "WmHelp:Popup/HeaderNode" %>
      </div>
 <% end %>
@@ -47,21 +54,6 @@
         '&nbsp;<b>Title</b> of this <b>Node</b>&nbsp;' %>
 </p>
 
-<style>
-  #node_name_para {
-    margin-bottom: 1.5ex;
-    margin-left: 3em;
-    position: relative;
-    z-index: 101;
-  }
-  #node_name, #node_name:link, #node_name:hover, #node_name:visited,
-      #node_name:active {
-    padding: 0.3ex;
-    padding-right: 1em;
-    color: black;
-    background-color: white;
-  }
-</style>
 <p id="node_name_para">
   <%= text_has_tip 'node_name', h( @node.name ),
         '&nbsp;<b>Name</b> of this <b>Node</b>&nbsp;' %>
@@ -119,7 +111,7 @@
 
              # question-icon for edges-list pop-up help
              unless @popup_flag  %>
-               <div style="position: absolute; left: 15.7%;">
+               <div class="margin-help-icon">
                  <%= popup_help_icon "Help, edges referencing a node",
                                      "WmHelp:Popup/HeaderNodeEdgeList" %>
                </div>
@@ -178,7 +170,7 @@
 
            # question-icon for edges-table pop-up help
            unless @popup_flag  %>
-             <div style="position: absolute; left: 15.7%;">
+             <div class="margin-help-icon">
                <%= popup_help_icon "Help, edges referencing a node",
                                    "WmHelp:Popup/HeaderNodeEdgeTable" %>
              </div>

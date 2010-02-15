@@ -139,9 +139,13 @@ module NodesShowHelper
   end
 
   def popup_help_icon( alt, target )
-    link_to( image_tag( 'help_icon.png', :alt=>alt, :class=>'image-in-text' ),
+    link_to(
+      (
+        image_tag( 'help_icon.png', :alt=>alt, :class=>'image-in-text' ) +
+        '<span class="tip">Help</span>'
+      ),
       WontoMedia.popup_url_prefix + target, :tabindex => '0',
-      :class => 'iframeBox' )
+      :class => 'iframeBox linkhastip' )
   end
 
   def text_has_tip( id, text, tip )

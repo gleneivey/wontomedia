@@ -23,7 +23,7 @@
     displaying the complete set of non-Property nodes.]</p>
 <% end %>
 
-<div class="subheading">Current Categories and Items</div>
+<div class="subheading">Recently Added Items</div>
 <style>
   .node-title {
     font-size: 120%;
@@ -37,16 +37,19 @@
   }
 </style>
 
-<% @nouns.each do |node| %>
-  <p class="node-title">
-    <%= link_to "#{h filter_parenthetical node.title}", node_path(node) %>
-  </p>
-  <p class="node-desc">
-    <% desc = h node.description
-       if desc.length > 180
-         desc = desc[0,180] + '&hellip;'
-       end
-    %>
-    <%= desc %>
-  </p>
-<% end %>
+<% nouns_listed = 0
+   @nouns.each do |node| %>
+     <p class="node-title">
+       <%= link_to "#{h filter_parenthetical node.title}", node_path(node) %>
+     </p>
+     <p class="node-desc">
+       <% desc = h node.description
+          if desc.length > 180
+            desc = desc[0,180] + '&hellip;'
+          end
+       %>
+       <%= desc %>
+     </p>
+
+<%   break if (nouns_listed += 1) >= 20
+   end %>

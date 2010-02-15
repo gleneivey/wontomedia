@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 Previous: [[WmHelp:GlossaryAtoO|Glossary page for A through O]]
 
 [[WmHelp:GlossaryAtoO#anchor_Node|Node]]
@@ -64,6 +62,9 @@ Previous: [[WmHelp:GlossaryAtoO|Glossary page for A through O]]
 <span id="anchor_Successor"></span>
 ;Successor
 :A "successor" is a [[WmHelp:GlossaryAtoO#anchor_Node|node]] that is in a [[WmHelp:GlossaryPtoZ#anchor_Predecessor|predecessor]]-successor relationship with another node.  Predecessor-successor implies that one node "comes before the other" when ordered relative to some criteria.  It is also a [[WmHelp:GlossaryPtoZ#anchor_Peer|peer]] relationship which implies that in addition to their relative order, the two related nodes are otherwise comparable (in position, in level, etc.) in any hierarchy that contains both.
+<span id="anchor_Symmetric"></span>
+;Symmetric
+:A [[WmHelp:GlossaryPtoZ#anchor_Relationship|relationship]] is ''symmetric'' when creating an [[WmHelp:GlossaryAtoO#anchor_Edge|edge]] from a [[WmHelp:GlossaryPtoZ#anchor_Subject|subject]] to an [[WmHelp:GlossaryAtoO#anchor_Object|object]] has exactly the same meaning as making the ''same'' edge in the opposite direction (''e.g.,'' from the first potential edge's object back to its subject).  "spouse of" and "sibling of" are both examples of symmetric relationships:  there is no way for Dick to be Jane's sibling without Jane also being Dick's sibling.  It doesn't matter which node is selected as a symmetric edge's subject and which as the object; each symmetric edge implies another edge with the same predicate in the opposite direction.
 <span id="anchor_T"></span>
 <span id="anchor_Thesaurus"></span>
 ;Thesaurus
