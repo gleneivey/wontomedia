@@ -19,9 +19,9 @@
 // function to highlight help text based on Type <select> element state
 function typeSelectOnchange(){
   var sel = $('node_sti_type');
-  var tags = [ "category_title", "category_desc",
-               "item_title",     "item_desc",
-               "property_title", "property_desc" ];
+  var tags = [ "category_title",   "category_desc",
+               "individual_title", "individual_desc",
+               "property_title",   "property_desc" ];
 
   if ($(tags[0]) == null)   // this version of form w/o explanatory text
     return;
@@ -33,7 +33,7 @@ function typeSelectOnchange(){
     $(tags[0]).className = "titleSelectedItemDescription";
     $(tags[1]).className = "bodySelectedItemDescription";
   }
-  else if (sel.value == "ItemNode"){
+  else if (sel.value == "IndividualNode"){
     $(tags[2]).className = "titleSelectedItemDescription";
     $(tags[3]).className = "bodySelectedItemDescription";
   }

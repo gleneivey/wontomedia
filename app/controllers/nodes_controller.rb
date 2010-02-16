@@ -72,7 +72,7 @@ class NodesController < ApplicationController
 
     if @node.nil?
       flash.now[:error] =
-'Could not create. Node must have a type of either "Category" or "Item".'
+'Could not create. Node must have a type of either "Category" or "Individual".'
       @node = Node.new(params[:node]) # keep info already entered
       @node.sti_type = type_string
       @this_is_non_information_page = true

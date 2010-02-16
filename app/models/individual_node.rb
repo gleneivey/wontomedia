@@ -16,17 +16,5 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require 'test_helper'
-
-class ItemNodeTest < ActiveSupport::TestCase
-  test "item_node model exists" do
-    assert ItemNode.new
-  end
-
-  test "item_node inherits from node" do
-    name = "in"
-    item = ItemNode.new( :name => name, :title => "item" )
-    assert item.save
-    assert_equal Node.find_by_name(name).name, name
-  end
+class IndividualNode < Node
 end

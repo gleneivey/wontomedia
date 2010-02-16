@@ -20,7 +20,7 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     And I fill in "Name" with "0bad"
     And I fill in "Title" with "A good title /\?"
     And I fill in "Description" with "0 And a (good) description, too."
-    And I select "Item" from "Type"
+    And I select "Individual" from "Type"
     When I press "Create"
     Then I should see "error"
     And I fill in "Name" with "bad too"
@@ -43,7 +43,7 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     And I fill in "Name" with "original"
     And I fill in "Title" with "Second Node"
     And I fill in "Description" with "Actually second node, but bad name"
-    And I select "Item" from "Type"
+    And I select "Individual" from "Type"
     When I press "Create"
     Then I should see "error"
 
@@ -54,7 +54,7 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     And I fill in "Name" with "goodName"
     And I fill in "Title" with "Bad title\012has two lines"
     And I fill in "Description" with "good"
-    And I select "Item" from "Type"
+    And I select "Individual" from "Type"
     When I press "Create"
     Then I should see "error"
 

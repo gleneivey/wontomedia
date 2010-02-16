@@ -17,9 +17,9 @@ This is a brief summary that relates key concepts within a wontology.  There is 
 *** A node's Name should be short, and is used to create URLs and other computer-parsed symbols.
 *** A node's Title should be a one-line description of what the node represents.
 *** A node's (optional) Description is intended to be read by people to understand/maintain the contents of the wontology.
-** A node's type can be [[#WmHelp:GlossaryAtoO#anchor_Category|Category]],  [[#WmHelp:GlossaryAtoO#anchor_Item|Item]], or [[#WmHelp:GlossaryPtoZ#anchor_Property|Property]].
-*** Category nodes can contain (in [[#WmHelp:GlossaryAtoO#anchor_Hierarchical|hierarchical]] relationships) Category and/or Item nodes.
-*** Item nodes can contain only Item nodes and not Category nodes.
+** A node's type can be [[#WmHelp:GlossaryAtoO#anchor_Category|Category]],  [[#WmHelp:GlossaryAtoO#anchor_Individual|Individual]], or [[#WmHelp:GlossaryPtoZ#anchor_Property|Property]].
+*** Category nodes can contain (in [[#WmHelp:GlossaryAtoO#anchor_Hierarchical|hierarchical]] relationships) Category and/or Individual nodes.
+*** Individual nodes can contain only Individual nodes and not Category nodes.
 *** Only Property nodes can be referred to as an edge's predicate.
 
 * Each edge references three nodes, a [[WmHelp:GlossaryPtoZ#anchor_Subject|subject]], a [[WmHelp:GlossaryPtoZ#anchor_Predicate|predicate]], and an [[WmHelp:GlossaryAtoO#anchor_Object|object]].

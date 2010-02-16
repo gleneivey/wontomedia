@@ -19,7 +19,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #  - the auto-generated node.Name suggestion must conform to the rules
 #    for Name's content (except for uniqueness WRT existing nodes)
 #  - the generated Name will be CamelCase, with the very first letter
-#    generated being upper-case when node.Type is "Category" or "Item",
+#    generated being upper-case when node.Type is "Category" or "Individual",
 #    and lower-case when Type is "Property"
 #  - ignore any characters at the beginning of node.Title that are not
 #    letters
@@ -69,7 +69,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
   Scenario: auto Name generation disabled/enabled by editing Name
     Given I am on the new nodes page
-    And I select "Item" from "Type"
+    And I select "Individual" from "Type"
     When I put the focus on the "node_title" element
     And I pause
     And I type "another good title--for testing!"

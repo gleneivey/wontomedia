@@ -23,7 +23,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
 
   Scenario: Name check identifies unique and already-used values
-    Given there is 1 existing item like "alreadyExisting"
+    Given there is 1 existing individual like "alreadyExisting"
     When I am on the new nodes page
     Then the image "name_status_icon" is "blank_status_icon"
 

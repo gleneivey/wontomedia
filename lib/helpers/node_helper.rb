@@ -17,26 +17,26 @@
 
 
 class NodeHelper
-  NODE_KLASS_NAME          = "Node"
-  NODE_CLASS_KLASS_NAME    = "ClassNode"
-  NODE_ITEM_KLASS_NAME     = "ItemNode"
-  NODE_PROPERTY_KLASS_NAME = "PropertyNode"
-  NODE_REIFFIED_KLASS_NAME = "ReiffiedNode"
+  NODE_KLASS_NAME            = "Node"
+  NODE_CLASS_KLASS_NAME      = "ClassNode"
+  NODE_INDIVIDUAL_KLASS_NAME = "IndividualNode"
+  NODE_PROPERTY_KLASS_NAME   = "PropertyNode"
+  NODE_REIFFIED_KLASS_NAME   = "ReiffiedNode"
 
   NODE_SUBTYPES_FROM_TEXT = {
-    "node"              => Node,         "Node"         => Node,
-    "class"             => ClassNode,    "ClassNode"    => ClassNode,
-    "item"              => ItemNode,     "ItemNode"     => ItemNode,
-    "property"          => PropertyNode, "PropertyNode" => PropertyNode,
-    "reiffied-property" => ReiffiedNode, "ReiffiedNode" => ReiffiedNode
+    "node"              => Node,           "Node"           => Node,
+    "class"             => ClassNode,      "ClassNode"      => ClassNode,
+    "individual"        => IndividualNode, "IndividualNode" => IndividualNode,
+    "property"          => PropertyNode,   "PropertyNode"   => PropertyNode,
+    "reiffied-property" => ReiffiedNode,   "ReiffiedNode"   => ReiffiedNode
   }
   NODE_CLASSNAME_TO_SUBTYPE_SHORT = {
-    "ClassNode" => 'class', "ItemNode" => 'item',
+    "ClassNode" => 'class', "IndividualNode" => 'individual',
     "PropertyNode" => 'property', "ReiffiedNode" => 'reiffied'
   }
   NODE_SUBTYPES_TO_HUMAN = {
     'ClassNode' => 'Category',
-    'ItemNode' => 'Item',
+    'IndividualNode' => 'Individual',
     'PropertyNode' => 'Property Type',
     'ReiffiedNode' => 'Reiffied Property'
   }
@@ -54,8 +54,8 @@ class NodeHelper
             when "node"              then Node
             when "ClassNode"         then ClassNode
             when "class"             then ClassNode
-            when "ItemNode"          then ItemNode
-            when "item"              then ItemNode
+            when "IndividualNode"    then IndividualNode
+            when "individual"        then IndividualNode
             when "PropertyNode"      then PropertyNode
             when "property"          then PropertyNode
             when "ReiffiedNode"      then ReiffiedNode
@@ -83,8 +83,8 @@ class NodeHelper
             when "node"              then Node
             when "ClassNode"         then ClassNode
             when "class"             then ClassNode
-            when "ItemNode"          then ItemNode
-            when "item"              then ItemNode
+            when "IndividualNode"    then IndividualNode
+            when "individual"        then IndividualNode
             when "PropertyNode"      then PropertyNode
             when "property"          then PropertyNode
             when "ReiffiedNode"      then ReiffiedNode
@@ -103,9 +103,9 @@ class NodeHelper
   end
 
   def self.nouns
-    ClassNode.all + ItemNode.all
+    ClassNode.all + IndividualNode.all
   end
   def self.not_reiffied
-    ClassNode.all + ItemNode.all + PropertyNode.all
+    ClassNode.all + IndividualNode.all + PropertyNode.all
   end
 end

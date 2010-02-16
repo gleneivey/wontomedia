@@ -68,31 +68,31 @@ class EdgesControllerTest < ActionController::TestCase
     # spot-check for presence/absence of one known node of each STI child type
     ns = assigns(:nodes)
     assert   ns.include?( nodes(:testCategory) )
-    assert   ns.include?( nodes(:testItem) )
+    assert   ns.include?( nodes(:testIndividual) )
     assert   ns.include?( nodes(:testProperty) )
     assert !(ns.include?( nodes(:edge_one) ))
 
     vs = assigns(:verbs)
     assert !(vs.include?( nodes(:testCategory) ))
-    assert !(vs.include?( nodes(:testItem) ))
+    assert !(vs.include?( nodes(:testIndividual) ))
     assert   vs.include?( nodes(:testProperty) )
     assert !(vs.include?( nodes(:edge_one) ))
   end
 
   # possible edge combinations:
   #   class    -- class
-  #   class    -- item
-  #   item     -- item
-  #   item     -- class    [non-hierarchical only]
+  #   class    -- individual
+  #   indiv'l  -- individual
+  #   indiv'l  -- class    [non-hierarchical only]
   #   property -- property [only type that can use "sub_property_of"]
   #   property -- class
-  #   property -- item
+  #   property -- individual
   #   class    -- property
-  #   item     -- property
+  #   indiv'l  -- property
   # note: checks for rejection of invalid edge cases are in unit//models/edge
   test "should create all valid edges" do
     subj_nodes = [
-      nodes(:testCategory), nodes(:testItem), nodes(:testProperty) ]
+      nodes(:testCategory), nodes(:testIndividual), nodes(:testProperty) ]
     obj_nodes  = [
       nodes(:two), nodes(:one), nodes(:isAssigned) ]
     verb_nodes = [
@@ -124,7 +124,7 @@ class EdgesControllerTest < ActionController::TestCase
 
   test "should not create an edge if missing an element of triple" do
     s_id = nodes(:testContainer).id
-    o_id = nodes(:testItem).id
+    o_id = nodes(:testIndividual).id
 
     assert_no_difference('Edge.count') do
       post :create, :edge => { :subject_id => s_id, :obj_id => o_id }

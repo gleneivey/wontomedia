@@ -16,7 +16,7 @@ Feature:  Edit individual nodes through non-Ajax pages
 
 
   Scenario: Change all fields of an existing node, one in each of three ops
-    Given there is 1 existing item like "wilma"
+    Given there is 1 existing individual like "wilma"
     And I am on the edit nodes page for "wilma0"
     And I fill in "Name" with "reallyBetty"
     When I press "Update"
@@ -56,7 +56,7 @@ Feature:  Edit individual nodes through non-Ajax pages
 
 
   Scenario: Delete links for user nodes, not for built-in nodes
-    Given there is 1 existing item like "anItem"
+    Given there is 1 existing individual like "anItem"
     When I go to the index nodes page
     Then there should be a node container for "anItem0" including the tag "a[href="/nodes/?anItem0?"][onclick*="delete"]"
     And there should not be a node container for "sub_property_of" including the tag "a[href="/nodes/?sub_property_of?"][onclick*="delete"]"

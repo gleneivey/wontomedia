@@ -21,15 +21,15 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     Then the focus is on the "class_node_title" element
 
   Scenario: nodes/##/edit form has correct Tab order to controls
-    Given there is 1 existing item like "wilma"
+    Given there is 1 existing individual like "wilma"
     And I am on the edit nodes page for "wilma0"
     And I pause
     When I type the "Tab" special key
-    Then the focus is on the "item_node_name" element
+    Then the focus is on the "individual_node_name" element
     When I type the "Tab" special key
-    Then the focus is on the "item_node_description" element
+    Then the focus is on the "individual_node_description" element
     When I type the "Tab" special key
-    Then the focus is on the "item_node_submit" element
+    Then the focus is on the "individual_node_submit" element
 
 
   Scenario: Empty form incrementally displays flag text/icons
@@ -156,7 +156,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
 
   Scenario: Name check identifies unique and already-used values
-    Given there are 2 existing items like "alreadyExisting"
+    Given there are 2 existing individuals like "alreadyExisting"
     And I am on the edit nodes page for "alreadyExisting0"
     When I fill in "Name" with "alreadyExisting1"
     Then the element "name_must_be_unique" has the format "font-weight=400"

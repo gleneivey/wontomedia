@@ -101,7 +101,7 @@ Screw.Unit(function(){
       });
 
       it( "performs check after node.Title set, node_title.blur()", function(){
-        E('node_sti_type').value = "ItemNode";
+        E('node_sti_type').value = "IndividualNode";
         changeNamedFieldToValue('node_title', "another new node");
         E('node_description').focus();
 
@@ -115,7 +115,7 @@ Screw.Unit(function(){
         function(){
 
         // setup
-        E('node_sti_type').value = "ItemNode";
+        E('node_sti_type').value = "IndividualNode";
         var title = E('node_title');
         var name = E('node_name');
 

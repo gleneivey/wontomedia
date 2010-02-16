@@ -22,6 +22,6 @@ Planned:
 
 * [[WmHelp:Tutorials/CreatingAList|Creating a simple list]]
 * [[WmHelp:Tutorials/CreatingAHierarchy|Creating a hierarchy]]
-* [[WmHelp:Tutorials/CategoriesVsItems|Distinguishing categories and items]]
+* [[WmHelp:Tutorials/CategoriesVsIndividuals|Distinguishing categories and individuals]]
 * [[WmHelp:Tutorials/CreatingAProperty|Creating a new type of relationship]]
 * [[WmHelp:Tutorials/UsingSPO|Using the 'sub_property_of' Property]]

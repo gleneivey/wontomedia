@@ -5,7 +5,7 @@ Feature:  Download (for backup) and upload (for restore) all nodes in YAML
 
   @not_for_selenium
   Scenario: Download nodes.yml
-    Given there are 3 existing items like "anItem"
+    Given there are 3 existing individuals like "anItem"
     When I go to the path "/nodes.yaml"
     Then the response should contain 9 matches of "anItem"
 

@@ -19,7 +19,7 @@
 require "ostruct"
 
 WontoMedia = OpenStruct.new({
-  :site_title => "",                           # last item in page <title>
+  :site_title => "",                           # last element in page <title>
   :site_tagline => "",                         # top of home page
 
     # change these if you use a local wiki, but will work to use public

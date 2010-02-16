@@ -18,7 +18,7 @@
 
 # most basic item, used by edge controller tests
 aReiffiedEdge:
-  subject: testItem
+  subject: testIndividual
   predicate: one
   obj: testCategory
   edge_desc: edge_one
@@ -39,7 +39,7 @@ isAssignedIsAValueProperty:
 subcategoryHasValue:
   subject: testSubcategory
   predicate: isAssigned
-  obj: testItem
+  obj: testIndividual
   flags: 0
 
 

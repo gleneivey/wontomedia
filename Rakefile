@@ -53,15 +53,16 @@ ENDOSTRING
 
     s.files =  FileList["[A-Z]*", "assets/wontomedia-sample.rb",
       "{app,config,bin,db,default-custom,generators,lib,public,script}/**/*"].
-        exclude("database.yml") do |maybe_exclude|
+        exclude("database.yml", "wontomedia.rb") do |maybe_exclude|
           File.symlink?( maybe_exclude )
         end
+    s.test_files = []
     # Note: 1) Explicitly add any future non-testing packages under 'vendor'
     # 2) Exclude all of our symbolic links
     # 3)
     #     .autotest cucumber.yml .gitignore
     # the testing directories
-    #     deploy features policy test
+    #     deploy doc features policy test
     # and the working/transitory directories
     #     log pkg tmp
     # aren't included because developers are expected to pull from Git

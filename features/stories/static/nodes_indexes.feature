@@ -11,11 +11,10 @@ Feature:  Show existing ontology information in app home and index pages
 
   Scenario: Homepage shows list of existing nodes
     Given there are 2 existing classes like "kirgagh0"
-    Given there are 3 existing items like "kirgagh1"
+    Given there are 3 existing individuals like "kirgagh1"
     Given there are 4 existing properties like "kirgagh2"
     Given there are 1 existing reiffied-properties like "kirgagh3"
     When I go to "the homepage"
-      # three instances each of strings for "class" and "item", none for others
     Then I should see 10 matches of "kirgagh"
 
 
@@ -27,7 +26,7 @@ Feature:  Show existing ontology information in app home and index pages
 
   Scenario: View index of existing nodes
     Given there are 5 existing classes like "fufubarfu0"
-    Given there are 3 existing items like "fufubarfu1"
+    Given there are 3 existing individuals like "fufubarfu1"
     Given there are 4 existing properties like "fufubarfu2"
     Given there are 1 existing reiffied-properties like "fufubarfu3"
     When I go to the index nodes page

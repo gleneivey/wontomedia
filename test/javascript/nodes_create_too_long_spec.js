@@ -93,7 +93,7 @@ Screw.Unit(function(){
         var submit = E(submitId);
 
         // initialize all the non-Description elements to non-error content
-        E('node_sti_type').value = "ItemNode";
+        E('node_sti_type').value = "IndividualNode";
         E('node_title').value = "A node for an individual thing";
         changeNamedFieldToValue('node_name', "indivThing");
 

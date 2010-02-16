@@ -145,7 +145,7 @@ which contains a set of Ruby configuration structure definitions like:
  require "ostruct"
 
  WontoMedia = OpenStruct.new({
-   :site_title => "",                           # last item in page <title>
+   :site_title => "",                           # last element in page <title>
    :site_tagline => "",                         # top of home page
    :ads => OpenStruct.new({
  #    :amazon => OpenStruct.new({
@@ -161,7 +161,7 @@ which contains a set of Ruby configuration structure definitions like:
    })
  })
 
-The items which are commented out are optional, and should be included only if you have values for them particular to your installation.  The remaining lines are required, and you should fill in between the empty quotation-mark pairs, <tt>""</tt>, for your installation.  You may use the file exactly as it is if you want a minimal WontoMedia setup.
+The lines which are commented out are optional, and should be included only if you have values for them particular to your installation.  The remaining lines are required, and you should fill in between the empty quotation-mark pairs, <tt>""</tt>, for your installation.  You may use the file exactly as it is if you want a minimal WontoMedia setup.
 
 For your first installation, start by copying the sample file to
 

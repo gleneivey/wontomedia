@@ -80,7 +80,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
 
   Scenario: Inputs flagged for empty are unflagged when filled, Create enabled
     Given there is 1 existing class like "category"
-    And there is 1 existing item like "item"
+    And there is 1 existing individual like "indiv"
     And I am on the new edges page
     When I put the focus on the "edge_submit" element
     And I pause
@@ -94,7 +94,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
 
     When I select "category0 : category node number 0" from "Subject"
     And I select "contains : Contains (basic relationship)" from "Relates to"
-    And I select "item0 : item node number 0" from "Object"
+    And I select "indiv0 : indiv node number 0" from "Object"
     Then the element "subject_required" has the format "font-weight=400"
     And the element "predicate_required" has the format "font-weight=400"
     And the element "obj_required" has the format "font-weight=400"

@@ -59,19 +59,19 @@ class NodesShowViewTest < ActionController::TestCase
   end
 
   test "nodes show JSON response should contain node name" do
-    n, j = get_nodes_show_json(:one, "item")
+    n, j = get_nodes_show_json(:one, "individual")
     assert j["name"] == n.name,
       "Expected response Name '#{j['name']}' to match node's #{n.name}"
   end
 
   test "nodes show JSON response should contain node title" do
-    n, j = get_nodes_show_json(:one, "item")
+    n, j = get_nodes_show_json(:one, "individual")
     assert j["title"] == n.title,
       "Expected response Title '#{j['title']}' to match node's #{n.title}"
   end
 
   test "nodes show JSON response should contain node description" do
-    n, j = get_nodes_show_json(:one, "item")
+    n, j = get_nodes_show_json(:one, "individual")
     assert j["description"] == n.description,
       "Expected response Description '#{j['description']}' to " +
         "match node's #{n.description}"
@@ -111,7 +111,7 @@ class NodesShowViewTest < ActionController::TestCase
       nodes(:testSubcategory),              # subcategoryHasValue
       nodes(:isAssigned)
     ].each do |n|
-      get_nodes_show(:testItem)
+      get_nodes_show(:testIndividual)
       assert_select "body", /#{n.title}/
       assert_select "a[href=?]", node_path(n)
     end
@@ -121,7 +121,7 @@ class NodesShowViewTest < ActionController::TestCase
     [ edges(:aReiffiedEdge),
       edges(:subcategoryHasValue)
     ].each do |e|
-      get_nodes_show(:testItem)
+      get_nodes_show(:testIndividual)
       assert_select "a[href=?]", edit_edge_path(e)
       assert_select "a[href=?]", edge_path(e)
     end

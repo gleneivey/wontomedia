@@ -107,29 +107,31 @@ private
     spo_id  = Node.find_by_name("sub_property_of").id
 
 
-        # would this create an "item parent_of category" relationship?
+        # would this create an "individual parent_of category" relationship?
     subNode = Node.find(subject_id)
     objNode = Node.find(obj_id)
-    # check for "item parent_of category"
-    if subNode.sti_type == NodeHelper::NODE_ITEM_KLASS_NAME  &&
+    # check for "individual parent_of category"
+    if subNode.sti_type == NodeHelper::NODE_INDIVIDUAL_KLASS_NAME  &&
        objNode.sti_type == NodeHelper::NODE_CLASS_KLASS_NAME
       if check_properties(
           :does => predicate_id,
           :inherit_from => Node.find_by_name("parent_of").id,
           :via => spo_id)
-        errors.add :predicate, 'an item cannot be the parent of a category.'
+        errors.add :predicate,
+                   'an individual cannot be the parent of a category.'
         return false
       end
     end
 
-    # check for "category child_of item"
+    # check for "category child_of individual"
     if subNode.sti_type == NodeHelper::NODE_CLASS_KLASS_NAME  &&
-       objNode.sti_type == NodeHelper::NODE_ITEM_KLASS_NAME
+       objNode.sti_type == NodeHelper::NODE_INDIVIDUAL_KLASS_NAME
       if check_properties(
           :does => predicate_id,
           :inherit_from => Node.find_by_name("child_of").id,
           :via => spo_id)
-        errors.add :predicate, 'a category cannot be the child of an item.'
+        errors.add :predicate,
+                   'a category cannot be the child of an individual.'
         return false
       end
     end

@@ -5,12 +5,12 @@ Feature:  Download (for backup) and upload (for restore) all edges in N3
 
   @not_for_selenium
   Scenario: Download edges.n3
-    Given there are 4 existing items like "item"
-    And there is an existing edge "item1" "child_of" "item0"
-    And there is an existing edge "item2" "child_of" "item1"
-    And there is an existing edge "item3" "child_of" "item2"
+    Given there are 4 existing individuals like "indiv"
+    And there is an existing edge "indiv1" "child_of" "indiv0"
+    And there is an existing edge "indiv2" "child_of" "indiv1"
+    And there is an existing edge "indiv3" "child_of" "indiv2"
     When I go to the path "/edges.n3"
-    Then the response should contain 6 matches of "item"
+    Then the response should contain 6 matches of "indiv"
 
 
 

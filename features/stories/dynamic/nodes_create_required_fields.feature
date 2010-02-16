@@ -156,7 +156,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Then the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "blank_error_icon"
 
-    When I select "Item" from "Type"
+    When I select "Individual" from "Type"
     And I pause
     Then the element "sti_type_required" has the format "font-weight=400"
     And the image "sti_type_error_icon" is "blank_error_icon"

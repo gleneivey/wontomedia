@@ -19,7 +19,7 @@
 require("spec_helper.js");
 
 
-var testType = "ItemNode";
+var testType = "IndividualNode";
 function getCurrentType(){ return testType; }
 
 Screw.Unit(function(){
@@ -54,7 +54,7 @@ Screw.Unit(function(){
           inCt++;
 
         var lowerCase = ((inCt % 2) == 0);
-        testType = lowerCase ? "PropertyNode" : "ItemNode";
+        testType = lowerCase ? "PropertyNode" : "IndividualNode";
 
         var inpt = longInput.substr(0, inCt);
         var len = (outCt > 80) ? 80 : outCt;
@@ -74,7 +74,7 @@ Screw.Unit(function(){
             type: "ClassNode" },
         { inStr: ">Node-title isn't lONG<",
             outStr: "NodeTitleIsntLong",
-            type: "ItemNode" },
+            type: "IndividualNode" },
         { inStr: "Title of \"a node\"is longer",
             outStr: "titleOfANodeIsLonger",
             type: "PropertyNode" },
@@ -83,7 +83,7 @@ Screw.Unit(function(){
             type: "ClassNode" },
         { inStr: "This!title@&has#*(words$)-=delimited%_+[:;by^|\\punctuation!",
             outStr: "This_Title_Has_Words_Delimited_By_Punctuation",
-            type: "ItemNode" },
+            type: "IndividualNode" },
         { inStr: "A node  (wItH SurPrisE)",
             outStr: "aNode_WithSurprise_",
             type: "PropertyNode" }
@@ -131,7 +131,7 @@ Screw.Unit(function(){
     });
 
     it( "Handles digits, any position", function(){
-      testType = "ItemNode";
+      testType = "IndividualNode";
       var inStr  = "A longer title string is more interesting";
       var outStr = "ALongerTitleStringIsMoreInteresting";
       var iS, oS;
@@ -196,7 +196,7 @@ Screw.Unit(function(){
 
       var titleElem = document.getElementById('title');
       var nameElem  = document.getElementById('name');
-      testType = "ItemNode";
+      testType = "IndividualNode";
 
       var inStr  = "another  long title with   spaces";
       var outStr = "AnotherLongTitleWithSpaces";

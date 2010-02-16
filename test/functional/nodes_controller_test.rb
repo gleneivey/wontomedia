@@ -106,7 +106,7 @@ class NodesControllerTest < ActionController::TestCase
   test "should not create node with invalid data" do
     assert_no_difference('Node.count') do
       post :create, :node => { :name => "name", :title => "ti\ttle",
-                               :sti_type => "ItemNode" }
+                               :sti_type => "IndividualNode" }
     end
     assert_response :success
     assert_template "nodes/new"
@@ -128,7 +128,7 @@ class NodesControllerTest < ActionController::TestCase
   test "should not create a node with a name including a colon" do
     assert_no_difference('Node.count') do
       post :create, :node => { :name => "na:me", :title => "title",
-                               :sti_type => "ItemNode" }
+                               :sti_type => "IndividualNode" }
     end
     assert_response :success
     assert_template "nodes/new"
@@ -222,7 +222,7 @@ class NodesControllerTest < ActionController::TestCase
     n = Node.find_by_name("sub_property_of")
     get :show, :id => n.id
 
-    # this time, check built-in "seed" schema.  Lots o' items use sub_prop_of
+    # this time, check built-in "seed" schema.  Lots o' indiv's use sub_prop_of
     # edge_list should look like: [ ... [many edges]]
     assert edge_list = assigns(:edge_list)
     assert edge_list.length >= 1
@@ -414,7 +414,7 @@ class NodesControllerTest < ActionController::TestCase
   end
 
   test "should not delete node in use by an edge" do
-    assert_node_wont_delete(nodes(:testItem))
+    assert_node_wont_delete(nodes(:testIndividual))
   end
 
   test "should lookup existing node" do

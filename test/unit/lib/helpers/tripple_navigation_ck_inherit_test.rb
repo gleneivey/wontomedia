@@ -28,7 +28,7 @@ class CheckPropertiesInheritTest < ActiveSupport::TestCase
 
   test "node with simple property doesnt inherit" do
     assert !check_properties( :does         => nodes(:testCategory).id,
-                              :inherit_from => nodes(:testItem).id,
+                              :inherit_from => nodes(:testIndividual).id,
                               :via          => nodes(:one).id     )
   end
 

@@ -73,8 +73,8 @@ Screw.Unit(function(){
       it( "allows creation of a Subject node in edges/new page", function(){
         selectName = 'edge_subject_id';
         expectPopupTriggering();
-        var formStrings = [ "ItemNode", "new node for JS testing", "newJsNode",
-                            "A node for testing of popup JS" ];
+        var formStrings = [ "IndividualNode", "new node for JS testing",
+                            "newJsNode", "A node for testing of popup JS" ];
         fillInPopupForm( formStrings, "NewNodeForJsTesting" );
         var nodeRE = expectEdgeUpdateOnPopupSubmission('subject', formStrings);
         expectSelectContentForNoun(nodeRE);

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-02-15}
+  s.date = %q{2010-02-16}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
      "app/helpers/nodes_show_helper.rb",
      "app/models/class_node.rb",
      "app/models/edge.rb",
-     "app/models/item_node.rb",
+     "app/models/individual_node.rb",
      "app/models/node.rb",
      "app/models/property_node.rb",
      "app/models/reiffied_node.rb",
@@ -84,7 +84,6 @@ Gem::Specification.new do |s|
      "config/initializers/inflections.rb",
      "config/initializers/mime_types.rb",
      "config/initializers/new_rails_defaults.rb",
-     "config/initializers/wontomedia.rb",
      "config/locales/en.yml",
      "config/routes.rb",
      "db/fixtures/edges.yml",
@@ -185,43 +184,6 @@ Gem::Specification.new do |s|
   s.rubyforge_project = %q{wontomedia}
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme}
-  s.test_files = [
-    "test/unit/db/schema_test.rb",
-     "test/unit/db/test_helper.rb",
-     "test/unit/db/fixtures/nodes_test.rb",
-     "test/unit/db/assert_current_schema.rb",
-     "test/unit/app/views/edges/index_test.rb",
-     "test/unit/app/views/edges/edit_test.rb",
-     "test/unit/app/views/edges/show_test.rb",
-     "test/unit/app/views/edges/new_test.rb",
-     "test/unit/app/views/layouts/application_test.rb",
-     "test/unit/app/views/nodes/index_test.rb",
-     "test/unit/app/views/nodes/edit_test.rb",
-     "test/unit/app/views/nodes/newpop_test.rb",
-     "test/unit/app/views/nodes/show_test.rb",
-     "test/unit/app/views/nodes/home_test.rb",
-     "test/unit/app/views/nodes/new_test.rb",
-     "test/unit/app/helpers/nodes_show_helper_test.rb",
-     "test/unit/app/models/node_test.rb",
-     "test/unit/app/models/reiffied_node_test.rb",
-     "test/unit/app/models/item_node_test.rb",
-     "test/unit/app/models/property_node_test.rb",
-     "test/unit/app/models/class_node_test.rb",
-     "test/unit/app/models/edge_test.rb",
-     "test/unit/lib/helpers/tripple_navigation_ck_inherit_test.rb",
-     "test/unit/lib/helpers/tripple_navigation_raaSuper_test.rb",
-     "test/unit/lib/helpers/tripple_navigation_raaSub_test.rb",
-     "test/unit/lib/helpers/tripple_navigation_ck_link_test.rb",
-     "test/unit/config/routes_test.rb",
-     "test/db_migrations_test.rb",
-     "test/integration/home_create_nodes_test.rb",
-     "test/integration/test_helper.rb",
-     "test/test_helper.rb",
-     "test/functional/admin_controller_test.rb",
-     "test/functional/nodes_controller_test.rb",
-     "test/functional/edges_controller_test.rb",
-     "test/seed_helper.rb"
-  ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION

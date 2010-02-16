@@ -36,13 +36,13 @@ Feature:  View edges related to a node on that node's "resource" page
 
 
   Scenario: View a node with no edges
-    Given there is 1 existing item like "lonelyNode"
+    Given there is 1 existing individual like "lonelyNode"
     When I am on the show nodes page for "lonelyNode0"
     Then I should see 5 matches of "lonelyNode"
 
 
   Scenario: View a node with one edge
-    Given there is 2 existing items like "friendlyNode"
+    Given there is 2 existing individuals like "friendlyNode"
     And there is an existing edge "friendlyNode0" "peer_of" "friendlyNode1"
     When I am on the show nodes page for "friendlyNode0"
     Then I should see 9 matches of "friendlyNode"

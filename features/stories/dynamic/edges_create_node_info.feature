@@ -14,7 +14,7 @@ Feature:  Verify inputs for creation of new edge dynamically within the page
   Scenario: New edges page interactively displays selected node descriptions
     Given there are 3 existing classes like "aClass"
     And there are 3 existing properties like "aProperty"
-    And there are 3 existing items like "anItem"
+    And there are 3 existing individuals like "anItem"
     And I am on the new edges page
 
     When I select "aClass0 : aClass node number 0" from "Subject"

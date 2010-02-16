@@ -4,56 +4,56 @@ Feature:  Edit individual edges through non-Ajax pages
   to be able to change the information for existing edges.
 
   Scenario: Change all fields of an existing edge
-    Given there are 4 existing items like "item"
-    And there is an existing edge "item0" "child_of" "item1"
-    And I am on the edit edges page for "item0" "child_of" "item1"
-    And I select "item2 : item node number 2" from "Subject"
+    Given there are 4 existing individuals like "indiv"
+    And there is an existing edge "indiv0" "child_of" "indiv1"
+    And I am on the edit edges page for "indiv0" "child_of" "indiv1"
+    And I select "indiv2 : indiv node number 2" from "Subject"
     And I select "parent_of : Parent Of (basic relationship)" from "Relates to"
-    And I select "item3 : item node number 3" from "Object"
+    And I select "indiv3 : indiv node number 3" from "Object"
     When I press "Update"
     Then I should see "successfully updated"
-    And I should see "item2"
+    And I should see "indiv2"
     And I should see "parent_of"
-    And I should see "item3"
+    And I should see "indiv3"
 
 
   Scenario: Change all fields of an existing edge, one in each of three ops
-    Given there are 4 existing items like "item"
-    And there is an existing edge "item0" "child_of" "item1"
-    And I am on the edit edges page for "item0" "child_of" "item1"
-    And I select "item2 : item node number 2" from "Subject"
+    Given there are 4 existing individuals like "indiv"
+    And there is an existing edge "indiv0" "child_of" "indiv1"
+    And I am on the edit edges page for "indiv0" "child_of" "indiv1"
+    And I select "indiv2 : indiv node number 2" from "Subject"
     When I press "Update"
     Then I should see "successfully updated"
-    And I should see "item2"
+    And I should see "indiv2"
     And I should see "child_of"
-    And I should see "item1"
+    And I should see "indiv1"
 
-    Then I am on the edit edges page for "item2" "child_of" "item1"
+    Then I am on the edit edges page for "indiv2" "child_of" "indiv1"
     And I select "parent_of : Parent Of (basic relationship)" from "Relates to"
     When I press "Update"
     Then I should see "successfully updated"
-    And I should see "item2"
+    And I should see "indiv2"
     And I should see "parent_of"
-    And I should see "item1"
+    And I should see "indiv1"
 
-    Then I am on the edit edges page for "item2" "parent_of" "item1"
-    And I select "item3 : item node number 3" from "Object"
+    Then I am on the edit edges page for "indiv2" "parent_of" "indiv1"
+    And I select "indiv3 : indiv node number 3" from "Object"
     When I press "Update"
     Then I should see "successfully updated"
-    And I should see "item2"
+    And I should see "indiv2"
     And I should see "parent_of"
-    And I should see "item3"
+    And I should see "indiv3"
 
 
         # all of the error-checking tests mirror those in for edges_create,
         # but you never can tell.....
 
   Scenario: I can't change an edge to duplicate an existing one
-    Given there are 2 existing items like "thing"
-    And there are 2 existing items like "item"
+    Given there are 2 existing individuals like "thing"
+    And there are 2 existing individuals like "indiv"
     And there is an existing edge "thing0" "contains" "thing1"
-    And there is an existing edge "item0" "peer_of" "item1"
-    And I am on the edit edges page for "item0" "peer_of" "item1"
+    And there is an existing edge "indiv0" "peer_of" "indiv1"
+    And I am on the edit edges page for "indiv0" "peer_of" "indiv1"
     And I select "thing0 : thing node number 0" from "Subject"
     And I select "contains : Contains (basic relationship)" from "Relates to"
     And I select "thing1 : thing node number 1" from "Object"
@@ -62,7 +62,7 @@ Feature:  Edit individual edges through non-Ajax pages
 
 
   Scenario: I can't change an edge to use a sub/super prop of an existing one
-    Given there are 2 existing items like "thing"
+    Given there are 2 existing individuals like "thing"
     And there is an existing edge "thing0" "parent_of" "thing1"
     And there is an existing edge "thing0" "peer_of" "thing1"
     And I am on the edit edges page for "thing0" "parent_of" "thing1"
@@ -74,7 +74,7 @@ Feature:  Edit individual edges through non-Ajax pages
 
 
   Scenario: I can't change an edge to duplicate an existing implicit one
-    Given there are 2 existing items like "thing"
+    Given there are 2 existing individuals like "thing"
     And there is an existing edge "thing0" "contains" "thing1"
     And there is an existing edge "thing0" "peer_of" "thing1"
     And I am on the edit edges page for "thing0" "contains" "thing1"
@@ -85,9 +85,9 @@ Feature:  Edit individual edges through non-Ajax pages
     Then I should see "error"
 
 
-  Scenario: I can't change an edge to be item-contains-category
+  Scenario: I can't change an edge to be individual-contains-category
     Given there is 1 existing class like "myClass"
-    And there is 1 existing item like "myItem"
+    And there is 1 existing individual like "myItem"
     And there is an existing edge "myItem0" "child_of" "myClass0"
     And I am on the edit edges page for "myItem0" "child_of" "myClass0"
     And I select "parent_of : Parent Of (basic relationship)" from "Relates to"
@@ -95,9 +95,9 @@ Feature:  Edit individual edges through non-Ajax pages
     Then I should see "error"
 
 
-  Scenario: I can't change an edge to be category-containedBy-item
+  Scenario: I can't change an edge to be category-containedBy-individual
     Given there is 1 existing class like "myClass"
-    And there is 1 existing item like "myItem"
+    And there is 1 existing individual like "myItem"
     And there is an existing edge "myClass0" "contains" "myItem0"
     And I am on the edit edges page for "myClass0" "contains" "myItem0"
     And I select "one_of : One Of (basic relationship)" from "Relates to"
@@ -106,18 +106,18 @@ Feature:  Edit individual edges through non-Ajax pages
 
 
   Scenario: I can't change an edge to close a prohibited loop
-    Given there are 3 existing items like "item"
-    And there is an existing edge "item0" "predecessor_of" "item1"
-    And there is an existing edge "item1" "predecessor_of" "item2"
-    And there is an existing edge "item2" "value_relationship" "item0"
-    And I am on the edit edges page for "item2" "value_relationship" "item0"
+    Given there are 3 existing individuals like "indiv"
+    And there is an existing edge "indiv0" "predecessor_of" "indiv1"
+    And there is an existing edge "indiv1" "predecessor_of" "indiv2"
+    And there is an existing edge "indiv2" "value_relationship" "indiv0"
+    And I am on the edit edges page for "indiv2" "value_relationship" "indiv0"
     And I select "predecessor_of : Predecessor Of (basic relationship)" from "Relates to"
     When I press "Update"
     Then I should see "error"
 
 
   Scenario: I can't change an edge-to-self to hierarchical_relationship
-    Given there is 1 existing item like "myItem"
+    Given there is 1 existing individual like "myItem"
     And there is an existing edge "myItem0" "value_relationship" "myItem0"
     And I am on the edit edges page for "myItem0" "value_relationship" "myItem0"
     And I select "hierarchical_relationship : Hierarchical Relationship (root relationship type)" from "Relates to"
@@ -126,7 +126,7 @@ Feature:  Edit individual edges through non-Ajax pages
 
 
   Scenario: I can't change an hierarchical_relationship edge into edge-to-self
-    Given there are 2 existing items like "myItem"
+    Given there are 2 existing individuals like "myItem"
     And there is an existing edge "myItem0" "hierarchical_relationship" "myItem1"
     And I am on the edit edges page for "myItem0" "hierarchical_relationship" "myItem1"
     And I select "myItem0 : myItem node number 0" from "Object"
@@ -135,7 +135,7 @@ Feature:  Edit individual edges through non-Ajax pages
 
 
   Scenario: I can't change an edge-to-self to ordered_relationship
-    Given there is 1 existing item like "myItem"
+    Given there is 1 existing individual like "myItem"
     And there is an existing edge "myItem0" "peer_of" "myItem0"
     And I am on the edit edges page for "myItem0" "peer_of" "myItem0"
     And I select "ordered_relationship : Ordered Relationship (root relationship type)" from "Relates to"
@@ -144,7 +144,7 @@ Feature:  Edit individual edges through non-Ajax pages
 
 
   Scenario: I can't change a predecessor_of (implied ordered) into edge-to-self
-    Given there are 2 existing items like "myItem"
+    Given there are 2 existing individuals like "myItem"
     And there is an existing edge "myItem0" "predecessor_of" "myItem1"
     And I am on the edit edges page for "myItem0" "predecessor_of" "myItem1"
     And I select "myItem0 : myItem node number 0" from "Object"

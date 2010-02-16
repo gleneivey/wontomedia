@@ -26,12 +26,12 @@ class EgdeTest < ActiveSupport::TestCase
   test "edge has basic properties" do
     e = Edge.new( :subject => nodes(:testContainer),
                   :predicate => Node.find_by_name("contains"),
-                  :obj => nodes(:testItem) )
+                  :obj => nodes(:testIndividual) )
     assert e.save
   end
 
   test "edge has edge_desc property" do
-    e = Edge.new( :subject => nodes(:testItem),
+    e = Edge.new( :subject => nodes(:testIndividual),
                   :predicate => Node.find_by_name("one_of"),
                   :obj => nodes(:testCategory),
                   :edge_desc => nodes(:edge_one) )
@@ -54,14 +54,14 @@ class EgdeTest < ActiveSupport::TestCase
 
   test "edge properties must be nodes" do
     assert_raise ActiveRecord::AssociationTypeMismatch do
-      e = Edge.new( :subject   => nodes(:testItem),
+      e = Edge.new( :subject   => nodes(:testIndividual),
                     :predicate => nodes(:one),
                     :obj       => edges(:aParentEdge)  )
     end
   end
 
   test "new edge cant duplicate existing" do
-    e = Edge.new( :subject   => nodes(:testItem),
+    e = Edge.new( :subject   => nodes(:testIndividual),
                   :predicate => nodes(:one),
                   :obj       => nodes(:testCategory)  )
     assert !e.save
@@ -138,14 +138,14 @@ class EgdeTest < ActiveSupport::TestCase
     assert !e.save
   end
 
-  test "new edge cant be hierarchical parent-to-child from item to category" do
-    e = Edge.new( :subject   => nodes(:one),  # ItemNode
+  test "new edge cant be parent-to-child from individual to category" do
+    e = Edge.new( :subject   => nodes(:one),  # IndividualNode
                   :predicate => Node.find_by_name( "contains" ),
                   :obj       => nodes(:two)  )
     assert !e.save
   end
 
-  test "new edge cant be hierarchical child-to-parent from category to item" do
+  test "new edge cant be child-to-parent from category to individual" do
     e = Edge.new( :subject   => nodes(:two),  # ClassNode
                   :predicate => Node.find_by_name( "child_of" ),
                   :obj       => nodes(:one)  )

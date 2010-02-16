@@ -39,7 +39,7 @@ Feature:  Create new nodes in the process of creating an edge
     Then the "MB_content" element should match "Selection of a type is required"
     And the "MB_content" element should match "No more than 255 characters"
 
-    Given I select "Item" from "node_sti_type"
+    Given I select "Individual" from "node_sti_type"
     And I fill in "Name" with "aNewSubject"
     And I fill in "Title" with "A new node for a new edge's Subject"
     And I fill in "Description" with "New subject node: test test test"

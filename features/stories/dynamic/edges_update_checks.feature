@@ -11,8 +11,8 @@ Feature:  Verify inputs for editing of edges dynamically within the page
 
 
   Scenario: Form initially has enabled Create button, focus on Subject
-    Given there is 1 existing item like "apollo"
-    And there is 1 existing item like "adama"
+    Given there is 1 existing individual like "apollo"
+    And there is 1 existing individual like "adama"
     And there is an existing edge "apollo0" "child_of" "adama0"
     When I am on the edit edges page for "apollo0" "child_of" "adama0"
     And I pause
@@ -20,10 +20,10 @@ Feature:  Verify inputs for editing of edges dynamically within the page
     And the element "edge_submit" has the format "background-color=$active_button_color;"
 
   Scenario: Form incrementally flags/unflags text/icons when selections changed
-    Given there is 1 existing item like "athena"
-    And there is 1 existing item like "adama"
-    And there is 1 existing item like "starbuck"
-    And there is 1 existing item like "boomer"
+    Given there is 1 existing individual like "athena"
+    And there is 1 existing individual like "adama"
+    And there is 1 existing individual like "starbuck"
+    And there is 1 existing individual like "boomer"
     And there is an existing edge "adama0" "parent_of" "athena0"
 
     When I am on the edit edges page for "adama0" "parent_of" "athena0"
@@ -78,7 +78,7 @@ Feature:  Verify inputs for editing of edges dynamically within the page
   Scenario: Edit edges page interactively displays selected node descriptions
     Given there are 3 existing classes like "ColonialViper"
     And there are 3 existing properties like "shootsAt"
-    And there are 3 existing items like "CylonRaider"
+    And there are 3 existing individuals like "CylonRaider"
     And there is an existing edge "ColonialViper0" "shootsAt1" "CylonRaider2"
 
     When I am on the edit edges page for "ColonialViper0" "shootsAt1" "CylonRaider2"
