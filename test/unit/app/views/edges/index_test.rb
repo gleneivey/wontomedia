@@ -20,6 +20,9 @@
 require 'test_helper'
 require Rails.root.join( 'app', 'helpers', 'nodes_show_helper' )
 include(NodesShowHelper)
+require Rails.root.join( 'app', 'helpers', 'format_helper' )
+include(FormatHelper)
+
 
 class EdgesIndexViewTest < ActionController::TestCase
   tests EdgesController

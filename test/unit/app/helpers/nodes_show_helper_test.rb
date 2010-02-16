@@ -17,6 +17,9 @@
 
 
 require 'test_helper'
+require Rails.root.join( 'app', 'helpers', 'format_helper' )
+include(FormatHelper)
+
 
 class NodesShowHelperTest < ActionView::TestCase
   test "generate self-node title text" do
