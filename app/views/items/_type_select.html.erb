@@ -20,27 +20,28 @@
 
 <p class="inputpara">
   <%= f.label :sti_type, "Type" %>
-  <%= popup_help_icon "Help for type", "WmHelp:Popup/NodeType" %>
+  <%= popup_help_icon "Help for type", "WmHelp:Popup/ItemType" %>
   <%= if @type == "verb"
-        selections = [ [ "Property",      "PropertyNode" ] ]
-        @node.sti_type = "PropertyNode"
+        selections = [ [ "Property",      "PropertyItem" ] ]
+        @item.sti_type = "PropertyItem"
       else
-        selections = [ [ "- type of node -",          "" ],
-                       [ "Category",         "ClassNode" ],
-                       [ "Individual",  "IndividualNode" ],
-                       [ "Property",      "PropertyNode" ] ]
+        selections = [
+          [ "- type of item -",          "" ],
+          [ "Category",      "CategoryItem" ],
+          [ "Individual",  "IndividualItem" ],
+          [ "Property",      "PropertyItem" ] ]
       end
 
-      select_tag "node[sti_type]",
+      select_tag "item[sti_type]",
         options_for_select( selections,
-                            @node.sti_type.nil? ? "" : @node.sti_type ),
+                            @item.sti_type.nil? ? "" : @item.sti_type ),
         :tabindex => "1"
    %>
   <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
-                :alt=>"", :size=>"16x16" %>
+        :alt=>"", :size=>"16x16" %>
 </p><p class="directions">
   <span id="sti_type_required">Selection of a type is required.</span>
 </p>
 <script type="text/javascript">
-  $('node_sti_type').focus();
+  $('item_sti_type').focus();
 </script>

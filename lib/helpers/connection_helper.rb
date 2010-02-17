@@ -16,12 +16,12 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class EdgeHelper
-  def self.edge_array_to_n3(edges)
+class ConnectionHelper
+  def self.connection_array_to_n3(connections)
     result = ""
-    edges.each do |edge|
-      result << "<##{edge.subject.name}> <##{edge.predicate.name}> "
-      result << "<##{edge.obj.name}> .\n"
+    connections.each do |connection|
+      result << "<##{connection.subject.name}> <##{connection.predicate.name}> "
+      result << "<##{connection.obj.name}> .\n"
     end
     result
   end

@@ -19,33 +19,33 @@
 
 require 'test_helper'
 
-class EdgesEditViewTest < ActionController::TestCase
-  tests EdgesController
+class ConnectionsEditViewTest < ActionController::TestCase
+  tests ConnectionsController
 
-  test "should have edit form for edges" do
-    get :edit, :id => edges(:aReiffiedEdge).id
-    assert_template "edges/edit"
+  test "should have edit form for connections" do
+    get :edit, :id => connections(:aQualifiedConnection).id
+    assert_template "connections/edit"
   end
 
-  test "edges edit for should invoke update" do
-    e = edges(:aSpoB)
+  test "connections edit for should invoke update" do
+    e = connections(:aSpoB)
     get :edit, :id => e.id
 
     assert_select   "form[action=?]", @controller.
         url_for(:action => :update, :only_path => true) do
 
-      assert_select "form[method=post]", true, "edit-edge form uses POST"
-      assert_select "select#edge_subject_id", true,
-        "edit-edge form contains 'select' control for :subject"
-      assert_select "select#edge_predicate_id", true,
-        "edit-edge form contains 'select' control for :predicate"
-      assert_select "select#edge_obj_id", true,
-        "edit-edge form contains 'select' control for :obj"
+      assert_select "form[method=post]", true, "edit-connection form uses POST"
+      assert_select "select#connection_subject_id", true,
+        "edit-connection form contains 'select' control for :subject"
+      assert_select "select#connection_predicate_id", true,
+        "edit-connection form contains 'select' control for :predicate"
+      assert_select "select#connection_obj_id", true,
+        "edit-connection form contains 'select' control for :obj"
     end
   end
 
-  test "fresh edges edit form shouldnt contain status" do
-    get :edit, :id => edges(:aParentEdge).id
+  test "fresh connections edit form shouldnt contain status" do
+    get :edit, :id => connections(:aParentConnection).id
     assert_negative_view_contents
   end
 end

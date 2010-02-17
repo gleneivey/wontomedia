@@ -24,41 +24,41 @@
 <% end %>
 
 <%
-  @title_text = 'Make a new edge'
+  @title_text = 'Make a new connection'
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
-    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ],
-    [ 'Edge', 'WmHelp:GlossaryAtoO#anchor_Edge' ]
+    [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ],
+    [ 'Connection', 'WmHelp:GlossaryAtoO#anchor_Connection' ]
   ]
  %>
 
 
-<% form_for(@edge) do |f| %>
+<% form_for(@connection) do |f| %>
   <%= f.error_messages %>
   <%= render :partial => "spo_select_controls",
                :locals => {
-                 :f => f, :edge => @edge,
-                 :nodes => @nodes, :verbs => @verbs
+                 :f => f, :connection => @connection,
+                 :items => @items, :verbs => @verbs
                } %>
   <p><%= f.submit 'Create', :tabindex=>'40' %></p>
 <% end %>
 
 <div class="horizontal-link-list"><ul>
-  <li><%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
-                  :rel => 'nofollow' -%></li>
-  <li><%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;connection&nbsp;list',
+                  connections_path, :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;item&nbsp;list', items_path,
                   :rel => 'nofollow' -%></li>
 </ul></div>
 
 
 <script type="text/javascript">
-  creatingNewEdge = true;
-  creatingNewNode = true;
+  creatingNewConnection = true;
+  creatingNewItem = true;
 </script>
-<%= javascript_include_tag "forEdgesForms" %>
+<%= javascript_include_tag "forConnectionsForms" %>
 <%= javascript_include_tag "event.simulate" %> <!-- used by following -->
-<%= javascript_include_tag "nodeCreatePopup" %>
-    <!-- following used by /nodes/new-pop if loaded by nodeCreatePopup.js -->
-<%= javascript_include_tag "forNodesForms" %>
-<%= javascript_include_tag "nodeTitleToName" %>
+<%= javascript_include_tag "itemCreatePopup" %>
+    <!-- following used by /items/new-pop if loaded by itemCreatePopup.js -->
+<%= javascript_include_tag "forItemsForms" %>
+<%= javascript_include_tag "itemTitleToName" %>

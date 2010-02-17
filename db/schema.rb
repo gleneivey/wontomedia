@@ -11,15 +11,15 @@
 
 ActiveRecord::Schema.define(:version => 20090605215028) do
 
-  create_table "edges", :force => true do |t|
+  create_table "connections", :force => true do |t|
     t.integer "subject_id"
     t.integer "predicate_id"
     t.integer "obj_id"
-    t.integer "edge_desc_id"
+    t.integer "connection_desc_id"
     t.integer "flags",        :default => 0, :null => false
   end
 
-  create_table "nodes", :force => true do |t|
+  create_table "items", :force => true do |t|
     t.string  "name"
     t.string  "title"
     t.text    "description"

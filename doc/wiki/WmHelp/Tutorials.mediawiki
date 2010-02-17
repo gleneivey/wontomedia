@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 This page lists all of our tutorials on creating and maintaining information in a [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]], ordered from basic to more advanced.  In addition to the tutorials, you may be interested in the following pages:
 
 * Thinking of [[WmHelp:InformationAsRelationships|information as relationships]]
@@ -15,8 +13,8 @@ This page lists all of our tutorials on creating and maintaining information in 
 
 <h3>Tutorials</h3>
 
-* [[WmHelp:Tutorials/CreatingANode|Creating a node]]
-* [[WmHelp:Tutorials/CreatingAnEdge|Creating an edge]]
+* [[WmHelp:Tutorials/CreatingAnItem|Creating an item]]
+* [[WmHelp:Tutorials/CreatingAConnection|Creating a connection]]
 
 Planned:
 

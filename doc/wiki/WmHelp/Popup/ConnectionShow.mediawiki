@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-Click the '''Show''' link to go to the details page for that particular edge.  Each edge's page includes the Name, Title, and Description for each of the Nodes that the edge references.
+Click the '''Show''' link to go to the details page for that particular connection.  Each connection's page includes the Name, Title, and Description for each of the items that the connection references.

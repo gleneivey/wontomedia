@@ -19,79 +19,87 @@
 
 require 'test_helper'
 
-class EdgesShowViewTest < ActionController::TestCase
-  tests EdgesController
-  def get_edges_show() get :show, :id => edges(:aReiffiedEdge).id; end
+class ConnectionsShowViewTest < ActionController::TestCase
+  tests ConnectionsController
+  def get_connections_show()
+    get :show, :id => connections(:aQualifiedConnection).id;
+  end
 
-  test "should have show page for edges" do
-    get_edges_show
-    assert_template "edges/show"
+  test "should have show page for connections" do
+    get_connections_show
+    assert_template "connections/show"
   end
 
     # subject
-  test "edge-show page should contain edge's subject Node's title" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).subject.title}/
+  test "connection-show page should contain connection's subject Item's title" do
+    get_connections_show
+    assert_select "body", /#{connections(:aQualifiedConnection).subject.title}/
   end
 
-  test "edge-show page should contain edge's subject Node's name" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).subject.name}/
+  test "connection-show page should contain connection's subject Item's name" do
+    get_connections_show
+    assert_select "body", /#{connections(:aQualifiedConnection).subject.name}/
   end
 
-  test "edge-show page should contain edge's subject Node's description" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).subject.description}/
+  test "connection-show page should contain connection's subject Item's description" do
+    get_connections_show
+    assert_select "body",
+      /#{connections(:aQualifiedConnection).subject.description}/
   end
 
     # predicate
-  test "edge-show page should contain edge's predicate Node's title" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).predicate.title}/
+  test "connection-show page should contain connection's predicate Item's title" do
+    get_connections_show
+    assert_select "body",
+      /#{connections(:aQualifiedConnection).predicate.title}/
   end
 
-  test "edge-show page should contain edge's predicate Node's name" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).predicate.name}/
+  test "connection-show page should contain connection's predicate Item's name" do
+    get_connections_show
+    assert_select "body", /#{connections(:aQualifiedConnection).predicate.name}/
   end
 
-  test "edge-show page should contain edge's predicate Node's description" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).predicate.description}/
+  test "connection-show page should contain connection's predicate Item's description" do
+    get_connections_show
+    assert_select "body",
+      /#{connections(:aQualifiedConnection).predicate.description}/
   end
 
     # object
-  test "edge-show page should contain edge's object Node's title" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).obj.title}/
+  test "connection-show page should contain connection's object Item's title" do
+    get_connections_show
+    assert_select "body", /#{connections(:aQualifiedConnection).obj.title}/
   end
 
-  test "edge-show page should contain edge's object Node's name" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).obj.name}/
+  test "connection-show page should contain connection's object Item's name" do
+    get_connections_show
+    assert_select "body", /#{connections(:aQualifiedConnection).obj.name}/
   end
 
-  test "edge-show page should contain edge's object Node's description" do
-    get_edges_show
-    assert_select "body", /#{edges(:aReiffiedEdge).obj.description}/
+  test "connection-show page should contain connection's object Item's description" do
+    get_connections_show
+    assert_select "body",
+      /#{connections(:aQualifiedConnection).obj.description}/
   end
 
-  test "edges show page shouldnt contain status" do
-    get_edges_show
+  test "connections show page shouldnt contain status" do
+    get_connections_show
     assert_negative_view_contents
   end
 
-  test "edges show page should have and only have right edit destroy links" do
-    Edge.all.each do |edge|
-      get :show, :id => edge.id
+  test "connections show page should have and only have right edit destroy links" do
+    Connection.all.each do |connection|
+      get :show, :id => connection.id
 
-      test_sense = (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0
+      test_sense = (connection.flags & Connection::DATA_IS_UNALTERABLE) == 0
 
       # edit link present/absent
-      assert_select( "a[href=\"#{edit_edge_path(edge)}\"]", test_sense )
+      assert_select( "a[href=\"#{edit_connection_path(connection)}\"]",
+        test_sense )
       # delete link present/absent
       assert_select(
-        "a[href=\"#{edge_path(edge)}\"][onclick*=\"delete\"]", test_sense )
+        "a[href=\"#{connection_path(connection)}\"][onclick*=\"delete\"]",
+        test_sense )
     end
   end
 end

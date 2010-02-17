@@ -18,7 +18,7 @@
 
 require 'test_helper'
 
-class NodesControllerTest < ActionController::TestCase
+class ItemsControllerTest < ActionController::TestCase
   test "should get homepage" do
     get :home
     assert_response :success
@@ -28,21 +28,21 @@ class NodesControllerTest < ActionController::TestCase
   test "should get HTML index page" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:nodes)
+    assert_not_nil assigns(:items)
     assert_not_nil assigns(:not_in_use_hash)
   end
 
-  test "sould get YAML-format all-nodes download/index" do
+  test "sould get YAML-format all-items download/index" do
     get :index, :format => "yaml"
     assert @response.header['Content-Type'] =~ /application\/x-yaml/
 
-    Node.all.each do |node|
-      if node.flags & Node::DATA_IS_UNALTERABLE == 0
-        assert @response.body =~ /#{node.name}/,
-          "Expected '#{node.name}' but didn't find"
-      elsif not [ 'one_of' ].include?( node.name ) # special, used in desc. text
-        assert !(@response.body =~ /#{node.name}/),
-          "Found '#{node.name}', unexpected"
+    Item.all.each do |item|
+      if item.flags & Item::DATA_IS_UNALTERABLE == 0
+        assert @response.body =~ /#{item.name}/,
+          "Expected '#{item.name}' but didn't find"
+      elsif not [ 'one_of' ].include?( item.name ) # special, used in desc. text
+        assert !(@response.body =~ /#{item.name}/),
+          "Found '#{item.name}', unexpected"
       end
     end
   end
@@ -52,13 +52,13 @@ class NodesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "new form should have fresh node object" do
+  test "new form should have fresh item object" do
     get :new
-    node = assigns(:node)
-    assert_not_nil node
-    assert_nil node.name
-    assert_nil node.title
-    assert_nil node.description
+    item = assigns(:item)
+    assert_not_nil item
+    assert_nil item.name
+    assert_nil item.title
+    assert_nil item.description
   end
 
   test "should get new-pop" do
@@ -66,13 +66,13 @@ class NodesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "new-pop form should have fresh node object" do
+  test "new-pop form should have fresh item object" do
     get :newpop
-    node = assigns(:node)
-    assert_not_nil node
-    assert_nil node.name
-    assert_nil node.title
-    assert_nil node.description
+    item = assigns(:item)
+    assert_not_nil item
+    assert_nil item.name
+    assert_nil item.title
+    assert_nil item.description
   end
 
   test "new-pop form should have type parameter" do
@@ -83,375 +83,385 @@ class NodesControllerTest < ActionController::TestCase
     assert_equal type, knownTypeValue
   end
 
-  test "should create node with valid data" do
-    name = "nodeName"
-    assert_difference('Node.count') do
-      post :create, :node => { :name => name, :title => "title",
-                               :sti_type => "ClassNode" }
+  test "should create item with valid data" do
+    name = "itemName"
+    assert_difference('Item.count') do
+      post :create, :item => { :name => name, :title => "title",
+                               :sti_type => "CategoryItem" }
     end
-    assert_redirected_to node_path(assigns(:node))
-    assert_not_nil Node.find_by_name(name)
+    assert_redirected_to item_path(assigns(:item))
+    assert_not_nil Item.find_by_name(name)
   end
 
-  test "should not create node without a type" do
-    name = "nodeName"
-    assert_no_difference('Node.count') do
-      post :create, :node => { :name => name, :title => "title" }
+  test "should not create item without a type" do
+    name = "itemName"
+    assert_no_difference('Item.count') do
+      post :create, :item => { :name => name, :title => "title" }
     end
     assert_response :success
-    assert_template "nodes/new"
+    assert_template "items/new"
     assert_select "body", /Could not/
   end
 
-  test "should not create node with invalid data" do
-    assert_no_difference('Node.count') do
-      post :create, :node => { :name => "name", :title => "ti\ttle",
-                               :sti_type => "IndividualNode" }
+  test "should not create item with invalid data" do
+    assert_no_difference('Item.count') do
+      post :create, :item => { :name => "name", :title => "ti\ttle",
+        :sti_type => "IndividualItem" }
     end
     assert_response :success
-    assert_template "nodes/new"
+    assert_template "items/new"
     assert_select "body", /error/
   end
 
   # specific validation tests here because these restrictions are
   # enforced by the controller -- "." and ":" are allowed by the model
-  # because they're used in internally-generated node names
-  test "should not create a node with a name including a period" do
-    assert_no_difference('Node.count') do
-      post :create, :node => { :name => "na.me", :title => "title",
-                               :sti_type => "ClassNode" }
+  # because they're used in internally-generated item names
+  test "should not create a item with a name including a period" do
+    assert_no_difference('Item.count') do
+      post :create, :item => { :name => "na.me", :title => "title",
+        :sti_type => "CategoryItem" }
     end
     assert_response :success
-    assert_template "nodes/new"
+    assert_template "items/new"
     assert_select "body", /error/
   end
-  test "should not create a node with a name including a colon" do
-    assert_no_difference('Node.count') do
-      post :create, :node => { :name => "na:me", :title => "title",
-                               :sti_type => "IndividualNode" }
+  test "should not create a item with a name including a colon" do
+    assert_no_difference('Item.count') do
+      post :create, :item => { :name => "na:me", :title => "title",
+        :sti_type => "IndividualItem" }
     end
     assert_response :success
-    assert_template "nodes/new"
+    assert_template "items/new"
     assert_select "body", /error/
   end
 
-  test "should show node" do
+  test "should show item" do
     assert_controller_behavior_with_id :show
-    assert_not_nil assigns(:edge_list)
-    assert_not_nil assigns(:edge_hash)
-    assert_not_nil assigns(:node_hash)
+    assert_not_nil assigns(:connection_list)
+    assert_not_nil assigns(:connection_hash)
+    assert_not_nil assigns(:item_hash)
   end
 
-  test "should show JSON-format node" do
-    id = nodes(:one).id
+  test "should show JSON-format item" do
+    id = items(:one).id
     get :show, :id => id, :format => 'json'
     assert_response :success
-    node = assigns(:node)
-    assert_not_nil node
-    assert_equal id, node.id
+    item = assigns(:item)
+    assert_not_nil item
+    assert_equal id, item.id
   end
 
-  test "should show first edge for node with value" do
-    n = nodes(:testSubcategory)
+  test "should show first connection for item with value" do
+    n = items(:testSubcategory)
     get :show, :id => n.id
 
-    e = edges(:subcategoryHasValue)
-    assert assigns(:node_hash)[e.predicate_id]
-    assert assigns(:node_hash)[e.obj_id]
+    e = connections(:subcategoryHasValue)
+    assert assigns(:item_hash)[e.predicate_id]
+    assert assigns(:item_hash)[e.obj_id]
 
-    assert array_of_arrays = assigns(:edge_list)
+    assert array_of_arrays = assigns(:connection_list)
     assert array_of_arrays.length >= 1
-    array_of_value_edges = array_of_arrays.first
-    assert array_of_value_edges.length >= 1
-    assert array_of_value_edges.include?( e.id )
+    array_of_value_connections = array_of_arrays.first
+    assert array_of_value_connections.length >= 1
+    assert array_of_value_connections.include?( e.id )
   end
 
-  test "should correctly group/sort is-subject edges" do
-    n = nodes(:nodeUsedFrequentlyAsSubject)
+  test "should correctly group/sort is-subject connections" do
+    n = items(:itemUsedFrequentlyAsSubject)
     get :show, :id => n.id
 
-    # given content of test/fixtures/edges.yml, expect edge_list as follows:
-    # [[2 value edges], [3 peer_of edges], [2 successor_of eges], [2 random]]
-    assert edge_list = assigns(:edge_list)
-    assert edge_list.length == 4
-    value_edge_array,
-      peer_edge_array,
-      successor_edge_array,
-      random_edge_array = *edge_list
+    # given content of test/fixtures/connections.yml,
+    #   expect connection_list as follows:
+    #     [[2 value connections], [3 peer_of connections],
+    #      [2 successor_of connections], [2 random]]
+    assert connection_list = assigns(:connection_list)
+    assert connection_list.length == 4
+    value_connection_array,
+      peer_connection_array,
+      successor_connection_array,
+      random_connection_array = *connection_list
 
-    assert value_edge_array.length == 2
-    assert value_edge_array.include?( edges(:nUFAS_value_A).id )
-    assert value_edge_array.include?( edges(:nUFAS_isAssigned_B).id )
+    assert value_connection_array.length == 2
+    assert value_connection_array.include?( connections(:nUFAS_value_A).id )
+    assert value_connection_array.include?( connections(:nUFAS_isAssigned_B).id )
 
-    assert peer_edge_array.length == 3
-    assert peer_edge_array.include?( edges(:nUFAS_peer_of_X).id )
-    assert peer_edge_array.include?( edges(:nUFAS_peer_of_Y).id )
-    assert peer_edge_array.include?( edges(:nUFAS_peer_of_Z).id )
+    assert peer_connection_array.length == 3
+    assert peer_connection_array.include?( connections(:nUFAS_peer_of_X).id )
+    assert peer_connection_array.include?( connections(:nUFAS_peer_of_Y).id )
+    assert peer_connection_array.include?( connections(:nUFAS_peer_of_Z).id )
 
-    assert successor_edge_array.length == 2
-    assert successor_edge_array.include?( edges(:nUFAS_successor_of_C).id )
-    assert successor_edge_array.include?( edges(:nUFAS_successor_of_D).id )
+    assert successor_connection_array.length == 2
+    assert successor_connection_array.include?(
+      connections(:nUFAS_successor_of_C).id )
+    assert successor_connection_array.include?(
+      connections(:nUFAS_successor_of_D).id )
 
-    assert random_edge_array.length == 2
-    assert random_edge_array.include?( edges(:nUFAS_predecessor_of_E).id )
-    assert random_edge_array.include?( edges(:nUFAS_child_of_M).id )
+    assert random_connection_array.length == 2
+    assert random_connection_array.include?(
+      connections(:nUFAS_predecessor_of_E).id )
+    assert random_connection_array.include?( connections(:nUFAS_child_of_M).id )
   end
 
-  test "should correctly group is-object edges" do
-    n = nodes(:nodeUsedFrequentlyAsObject)
+  test "should correctly group is-object connections" do
+    n = items(:itemUsedFrequentlyAsObject)
     get :show, :id => n.id
 
-    # given content of test/fixtures/edges.yml, expect edge_list as follows:
-    # [[6 edge IDs, sorted (primarily) by edge's predicate ]]
-    assert edge_list = assigns(:edge_list)
-    assert edge_list.length == 1
-    edges = edge_list.first
-    assert edges.length == 6
-    assert edges.include?( edges(:a_isAssigned_nUFAO).id )
-    assert edges.include?( edges(:b_isAssigned_nUFAO).id )
-    assert edges.include?( edges(:c_isAssigned_nUFAO).id )
-    assert edges.include?( edges(:d_isAssigned_nUFAO).id )
-    assert edges.include?( edges(:e_isAssigned_nUFAO).id )
-    assert edges.include?( edges(:c_peer_of_nUFAO).id )
+    # given content of test/fixtures/connections.yml,
+    #   expect connection_list as follows:
+    #     [[6 connection IDs, sorted (primarily) by connection's predicate ]]
+    assert connection_list = assigns(:connection_list)
+    assert connection_list.length == 1
+    connections = connection_list.first
+    assert connections.length == 6
+    assert connections.include?( connections(:a_isAssigned_nUFAO).id )
+    assert connections.include?( connections(:b_isAssigned_nUFAO).id )
+    assert connections.include?( connections(:c_isAssigned_nUFAO).id )
+    assert connections.include?( connections(:d_isAssigned_nUFAO).id )
+    assert connections.include?( connections(:e_isAssigned_nUFAO).id )
+    assert connections.include?( connections(:c_peer_of_nUFAO).id )
     # minimal sort-order test
-    assert Edge.find(edges.first).predicate_id !=
-             Edge.find(edges.last).predicate_id
+    assert Connection.find(connections.first).predicate_id !=
+      Connection.find(connections.last).predicate_id
   end
 
-  test "should show all predicate edges in last group" do
-    n = Node.find_by_name("sub_property_of")
+  test "should show all predicate connections in last group" do
+    n = Item.find_by_name("sub_property_of")
     get :show, :id => n.id
 
     # this time, check built-in "seed" schema.  Lots o' indiv's use sub_prop_of
-    # edge_list should look like: [ ... [many edges]]
-    assert edge_list = assigns(:edge_list)
-    assert edge_list.length >= 1
-    edges = edge_list.last
-    assert edges.length >= 19
+    # connection_list should look like: [ ... [many connections]]
+    assert connection_list = assigns(:connection_list)
+    assert connection_list.length >= 1
+    connections = connection_list.last
+    assert connections.length >= 19
     # and check some representative items
-    spo_id = Node.find_by_name("sub_property_of").id
-    assert edges.include?( Edge.first( :conditions => [
+    spo_id = Item.find_by_name("sub_property_of").id
+    assert connections.include?( Connection.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?", spo_id, spo_id,
-        Node.find_by_name("hierarchical_relationship").id ]).id )
-    assert edges.include?( Edge.first( :conditions => [
+        Item.find_by_name("hierarchical_relationship").id ]).id )
+    assert connections.include?( Connection.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-        Node.find_by_name("contains").id, spo_id,
-        Node.find_by_name("parent_of").id ]).id )
-    assert edges.include?( Edge.first( :conditions => [
+        Item.find_by_name("contains").id, spo_id,
+        Item.find_by_name("parent_of").id ]).id )
+    assert connections.include?( Connection.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-        Node.find_by_name("successor_of").id, spo_id,
-        Node.find_by_name("ordered_relationship").id ]).id )
-    assert edges.include?( Edge.first( :conditions => [
+        Item.find_by_name("successor_of").id, spo_id,
+        Item.find_by_name("ordered_relationship").id ]).id )
+    assert connections.include?( Connection.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-        nodes(:isAssigned).id, spo_id,
-        Node.find_by_name("value_relationship").id ]).id )
-    assert edges.include?( Edge.first( :conditions => [
+        items(:isAssigned).id, spo_id,
+        Item.find_by_name("value_relationship").id ]).id )
+    assert connections.include?( Connection.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-        nodes(:B).id, spo_id, nodes(:C).id ]).id )
-    assert edges.include?( Edge.first( :conditions => [
+        items(:B).id, spo_id, items(:C).id ]).id )
+    assert connections.include?( Connection.first( :conditions => [
       "subject_id = ? AND predicate_id = ? AND obj_id = ?",
-        nodes(:B).id, spo_id, nodes(:Z).id ]).id )
+        items(:B).id, spo_id, items(:Z).id ]).id )
   end
 
-  test "should do-the-right-thing with node used in all kinds of edges" do
-        # to minimize fixture size/complexity, copy all edges from
-        # preceding cases to a new target node
+  test "should do-the-right-thing with item used in all kinds of connections" do
+        # to minimize fixture size/complexity, copy all connections from
+        # preceding cases to a new target item
     # stuff we'll need a lot
-    target = nodes(:veryBusyNode)
-    spo_id = Node.find_by_name("sub_property_of").id
-    value_id = Node.find_by_name("value_relationship").id
+    target = items(:veryBusyItem)
+    spo_id = Item.find_by_name("sub_property_of").id
+    value_id = Item.find_by_name("value_relationship").id
 
-    # edges from 'should show first edge for node with value' test
-    source = nodes(:testSubcategory)
-    known_value_edges = []
-    Edge.all( :conditions => "subject_id = #{source.id}").each do |edge|
+    # connections from 'should show first connection for item with value' test
+    source = items(:testSubcategory)
+    known_value_connections = []
+    Connection.all( :conditions => "subject_id = #{source.id}").
+        each do |connection|
       if check_properties(
-          :does         => edge.predicate.id,
+          :does         => connection.predicate.id,
           :inherit_from => value_id,
           :via          => spo_id )
-        edge_copy = Edge.new( :subject   => target,
-                              :predicate => edge.predicate,
-                              :obj       => edge.obj          )
-        assert edge_copy.save
-        known_value_edges << edge_copy.id
+        connection_copy = Connection.new( :subject   => target,
+                              :predicate => connection.predicate,
+                              :obj       => connection.obj          )
+        assert connection_copy.save
+        known_value_connections << connection_copy.id
       end
     end
 
-    # edges from 'should correctly group/sort is-subject edges' test
-    source = nodes(:nodeUsedFrequentlyAsSubject)
-    known_nonvalue_subject_edges = []
-    Edge.all( :conditions => "subject_id = #{source.id}").each do |edge|
-      edge_copy = Edge.new( :subject   => target,
-                            :predicate => edge.predicate,
-                            :obj       => edge.obj            )
-      assert edge_copy.save
+    # connections from 'should correctly group/sort is-subject connections' test
+    source = items(:itemUsedFrequentlyAsSubject)
+    known_nonvalue_subject_connections = []
+    Connection.all( :conditions => "subject_id = #{source.id}").
+        each do |connection|
+      connection_copy = Connection.new( :subject   => target,
+                            :predicate => connection.predicate,
+                            :obj       => connection.obj            )
+      assert connection_copy.save
 
       if check_properties(
-          :does         => edge.predicate.id,
+          :does         => connection.predicate.id,
           :inherit_from => value_id,
           :via          => spo_id )
-        known_value_edges << edge_copy.id
+        known_value_connections << connection_copy.id
      else
-        known_nonvalue_subject_edges << edge_copy.id
+        known_nonvalue_subject_connections << connection_copy.id
       end
     end
 
-    # edges from 'should correctly group is-object edges' test
-    source = nodes(:nodeUsedFrequentlyAsObject)
-    known_object_edges = []
-    Edge.all( :conditions => "obj_id = #{source.id}" ).each do |edge|
-      edge_copy = Edge.new( :subject   => edge.subject,
-                            :predicate => edge.predicate,
+    # connections from 'should correctly group is-object connections' test
+    source = items(:itemUsedFrequentlyAsObject)
+    known_object_connections = []
+    Connection.all( :conditions => "obj_id = #{source.id}" ).
+        each do |connection|
+      connection_copy = Connection.new( :subject   => connection.subject,
+                            :predicate => connection.predicate,
                             :obj       => target            )
-      assert edge_copy.save
-      known_object_edges << edge_copy.id
+      assert connection_copy.save
+      known_object_connections << connection_copy.id
     end
 
-    # edges from 'should show all predicate edges in last group' test
-    source = Node.find_by_name("sub_property_of")
-    known_predicate_edges = []
-    Edge.all( :conditions => "predicate_id = #{source.id}" ).each do |edge|
-      edge_copy = Edge.new( :subject   => edge.subject,
-                            :predicate => target,
-                            :obj       => edge.obj               )
-      assert edge_copy.save
-      known_predicate_edges << edge_copy.id
+    # 'should show all predicate connections in last group' test
+    source = Item.find_by_name("sub_property_of")
+    known_predicate_connections = []
+    Connection.all( :conditions => "predicate_id = #{source.id}" ).
+        each do |connection|
+      connection_copy = Connection.new( :subject => connection.subject,
+        :predicate => target, :obj => connection.obj  )
+      assert connection_copy.save
+      known_predicate_connections << connection_copy.id
     end
 
         # now, execute the "show" action
     get :show, :id => target.id
 
         # and perform checks
-    assert edge_list = assigns(:edge_list)
-    # value edges come first
-    edges = edge_list.delete_at(0)
-    assert edges.sort == known_value_edges.sort
+    assert connection_list = assigns(:connection_list)
+    # value connections come first
+    connections = connection_list.delete_at(0)
+    assert connections.sort == known_value_connections.sort
 
-    # predicate edges come last
-    edges = edge_list.delete_at(-1)
-    assert edges.sort == known_predicate_edges.sort
+    # predicate connections come last
+    connections = connection_list.delete_at(-1)
+    assert connections.sort == known_predicate_connections.sort
 
-    # object edges second to last
-    edges = edge_list.delete_at(-1)
-    assert edges.sort == known_object_edges.sort
+    # object connections second to last
+    connections = connection_list.delete_at(-1)
+    assert connections.sort == known_object_connections.sort
 
-    # and all thats left should be groups of non-value is-subject edges
-    assert edge_list.length    == 3 # constants from preceding test
-    assert edge_list[0].length == 3
-    assert edge_list[1].length == 2
-    assert edge_list[2].length == 2
-    assert edge_list.flatten.sort == known_nonvalue_subject_edges.sort
+    # and all thats left should be groups of non-value is-subject connections
+    assert connection_list.length    == 3 # constants from preceding test
+    assert connection_list[0].length == 3
+    assert connection_list[1].length == 2
+    assert connection_list[2].length == 2
+    assert connection_list.flatten.sort ==
+      known_nonvalue_subject_connections.sort
   end
 
-  test "should get edit node page" do
+  test "should get edit item page" do
     assert_controller_behavior_with_id :edit
   end
 
-  test "should update node" do
+  test "should update item" do
     n, h = prep_for_update(:one)
     h[:name] = new_name = "two"
-    assert_no_difference('Node.count') do
-      put :update, :id => n.id, :node => h
+    assert_no_difference('Item.count') do
+      put :update, :id => n.id, :item => h
     end
-    assert_redirected_to node_path(assigns(:node))
-    assert_not_nil Node.find_by_name(new_name)
+    assert_redirected_to item_path(assigns(:item))
+    assert_not_nil Item.find_by_name(new_name)
   end
 
-  test "should not update builtin node" do
+  test "should not update builtin item" do
     name = "sub_property_of"
-    before = Node.find_by_name(name)
+    before = Item.find_by_name(name)
     during = before
     during.name = "VeryVeryBad"
-    assert_no_difference('Node.count') do
-      put :update, :id => during.id, :node => NodeHelper.node_to_hash(during)
+    assert_no_difference('Item.count') do
+      put :update, :id => during.id, :item => ItemHelper.item_to_hash(during)
     end
 
     # db unchanged?
-    after = Node.find_by_name(name)
+    after = Item.find_by_name(name)
     assert before == after
 
     # right output?
-    assert assigns(:node) == before
-    assert_redirected_to node_path(before)
+    assert assigns(:item) == before
+    assert_redirected_to item_path(before)
   end
 
   # validation tests here because these restrictions are enforced by
   # the controller -- "." and ":" are allowed by the model because
-  # they're used in internally-generated node names
-  test "should not update node if name changed to include a period" do
+  # they're used in internally-generated item names
+  test "should not update item if name changed to include a period" do
     n, h = prep_for_update(:one)
     h[:name] = "na.me"
-    assert_no_difference('Node.count') do
-      put :update, :id => n.id, :node => h
+    assert_no_difference('Item.count') do
+      put :update, :id => n.id, :item => h
     end
     assert_response :success
-    assert_template "nodes/edit"
+    assert_template "items/edit"
     assert_select "body", /error/
   end
-  test "should not update node if name changed to include a colon" do
+  test "should not update item if name changed to include a colon" do
     n, h = prep_for_update(:one)
     h[:name] = "na:me"
-    assert_no_difference('Node.count') do
-      put :update, :id => n.id, :node => h
+    assert_no_difference('Item.count') do
+      put :update, :id => n.id, :item => h
     end
     assert_response :success
-    assert_template "nodes/edit"
+    assert_template "items/edit"
     assert_select "body", /error/
   end
 
-  test "should delete node" do
-    n = nodes(:two)
+  test "should delete item" do
+    n = items(:two)
     name = n.name
-    assert_difference('Node.count', -1) do
+    assert_difference('Item.count', -1) do
       delete :destroy, :id => n.id
     end
-    assert_redirected_to nodes_path
-    assert_nil Node.find_by_name(name)
+    assert_redirected_to items_path
+    assert_nil Item.find_by_name(name)
   end
 
-  test "should not delete builtin node" do
-    assert_node_wont_delete(Node.find_by_name("value_relationship"))
+  test "should not delete builtin item" do
+    assert_item_wont_delete(Item.find_by_name("value_relationship"))
   end
 
-  test "should not delete node in use by an edge" do
-    assert_node_wont_delete(nodes(:testIndividual))
+  test "should not delete item in use by an connection" do
+    assert_item_wont_delete(items(:testIndividual))
   end
 
-  test "should lookup existing node" do
+  test "should lookup existing item" do
     name = "testCategory"
     get :lookup, :name => name
     assert_response :success
-    id = Node.find_by_name(name).id.to_s
+    id = Item.find_by_name(name).id.to_s
     assert @response.body =~ /^<id>\s*#{id}\s*<\/id>\s*$/
   end
 
-  test "should 404 on attempt to lookup non-existent node" do
-    get :lookup, :name => "notANode"
+  test "should 404 on attempt to lookup non-existent item" do
+    get :lookup, :name => "notAItem"
     assert_response :missing
   end
 
 
 private
   def prep_for_update(fixture_name)
-    n = nodes(fixture_name)
-    return n, NodeHelper.node_to_hash(n)
+    n = items(fixture_name)
+    return n, ItemHelper.item_to_hash(n)
   end
 
   def assert_controller_behavior_with_id(action)
-    id = nodes(:one).id
+    id = items(:one).id
     get action, :id => id
     assert_response :success
-    node = assigns(:node)
-    assert_not_nil node
-    assert_equal id, node.id
+    item = assigns(:item)
+    assert_not_nil item
+    assert_equal id, item.id
   end
 
-  def assert_node_wont_delete(n)
+  def assert_item_wont_delete(n)
     name = n.name
-    assert_difference('Node.count', 0) do
+    assert_difference('Item.count', 0) do
       delete :destroy, :id => n.id
     end
-    assert_redirected_to node_path(n)
-    assert_not_nil n == Node.find_by_name(name)
+    assert_redirected_to item_path(n)
+    assert_not_nil n == Item.find_by_name(name)
   end
 end

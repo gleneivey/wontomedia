@@ -19,29 +19,30 @@
 
 require 'test_helper'
 
-class EdgesNewViewTest < ActionController::TestCase
-  tests EdgesController
+class ConnectionsNewViewTest < ActionController::TestCase
+  tests ConnectionsController
 
-  test "should have new form for edges" do
+  test "should have new form for connections" do
     get :new
-    assert_template "edges/new"
+    assert_template "connections/new"
   end
 
-  test "edges new form should invoke create" do
+  test "connections new form should invoke create" do
     get :new
-    assert_select   "form[action=?]", @controller.url_for(:action => :create, :only_path => true) do
+    assert_select   "form[action=?]", @controller.url_for(:action => :create,
+                                        :only_path => true) do
       assert_select "form[method=post]", true,
-        "edge-new form uses POST"
-      assert_select "select#edge_subject_id", true,
-        "edge-new form contains 'select' input control for :subject attribute"
-      assert_select "select#edge_predicate_id", true,
-        "edge-new form contains 'select' input control for :predicate attribute"
-      assert_select "select#edge_obj_id", true,
-        "edge-new form contains 'select' input control for :obj attribute"
+        "connection-new form uses POST"
+      assert_select "select#connection_subject_id", true,
+"connection-new form contains 'select' input control for :subject attribute"
+      assert_select "select#connection_predicate_id", true,
+"connection-new form contains 'select' input control for :predicate attribute"
+      assert_select "select#connection_obj_id", true,
+        "connection-new form contains 'select' input control for :obj attribute"
     end
   end
 
-  test "edges new form shouldnt contain status" do
+  test "connections new form shouldnt contain status" do
     get :new
     assert_negative_view_contents
   end

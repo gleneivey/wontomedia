@@ -32,14 +32,14 @@ Then /^I should see all of "(.+)"$/ do |patterns|
 end
 
 
-Then /^there should(.*)be a node container for "([^\"]+)" including the tag "(.+)"$/ do |test_sense, node_name, selector|
+Then /^there should(.*)be a item container for "([^\"]+)" including the tag "(.+)"$/ do |test_sense, item_name, selector|
 
-  selector = node_id_substitute(selector)
-  assert_have_selector      "*##{node_name}"
+  selector = item_id_substitute(selector)
+  assert_have_selector      "*##{item_name}"
   if     test_sense == " "
-    assert_have_selector    "*##{node_name} #{selector}"
+    assert_have_selector    "*##{item_name} #{selector}"
   elsif test_sense == " not "
-    assert_have_no_selector "*##{node_name} #{selector}"
+    assert_have_no_selector "*##{item_name} #{selector}"
   else
     assert false, "Bad step string."
   end

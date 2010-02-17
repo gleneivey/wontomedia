@@ -18,15 +18,15 @@
 
 require 'test_helper'
 
-class IndividualNodeTest < ActiveSupport::TestCase
-  test "individual_node model exists" do
-    assert IndividualNode.new
+class IndividualItemTest < ActiveSupport::TestCase
+  test "individual_item model exists" do
+    assert IndividualItem.new
   end
 
-  test "individual_node inherits from node" do
+  test "individual_item inherits from item" do
     name = "in"
-    individual = IndividualNode.new( :name => name, :title => "individual" )
+    individual = IndividualItem.new( :name => name, :title => "individual" )
     assert individual.save
-    assert_equal Node.find_by_name(name).name, name
+    assert_equal Item.find_by_name(name).name, name
   end
 end

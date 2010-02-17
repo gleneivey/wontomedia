@@ -16,7 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require Rails.root.join( 'lib', 'helpers', 'node_helper')
+require Rails.root.join( 'lib', 'helpers', 'item_helper')
 require 'yaml'
 
 class AdminController < ApplicationController
@@ -25,41 +25,41 @@ class AdminController < ApplicationController
     @this_is_non_information_page = true
   end
 
-  # POST /admin/node_up
-  def node_up
+  # POST /admin/item_up
+  def item_up
     @this_is_non_information_page = true
     count = 0
     flash[:error] ||= ""
-    YAML::load(params[:node_upload][:nodefile]).each do |node|
+    YAML::load(params[:item_upload][:itemfile]).each do |item|
 
-      if node.is_a? Node
-        # need to create a new node object so that it saves to db as "new"
-        node_hash = NodeHelper.node_to_hash(node)
-        name = node.name
-      elsif node.is_a? YAML::Object
+      if item.is_a? Item
+        # need to create a new item object so that it saves to db as "new"
+        item_hash = ItemHelper.item_to_hash(item)
+        name = item.name
+      elsif item.is_a? YAML::Object
         # this is magic dependent on the internals of the YAML::Object class
-        node_hash = node.instance_eval { @ivars }['attributes']
-        name = node_hash['name'] || node_hash[:name]
+        item_hash = item.instance_eval { @ivars }['attributes']
+        name = item_hash['name'] || item_hash[:name]
       else
         flash[:error] <<
-          "YAML parser generated an object of type '#{node.class}'.\n"
+          "YAML parser generated an object of type '#{item.class}'.\n"
         redirect_to :action => 'index'
         return
       end
 
-      n = NodeHelper.new_typed_node(
-        node_hash['sti_type'] || node_hash[:sti_type] )
+      n = ItemHelper.new_typed_item(
+        item_hash['sti_type'] || item_hash[:sti_type] )
       if n.nil?
-        err_str = "No/bad sti_type for node '#{name}', " +
-          "tried to create '#{node_hash.inspect}'.\n"
+        err_str = "No/bad sti_type for item '#{name}', " +
+          "tried to create '#{item_hash.inspect}'.\n"
         logger.error(err_str)
         flash[:error] << err_str
       else
         # even if ID present, don't copy; let db assign a new value
         n.name        = name
-        n.title       = node_hash['title']       || node_hash[:title]
-        n.description = node_hash['description'] || node_hash[:description]
-        n.flags       = node_hash['flags']       || node_hash[:flags]
+        n.title       = item_hash['title']       || item_hash[:title]
+        n.description = item_hash['description'] || item_hash[:description]
+        n.flags       = item_hash['flags']       || item_hash[:flags]
         if n.flags.nil?
           n.flags = 0
         end
@@ -67,42 +67,42 @@ class AdminController < ApplicationController
         if n.save
           count += 1
         else
-          err_str = "Could not save node named 'n.name': #{n.errors.inspect}\n"
+          err_str = "Could not save item named 'n.name': #{n.errors.inspect}\n"
           logger.error(err_str)
           flash[:error] << err_str
         end
       end
     end
 
-    flash[:notice] = "Created #{count} new nodes."
+    flash[:notice] = "Created #{count} new items."
     redirect_to :action => 'index'
   end
 
-  # POST /admin/edge_up
-  def edge_up
+  # POST /admin/connection_up
+  def connection_up
     @this_is_non_information_page = true
     count = unparsed = 0
     flash[:error] =""
 
-    params[:edge_upload][:edgefile].readlines.each do |n3line|
+    params[:connection_upload][:connectionfile].readlines.each do |n3line|
       # this is a really, *really* bad N3 parser. Almost certainly won't
       # handly any but the most trivial input (like what we export :-)
       if n3line =~ /<#([^>]+)>[^<]+<#([^>]+)>[^<]+<#([^>]+)>[^.]+\./
-        e = Edge.new(
-          :subject   => Node.find_by_name($1),
-          :predicate => Node.find_by_name($2),
-          :obj       => Node.find_by_name($3),
+        e = Connection.new(
+          :subject   => Item.find_by_name($1),
+          :predicate => Item.find_by_name($2),
+          :obj       => Item.find_by_name($3),
           :flags     => 0
                      )
         if e.nil?
-          err_stry = "Couldn't create edge for #{$1} #{$2} #{$3}.\n"
+          err_stry = "Couldn't create connection for #{$1} #{$2} #{$3}.\n"
           logger.error(err_str)
           flash[:error] << err_str
         else
           if e.save
             count += 1
           else
-            err_stry = "Couldn't save edge for #{$1} #{$2} #{$3}.\n"
+            err_stry = "Couldn't save connection for #{$1} #{$2} #{$3}.\n"
             logger.error(err_str)
             flash[:error] << err_str
           end
@@ -112,9 +112,10 @@ class AdminController < ApplicationController
       end
     end
 
-    flash[:notice] = "Created #{count} new edges."
+    flash[:notice] = "Created #{count} new connections."
     if unparsed > 0
-      flash[:notice] << "(Discarded #{unparsed} non-edge lines from input file)"
+      flash[:notice] <<
+        "(Discarded #{unparsed} non-connection lines from input file)"
     end
     redirect_to :action => 'index'
   end

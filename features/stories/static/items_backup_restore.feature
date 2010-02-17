@@ -1,12 +1,12 @@
-Feature:  Download (for backup) and upload (for restore) all nodes in YAML
+Feature:  Download (for backup) and upload (for restore) all items in YAML
   In order to safeguard the content of a wontology,
   as an administrator, I want
-  to be able to download and upload the system's nodes.
+  to be able to download and upload the system's items.
 
   @not_for_selenium
-  Scenario: Download nodes.yml
+  Scenario: Download items.yml
     Given there are 3 existing individuals like "anItem"
-    When I go to the path "/nodes.yaml"
+    When I go to the path "/items.yaml"
     Then the response should contain 9 matches of "anItem"
 
 

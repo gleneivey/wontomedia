@@ -11,7 +11,8 @@ providers, etc.
 In short, the deployment procedure is as follows:
 
  * from any web browser, back up the current database content by fetching
-   both a 'nodes.yaml' and an 'edges.n3' file from http://wontology.org/admin
+   both a 'items.yaml' and an 'connections.n3' file from
+   http://wontology.org/admin
 
  * from the root of a wontomedia directory tree:
       $ rake                                   # which will build a release gem
@@ -23,7 +24,7 @@ In short, the deployment procedure is as follows:
       $ cd etc/rails_apps/WontoMedia                   # if necessary
       $ RAILS_ENV=production rake db:reseed            # if necessary
      [  start WontoMedia via web/cPanel RoR widget ]
-     [  restore from nodes.yaml edges.n3 ]             # if necessary
+     [  restore from items.yaml connections.n3 ]       # if necessary
 
 
 These scripts make the following assumption about the A2 host's configuration:

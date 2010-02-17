@@ -22,23 +22,25 @@
 
 <ul class="outbound-links-list">
   <li><span style="white-space: nowrap;">
-    <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' -%><%
+    <%= link_to 'Create a new connection', new_connection_path,
+                :rel => 'nofollow' -%><%
       unless @have_displayed_out_links %><%=
-        popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd"
+        popup_help_icon "Help for connections create/new",
+                        "WmHelp:Popup/ConnectionAdd"
       -%><% end %>
   </span></li>
 
   <li><span style="white-space: nowrap;">
-    <%= link_to 'View all nodes', nodes_path -%><%
+    <%= link_to 'View all items', items_path -%><%
       unless @have_displayed_out_links %><%=
-        popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes" -%><%
+        popup_help_icon "Help for items list", "WmHelp:Popup/ShowItems" -%><%
       end %>
   </span></li>
 
   <li><span style="white-space: nowrap;">
-    <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' -%><%
+    <%= link_to 'Create a new item', new_item_path, :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
-      popup_help_icon "Help for nodes create/new", "WmHelp:Popup/NodeAdd" -%><%
+      popup_help_icon "Help for items create/new", "WmHelp:Popup/ItemAdd" -%><%
     end %>
   </span></li>
 </ul>

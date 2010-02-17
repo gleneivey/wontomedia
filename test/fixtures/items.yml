@@ -16,67 +16,67 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# most basic item, used by node model unit tests
+# most basic item, used by item model unit tests
 one:
-  name: aNode
-  title: My first node
-  description: This node could be anything
-  sti_type: IndividualNode
+  name: aItem
+  title: My first item
+  description: This item could be anything
+  sti_type: IndividualItem
   flags: 0
 
 two:
-  name: bNode
-  title: A second node
+  name: bItem
+  title: A second item
   description: This category could contain anything
-  sti_type: ClassNode
+  sti_type: CategoryItem
   flags: 0
 
 
 testContainer:
   name: testContainer
   title: testContainer
-  sti_type: ClassNode
+  sti_type: CategoryItem
   flags: 0
 
 testIndividual:
   name: testIndividual
   title: testIndividual
-  sti_type: IndividualNode
+  sti_type: IndividualItem
   flags: 0
 
 testCategory:
   name: testCategory
   title: testCategory
-  sti_type: ClassNode
+  sti_type: CategoryItem
   flags: 0
 
 testProperty:
   name: testProperty
   title: testProperty
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
-edge_one:
+connection_one:
   name: testIndividual.one_of.testCategory
   title: a title
-  sti_type: ReiffiedNode
+  sti_type: QualifiedItem
   flags: 0
 
 testSubcategory:
   name: testSubcategory
   title: testSubcategory
-  sti_type: ClassNode
+  sti_type: CategoryItem
   flags: 0
 
 isAssigned:
   name: isAssigned
   title: isAssigned
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 
 
-# group of nodes used for testing sub_property_of relationship traversal
+# group of items used for testing sub_property_of relationship traversal
 # desired structure is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
@@ -84,99 +84,99 @@ isAssigned:
 A:
   name: A
   title: A
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
   description: A description for A
 
 B:
   name: B
   title: B
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 C:
   name: C
   title: C
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 D:
   name: D
   title: D
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 E:
   name: E
   title: E
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 M:
   name: M
   title: M
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 X:
   name: X
   title: X
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 Y:
   name: Y
   title: Y
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 Z:
   name: Z
   title: Z
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 fu:
   name: fu
   title: fu
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 bar:
   name: bar
   title: bar
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 sn:
   name: sn
   title: sn
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 afu:
   name: afu
   title: afu
-  sti_type: PropertyNode
+  sti_type: PropertyItem
   flags: 0
 
 
 
-# group of nodes for testing display/sorting of edges on node pages
-nodeUsedFrequentlyAsSubject:
-  name: nodeUsedFrequentlyAsSubject
-  title: nodeUsedFrequentlyAsSubject
-  sti_type: ClassNode
+# group of items for testing display/sorting of connections on item pages
+itemUsedFrequentlyAsSubject:
+  name: itemUsedFrequentlyAsSubject
+  title: itemUsedFrequentlyAsSubject
+  sti_type: CategoryItem
   flags: 0
 
-nodeUsedFrequentlyAsObject:
-  name: nodeUsedFrequentlyAsObject
-  title: nodeUsedFrequentlyAsObject
-  sti_type: ClassNode
+itemUsedFrequentlyAsObject:
+  name: itemUsedFrequentlyAsObject
+  title: itemUsedFrequentlyAsObject
+  sti_type: CategoryItem
   flags: 0
 
-veryBusyNode:
-  name: veryBusyNode
-  title: veryBusyNode
-  sti_type: ClassNode
+veryBusyItem:
+  name: veryBusyItem
+  title: veryBusyItem
+  sti_type: CategoryItem
   flags: 0

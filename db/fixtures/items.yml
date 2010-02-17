@@ -16,10 +16,10 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# "node" schema: name, sti_type, title, description
+# "item" schema: name, sti_type, title, description
 
 
-#### Minimal set of types (predicates) for edges
+#### Minimal set of types (predicates) for connections
 #### this is WontoMedia's native "schema", and represents the minimal
 #### typing information used by the UI
 
@@ -27,11 +27,11 @@
         # relationships we expect ontology-contributors to use
 peer_of:
   name: peer_of
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Peer Of (basic relationship)
   description: >-
-    A relationship of this type between two nodes indicates a
+    A relationship of this type between two items indicates a
     relationship between equals.  This would be appropriate, for
     example, as a description of the "synonym" relationship that might
     occur between the entries for two words in a thesaurus.
@@ -47,11 +47,11 @@ peer_of:
 
 one_of:
   name: one_of
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: One Of (basic relationship)
   description: >-
-    A relationship of this type between two nodes is hierarchical.
+    A relationship of this type between two items is hierarchical.
     This relationship states that the subject (left-hand side) of the
     relationship ("A" in the relationship "A is One-Of B", and like
     "macintosh" in "macintosh is One-Of computer") is assumed to be
@@ -71,18 +71,18 @@ one_of:
     opposite of 'Parent Of', and finally 'Contains' is a child of
     'Parent Of'.  So, it might be possible to infer that 'One Of' and
     'Contains' are approximate opposites of each other.  However,
-    making a 'One Of' relationship between two nodes will not
+    making a 'One Of' relationship between two items will not
     automatically cause the symmetric 'Contains' relationship to be
     created.
 
 
 contains:
   name: contains
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Contains (basic relationship)
   description: >-
-    A relationship of this type between two nodes is hierarchical.
+    A relationship of this type between two items is hierarchical.
     This relationship states that the subject (left-hand side) of the
     relationship ("A" in the relationship "A Contains B", and like
     "spacecraft" in "spacecraft Contains apollo") is more general or
@@ -108,8 +108,8 @@ contains:
 
 parent_of:
   name: parent_of
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Parent Of (basic relationship)
   description: >-
     This is the fundamental type of hierarchical relationship.  This
@@ -133,14 +133,14 @@ parent_of:
     exactly the same as creating a 'Child Of' relationship with the
     subject and object reversed, and WontoMedia will list the
     relationship between then using both relationship names (which
-    name is given priority depends on which node is more central to
+    name is given priority depends on which item is more central to
     the display).
 
 
 child_of:
   name: child_of
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Child Of (basic relationship)
   description: >-
     This is the fundamental type of hierarchical relationship.  This
@@ -163,14 +163,14 @@ child_of:
     exactly the same as creating a 'Parent Of' relationship with the
     subject and object reversed, and WontoMedia will list the
     relationship between then using both relationship names (which
-    name is given priority depends on which node is more central to
+    name is given priority depends on which item is more central to
     the display).
 
 
 predecessor_of:
   name: predecessor_of
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Predecessor Of (basic relationship)
   description: >-
     This relationship states that the subject (left-hand side) of the
@@ -181,8 +181,8 @@ predecessor_of:
 
 successor_of:
   name: successor_of
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Successor Of (basic relationship)
   description: >-
     This relationship states that the subject (left-hand side) of the
@@ -194,8 +194,8 @@ successor_of:
         # relationships grounding those above
 inverse_relationship:
   name: inverse_relationship
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Inverse Relationship (basic relationship type)
   description: >-
     This relationship is used to characterize how two other
@@ -213,13 +213,13 @@ inverse_relationship:
 
 sub_property_of:
   name: sub_property_of
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: SubProperty Of (basic relationship type)
   description: >-
     This relationship is used to relate two other relationships to
     each other.  The statement "A is a SubProperty-Of B" says that the
-    relationship A makes a more specific, narrow claim about nodes it
+    relationship A makes a more specific, narrow claim about items it
     relates than the relationship B does.  However, if WontoMedia has
     special behavior or handling for relationship B, the 'SubProperty
     Of' statement allows it to determine it should apply that special
@@ -237,8 +237,8 @@ sub_property_of:
         # fundamental property classes; the root of the property universe
 symmetric_relationship:
   name: symmetric_relationship
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Symmetric Relationship (root relationship type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
@@ -247,8 +247,8 @@ symmetric_relationship:
 
 value_relationship:
   name: value_relationship
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Value Relationship (root relationship type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
@@ -257,8 +257,8 @@ value_relationship:
 
 hierarchical_relationship:
   name: hierarchical_relationship
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Hierarchical Relationship (root relationship type)
   description: >-
     This is a root element in WontoMedia's internal schema.  All
@@ -267,8 +267,8 @@ hierarchical_relationship:
 
 ordered_relationship:
   name: ordered_relationship
-  sti_type: PropertyNode
-  flags: <%= Node::DATA_IS_UNALTERABLE %>
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Ordered Relationship (root relationship type)
   description: >-
     This is a root element in WontoMedia's internal schema.

@@ -16,12 +16,12 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class AddFlagsToNodes < ActiveRecord::Migration
+class AddFlagsToItems < ActiveRecord::Migration
   def self.up
-    add_column :nodes, :flags, :integer
+    add_column :items, :flags, :integer
   end
 
   def self.down
-    remove_column :nodes, :flags
+    remove_column :items, :flags
   end
 end

@@ -24,7 +24,7 @@ class CheckPropertiesLinkTest < ActiveSupport::TestCase
   end
 
 
-# group of nodes used for testing sub_property_of relationship traversal
+# group of items used for testing sub_property_of relationship traversal
 # structure in fixtures is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)

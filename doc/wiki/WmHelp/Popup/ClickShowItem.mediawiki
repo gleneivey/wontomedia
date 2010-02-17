@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-Each of the node [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Title Titles] below is a link.  Clicking on a [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Node node]'s Title will show you the details page for that node.
+Each of the item [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Title Titles] below is a link.  Clicking on a [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Item item]'s Title will show you the details page for that item.

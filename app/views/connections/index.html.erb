@@ -19,7 +19,7 @@
 
 
 <%
-  @title_text = 'All Edges'
+  @title_text = 'All Connections'
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
@@ -32,8 +32,9 @@
 
 
 <div class="headline">
-  <%= popup_help_icon "Help, edges list", "WmHelp:Popup/HeaderEdgesIndex"
-  -%>Listing all defined edges
+  <%= popup_help_icon "Help, connections list",
+                      "WmHelp:Popup/HeaderConnectionsIndex"
+  -%>Listing all defined connections
   <%= render :partial => 'common/top_box'    # contains an opening <div>
    %>
     <%= render :partial => 'index_outbound_links' %>
@@ -52,22 +53,26 @@
     <th style="text-decoration: underline;">Object</th>
   </tr>
 
-  <% @edges.each do |edge| %>
-    <% content_tag :tr, :id => edge.id do %>
+  <% @connections.each do |connection| %>
+    <% content_tag :tr, :id => connection.id do %>
       <td class='firstrow secondrow'><%=
-        link_has_tip nil, "#{h filter_parenthetical edge.subject.title}",
-                     node_path(edge.subject), h( edge.subject.name ) %></td>
+        link_has_tip nil, "#{h filter_parenthetical connection.subject.title}",
+                     item_path(connection.subject),
+                     h( connection.subject.name ) %></td>
       <td class='firstrow secondrow'><%=
-        link_has_tip nil, "#{h filter_parenthetical edge.predicate.title}",
-                     node_path(edge.predicate), h( edge.predicate.name ) %></td>
+        link_has_tip nil,
+                     "#{h filter_parenthetical connection.predicate.title}",
+                     item_path(connection.predicate),
+                     h( connection.predicate.name ) %></td>
       <td class='firstrow secondrow'><%=
-        link_has_tip nil, "#{h filter_parenthetical edge.obj.title}",
-                     node_path(edge.obj), h( edge.obj.name ) %></td>
+        link_has_tip nil, "#{h filter_parenthetical connection.obj.title}",
+                     item_path(connection.obj), h( connection.obj.name ) %></td>
       <td class='firstrow secondrow' style="font-size: 80%">
-        <% generate_edge_links(edge) %></td>
+        <% generate_connection_links(connection) %></td>
 <!--
-      <td><%= unless edge.edge_desc.nil?
-                link_to "#{h edge.edge_desc.name}", node_path(edge.edge_desc)
+      <td><%= unless connection.connection_desc.nil?
+                link_to "#{h connection.connection_desc.name}",
+                item_path(connection.connection_desc)
               end %></td>
   -->
     <% end %>

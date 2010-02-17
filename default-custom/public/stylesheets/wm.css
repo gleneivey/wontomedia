@@ -186,7 +186,7 @@ p + table {   margin-bottom: 1.5em;  }
 }
 
 
-        /* styles first intended for node & edge info tables:
+        /* styles first intended for item & connection info tables:
          *   app/views/ ** /index, home, show                                 */
 table {
   border-collapse: collapse;
@@ -203,7 +203,7 @@ td {
   padding-right: 2px;
 }
 
-.edgecolumn {
+.connectioncolumn {
   border-width: thin;
   border-color: #b0b0ff;
   border-style: none solid;
@@ -241,7 +241,7 @@ p.directions {
 }
 
 
-        /* used for informative-text highlighting in app/views/nodes/new      */
+        /* used for informative-text highlighting in app/views/items/new      */
 .titleSelectedItemDescription {
   font-weight: bold;
   text-decoration: underline;

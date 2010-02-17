@@ -33,7 +33,7 @@ WontoMedia = OpenStruct.new({
 #    :google => OpenStruct.new({
 #      :publisher_id => "your-google-id-here",
 #              # "data page" is used in the partial common/_google_ads,
-#              # which is used in [nodes or edges]/[index or show] pages
+#              # which is used in [items or connections]/[index or show] pages
 #      :data_page_slot => "your-google-slot-number-here"
 #              # create additional _slot variables for different Google ad units
 #    })

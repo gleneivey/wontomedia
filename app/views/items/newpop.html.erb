@@ -23,13 +23,13 @@
   <meta name="googlebot" content="noindex" />
 <% end %>
 
-<% require Rails.root.join( 'lib', 'helpers', 'node_helper') %>
+<% require Rails.root.join( 'lib', 'helpers', 'item_helper') %>
 
 
-<h1>Make a new node</h1>
+<h1>Make a new item</h1>
 
-<% options = @node.sti_type.nil? ? {} : { :url => nodes_path() }
-   form_for(@node, options) do |f|
+<% options = @item.sti_type.nil? ? {} : { :url => items_path() }
+   form_for(@item, options) do |f|
  %>
   <%= f.error_messages %>
   <%= render :partial => "type_select", :locals => { :f => f } %>
@@ -38,21 +38,21 @@
 
   <p id="create_button_container" style="text-align: center">
     <%= button_to_function "Create",
-          "if (okToSubmitNodeForm()) nodeCreatePopup_Submit(this)",
-          :id => "node_submit", :tabindex => "10" %>
+          "if (okToSubmitItemForm()) itemCreatePopup_Submit(this)",
+          :id => "item_submit", :tabindex => "10" %>
   </p>
 
   <p style="text-align: center">
-    <%= link_to_function 'Cancel&nbsp;node&nbsp;creation',
-                         'nodeCreatePopup_Cancel()' %>
+    <%= link_to_function 'Cancel&nbsp;item&nbsp;creation',
+                         'itemCreatePopup_Cancel()' %>
   </p>
 <% end %>  <!-- of form_for -->
 
 
-<!-- forNodesForms.js should have already been loaded by page that
+<!-- forItemsForms.js should have already been loaded by page that
      popped us up.  Call function to wire library functions to the form
      elements we've just loaded. -->
 <script type="text/javascript">
   genNameFromTitleOk = true;
-  plumbEventHandlersToNodeCreationElements("submitViaModalbox");
+  plumbEventHandlersToItemCreationElements("submitViaModalbox");
 </script>

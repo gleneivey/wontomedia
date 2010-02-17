@@ -19,162 +19,165 @@
 
 require 'test_helper'
 
-class NodesShowViewTest < ActionController::TestCase
-  tests NodesController
-  def get_nodes_show(name)
-    n = nodes(name)
+class ItemsShowViewTest < ActionController::TestCase
+  tests ItemsController
+  def get_items_show(name)
+    n = items(name)
     get :show, :id => n.id
     n
   end
 
-  def get_nodes_show_json(name, sti_type)
-    n = nodes(name)
+  def get_items_show_json(name, sti_type)
+    n = items(name)
     get :show, :id => n.id, :format => 'json'
-    return n, ActiveSupport::JSON.decode(@response.body)[sti_type + "_node"]
+    return n, ActiveSupport::JSON.decode(@response.body)[sti_type + "_item"]
   end
 
-  test "should have show HTML page for nodes" do
-    get_nodes_show(:one)
-    assert_template "nodes/show"
+  test "should have show HTML page for items" do
+    get_items_show(:one)
+    assert_template "items/show"
   end
 
-  test "node-show HTML page should contain node name" do
-    n = get_nodes_show(:one)
+  test "item-show HTML page should contain item name" do
+    n = get_items_show(:one)
     assert_select "body", /#{n.name}/
   end
 
-  test "node-show HTML page should contain node title" do
-    n = get_nodes_show(:one)
+  test "item-show HTML page should contain item title" do
+    n = get_items_show(:one)
     assert_select "body", /#{n.title}/
   end
 
-  test "node-show HTML page should contain node description" do
-    n = get_nodes_show(:one)
+  test "item-show HTML page should contain item description" do
+    n = get_items_show(:one)
     assert_select "body", /#{n.description}/
   end
 
-  test "nodes show HTML page shouldnt contain status" do
-    get_nodes_show(:one)
+  test "items show HTML page shouldnt contain status" do
+    get_items_show(:one)
     assert_negative_view_contents
   end
 
-  test "nodes show JSON response should contain node name" do
-    n, j = get_nodes_show_json(:one, "individual")
+  test "items show JSON response should contain item name" do
+    n, j = get_items_show_json(:one, "individual")
     assert j["name"] == n.name,
-      "Expected response Name '#{j['name']}' to match node's #{n.name}"
+      "Expected response Name '#{j['name']}' to match item's #{n.name}"
   end
 
-  test "nodes show JSON response should contain node title" do
-    n, j = get_nodes_show_json(:one, "individual")
+  test "items show JSON response should contain item title" do
+    n, j = get_items_show_json(:one, "individual")
     assert j["title"] == n.title,
-      "Expected response Title '#{j['title']}' to match node's #{n.title}"
+      "Expected response Title '#{j['title']}' to match item's #{n.title}"
   end
 
-  test "nodes show JSON response should contain node description" do
-    n, j = get_nodes_show_json(:one, "individual")
+  test "items show JSON response should contain item description" do
+    n, j = get_items_show_json(:one, "individual")
     assert j["description"] == n.description,
       "Expected response Description '#{j['description']}' to " +
-        "match node's #{n.description}"
+        "match item's #{n.description}"
   end
 
 
         # all following are tests of the HTML page
 
-  test "node-show page should contain node-edit link" do
-    n = get_nodes_show(:two)
-    assert_select "a[href=?]", edit_node_path(n)
+  test "item-show page should contain item-edit link" do
+    n = get_items_show(:two)
+    assert_select "a[href=?]", edit_item_path(n)
   end
 
-  test "node-show page 4 unused nodes should contain node-delete link" do
-    n = get_nodes_show(:two)
-    assert_select "a[href=?]", node_path(n) #sloppy, should verify :method
+  test "item-show page 4 unused items should contain item-delete link" do
+    n = get_items_show(:two)
+    assert_select "a[href=?]", item_path(n) #sloppy, should verify :method
   end
 
-  test "node-show page 4 in-use nodes should contain cant-delete-node link" do
-    n = get_nodes_show(:one)
+  test "item-show page 4 in-use items should contain cant-delete-item link" do
+    n = get_items_show(:one)
     assert_select "a[href=\"#\"][onclick*=\"cantDelete\"]"
   end
 
-  test "node-show page should contain nodes-index link" do
-    n = get_nodes_show(:two)
-    assert_select "a[href=?]", nodes_path
+  test "item-show page should contain items-index link" do
+    n = get_items_show(:two)
+    assert_select "a[href=?]", items_path
   end
 
-  test "node-show page should contain edges-new link" do
-    n = get_nodes_show(:two)
-    assert_select "a[href=?]", new_edge_path
+  test "item-show page should contain connections-new link" do
+    n = get_items_show(:two)
+    assert_select "a[href=?]", new_connection_path
   end
 
-  test "node-show page should contain titles & links of each edge's nodes" do
-    [ nodes(:one),                          # aReiffiedEdge
-      nodes(:testCategory),
-      nodes(:testSubcategory),              # subcategoryHasValue
-      nodes(:isAssigned)
+  test "item-show page should contain titles & links of each connection's items" do
+    [ items(:one),                          # aQualifiedConnection
+      items(:testCategory),
+      items(:testSubcategory),              # subcategoryHasValue
+      items(:isAssigned)
     ].each do |n|
-      get_nodes_show(:testIndividual)
+      get_items_show(:testIndividual)
       assert_select "body", /#{n.title}/
-      assert_select "a[href=?]", node_path(n)
+      assert_select "a[href=?]", item_path(n)
     end
   end
 
-  test "node-show page should contain links for edges" do
-    [ edges(:aReiffiedEdge),
-      edges(:subcategoryHasValue)
+  test "item-show page should contain links for connections" do
+    [ connections(:aQualifiedConnection),
+      connections(:subcategoryHasValue)
     ].each do |e|
-      get_nodes_show(:testIndividual)
-      assert_select "a[href=?]", edit_edge_path(e)
-      assert_select "a[href=?]", edge_path(e)
+      get_items_show(:testIndividual)
+      assert_select "a[href=?]", edit_connection_path(e)
+      assert_select "a[href=?]", connection_path(e)
     end
   end
 
-  test "node-show page should have and only have correct edit destroy links" do
-    Node.all.each do |node|
+  test "item-show page should have and only have correct edit destroy links" do
+    Item.all.each do |item|
 
-      if node.sti_type != "ReiffiedNode"
-        get :show, :id => node.id
+      if item.sti_type != "QualifiedItem"
+        get :show, :id => item.id
 
-        # other node types all listed
-        assert_select "body", /#{node.name}/
+        # other item types all listed
+        assert_select "body", /#{item.name}/
 
 
-        test_sense = (node.flags & Node::DATA_IS_UNALTERABLE) == 0
+        test_sense = (item.flags & Item::DATA_IS_UNALTERABLE) == 0
 
         # edit link present/absent
-        assert_select( "a[href=\"#{edit_node_path(node)}\"]", test_sense )
+        assert_select( "a[href=\"#{edit_item_path(item)}\"]", test_sense )
 
         # delete link present/absent
-        node_not_in_use =
-          Edge.all( :conditions =>
-                    [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
-                      node.id, node.id, node.id ]).
+        item_not_in_use =
+          Connection.all( :conditions =>
+            [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
+              item.id, item.id, item.id ]).
             empty?
         assert_select(
-          "a[href=\"#{node_path(node)}\"][onclick*=\"delete\"]",
-          test_sense && node_not_in_use )
+          "a[href=\"#{item_path(item)}\"][onclick*=\"delete\"]",
+          test_sense && item_not_in_use )
         assert_select(
           "a[href=\"#\"][onclick*=\"cantDelete\"]",
-          test_sense && !node_not_in_use )
+          test_sense && !item_not_in_use )
       end
     end
   end
 
-  test "node-show page's edge list should h-o-h correct per-edge links" do
-    Node.all.each do |node|
+  test "item-show page's connection list should h-o-h correct per-connection links" do
+    Item.all.each do |item|
 
-      if node.sti_type != "ReiffiedNode"
-        get :show, :id => node.id
+      if item.sti_type != "QualifiedItem"
+        get :show, :id => item.id
 
-        edges = Edge.all( :conditions => [ "subject_id = ?", node.id ])        +
-                Edge.all( :conditions => [ "predicate_id = ?", node.id ])      +
-                Edge.all( :conditions => [ "obj_id = ?", node.id ])
-        edges.each do |edge|
-          test_sense = (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0
+        connections =
+          Connection.all( :conditions => [ "subject_id = ?", item.id ])    +
+          Connection.all( :conditions => [ "predicate_id = ?", item.id ])  +
+          Connection.all( :conditions => [ "obj_id = ?", item.id ])
+        connections.each do |connection|
+          test_sense = (connection.flags & Connection::DATA_IS_UNALTERABLE) == 0
 
           # edit link present/absent
-          assert_select( "a[href=\"#{edit_edge_path(edge)}\"]", test_sense )
+          assert_select( "a[href=\"#{edit_connection_path(connection)}\"]",
+            test_sense )
           # delete link present/absent
           assert_select(
-            "a[href=\"#{edge_path(edge)}\"][onclick*=\"delete\"]", test_sense )
+            "a[href=\"#{connection_path(connection)}\"][onclick*=\"delete\"]",
+            test_sense )
         end
       end
     end

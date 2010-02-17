@@ -19,160 +19,143 @@
 require 'test_helper'
 
 class EgdeTest < ActiveSupport::TestCase
-  test "edge model exists" do
-    assert Edge.new
+  test "connection model exists" do
+    assert Connection.new
   end
 
-  test "edge has basic properties" do
-    e = Edge.new( :subject => nodes(:testContainer),
-                  :predicate => Node.find_by_name("contains"),
-                  :obj => nodes(:testIndividual) )
+  test "connection has basic properties" do
+    e = Connection.new( :subject => items(:testContainer),
+      :predicate => Item.find_by_name("contains"),
+      :obj => items(:testIndividual) )
     assert e.save
   end
 
-  test "edge has edge_desc property" do
-    e = Edge.new( :subject => nodes(:testIndividual),
-                  :predicate => Node.find_by_name("one_of"),
-                  :obj => nodes(:testCategory),
-                  :edge_desc => nodes(:edge_one) )
+  test "connection has connection_desc property" do
+    e = Connection.new( :subject => items(:testIndividual),
+      :predicate => Item.find_by_name("one_of"), :obj => items(:testCategory),
+      :connection_desc => items(:connection_one) )
     assert e.save
   end
 
-  test "edge must have spo values" do
-    e = Edge.new( :predicate => Node.find_by_name("parent_of"),
-                  :obj => nodes(:testSubcategory) )
+  test "connection must have spo values" do
+    e = Connection.new( :predicate => Item.find_by_name("parent_of"),
+      :obj => items(:testSubcategory) )
     assert !e.save
 
-    e = Edge.new( :subject => nodes(:testCategory),
-                  :obj => nodes(:testSubcategory) )
+    e = Connection.new( :subject => items(:testCategory),
+      :obj => items(:testSubcategory) )
     assert !e.save
 
-    e = Edge.new( :subject => nodes(:testCategory),
-                  :predicate => Node.find_by_name("parent_of") )
+    e = Connection.new( :subject => items(:testCategory),
+      :predicate => Item.find_by_name("parent_of") )
     assert !e.save
   end
 
-  test "edge properties must be nodes" do
+  test "connection properties must be items" do
     assert_raise ActiveRecord::AssociationTypeMismatch do
-      e = Edge.new( :subject   => nodes(:testIndividual),
-                    :predicate => nodes(:one),
-                    :obj       => edges(:aParentEdge)  )
+      e = Connection.new( :subject => items(:testIndividual),
+        :predicate => items(:one), :obj => connections(:aParentConnection)  )
     end
   end
 
-  test "new edge cant duplicate existing" do
-    e = Edge.new( :subject   => nodes(:testIndividual),
-                  :predicate => nodes(:one),
-                  :obj       => nodes(:testCategory)  )
+  test "new connection cant duplicate existing" do
+    e = Connection.new( :subject=> items(:testIndividual),
+      :predicate => items(:one), :obj => items(:testCategory)  )
     assert !e.save
   end
 
-  test "new edge cant duplicate existing with a sub-property" do
+  test "new connection cant duplicate existing with a sub-property" do
     # fixtures contain: fu inverse_relationship bar
-    e = Edge.new( :subject   => nodes(:fu),
-                  :predicate => Node.find_by_name("symmetric_relationship"),
-                  :obj       => nodes(:bar)  )
+    e = Connection.new( :subject => items(:fu), :obj => items(:bar),
+      :predicate => Item.find_by_name("symmetric_relationship")  )
     assert !e.save
   end
 
-  test "new edge cant duplicate existing with a super-property" do
+  test "new connection cant duplicate existing with a super-property" do
     # fixtures contain: sn symmetric_relationship afu
-    e = Edge.new( :subject   => nodes(:sn),
-                  :predicate => Node.find_by_name("inverse_relationship"),
-                  :obj       => nodes(:afu)  )
+    e = Connection.new( :subject => items(:sn), :obj => items(:afu),
+      :predicate => Item.find_by_name("inverse_relationship")  )
     assert !e.save
   end
 
-# group of nodes used for testing sub_property_of relationship traversal
+# group of items used for testing sub_property_of relationship traversal
 # structure in fixtures is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
 #        spo Z spo Y spo X
   test "distantly-related duplicate predicate A implied-spo E" do
-    Edge.new(     :subject   => nodes(:fu),
-                  :predicate => nodes(:E),
-                  :obj       => nodes(:bar)).save
-    e = Edge.new( :subject   => nodes(:fu),
-                  :predicate => nodes(:A),
-                  :obj       => nodes(:bar))
+    Connection.new( :subject => items(:fu), :predicate => items(:E),
+      :obj => items(:bar)).save
+    e = Connection.new( :subject => items(:fu), :predicate => items(:A),
+      :obj => items(:bar))
     assert !e.save
   end
 
   test "distantly-related duplicate predicate A implied-spo Z" do
-    Edge.new(     :subject   => nodes(:fu),
-                  :predicate => nodes(:Z),
-                  :obj       => nodes(:bar)).save
-    e = Edge.new( :subject   => nodes(:fu),
-                  :predicate => nodes(:A),
-                  :obj       => nodes(:bar))
+    Connection.new( :subject => items(:fu), :predicate => items(:Z),
+      :obj => items(:bar)).save
+    e = Connection.new( :subject => items(:fu), :predicate => items(:A),
+      :obj => items(:bar))
     assert !e.save
   end
 
   test "distantly-related duplicate predicate E implied-super-po A" do
-    Edge.new(     :subject   => nodes(:fu),
-                  :predicate => nodes(:A),
-                  :obj       => nodes(:bar)).save
-    e = Edge.new( :subject   => nodes(:fu),
-                  :predicate => nodes(:E),
-                  :obj       => nodes(:bar))
+    Connection.new( :subject => items(:fu), :predicate => items(:A),
+      :obj => items(:bar)).save
+    e = Connection.new( :subject => items(:fu), :predicate => items(:E),
+      :obj => items(:bar))
     assert !e.save
   end
 
   test "distantly-related duplicate predicate Z implied-super-po A" do
-    Edge.new(     :subject   => nodes(:fu),
-                  :predicate => nodes(:A),
-                  :obj       => nodes(:bar)).save
-    e = Edge.new( :subject   => nodes(:fu),
-                  :predicate => nodes(:Z),
-                  :obj       => nodes(:bar))
+    Connection.new( :subject => items(:fu), :predicate => items(:A),
+      :obj => items(:bar)).save
+    e = Connection.new( :subject => items(:fu), :predicate => items(:Z),
+      :obj => items(:bar))
     assert !e.save
   end
   # done with multi-spo inheritance tests
 
 
-  test "new edge cant duplicate implied" do
+  test "new connection cant duplicate implied" do
     # fixtures contain: testCategory parent_of testSubcategory
-    e = Edge.new( :subject   => nodes(:testSubcategory),
-                  :predicate => Node.find_by_name( "child_of" ),
-                  :obj       => nodes(:testCategory)  )
+    e = Connection.new( :subject => items(:testSubcategory),
+      :predicate => Item.find_by_name( "child_of" ),
+      :obj => items(:testCategory) )
     assert !e.save
   end
 
-  test "new edge cant be parent-to-child from individual to category" do
-    e = Edge.new( :subject   => nodes(:one),  # IndividualNode
-                  :predicate => Node.find_by_name( "contains" ),
-                  :obj       => nodes(:two)  )
+  test "new connection cant be parent-to-child from individual to category" do
+    e = Connection.new( :subject => items(:one),  # IndividualItem
+      :predicate => Item.find_by_name( "contains" ), :obj => items(:two)  )
     assert !e.save
   end
 
-  test "new edge cant be child-to-parent from category to individual" do
-    e = Edge.new( :subject   => nodes(:two),  # ClassNode
-                  :predicate => Node.find_by_name( "child_of" ),
-                  :obj       => nodes(:one)  )
+  test "new connection cant be child-to-parent from category to individual" do
+    e = Connection.new( :subject => items(:two),  # CategoryItem
+      :predicate => Item.find_by_name( "child_of" ), :obj => items(:one)  )
     assert !e.save
   end
 
-  test "can create acceptable built-in edge-to-self types" do
-    n = nodes(:one)
+  test "can create acceptable built-in connection-to-self types" do
+    n = items(:one)
     [ "peer_of", "value_relationship","symmetric_relationship" ].
         each do |test_relation|
-      e = Edge.new( :subject   => n,
-                    :predicate => Node.find_by_name( test_relation ),
-                    :obj       => n )
+      e = Connection.new( :subject => n,
+        :predicate => Item.find_by_name( test_relation ), :obj => n )
       assert e.save
       e.destroy # clean up for next test pass
     end
   end
 
-  test "cant create unacceptable built-in edge-to-self types" do
-    n = nodes(:one)
+  test "cant create unacceptable built-in connection-to-self types" do
+    n = items(:one)
     [ "one_of", "contains", "parent_of", "child_of", "predecessor_of",
       "successor_of", "inverse_relationship", "sub_property_of",
       "hierarchical_relationship", "ordered_relationship" ].
         each do |test_relation|
-      e = Edge.new( :subject   => n,
-                    :predicate => Node.find_by_name( test_relation ),
-                    :obj       => n )
+      e = Connection.new( :subject => n,
+        :predicate => Item.find_by_name( test_relation ), :obj => n )
       assert !e.save
     end
   end

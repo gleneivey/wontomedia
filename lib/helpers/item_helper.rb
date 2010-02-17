@@ -16,62 +16,63 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class NodeHelper
-  NODE_KLASS_NAME            = "Node"
-  NODE_CLASS_KLASS_NAME      = "ClassNode"
-  NODE_INDIVIDUAL_KLASS_NAME = "IndividualNode"
-  NODE_PROPERTY_KLASS_NAME   = "PropertyNode"
-  NODE_REIFFIED_KLASS_NAME   = "ReiffiedNode"
+class ItemHelper
+  ITEM_KLASS_NAME            = "Item"
+  ITEM_CATEGORY_KLASS_NAME   = "CategoryItem"
+  ITEM_INDIVIDUAL_KLASS_NAME = "IndividualItem"
+  ITEM_PROPERTY_KLASS_NAME   = "PropertyItem"
+  ITEM_QUALIFIED_KLASS_NAME  = "QualifiedItem"
 
-  NODE_SUBTYPES_FROM_TEXT = {
-    "node"              => Node,           "Node"           => Node,
-    "class"             => ClassNode,      "ClassNode"      => ClassNode,
-    "individual"        => IndividualNode, "IndividualNode" => IndividualNode,
-    "property"          => PropertyNode,   "PropertyNode"   => PropertyNode,
-    "reiffied-property" => ReiffiedNode,   "ReiffiedNode"   => ReiffiedNode
+  ITEM_SUBTYPES_FROM_TEXT = {
+    "item"                 => Item,           "Item"           => Item,
+    "category"             => CategoryItem,   "CategoryItem"   => CategoryItem,
+    "individual"           => IndividualItem,
+      "IndividualItem" => IndividualItem,
+    "property"             => PropertyItem,   "PropertyItem"   => PropertyItem,
+    "qualified-connection" => QualifiedItem,  "QualifiedItem"  => QualifiedItem
   }
-  NODE_CLASSNAME_TO_SUBTYPE_SHORT = {
-    "ClassNode" => 'class', "IndividualNode" => 'individual',
-    "PropertyNode" => 'property', "ReiffiedNode" => 'reiffied'
+  ITEM_CLASSNAME_TO_SUBTYPE_SHORT = {
+    "CategoryItem" => 'category', "IndividualItem" => 'individual',
+    "PropertyItem" => 'property', "QualifiedItem" => 'qualified'
   }
-  NODE_SUBTYPES_TO_HUMAN = {
-    'ClassNode' => 'Category',
-    'IndividualNode' => 'Individual',
-    'PropertyNode' => 'Property Type',
-    'ReiffiedNode' => 'Reiffied Property'
+  ITEM_SUBTYPES_TO_HUMAN = {
+    'CategoryItem' => 'Category',
+    'IndividualItem' => 'Individual',
+    'PropertyItem' => 'Property Type',
+    'QualifiedItem' => 'Qualified Connection'
   }
 
-  def self.find_typed_node(*args)
-    n = Node.find(*args)
+  def self.find_typed_item(*args)
+    n = Item.find(*args)
     if n.nil?                                  ||
        n.sti_type.nil?                         ||
-       NODE_SUBTYPES_FROM_TEXT[n.sti_type].nil?
+       ITEM_SUBTYPES_FROM_TEXT[n.sti_type].nil?
       return nil
     end
 
     klass = case n.sti_type
-            when "Node"              then Node
-            when "node"              then Node
-            when "ClassNode"         then ClassNode
-            when "class"             then ClassNode
-            when "IndividualNode"    then IndividualNode
-            when "individual"        then IndividualNode
-            when "PropertyNode"      then PropertyNode
-            when "property"          then PropertyNode
-            when "ReiffiedNode"      then ReiffiedNode
-            when "reiffied-property" then ReiffiedNode
+            when "Item"                 then Item
+            when "item"                 then Item
+            when "CategoryItem"         then CategoryItem
+            when "category"             then CategoryItem
+            when "IndividualItem"       then IndividualItem
+            when "individual"           then IndividualItem
+            when "PropertyItem"         then PropertyItem
+            when "property"             then PropertyItem
+            when "QualifiedItem"        then QualifiedItem
+            when "qualified-connection" then QualifiedItem
             end
-#    NODE_SUBTYPES_FROM_TEXT[n.sti_type].find(*args)
+#    ITEM_SUBTYPES_FROM_TEXT[n.sti_type].find(*args)
     klass.find(*args)
   end
 
-  def self.new_typed_node(type_string, *args)
+  def self.new_typed_item(type_string, *args)
     if type_string.nil?
       return nil
     end
-    if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
+    if ITEM_SUBTYPES_FROM_TEXT[type_string].nil?
       type_string = type_string.singularize
-      if NODE_SUBTYPES_FROM_TEXT[type_string].nil?
+      if ITEM_SUBTYPES_FROM_TEXT[type_string].nil?
         return nil
       end
     end
@@ -79,33 +80,33 @@ class NodeHelper
 # absolutely no idea why this ugly thing works, but simply hash lookup
 # below causes failure deep in Rails' guts during new()
     klass = case type_string
-            when "Node"              then Node
-            when "node"              then Node
-            when "ClassNode"         then ClassNode
-            when "class"             then ClassNode
-            when "IndividualNode"    then IndividualNode
-            when "individual"        then IndividualNode
-            when "PropertyNode"      then PropertyNode
-            when "property"          then PropertyNode
-            when "ReiffiedNode"      then ReiffiedNode
-            when "reiffied-property" then ReiffiedNode
+            when "Item"                 then Item
+            when "item"                 then Item
+            when "CategoryItem"         then CategoryItem
+            when "category"             then CategoryItem
+            when "IndividualItem"       then IndividualItem
+            when "individual"           then IndividualItem
+            when "PropertyItem"         then PropertyItem
+            when "property"             then PropertyItem
+            when "QualifiedItem"        then QualifiedItem
+            when "qualified-connection" then QualifiedItem
             end
-#    klass = NODE_SUBTYPES_FROM_TEXT[type_string]
+#    klass = ITEM_SUBTYPES_FROM_TEXT[type_string]
     k = klass.new(*args)
     k.flags = 0
     k
   end
 
-  def self.node_to_hash(n)
+  def self.item_to_hash(n)
       # again, I ought to be able to make the list programatically....
     { :id => n.id, :name => n.name, :title => n.title, :flags => n.flags,
       :description => n.description, :sti_type => n.sti_type }
   end
 
   def self.nouns
-    ClassNode.all + IndividualNode.all
+    CategoryItem.all + IndividualItem.all
   end
-  def self.not_reiffied
-    ClassNode.all + IndividualNode.all + PropertyNode.all
+  def self.not_qualified
+    CategoryItem.all + IndividualItem.all + PropertyItem.all
   end
 end

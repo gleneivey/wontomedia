@@ -1,10 +1,10 @@
-Feature:  Create and view new individual nodes through non-Ajax pages
+Feature:  Create and view new individual items through non-Ajax pages
   In order to create a wontology,
   as a contributor, I want
-  to be able to create and view nodes.
+  to be able to create and view items.
 
-  Scenario: Create new node
-    Given I am on the new nodes page
+  Scenario: Create new item
+    Given I am on the new items page
     And I fill in "Name" with "MyCategory"
     And I fill in "Title" with "A subcategory"
     And I fill in "Description" with "The root category in the C topic"
@@ -15,8 +15,8 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     And I should see "The root category in the C topic"
 
 
-  Scenario: System should prevent entry of invalid node names
-    Given I am on the new nodes page
+  Scenario: System should prevent entry of invalid item names
+    Given I am on the new items page
     And I fill in "Name" with "0bad"
     And I fill in "Title" with "A good title /\?"
     And I fill in "Description" with "0 And a (good) description, too."
@@ -31,26 +31,26 @@ Feature:  Create and view new individual nodes through non-Ajax pages
     Then I should see "error"
 
 
-  Scenario: I can't enter two nodes with same name
-    Given I am on the new nodes page
+  Scenario: I can't enter two items with same name
+    Given I am on the new items page
     And I fill in "Name" with "original"
-    And I fill in "Title" with "Original Node"
+    And I fill in "Title" with "Original Item"
     And I fill in "Description" with "description"
     And I select "Category" from "Type"
     When I press "Create"
     Then I should see "successfully created"
-    Given I am on the new nodes page
+    Given I am on the new items page
     And I fill in "Name" with "original"
-    And I fill in "Title" with "Second Node"
-    And I fill in "Description" with "Actually second node, but bad name"
+    And I fill in "Title" with "Second Item"
+    And I fill in "Description" with "Actually second item, but bad name"
     And I select "Individual" from "Type"
     When I press "Create"
     Then I should see "error"
 
 
   @not_for_selenium
-  Scenario: System should prevent entry of invalid node titles
-    Given I am on the new nodes page
+  Scenario: System should prevent entry of invalid item titles
+    Given I am on the new items page
     And I fill in "Name" with "goodName"
     And I fill in "Title" with "Bad title\012has two lines"
     And I fill in "Description" with "good"

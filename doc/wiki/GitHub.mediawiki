@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 '''''GitHub''''' (https://github.com/) is a website that provides network-based repositories that can be accessed using the [http://www.kernel.org/pub/software/scm/git/docs/ Git] revision-control tool.
 
 The central web page for our primary repository on GitHub is at:

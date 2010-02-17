@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-A node cannot be deleted as long as it is referenced by any existing edge.  Before you can delete this node, you will have to delete or edit all of the edges that reference it, which can be done from the list of this node's edges here.
+An item cannot be deleted as long as it is referenced by any existing connection.  Before you can delete this item, you will have to delete or edit all of the connections that reference it, which can be done from the list of this item's connections here.

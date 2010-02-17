@@ -20,7 +20,7 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  before(function() { IFrame("http://localhost:3001/nodes/new"); });
+  before(function() { IFrame("http://localhost:3001/items/new"); });
 
   function doPresets(presets){
     // make sure we trigger onchange handlers, so other error checks done
@@ -30,20 +30,20 @@ Screw.Unit(function(){
   }
 
 
-  describe( "Dynamic input checks in nodes/new page", function(){
+  describe( "Dynamic input checks in items/new page", function(){
     describe( "Validation of input to Title and Name", function(){
       it( "Checks the Title field for newlines", function(){
         // set values for controls we're not testing
         var presets = [
-          { elem: 'node_sti_type',    value: "ClassNode" },
-          { elem: 'node_name',        value: "TheNode" },
-          { elem: 'node_description', value: "A Description." }
+          { elem: 'item_sti_type',    value: "CategoryItem" },
+          { elem: 'item_name',        value: "TheItem" },
+          { elem: 'item_description', value: "A Description." }
         ];
         doPresets(presets);
 
         var titleSpan = E('title_multi_line');
         var titleIcon = E('title_error_icon');
-        var nodesNewSubmit = E('node_submit');
+        var itemsNewSubmit = E('item_submit');
         // alternate between good and bad strings to verify flags on/off
         var testData = [
           { good: false, title: "String with\012two lines." },
@@ -65,17 +65,17 @@ Screw.Unit(function(){
                            "description_error_icon" ];
 
         for (var c=0; c < testData.length; c++){
-          changeNamedFieldToValue('node_title', testData[c].title);
+          changeNamedFieldToValue('item_title', testData[c].title);
 
           if (testData[c].good){
             expect(titleSpan.className).to_not(match, /helpTextFlagged/);
             expect(titleIcon.src).to(match, /blank_error_icon\.png/);
-            expect(nodesNewSubmit.className).to(match, /^activeButton$/);
+            expect(itemsNewSubmit.className).to(match, /^activeButton$/);
           }
           else {
             expect(titleSpan.className).to(match, /helpTextFlagged/);
             expect(titleIcon.src).to(match, /error_error_icon\.png/);
-            expect(nodesNewSubmit.className).to(match, /^inactiveButton$/);
+            expect(itemsNewSubmit.className).to(match, /^inactiveButton$/);
           }
 
           // make sure there's no spurious reporting of other errors
@@ -90,9 +90,9 @@ Screw.Unit(function(){
 
 
       var nameTestPresets = [
-        { elem: 'node_sti_type',    value: "ClassNode" },
-        { elem: 'node_title',       value: "The node" },
-        { elem: 'node_description', value: "A Description." }
+        { elem: 'item_sti_type',    value: "CategoryItem" },
+        { elem: 'item_title',       value: "The item" },
+        { elem: 'item_description', value: "A Description." }
       ];
 
       it( "Checks the Name field's first character for bad values", function(){
@@ -101,21 +101,21 @@ Screw.Unit(function(){
 
         var nameSpan = E('name_start_char');
         var nameIcon = E('name_error_icon');
-        var nodesNewSubmit = E('node_submit');
+        var itemsNewSubmit = E('item_submit');
         for (var c=0x20; c < 0x7f; c++){
-          changeNamedFieldToValue('node_name',
-                                  String.fromCharCode(c) + "NodeName");
+          changeNamedFieldToValue('item_name',
+                                  String.fromCharCode(c) + "itemName");
 
           if ((c >= 0x41 && c <= 0x5a) ||
               (c >= 0x61 && c <= 0x7a)    ){     // valid character
             expect(nameSpan.className).to_not(match, /helpTextFlagged/);
             expect(nameIcon.src).to(match, /blank_error_icon\.png/);
-            expect(nodesNewSubmit.className).to(match, /^activeButton$/);
+            expect(itemsNewSubmit.className).to(match, /^activeButton$/);
           }
           else {                                 // valid character
             expect(nameSpan.className).to(match, /helpTextFlagged/);
             expect(nameIcon.src).to(match, /error_error_icon\.png/);
-            expect(nodesNewSubmit.className).to(match, /^inactiveButton$/);
+            expect(itemsNewSubmit.className).to(match, /^inactiveButton$/);
           }
         }
       });
@@ -126,10 +126,10 @@ Screw.Unit(function(){
 
         var nameSpan = E('name_nth_char');
         var nameIcon = E('name_error_icon');
-        var nodesNewSubmit = E('node_submit');
+        var itemsNewSubmit = E('item_submit');
         for (var c=0x20; c < 0x7f; c++){
-          changeNamedFieldToValue('node_name',
-            "Node_" + String.fromCharCode(c) + "-Name4U");
+          changeNamedFieldToValue('item_name',
+            "Item_" + String.fromCharCode(c) + "-Name4U");
 
           if ((c >= 0x41 && c <= 0x5a) ||
               (c >= 0x30 && c <= 0x39) ||
@@ -137,12 +137,12 @@ Screw.Unit(function(){
               (c >= 0x61 && c <= 0x7a)    ){     // valid character
             expect(nameSpan.className).to_not(match, /helpTextFlagged/);
             expect(nameIcon.src).to(match, /blank_error_icon\.png/);
-            expect(nodesNewSubmit.className).to(match, /^activeButton$/);
+            expect(itemsNewSubmit.className).to(match, /^activeButton$/);
           }
           else {                                 // valid character
             expect(nameSpan.className).to(match, /helpTextFlagged/);
             expect(nameIcon.src).to(match, /error_error_icon\.png/);
-            expect(nodesNewSubmit.className).to(match, /^inactiveButton$/);
+            expect(itemsNewSubmit.className).to(match, /^inactiveButton$/);
           }
         }
       });

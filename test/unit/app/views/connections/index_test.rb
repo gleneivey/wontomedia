@@ -18,66 +18,68 @@
 
 
 require 'test_helper'
-require Rails.root.join( 'app', 'helpers', 'nodes_show_helper' )
-include(NodesShowHelper)
+require Rails.root.join( 'app', 'helpers', 'items_show_helper' )
+include(ItemsShowHelper)
 require Rails.root.join( 'app', 'helpers', 'format_helper' )
 include(FormatHelper)
 
 
-class EdgesIndexViewTest < ActionController::TestCase
-  tests EdgesController
+class ConnectionsIndexViewTest < ActionController::TestCase
+  tests ConnectionsController
 
-  test "should have index page for edges" do
+  test "should have index page for connections" do
     get :index
-    assert_template "edges/index"
+    assert_template "connections/index"
   end
 
-  test "should show Title of subject node for known edge" do
+  test "should show Title of subject item for known connection" do
     get :index
-    assert_select "body", /#{regex_escape Edge.first.subject.title}/
+    assert_select "body", /#{regex_escape Connection.first.subject.title}/
   end
 
-  test "should show Title of predicate node for known edge" do
-    get :index
-    assert_select "body",
-      /#{regex_escape NodesShowHelper.filter_parenthetical Edge.last.predicate.title}/
-  end
-
-  test "should show Title of object node for known edge" do
+  test "should show Title of predicate item for known connection" do
     get :index
     assert_select "body",
-      /#{regex_escape NodesShowHelper.filter_parenthetical Edge.all[1].obj.title}/
+      /#{regex_escape ItemsShowHelper.filter_parenthetical Connection.last.predicate.title}/
   end
 
-  test "should show Name of self node for known edge" do
+  test "should show Title of object item for known connection" do
     get :index
-    e = Edge.first(:conditions => "edge_desc_id IS NOT NULL")
-    assert_select "body", /#{e.edge_desc.name}/
+    assert_select "body",
+      /#{regex_escape ItemsShowHelper.filter_parenthetical Connection.all[1].obj.title}/
   end
 
-  test "nodes index page shouldnt contain status" do
+  test "should show Name of self item for known connection" do
+    get :index
+    e = Connection.first(:conditions => "connection_desc_id IS NOT NULL")
+    assert_select "body", /#{e.connection_desc.name}/
+  end
+
+  test "items index page shouldnt contain status" do
     get :index
     assert_negative_view_contents
   end
 
-  test "should have Show link for a known edge" do
+  test "should have Show link for a known connection" do
     get :index
-    edge = Edge.all[2]
-    assert_select "*##{edge.id} a[href=\"#{edge_path(edge)}\"]", true
+    connection = Connection.all[2]
+    assert_select ''+
+      "*##{connection.id} a[href=\"#{connection_path(connection)}\"]", true
   end
 
-  test "edges index page should have and only have right edit destroy links" do
+  test "connections index page should have and only have right edit destroy links" do
     get :index
 
-    Edge.all.each do |edge|
-      test_sense = (edge.flags & Edge::DATA_IS_UNALTERABLE) == 0
+    Connection.all.each do |connection|
+      test_sense = (connection.flags & Connection::DATA_IS_UNALTERABLE) == 0
 
       # edit link present/absent
-      assert_select( "*##{edge.id} a[href=\"#{edit_edge_path(edge)}\"]",
+      assert_select(
+        "*##{connection.id} a[href=\"#{edit_connection_path(connection)}\"]",
         test_sense   )
       # delete link present/absent
-      assert_select(
-        "*##{edge.id} a[href=\"#{edge_path(edge)}\"][onclick*=\"delete\"]",
+      assert_select( "*##{connection.id} " +
+        "a[href=\"#{connection_path(connection)}\"][onclick*=\"delete\"]",
         test_sense   )
     end
   end

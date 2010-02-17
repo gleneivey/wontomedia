@@ -16,12 +16,12 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class AddFlagsToEdges < ActiveRecord::Migration
+class AddFlagsToConnections < ActiveRecord::Migration
   def self.up
-    add_column :edges, :flags, :integer
+    add_column :connections, :flags, :integer
   end
 
   def self.down
-    remove_column :edges, :flags
+    remove_column :connections, :flags
   end
 end

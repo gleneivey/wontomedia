@@ -24,51 +24,51 @@
 <% end %>
 
 <%
-  @title_text = (h @edge.subject.name) + " : " +
-                (h @edge.predicate.name) + " : " +
-                (h @edge.obj.name)
+  @title_text = (h @connection.subject.name) + " : " +
+                (h @connection.predicate.name) + " : " +
+                (h @connection.obj.name)
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
-    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ],
-    [ 'Edge', 'WmHelp:GlossaryAtoO#anchor_Edge' ]
+    [ 'Item',       'WmHelp:GlossaryAtoO#anchor_Item' ],
+    [ 'Connection', 'WmHelp:GlossaryAtoO#anchor_Connection' ]
   ]
  %>
 
 
-<div class="headline">Editing edge<%=
-  popup_help_icon "Help edge edit", "WmHelp:Popup/HeaderEdgeEdit" %>
+<div class="headline">Editing connection<%=
+  popup_help_icon "Help connection edit", "WmHelp:Popup/HeaderConnectionEdit" %>
 </div>
 
 
-<% form_for(@edge) do |f| %>
+<% form_for(@connection) do |f| %>
   <%= f.error_messages %>
   <%= render :partial => "spo_select_controls",
                :locals => {
-                 :f => f, :edge => @edge,
-                 :nodes => @nodes, :verbs => @verbs
+                 :f => f, :connection => @connection,
+                 :items => @items, :verbs => @verbs
                } %>
   <p><%= f.submit 'Update', :tabindex=>'40' %></p>
 <% end %>
 
 
 <div class="horizontal-link-list"><ul>
-  <li><%= link_to 'Cancel,&nbsp;show&nbsp;edge', edge_path(@edge),
-                  :rel => 'nofollow' -%></li>
-  <li><%= link_to 'Cancel,&nbsp;show&nbsp;edge&nbsp;list', edges_path,
-                  :rel => 'nofollow' -%></li>
-  <li><%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;connection',
+                  connection_path(@connection), :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;connection&nbsp;list',
+                  connections_path, :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;item&nbsp;list', items_path,
                   :rel => 'nofollow' -%></li>
 </ul></div>
 
 
 <script type="text/javascript">
-  creatingNewEdge = false;
-  creatingNewNode = true;
+  creatingNewConnection = false;
+  creatingNewItem = true;
 </script>
-<%= javascript_include_tag "forEdgesForms" %>
+<%= javascript_include_tag "forConnectionsForms" %>
 <%= javascript_include_tag "event.simulate" %> <!-- used by following -->
-<%= javascript_include_tag "nodeCreatePopup" %>
-    <!-- following used by /nodes/new-pop if loaded by nodeCreatePopup.js -->
-<%= javascript_include_tag "forNodesForms" %>
-<%= javascript_include_tag "nodeTitleToName" %>
+<%= javascript_include_tag "itemCreatePopup" %>
+    <!-- following used by /items/new-pop if loaded by itemCreatePopup.js -->
+<%= javascript_include_tag "forItemsForms" %>
+<%= javascript_include_tag "itemTitleToName" %>

@@ -26,7 +26,7 @@ module FormatHelper
     title_out
   end
 
-  def wrap_node_name(name)
+  def wrap_item_name(name)
     len = 30
     wrapped = ''
     [ len, len*2, len*3, len*4 ].each do |wrap_at|
@@ -38,23 +38,23 @@ module FormatHelper
     wrapped
   end
 
-  def generate_edge_links(e)
+  def generate_connection_links(e)
     @show_help_icon_used, fragment =
-      a_help_link( link_to( 'Show', edge_path(e) ),
-        @show_help_icon_used, 'Help show edge', 'EdgeShow' )
+      a_help_link( link_to( 'Show', connection_path(e) ),
+        @show_help_icon_used, 'Help show connection', 'ConnectionShow' )
     concat( fragment )
 
-    if (e.flags & Edge::DATA_IS_UNALTERABLE) == 0
+    if (e.flags & Connection::DATA_IS_UNALTERABLE) == 0
       @edit_help_icon_used, fragment =
-        a_help_link( link_to( 'Edit&hellip;', edit_edge_path(e),
-                              :rel => 'nofollow' ),
-          @edit_help_icon_used, 'Help edit edge', 'EdgeEdit' )
+        a_help_link( link_to( 'Edit&hellip;', edit_connection_path(e),
+            :rel => 'nofollow' ),
+          @edit_help_icon_used, 'Help edit connection', 'ConnectionEdit' )
       concat( fragment )
 
       @delete_help_icon_used, fragment =
-        a_help_link( link_to( 'Delete', edge_path(e), :rel => 'nofollow',
-                    :confirm => 'Are you sure?', :method => :delete ),
-          @delete_help_icon_used, 'Help delete edge', 'EdgeDelete' )
+        a_help_link( link_to( 'Delete', connection_path(e), :rel => 'nofollow',
+            :confirm => 'Are you sure?', :method => :delete ),
+          @delete_help_icon_used, 'Help delete connection', 'ConnectionDelete' )
       concat( fragment )
     end
   end
@@ -72,14 +72,14 @@ module FormatHelper
   def text_has_tip( id, text, tip )
     span = id.nil? ? '<span>' : "<span id='#{id}'>"
     inner = "#{span}#{text}</span>" +
-            "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
+      "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
     link_to inner, "#", :class=>'texthastip', :tabindex=>'0'
   end
 
   def link_has_tip( id, text, href, tip )
     span = id.nil? ? '<span>' : "<span id='#{id}'>"
     inner = "#{span}#{text}</span>" +
-            "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
+      "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
     link_to inner, href, :class=>'linkhastip', :tabindex=>'0'
   end
 

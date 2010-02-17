@@ -25,34 +25,34 @@ class HomeThroughCreateTest < ActionController::IntegrationTest
     assert_response :success,
       "home page GET failed"
 
-    # follow "new node" link on home page to nodes-new form
-    click_link "New node"
+    # follow "new item" link on home page to items-new form
+    click_link "New item"
     assert_response :success,
-      "nodes-new form GET failed"
+      "items-new form GET failed"
 
-    # post the node-new form, expect to arrive at node-show page
-    fill_in "name",        :with => "nodeB"
-    fill_in "title",       :with => "Test node"
+    # post the item-new form, expect to arrive at item-show page
+    fill_in "name",        :with => "itemB"
+    fill_in "title",       :with => "Test item"
     fill_in "description", :with =>
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     select  "Category",    :from => "Type"
     click_button "Create"
     assert_response :success,
-      "nodes-create POST failed"
-    assert_match %r%/nodes/[0-9]+%, path,
-      "New node creation didn't end up at nodes-show page"
+      "items-create POST failed"
+    assert_match %r%/items/[0-9]+%, path,
+      "New item creation didn't end up at items-show page"
     assert_select "body", /successfully created/
 
 
-    # check node-show page contents:
-    assert_contain "nodeB"
-    assert_contain "Test node"
+    # check item-show page contents:
+    assert_contain "itemB"
+    assert_contain "Test item"
     assert_contain "Lorem ipsum dolor sit"
 
-    # to node-index page, new content there too?
-    visit "/nodes"
+    # to item-index page, new content there too?
+    visit "/items"
     assert_response :success,
-      "node-index page GET failed"
-    assert_contain "nodeB"
+      "item-index page GET failed"
+    assert_contain "itemB"
   end
 end

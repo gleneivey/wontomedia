@@ -1,51 +1,51 @@
-Feature:  View edges related to a node on that node's "resource" page
+Feature:  View connections related to a item on that item's "resource" page
   To understand the arrangement of an ontology,
   as a contributor, I want
-  to be able to view a node and its edges at the same time.
+  to be able to view a item and its connections at the same time.
 
 # a brief description of UI functionality, to guide test case choice:
 # (not all behavior described is necessarily "acceptance worthy"; some
 # may be validated in development tests)
-#  - all edges involving a node will be listed/displayed
-#  - each edge listed will have View, Edit, and Destroy links
-#  - clicking on the other nodes in an edge will show those node pages
-#  - edges will be listed in sorted groups
-#   - first groups will be those edges with current node as subject
-#    - first/separate group contains all edges whose predicate inherits
+#  - all connections involving a item will be listed/displayed
+#  - each connection listed will have View, Edit, and Destroy links
+#  - clicking on the other items in an connection will show those item pages
+#  - connections will be listed in sorted groups
+#   - first groups will be those connections with current item as subject
+#    - first/separate group contains all connections whose predicate inherits
 #      from value_relationship, sorted by predicate
-#    - final group (in this set) contains all edges whose predicate is
-#      used only once for this node
-#    - each intermediate group contains all those edges which use the
-#      same predicate.  In group, edges sorted by object; groups sorted
+#    - final group (in this set) contains all connections whose predicate is
+#      used only once for this item
+#    - each intermediate group contains all those connections which use the
+#      same predicate.  In group, connections sorted by object; groups sorted
 #      by predicate.
-#   - next group will be those edges with current node as object, grouped
+#   - next group will be those connections with current item as object, grouped
 #     by predicate, sub-grouped by subject
-#   - final group will be those edges with current node as predicate
+#   - final group will be those connections with current item as predicate
 
 # these acceptance tests are intentionally agnostic to
-#  - what information is displayed for an edge; only the .name of
-#    each *other* participating node is checked for
-#  - relative order of edge components and links
-#  - the formatting of edge display
+#  - what information is displayed for an connection; only the .name of
+#    each *other* participating item is checked for
+#  - relative order of connection components and links
+#  - the formatting of connection display
 #  - any in-browser modification to information displayed
 
-  Scenario: Node page should contain a new-edge link
-    Given I am on the show nodes page for "parent_of"
-    When I follow "Add a new edge"
-    Then I should see "Make a new edge"
+  Scenario: Item page should contain a new-connection link
+    Given I am on the show items page for "parent_of"
+    When I follow "Add a new connection"
+    Then I should see "Make a new connection"
 
 
-  Scenario: View a node with no edges
-    Given there is 1 existing individual like "lonelyNode"
-    When I am on the show nodes page for "lonelyNode0"
-    Then I should see 5 matches of "lonelyNode"
+  Scenario: View a item with no connections
+    Given there is 1 existing individual like "lonelyItem"
+    When I am on the show items page for "lonelyItem0"
+    Then I should see 5 matches of "lonelyItem"
 
 
-  Scenario: View a node with one edge
-    Given there is 2 existing individuals like "friendlyNode"
-    And there is an existing edge "friendlyNode0" "peer_of" "friendlyNode1"
-    When I am on the show nodes page for "friendlyNode0"
-    Then I should see 9 matches of "friendlyNode"
+  Scenario: View a item with one connection
+    Given there is 2 existing individuals like "friendlyItem"
+    And there is an existing connection "friendlyItem0" "peer_of" "friendlyItem1"
+    When I am on the show items page for "friendlyItem0"
+    Then I should see 9 matches of "friendlyItem"
     And I should see "Peer Of"
 
 

@@ -19,12 +19,12 @@
 require 'test_helper'
 require File.join( File.dirname(__FILE__), '..', 'test_helper' )
 
-class NodesDataTest < ActiveSupport::TestCase
-  test "nodes seed data present" do
+class ItemsDataTest < ActiveSupport::TestCase
+  test "items seed data present" do
     [ 'peer_of', 'one_of', 'contains', 'parent_of', 'child_of',
       'inverse_relationship', 'sub_property_of', 'symmetric_relationship',
       'value_relationship', 'hierarchical_relationship'].each do |name|
-      assert Node.find_by_name(name)
+      assert Item.find_by_name(name)
     end
   end
 end

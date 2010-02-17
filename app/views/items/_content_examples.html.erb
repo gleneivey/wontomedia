@@ -20,30 +20,30 @@
 <% if @display_unimplemented %>
   <p class="unimplemented">[The purpose of this area is to highlight
     "samples" of the local installation's content.  For now, we're
-    displaying the complete set of non-Property nodes.]</p>
+    displaying the complete set of non-Property items.]</p>
 <% end %>
 
 <div class="subheading">Recently Added Items</div>
 <style>
-  .node-title {
+  .item-title {
     font-size: 120%;
     font-weight: bold;
     margin: 0;
     white-space: nowrap;
   }
-  .node-desc {
+  .item-desc {
     margin: 0;
     margin-bottom: 2ex;
   }
 </style>
 
 <% nouns_listed = 0
-   @nouns.each do |node| %>
-     <p class="node-title">
-       <%= link_to "#{h filter_parenthetical node.title}", node_path(node) %>
+   @nouns.each do |item| %>
+     <p class="item-title">
+       <%= link_to "#{h filter_parenthetical item.title}", item_path(item) %>
      </p>
-     <p class="node-desc">
-       <% desc = h node.description
+     <p class="item-desc">
+       <% desc = h item.description
           if desc.length > 180
             desc = desc[0,180] + '&hellip;'
           end

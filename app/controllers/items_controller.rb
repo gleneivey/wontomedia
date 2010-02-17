@@ -16,26 +16,26 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require Rails.root.join( 'lib', 'helpers', 'node_helper')
+require Rails.root.join( 'lib', 'helpers', 'item_helper')
 require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 require 'yaml'
 
-class NodesController < ApplicationController
+class ItemsController < ApplicationController
   # GET /
   def home
-    @nouns = NodeHelper.nouns
+    @nouns = ItemHelper.nouns
     render :layout => "home"
   end
 
-  # GET /nodes
+  # GET /items
   def index
-    @nodes = Node.all.reverse
+    @items = Item.all.reverse
     @not_in_use_hash = {}
-    @nodes.each do |node|
-      @not_in_use_hash[node.id] =
-        Edge.all( :conditions =>
-                  [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
-                    node.id, node.id, node.id ]).
+    @items.each do |item|
+      @not_in_use_hash[item.id] =
+        Connection.all( :conditions =>
+          [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
+            item.id, item.id, item.id ]).
           empty?
     end
 
@@ -43,61 +43,60 @@ class NodesController < ApplicationController
       wants.html
       wants.yaml do
         render :text =>
-          @nodes.reject { |node|
-            (node.flags & Node::DATA_IS_UNALTERABLE) != 0 }.
+          @items.reject { |item|
+            (item.flags & Item::DATA_IS_UNALTERABLE) != 0 }.
           to_yaml
       end
     end
   end
 
-  # GET /nodes/new
+  # GET /items/new
   def new
     @this_is_non_information_page = true
-    @node = Node.new
+    @item = Item.new
   end
 
-  # GET /nodes/new-pop
+  # GET /items/new-pop
   def newpop
-    @node = Node.new
+    @item = Item.new
     @type = params[:type]
     render :layout => "popup"
   end
 
-  # POST /nodes
+  # POST /items
   def create
-    type_string = params[:node][:sti_type]
-    params[:node].delete :sti_type # don't mass-assign protected blah, blah
-    @node = NodeHelper.new_typed_node(type_string, params[:node])
+    type_string = params[:item][:sti_type]
+    params[:item].delete :sti_type # don't mass-assign protected blah, blah
+    @item = ItemHelper.new_typed_item(type_string, params[:item])
     @popup_flag = true if params[:popup_flag]
 
-    if @node.nil?
+    if @item.nil?
       flash.now[:error] =
-'Could not create. Node must have a type of either "Category" or "Individual".'
-      @node = Node.new(params[:node]) # keep info already entered
-      @node.sti_type = type_string
+'Could not create. Item must have a type of either "Category" or "Individual".'
+      @item = Item.new(params[:item]) # keep info already entered
+      @item.sti_type = type_string
       @this_is_non_information_page = true
       render :action => (@popup_flag ? "newpop" : "new" )
-    elsif @node.name =~ /[:.]/                     ||
-          !@node.save
-      @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
+    elsif @item.name =~ /[:.]/ || !@item.save
+      @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
       @this_is_non_information_page = true
       render :action => (@popup_flag ? "newpop" : "new" )
     else
       if @popup_flag
-        @edge_list = []; @node_hash = {}; @edge_hash = {}
-        flash.now[:notice] = 'Node was successfully created.'
+        @connection_list = []; @item_hash = {}; @connection_hash = {}
+        flash.now[:notice] = 'Item was successfully created.'
         render :action => "show", :layout => "popup"
       else
-        flash[:notice] = 'Node was successfully created.'
-        redirect_to node_path(@node)
+        flash[:notice] = 'Item was successfully created.'
+        redirect_to item_path(@item)
       end
     end
   end
 
-  # GET /nodes/1
+  # GET /items/1
   def show
     begin
-      @node = Node.find(params[:id])
+      @item = Item.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
@@ -112,179 +111,184 @@ class NodesController < ApplicationController
         Kernel.sleep(0.75)
       end
 
-      render :json => @node
+      render :json => @item
       return
     end
 
-    used_as_subj = Edge.all( :conditions => [ "subject_id = ?", @node.id ])
-    used_as_pred = Edge.all( :conditions => [ "predicate_id = ?", @node.id ])
-    used_as_obj  = Edge.all( :conditions => [ "obj_id = ?", @node.id ])
+    used_as_subj = Connection.all( :conditions =>
+      [ "subject_id = ?", @item.id ])
+    used_as_pred = Connection.all( :conditions =>
+      [ "predicate_id = ?", @item.id ])
+    used_as_obj  = Connection.all( :conditions =>
+      [ "obj_id = ?", @item.id ])
 
-    @node_hash = {}
-    @edge_hash = {}
-    [ used_as_subj, used_as_pred, used_as_obj ].each do |edge_array|
-      edge_array.each do |edge|
-        unless @edge_hash.has_key? edge.id
-          @edge_hash[edge.id] = edge
-          [ edge.subject, edge.predicate, edge.obj ].each do |node|
-            unless @node_hash.has_key? node.id
-              @node_hash[node.id] = node
+    @item_hash = {}
+    @connection_hash = {}
+    [ used_as_subj, used_as_pred, used_as_obj ].each do |connection_array|
+      connection_array.each do |connection|
+        unless @connection_hash.has_key? connection.id
+          @connection_hash[connection.id] = connection
+          [ connection.subject, connection.predicate, connection.obj ].
+            each do |item|
+            unless @item_hash.has_key? item.id
+              @item_hash[item.id] = item
             end
           end
         end
       end
     end
 
-      # now that we've got all the edges to display, order and group them
-    # @edge_list should be an array of arrays, each internal array is
-    # a "section" of the display page, containing .id's of edges
-    @edge_list = []
+      # now that we've got all the connections to display, order and group them
+    # @connection_list should be an array of arrays, each internal array is
+    # a "section" of the display page, containing .id's of connections
+    @connection_list = []
 
-    value_id = Node.find_by_name("value_relationship").id
-    spo_id   = Node.find_by_name("sub_property_of").id
+    value_id = Item.find_by_name("value_relationship").id
+    spo_id   = Item.find_by_name("sub_property_of").id
 
-    # first group, all edges *from* this node with value-type predicates
-    edges = []
-    edges_to_delete = []
-    used_as_subj.each do |edge|
-      if check_properties( :does         => edge.predicate_id,
-                           :inherit_from => value_id,
-                           :via          => spo_id             )
-        edges << edge.id
-        edges_to_delete << edge
+    # first group, all connections *from* this item with value-type predicates
+    connections = []
+    connections_to_delete = []
+    used_as_subj.each do |connection|
+      if check_properties( :does => connection.predicate_id, :via => spo_id,
+          :inherit_from => value_id )
+        connections << connection.id
+        connections_to_delete << connection
       end
     end
-    used_as_subj -= edges_to_delete # if done incrementally, breaks iterator
-    unless edges.empty?
-      @edge_list << edges
+    used_as_subj -= connections_to_delete # done incrementally, breaks iterator
+    unless connections.empty?
+      @connection_list << connections
     end
 
 
-    # next N groups: 1 group for edges *from* this node with >1 of same pred.
+    # next N groups: 1 group for connections *from* this item with >1 of
+    #   same pred.
     #figure out which predicates occur >1, how many they occur, sort & group
     pred_counts = {}
-    edge_using_pred = {}
-    used_as_subj.each do |edge|
-      if pred_counts[edge.predicate_id].nil?
-        pred_counts[edge.predicate_id] = 1
+    connection_using_pred = {}
+    used_as_subj.each do |connection|
+      if pred_counts[connection.predicate_id].nil?
+        pred_counts[connection.predicate_id] = 1
       else
-        pred_counts[edge.predicate_id] += 1
+        pred_counts[connection.predicate_id] += 1
       end
-      edge_using_pred[edge.predicate_id] = edge.id
+      connection_using_pred[connection.predicate_id] = connection.id
     end
-    subj_edges = pred_counts.keys
-    subj_edges.sort! { |a,b| pred_counts[b] <=> pred_counts[a] }
+    subj_connections = pred_counts.keys
+    subj_connections.sort! { |a,b| pred_counts[b] <=> pred_counts[a] }
     array_of_singles = []
-    subj_edges.each do |predicate_id|
+    subj_connections.each do |predicate_id|
       if pred_counts[predicate_id] > 1
-        edges = []
-        used_as_subj.each do |edge|   # lazy, more hashes would eliminate rescan
-          if edge.predicate_id == predicate_id
-            edges << edge.id
+        connections = []
+        used_as_subj.each do |connection|
+            # lazy, more hashes would eliminate rescan
+          if connection.predicate_id == predicate_id
+            connections << connection.id
           end
         end
-        unless edges.empty?
-          @edge_list << edges
+        unless connections.empty?
+          @connection_list << connections
         end
       else
-        array_of_singles << edge_using_pred[predicate_id]
+        array_of_singles << connection_using_pred[predicate_id]
       end
     end
 
-    # last group of edges *from* current node: all edges w/ used-once pred's
+    # last group of connections *from* current item:
+    #   all connections w/ used-once pred's
     unless array_of_singles.empty?
-      @edge_list << array_of_singles
+      @connection_list << array_of_singles
     end
 
 
-    obj_edges = used_as_obj.map { |edge| edge.id }
-    obj_edges.sort! do |a,b|
-      if @edge_hash[a].predicate_id == @edge_hash[b].predicate_id
-        @edge_hash[a].obj_id <=> @edge_hash[b].obj_id
+    obj_connections = used_as_obj.map { |connection| connection.id }
+    obj_connections.sort! do |a,b|
+      if @connection_hash[a].predicate_id == @connection_hash[b].predicate_id
+        @connection_hash[a].obj_id <=> @connection_hash[b].obj_id
       else
-        @edge_hash[a].predicate_id <=> @edge_hash[b].predicate_id
+        @connection_hash[a].predicate_id <=> @connection_hash[b].predicate_id
       end
     end
-    unless obj_edges.empty?
-      @edge_list << obj_edges
+    unless obj_connections.empty?
+      @connection_list << obj_connections
     end
 
 
-    pred_edges = used_as_pred.map { |edge| edge.id }
-    unless pred_edges.empty?
-      @edge_list << pred_edges
+    pred_connections = used_as_pred.map { |connection| connection.id }
+    unless pred_connections.empty?
+      @connection_list << pred_connections
     end
   end
 
-  # GET /nodes/1/edit
+  # GET /items/1/edit
   def edit
     begin
       @this_is_non_information_page = true
-      @node = Node.find(params[:id])
+      @item = Item.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
   end
 
-  # PUT /nodes/1
+  # PUT /items/1
   def update
-      # we want to be agnostic WRT processing node subclasses, so remap
+      # we want to be agnostic WRT processing item subclasses, so remap
       # name of incoming parameters if we're actually handling a child
     params.each do |k,v|
-      if k =~ /_node/
-        params["node"] = v
+      if k =~ /_item/
+        params["item"] = v
       end
     end
 
     begin
-      @node = NodeHelper.find_typed_node(params[:id])
+      @item = ItemHelper.find_typed_item(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
 
-    if (@node.flags & Node::DATA_IS_UNALTERABLE) != 0
-      flash[:error] = 'This Node cannot be altered.'
-      redirect_to node_path(@node)
-    elsif (!params[:node].nil? && !params[:node][:name].nil? &&
-          params[:node][:name] =~ /[:.]/                     )  ||
-        !@node.update_attributes(params[:node])
-      @node.errors.add :name, "cannot contain a period (.) or a colon (:)."
+    if (@item.flags & Item::DATA_IS_UNALTERABLE) != 0
+      flash[:error] = 'This Item cannot be altered.'
+      redirect_to item_path(@item)
+    elsif (!params[:item].nil? && !params[:item][:name].nil? &&
+          params[:item][:name] =~ /[:.]/                     )  ||
+        !@item.update_attributes(params[:item])
+      @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
       @this_is_non_information_page = true
       render :action => "edit"
     else
-      flash[:notice] = 'Node was successfully updated.'
-      redirect_to node_path(@node)
+      flash[:notice] = 'Item was successfully updated.'
+      redirect_to item_path(@item)
     end
   end
 
-  # DELETE /nodes/1
+  # DELETE /items/1
   def destroy
     begin
-      @node = Node.find(params[:id])
+      @item = Item.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
 
-    if (@node.flags & Node::DATA_IS_UNALTERABLE) != 0
-      flash[:error] = 'This Node cannot be altered.'
-      redirect_to node_path(@node)
-    elsif !(Edge.all( :conditions =>
-                      [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
-                        @node.id, @node.id, @node.id ]).
-            empty?)
-      flash[:error] = 'This Node is in use by 1+ Edges. ' +
-                      'Those must be modified or deleted first.'
-      redirect_to node_path(@node)
+    if (@item.flags & Item::DATA_IS_UNALTERABLE) != 0
+      flash[:error] = 'This Item cannot be altered.'
+      redirect_to item_path(@item)
+    elsif !(Connection.all( :conditions =>
+        [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
+          @item.id, @item.id, @item.id ]).empty?)
+      flash[:error] = 'This Item is in use by 1+ Connections. ' +
+        'Those must be modified or deleted first.'
+      redirect_to item_path(@item)
     else
-      @node.destroy
-      redirect_to nodes_url
+      @item.destroy
+      redirect_to items_url
     end
   end
 
-  # LOOKUP /nodes/lookup?name=aNodeName
+  # LOOKUP /items/lookup?name=aItemName
   def lookup
     # huge kludge for testability.  Need to ensure that we don't respond
     # so quickly (e.g., in setups where client and server are on the same
@@ -295,14 +299,14 @@ class NodesController < ApplicationController
     end
 
     begin
-      n = Node.find_by_name(params[:name])
+      n = Item.find_by_name(params[:name])
       if n.nil?
-        render :text => "<p>Didn't find Node</p>\n", :status => 404
+        render :text => "<p>Didn't find Item</p>\n", :status => 404
         return
       end
       id = n.id
     rescue
-      render :text => "<p>Didn't find Node</p>\n", :status => 404
+      render :text => "<p>Didn't find Item</p>\n", :status => 404
       return
     end
 

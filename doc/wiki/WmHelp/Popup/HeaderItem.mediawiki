@@ -4,6 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-This page contains all of the information about this particular [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Node node].  That is, the node's [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Title Title] (a single line, shown first), the node's [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Name Name] (a single symbol/word, indented under the Title), and the node's [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Description Description] (the rest of the text at the top of the page).
+This page contains all of the information about this particular [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Item item].  That is, the item's [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Title Title] (a single line, shown first), the item's [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Name Name] (a single symbol/word, indented under the Title), and the item's [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Description Description] (the rest of the text at the top of the page).
 
-The rest of the page lists of all of the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Edge edges] that reference this node.
+The rest of the page lists of all of the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Connection connections] that reference this item.

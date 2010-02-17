@@ -18,130 +18,130 @@
 
 require 'test_helper'
 
-class NodeTest < ActiveSupport::TestCase
-  test "node model exists" do
-    assert Node.new
+class ItemTest < ActiveSupport::TestCase
+  test "item model exists" do
+    assert Item.new
   end
 
-  test "node has name and title properties" do
+  test "item has name and title properties" do
     name = "nAME.-_:"
-    title = "Node's title"
-    n = Node.new(:name => name, :title =>  title)
+    title = "Item's title"
+    n = Item.new(:name => name, :title =>  title)
     assert n
     assert_equal name, n.name
     assert_equal title, n.title
     assert n.save
   end
 
-  test "node has description property" do
+  test "item has description property" do
     description = "description"
-    n = Node.new( :name => "name", :title => "Node's title",
+    n = Item.new( :name => "name", :title => "Item's title",
                   :description => description)
     assert n
     assert_equal description, n.description
     assert n.save
   end
 
-  test "default value for nodes flags is 0" do
-    n = Node.new( :name => "fu", :title => "bar")
+  test "default value for items flags is 0" do
+    n = Item.new( :name => "fu", :title => "bar")
     assert n.flags == 0
   end
 
-  test "can set node flags on creation" do
+  test "can set item flags on creation" do
     value = 42
-    n = Node.new( :name => "fu", :title => "bar", :flags => value)
+    n = Item.new( :name => "fu", :title => "bar", :flags => value)
     assert n.flags == value
   end
 
-  test "flag values of sample builtin nodes are correct" do
-    n = Node.find_by_name("sub_property_of")
-    assert n.flags == Node::DATA_IS_UNALTERABLE
+  test "flag values of sample builtin items are correct" do
+    n = Item.find_by_name("sub_property_of")
+    assert n.flags == Item::DATA_IS_UNALTERABLE
   end
 
 
           # verify existence/correctness of :name validations
-  test "node name is required" do
-    n = Node.new(:name => "", :title => "Node's title",
-                 :description => "description")
+  test "item name is required" do
+    n = Item.new(:name => "", :title => "Item's title",
+      :description => "description")
     assert !n.save
   end
 
-  test "node name cant begin with a number" do
-    n = Node.new(:name => "42node", :title => "Node's title",
-                 :description => "description")
+  test "item name cant begin with a number" do
+    n = Item.new(:name => "42item", :title => "Item's title",
+      :description => "description")
     assert !n.save
   end
 
-  test "node name cant include white space" do
+  test "item name cant include white space" do
     ["\t", "\n", " "].each do |bad|
-      n = Node.new(:name => "bad#{bad}Bad", :title => "Node's title",
-                   :description => "description")
+      n = Item.new(:name => "bad#{bad}Bad", :title => "Item's title",
+        :description => "description")
       assert !n.save, "Failed on :#{bad}: character"
     end
   end
 
-  test "node name cant include most punctuation" do
+  test "item name cant include most punctuation" do
     ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")",
      "+", "=", "{", "}", "[", "]", "|", "\\", ";", "\"", "'",
      ",", "<", ">", "?", "/"].each do |bad|
-      n = Node.new(:name => "bad#{bad}Bad", :title => "Node's title",
-                   :description => "description")
+      n = Item.new(:name => "bad#{bad}Bad", :title => "Item's title",
+        :description => "description")
       assert !n.save, "Failed on punctuation #{bad}"
     end
   end
 
-  test "node names must be unique" do
-    name = nodes(:one).name
-    n = Node.new(:name => name, :title => "title", :description => "desc")
+  test "item names must be unique" do
+    name = items(:one).name
+    n = Item.new(:name => name, :title => "title", :description => "desc")
     assert !n.save
   end
 
-  test "node names can be 80 characters long" do
-    n = Node.new(:title => "long name node", :description => "long", :name =>
+  test "item names can be 80 characters long" do
+    n = Item.new(:title => "long name item", :description => "long", :name =>
 "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" )
     assert n.save
   end
 
-  test "node names cannot be 81 characters long" do
-    n = Node.new(:title => "long name node", :description => "long", :name =>
+  test "item names cannot be 81 characters long" do
+    n = Item.new(:title => "long name item", :description => "long", :name =>
 "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxX" )
     assert !n.save
   end
 
-  test "node titles can be 255 characters long" do
+  test "item titles can be 255 characters long" do
     title = 'x'*255
-    n = Node.new(:name => "name", :title => title, :description => "long" )
+    n = Item.new(:name => "name", :title => title, :description => "long" )
     assert n.save
   end
 
-  test "node titles cannot be 256 characters long" do
+  test "item titles cannot be 256 characters long" do
     title = 'x'*256
-    n = Node.new(:name => "name", :title => title, :description => "long" )
+    n = Item.new(:name => "name", :title => title, :description => "long" )
     assert !n.save
   end
 
-  test "node descriptions can be 65,000 characters long" do
+  test "item descriptions can be 65,000 characters long" do
     desc = 'x'*65000
-    n = Node.new(:name => "name", :title => "title", :description => desc )
+    n = Item.new(:name => "name", :title => "title", :description => desc )
     assert n.save
   end
 
-  test "node names cannot be 65,001 characters long" do
+  test "item names cannot be 65,001 characters long" do
     desc = 'x'*65001
-    n = Node.new(:name => "name", :title => "title", :description => desc )
+    n = Item.new(:name => "name", :title => "title", :description => desc )
     assert !n.save
   end
 
 
           # verify existence/correctness of :title validations
-  test "node title is required" do
-    n = Node.new(:name => "node", :title => "", :description => "description")
+  test "item title is required" do
+    n = Item.new(:name => "item", :title => "", :description => "description")
     assert !n.save
   end
 
-  test "node title cant include non-space white space" do
+  test "item title cant include non-space white space" do
     ["\t", "\n"].each do |bad|
-      n = Node.new(:name => "goodName", :title => "But bad#{bad}title",
+      n = Item.new(:name => "goodName", :title => "But bad#{bad}title",
                    :description => "description")
       assert !n.save, "Failed on :#{bad}: character"
     end

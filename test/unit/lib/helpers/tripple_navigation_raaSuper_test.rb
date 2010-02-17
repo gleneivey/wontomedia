@@ -22,7 +22,7 @@ require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 class RelationAndAllSuperpropertiesTest < ActiveSupport::TestCase
   test "no parents make single invoke only" do
     count = 0
-    id = nodes(:one).id
+    id = items(:one).id
     relation_and_all_superproperties(id) do |sp_id|
       assert sp_id == id
       count += 1
@@ -31,7 +31,7 @@ class RelationAndAllSuperpropertiesTest < ActiveSupport::TestCase
   end
 
 
-# group of nodes used for testing sub_property_of relationship traversal
+# group of items used for testing sub_property_of relationship traversal
 # structure in fixtures is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
@@ -50,25 +50,25 @@ class RelationAndAllSuperpropertiesTest < ActiveSupport::TestCase
   end
 
   test "one superproperty causes two iterations" do
-    props = [ nodes(:D).id, nodes(:E).id ]
+    props = [ items(:D).id, items(:E).id ]
     make_relation_and_all_superproperties_call(props)
   end
 
   test "two superproperty causes three iterations" do
-    props = [ nodes(:Z).id, nodes(:Y).id, nodes(:X).id ]
+    props = [ items(:Z).id, items(:Y).id, items(:X).id ]
     make_relation_and_all_superproperties_call(props)
   end
 
   test "finds superproperties with multiple inheritance" do
-    props = [ nodes(:C).id, nodes(:D).id, nodes(:E).id, nodes(:M).id,
-              nodes(:Y).id, nodes(:X).id ]
+    props = [ items(:C).id, items(:D).id, items(:E).id, items(:M).id,
+              items(:Y).id, items(:X).id ]
     make_relation_and_all_superproperties_call(props)
   end
 
   test "navigate superproperties with a loop" do
-    props = [ nodes(:A).id, nodes(:B).id, nodes(:C).id, nodes(:D).id,
-              nodes(:E).id, nodes(:M).id,
-              nodes(:Z).id, nodes(:Y).id, nodes(:X).id ]
+    props = [ items(:A).id, items(:B).id, items(:C).id, items(:D).id,
+              items(:E).id, items(:M).id,
+              items(:Z).id, items(:Y).id, items(:X).id ]
     make_relation_and_all_superproperties_call(props)
   end
 end

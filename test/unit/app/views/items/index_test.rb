@@ -19,61 +19,61 @@
 
 require 'test_helper'
 
-class NodesIndexViewTest < ActionController::TestCase
-  tests NodesController
+class ItemsIndexViewTest < ActionController::TestCase
+  tests ItemsController
 
-  test "should have index page for nodes" do
+  test "should have index page for items" do
     get :index
-    assert_template "nodes/index"
+    assert_template "items/index"
   end
 
-  test "should show Name of known node" do
+  test "should show Name of known item" do
     get :index
-    assert_select "body", /#{nodes(:one).name}/
+    assert_select "body", /#{items(:one).name}/
   end
 
-  test "should show Title of known node" do
+  test "should show Title of known item" do
     get :index
-    assert_select "body", /#{nodes(:one).title}/
+    assert_select "body", /#{items(:one).title}/
   end
 
-  test "should show Description of known node" do
+  test "should show Description of known item" do
     get :index
-    assert_select "body", /#{nodes(:one).description}/
+    assert_select "body", /#{items(:one).description}/
   end
 
-  test "nodes index page shouldnt contain status" do
+  test "items index page shouldnt contain status" do
     get :index
     assert_negative_view_contents
   end
 
-  test "nodes index page should have and only have right edit destroy links" do
+  test "items index page should have and only have right edit destroy links" do
     get :index
 
-    Node.all.each do |node|
-      if node.sti_type == "ReiffiedNode"
-        # nodes representing reiffied edges aren't listed
-        assert_select "body", { :text => node.name, :count => 0 }
+    Item.all.each do |item|
+      if item.sti_type == "QualifiedItem"
+        # items representing qualified connections aren't listed
+        assert_select "body", { :text => item.name, :count => 0 }
       else
-        # other node types all listed
-        assert_select "body", /#{node.name}/
+        # other item types all listed
+        assert_select "body", /#{item.name}/
 
-        test_sense = (node.flags & Node::DATA_IS_UNALTERABLE) == 0
+        test_sense = (item.flags & Item::DATA_IS_UNALTERABLE) == 0
 
         # edit link present/absent
-        assert_select( "*##{node.name} a[href=\"#{edit_node_path(node)}\"]",
+        assert_select( "*##{item.name} a[href=\"#{edit_item_path(item)}\"]",
           test_sense   )
 
         # delete link present/absent
         # (attribute check is very Rails specific and a little sloppy, alas...)
-        node_not_in_use =
-          Edge.all( :conditions =>
+        item_not_in_use =
+          Connection.all( :conditions =>
                     [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
-                      node.id, node.id, node.id ]).
+                      item.id, item.id, item.id ]).
             empty?
-        test_sense &= node_not_in_use
+        test_sense &= item_not_in_use
         assert_select(
-          "*##{node.name} a[href=\"#{node_path(node)}\"][onclick*=\"delete\"]",
+          "*##{item.name} a[href=\"#{item_path(item)}\"][onclick*=\"delete\"]",
           test_sense   )
       end
     end

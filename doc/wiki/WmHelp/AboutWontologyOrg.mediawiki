@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 <tt>wontology.org</tt> is the primary public-testing deployment of the [[WontoMedia|WontoMedia]] web application software.
 
 As WontoMedia matures, related sets of information hosted at <tt>wontology.org</tt> will be moved to their own separate sites, and <tt>wontology.org</tt> will gradually focus on lists and category hierarchies that can be referenced from ''other'' wontologies and reused as components of other information sets.  For example, the list of countries in the world, the set of international standard language names, definitions of numeric constants and unit conversions, etc.

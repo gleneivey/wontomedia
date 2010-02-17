@@ -20,9 +20,9 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  before(function() { IFrame("http://localhost:3001/nodes/new"); });
+  before(function() { IFrame("http://localhost:3001/items/new"); });
 
-  var submitId = "node_submit";
+  var submitId = "item_submit";
   var flagTextIds = [ "sti_type_required", "title_required", "name_required",
                       "description_recommended" ];
   var flagIconIds = [ "sti_type_error_icon", "title_error_icon",
@@ -30,12 +30,12 @@ Screw.Unit(function(){
   var flagIconSrc = [ "error_error_icon", "error_error_icon",
                       "error_error_icon", "warn_error_icon" ];
 
-  var inputIds    = [ "node_sti_type", "node_title", "node_name",
-                      "node_description", submitId ];
+  var inputIds    = [ "item_sti_type", "item_title", "item_name",
+                      "item_description", submitId ];
   var descIndex   = 3;
 
 
-  describe( "Dynamic required input field checks in nodes/new page", function(){
+  describe( "Dynamic required input field checks in items/new page", function(){
     describe( "Check results with no user input", function(){
       it( "Shows 'Create' button inactive when blank page first loaded",
           function(){
@@ -74,7 +74,7 @@ Screw.Unit(function(){
         var tf = document.getElementById('test_frame');
 
         // first set inputs from bottom, then start over from top
-        var letters = [ "ClassNode", "G", "K", "q" ];
+        var letters = [ "CategoryItem", "G", "K", "q" ];
         var innerLoopStart = [ inputIds.length-2, 0 ];
         var innerLoopEnd   = [ -1,                inputIds.length-1 ];
         var innerLoopDelta = [ -1,                1 ];
@@ -117,7 +117,7 @@ Screw.Unit(function(){
           // setup for next pass
           var src = tf.src;
           tf.src = src;
-          letters = [ "PropertyNode", "p", "t", "Z" ];
+          letters = [ "PropertyItem", "p", "t", "Z" ];
         }
       });
 
@@ -125,10 +125,10 @@ Screw.Unit(function(){
         var submit = E(submitId);
 
         // first, fill in the form
-        E(inputIds[0]).value = "ClassNode";                     // Type
+        E(inputIds[0]).value = "CategoryItem";                  // Type
         E(inputIds[1]).value = "A title";                       // Title
-        E(inputIds[2]).value = "ANode";                         // Name
-        changeNamedFieldToValue(inputIds[3], "Cool test node"); // Description
+        E(inputIds[2]).value = "AnItem";                        // Name
+        changeNamedFieldToValue(inputIds[3], "Cool test item"); // Description
 
         // form should be submit-able
         expect(submit.className).to(match, /^activeButton$/);

@@ -4,11 +4,9 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
+In a [[WmHelp:GlossaryPtoZ#anchcor_Wontology|wontology]] information is represented as a collection of [[WmHelp:GlossaryAtoO#anchor_Item|items]] (see the tutorial "[[WmHelp:Tutorials/CreatingAnItem|Creating a item]]") and [[WmHelp:GlossaryAtoO#anchor_Connection|connections]] (see the tutorial "[[WmHelp:Tutorials/CreatingAConnection|Creating a connection]]").
 
-
-In a [[WmHelp:GlossaryPtoZ#anchcor_Wontology|wontology]] information is represented as a collection of [[WmHelp:GlossaryAtoO#anchor_Node|nodes]] (see the tutorial "[[WmHelp:Tutorials/CreatingANode|Creating a node]]") and [[WmHelp:GlossaryAtoO#anchor_Edge|edges]] (see the tutorial "[[WmHelp:Tutorials/CreatingAnEdge|Creating an edge]]").
-
-This tutorial describes the creation of a simple unordered list.  You can make a list in an [[WmHelp:GlossaryAtoO#anchor_Ontology|ontology]] ordered, but that requires the creation of more edges ([[WmHelp:GlossaryPtoZ#anchor_Relationship|relationships]]) between the list entries than will be shown here, and typically will use [[WmHelp:GlossaryPtoZ#anchor_Property|properties]] from the [[WmHelp:GlossaryPtoZ#anchor_RDF|RDF]] standard (rdf:Seq, rdf:List, rdf:fist, rdf:rest, rdf:_1, rdfs:member).  These properties are not yet provided as a built-in part of [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]], as described in the [[MajorRoadmap|planned features page]].
+This tutorial describes the creation of a simple unordered list.  You can make a list in an [[WmHelp:GlossaryAtoO#anchor_Ontology|ontology]] ordered, but that requires the creation of more connections ([[WmHelp:GlossaryPtoZ#anchor_Relationship|relationships]]) between the list entries than will be shown here, and typically will use [[WmHelp:GlossaryPtoZ#anchor_Property|properties]] from the [[WmHelp:GlossaryPtoZ#anchor_RDF|RDF]] standard (rdf:Seq, rdf:List, rdf:fist, rdf:rest, rdf:_1, rdfs:member).  These properties are not yet provided as a built-in part of [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]], as described in the [[MajorRoadmap|planned features page]].
 
 The tutorial also doesn't address nested lists (lists where some entries are actually lists with entries of their own).  Nested lists are a one type of [[WmHelp:GlossaryAtoO#anchor_Hierarchy|hierarchy]], and there is a separate tutorial building on this one that addresses the [[WmHelp:Tutorials/CreatingAHierarchy|creation of a hierarchy]].
 

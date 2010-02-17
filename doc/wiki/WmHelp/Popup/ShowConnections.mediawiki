@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-Clicking this link will take you to another page which lists all of the edges currently defined in the system.
+Clicking this link will take you to another page which lists all of the connections currently defined in the system.

@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-This page allows you to modify the set of nodes which are referenced by the current edge.  Each of the nodes referenced can be changed to any other node existing in the system, or a new node can be created from within this form by selecting the "'''- create a new ___ for this ___ -'''" entry from the top of any of the node-selection drop-down controls.
+This page allows you to modify the set of items which are referenced by the current connection.  Each of the items referenced can be changed to any other item existing in the system, or a new item can be created from within this form by selecting the "'''- create a new ___ for this ___ -'''" entry from the top of any of the item-selection drop-down controls.

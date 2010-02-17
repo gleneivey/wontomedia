@@ -20,40 +20,40 @@ require 'test_helper'
 require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 
 class CheckPropertiesInheritTest < ActiveSupport::TestCase
-  test "node with no properties doesnt inherit from anything" do
-    assert !check_properties( :does         => nodes(:two).id,
-                              :inherit_from => nodes(:one).id,
-                              :via          => nodes(:A).id     )
+  test "item with no properties doesnt inherit from anything" do
+    assert !check_properties( :does         => items(:two).id,
+                              :inherit_from => items(:one).id,
+                              :via          => items(:A).id     )
   end
 
-  test "node with simple property doesnt inherit" do
-    assert !check_properties( :does         => nodes(:testCategory).id,
-                              :inherit_from => nodes(:testIndividual).id,
-                              :via          => nodes(:one).id     )
+  test "item with simple property doesnt inherit" do
+    assert !check_properties( :does         => items(:testCategory).id,
+                              :inherit_from => items(:testIndividual).id,
+                              :via          => items(:one).id     )
   end
 
 
-# group of nodes used for testing sub_property_of relationship traversal
+# group of items used for testing sub_property_of relationship traversal
 # structure in fixtures is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
 #        spo Z spo Y spo X
 
-  test "node inherits from itself regardless" do
-    assert check_properties(  :does         => nodes(:A).id,
-                              :inherit_from => nodes(:A).id,
-      :via => Node.find_by_name("sub_property_of").id )
+  test "item inherits from itself regardless" do
+    assert check_properties(  :does         => items(:A).id,
+                              :inherit_from => items(:A).id,
+      :via => Item.find_by_name("sub_property_of").id )
   end
 
-  test "node with single-edge inheritence" do
-    assert check_properties(  :does         => nodes(:A).id,
-                              :inherit_from => nodes(:B).id,
-      :via => Node.find_by_name("sub_property_of").id )
+  test "item with single-connection inheritence" do
+    assert check_properties(  :does         => items(:A).id,
+                              :inherit_from => items(:B).id,
+      :via => Item.find_by_name("sub_property_of").id )
   end
 
-  test "node inherits through multiple nodes" do
-    assert check_properties(  :does         => nodes(:A).id,
-                              :inherit_from => nodes(:E).id,
-      :via => Node.find_by_name("sub_property_of").id )
+  test "item inherits through multiple items" do
+    assert check_properties(  :does         => items(:A).id,
+                              :inherit_from => items(:E).id,
+      :via => Item.find_by_name("sub_property_of").id )
   end
 end

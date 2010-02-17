@@ -56,7 +56,7 @@ function genNameValue(titleText){
   }
 
   var wordBound = true;
-  if (getCurrentType() == "PropertyNode")
+  if (getCurrentType() == "PropertyItem")
     wordBound = false;
 
   var atStart = true;

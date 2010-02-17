@@ -18,16 +18,16 @@
 
 class RenameObjectAndSelf < ActiveRecord::Migration
   def self.up
-    change_table :edges do |t|
+    change_table :connections do |t|
       t.rename :object_id, :obj_id
-      t.rename :self_id, :edge_desc_id
+      t.rename :self_id, :connection_desc_id
     end
   end
 
   def self.down
-    change_table :edges do |t|
+    change_table :connections do |t|
       t.rename :obj_id, :object_id
-      t.rename :edge_desc_id, :self_id
+      t.rename :connection_desc_id, :self_id
     end
   end
 end

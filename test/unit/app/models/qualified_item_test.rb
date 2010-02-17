@@ -18,15 +18,15 @@
 
 require 'test_helper'
 
-class ReiffiedNodeTest < ActiveSupport::TestCase
-  test "reiffied_node model exists" do
-    assert ReiffiedNode.new
+class QualifiedItemTest < ActiveSupport::TestCase
+  test "qualified_item model exists" do
+    assert QualifiedItem.new
   end
 
-  test "reiffied_node inherits from node" do
-    name = "rn"
-    rn = ReiffiedNode.new( :name => name, :title => "reiffied" )
+  test "qualified_item inherits from item" do
+    name = "qi"
+    rn = QualifiedItem.new( :name => name, :title => "qualified" )
     assert rn.save
-    assert_equal Node.find_by_name(name).name, name
+    assert_equal Item.find_by_name(name).name, name
   end
 end

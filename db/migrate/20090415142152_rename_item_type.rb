@@ -16,15 +16,15 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class RenameNodeType < ActiveRecord::Migration
+class RenameItemType < ActiveRecord::Migration
   def self.up
-    change_table :nodes do |t|
+    change_table :items do |t|
       t.rename :type, :sti_type
     end
   end
 
   def self.down
-    change_table :nodes do |t|
+    change_table :items do |t|
       t.rename :sti_type, :type
     end
   end

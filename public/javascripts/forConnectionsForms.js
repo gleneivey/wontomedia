@@ -17,28 +17,29 @@
 
 
 var selectElems = [ "subject", "predicate", "obj", "submit" ];
-var edgeSubmit = $('edge_submit');
+var connectionSubmit = $('connection_submit');
 var l = window.location;
 var base = l.protocol + "//" + l.hostname + ":" + l.port;
 
 var lastValue = {
-  subject   : $('edge_subject_id').value,
-  predicate : $('edge_predicate_id').value,
-  obj       : $('edge_obj_id').value
+  subject   : $('connection_subject_id').value,
+  predicate : $('connection_predicate_id').value,
+  obj       : $('connection_obj_id').value
 };
 
 
     // define fields subject to check, order they occur in form
-var requiredEdgeElements = [ "subject", "predicate", "obj", "submit" ];
-var edgeElementNames = [ "Subject selector", "Relationship selector",
-                          "Object selector" ];
+var requiredConnectionElements = [ "subject", "predicate", "obj", "submit" ];
+var connectionElementNames = [ "Subject selector", "Relationship selector",
+                               "Object selector" ];
 
     // encoding: -1    -> haven't checked yet
     //           false -> no error
     //           true  -> error condition present
-var edgeFormErrors = {};
-for (var c=0; c < requiredEdgeElements.length-1; c++)
-  edgeFormErrors[requiredEdgeElements[c]] = creatingNewEdge ? -1 : false;
+var connectionFormErrors = {};
+for (var c=0; c < requiredConnectionElements.length-1; c++)
+  connectionFormErrors[requiredConnectionElements[c]] =
+    creatingNewConnection ? -1 : false;
 
 
 
@@ -48,22 +49,23 @@ for (var c=0; c < selectElems.length; c++){
 }
 
 
-if (creatingNewEdge)
-  makeButtonSeemDisabled(edgeSubmit); // edges/new -- can't submit a blank form
+if (creatingNewConnection)
+      // connections/new -- can't submit a blank form
+  makeButtonSeemDisabled(connectionSubmit);
 else
-  makeButtonSeemEnabled(edgeSubmit);  // edges/##/edit -- can submit as-is form
+      // connections/##/edit -- can submit as-is form
+  makeButtonSeemEnabled(connectionSubmit);
 
-
-edgeSubmit.observe('click', submitOnclickHandler);
+connectionSubmit.observe('click', submitOnclickHandler);
 
 
 
 
 
 function createOnchangeHandler(thisName){
-  var thisElem = $('edge_' + thisName + '_id');
+  var thisElem = $('connection_' + thisName + '_id');
   if (thisElem == null)
-    thisElem = $('edge_' + thisName);
+    thisElem = $('connection_' + thisName);
   thisElem.observe('change',
     function(){                       // nest all these fn defs for closure
       if (thisElem.value != lastValue[thisName]){
@@ -72,22 +74,22 @@ function createOnchangeHandler(thisName){
 
         if (thisElem.value == ""){
           divToBlank(thisName);
-          flagEdgeAsRequired(thisName);
+          flagConnectionAsRequired(thisName);
         }
         else if (thisElem.value == "-1"){
           divToBlank(thisName);
           var type = (thisName == "predicate") ? "verb" : "noun";
-          nodeCreatePopup(thisElem, type, lastLast);
+          itemCreatePopup(thisElem, type, lastLast);
         }
         else {
           clearError(thisName);
           divToWorking(thisName);
-          new Ajax.Request(base + "/nodes/" + thisElem.value + ".json", {
+          new Ajax.Request(base + "/items/" + thisElem.value + ".json", {
             method: 'get',
             onSuccess: function(response){
-              var nodeObject = response.responseJSON;
-              var key = getFirstHashKey(nodeObject);
-              divToText(thisName, nodeObject[key]["description"]);
+              var itemObject = response.responseJSON;
+              var key = getFirstHashKey(itemObject);
+              divToText(thisName, itemObject[key]["description"]);
             },
             onFailure: function(){
               divToBlank(thisName);
@@ -129,63 +131,63 @@ function divToText(divName, divText){
 
 
 function createOnfocusHandler(thisName){
-  var thisElem = $('edge_' + thisName + '_id');
+  var thisElem = $('connection_' + thisName + '_id');
   if (thisElem == null)
-    thisElem = $('edge_' + thisName);
+    thisElem = $('connection_' + thisName);
   thisElem.observe('focus', function(){ onfocusBehavior(thisElem); } );
 }
 
 function onfocusBehavior(elem){
   var eId = elem.id;
   var c;
-  for (c=0; c < requiredEdgeElements.length; c++){
-    var re = new RegExp(requiredEdgeElements[c]);
+  for (c=0; c < requiredConnectionElements.length; c++){
+    var re = new RegExp(requiredConnectionElements[c]);
     var mtch = eId.match(re);
     if (mtch != null && mtch.length > 0)
       break;
   }
 
-  if (c >= requiredEdgeElements.length)
+  if (c >= requiredConnectionElements.length)
     return;  // Hmmmm..... maybe not
 
   var lastToCheck = c-1;
   for (c=0; c <= lastToCheck; c++){
-    var ck = $("edge_" + requiredEdgeElements[c] + "_id");
+    var ck = $("connection_" + requiredConnectionElements[c] + "_id");
     if (ck.value == null || ck.value == "")
-      flagEdgeAsRequired(requiredEdgeElements[c]);
+      flagConnectionAsRequired(requiredConnectionElements[c]);
     else
-      clearError(requiredEdgeElements[c]);
+      clearError(requiredConnectionElements[c]);
   }
   refreshSubmitState();
 }
 
-function flagEdgeAsRequired(elemName){
-  edgeFormErrors[elemName] = true;
+function flagConnectionAsRequired(elemName){
+  connectionFormErrors[elemName] = true;
   $(elemName + "_required").className = "helpTextFlagged";
   $(elemName + "_error_icon").src = "/images/error_error_icon.png";
 }
 
 function clearError(elemName){
-  edgeFormErrors[elemName] = false;
+  connectionFormErrors[elemName] = false;
   $(elemName + "_required").className = "";
   $(elemName + "_error_icon").src = "/images/blank_error_icon.png";
 }
 
 function refreshSubmitState(){
   var detectedAtLeastOneError = false;
-  for (var c =0; c < requiredEdgeElements.length-1; c++)
-    if (edgeFormErrors[requiredEdgeElements[c]] != false)
+  for (var c =0; c < requiredConnectionElements.length-1; c++)
+    if (connectionFormErrors[requiredConnectionElements[c]] != false)
       detectedAtLeastOneError = true;
 
   if (detectedAtLeastOneError)
-    makeButtonSeemDisabled(edgeSubmit);
+    makeButtonSeemDisabled(connectionSubmit);
   else
-    makeButtonSeemEnabled(edgeSubmit);
+    makeButtonSeemEnabled(connectionSubmit);
 }
 
 
 function submitOnclickHandler(ev){
-  onfocusBehavior(edgeSubmit);
+  onfocusBehavior(connectionSubmit);
   var dialogDisplayed = maybeShowErrorDialog();
   if (dialogDisplayed)
     ev.stop();
@@ -195,17 +197,19 @@ function maybeShowErrorDialog(){
   var newDialogText = "<p>";
 
   var accum = false;
-  for (var c=0; c < requiredEdgeElements.length-1; c++){
-    if (edgeFormErrors[requiredEdgeElements[c]] == true){
+  for (var c=0; c < requiredConnectionElements.length-1; c++){
+    if (connectionFormErrors[requiredConnectionElements[c]] == true){
       accum = true;
-      newDialogText += "The " + edgeElementNames[c] + " must have a value. ";
+      newDialogText += "The " + connectionElementNames[c] +
+        " must have a value. ";
     }
   }
 
   if (accum){
     newDialogText += "</p>";
     var titleText =
-      creatingNewEdge ? "Can't create this edge yet" : "Can't update this edge";
+      creatingNewConnection ? "Can't create this connection yet" :
+        "Can't update this connection";
     Modalbox.show(newDialogText, { title: titleText,
                                    slideDownDuration: 0.25,
                                    slideUpDuration: 0.1 } );

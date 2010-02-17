@@ -19,30 +19,30 @@
 
 require 'test_helper'
 
-class NodesNewpopViewTest < ActionController::TestCase
-  tests NodesController
+class ItemsNewpopViewTest < ActionController::TestCase
+  tests ItemsController
 
-  test "should have new-popup form for nodes" do
+  test "should have new-popup form for items" do
     get :newpop
-    assert_template "nodes/newpop"
+    assert_template "items/newpop"
   end
 
-  test "nodes new-popup form should invoke create" do
+  test "items new-popup form should invoke create" do
     get :new
     assert_select   "form[action=?]",
         @controller.url_for(:action => :create, :only_path => true) do
-      assert_select "select#node_sti_type", true,
-        "new-popup-node form contains 'select' control for :sti_type attribute"
-      assert_select "input#node_name[type=text]", true,
-        "new-popup-node form contains 'text' field for :name attribute"
-      assert_select "input#node_title[type=text]", true,
-        "new-popup-node form contains 'text' field for :title attribute"
-      assert_select "textarea#node_description", true,
-        "new-popup-node form contains 'textarea' field for :description attribute"
+      assert_select "select#item_sti_type", true,
+        "new-popup-item form contains 'select' control for :sti_type attribute"
+      assert_select "input#item_name[type=text]", true,
+        "new-popup-item form contains 'text' field for :name attribute"
+      assert_select "input#item_title[type=text]", true,
+        "new-popup-item form contains 'text' field for :title attribute"
+      assert_select "textarea#item_description", true,
+        "new-popup-item form contains 'textarea' field for :description attribute"
     end
   end
 
-  test "nodes new form shouldnt contain status" do
+  test "items new form shouldnt contain status" do
     get :new
     assert_negative_view_contents
   end

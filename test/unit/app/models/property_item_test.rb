@@ -18,15 +18,15 @@
 
 require 'test_helper'
 
-class PropertyNodeTest < ActiveSupport::TestCase
-  test "property_node model exists" do
-    assert PropertyNode.new
+class PropertyItemTest < ActiveSupport::TestCase
+  test "property_item model exists" do
+    assert PropertyItem.new
   end
 
-  test "property_node inherits from node" do
+  test "property_item inherits from item" do
     name = "pn"
-    pn = PropertyNode.new( :name => name, :title => "property" )
+    pn = PropertyItem.new( :name => name, :title => "property" )
     assert pn.save
-    assert_equal Node.find_by_name(name).name, name
+    assert_equal Item.find_by_name(name).name, name
   end
 end

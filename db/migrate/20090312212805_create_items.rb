@@ -16,9 +16,9 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class CreateNodes < ActiveRecord::Migration
+class CreateItems < ActiveRecord::Migration
   def self.up
-    create_table :nodes do |t|
+    create_table :items do |t|
       t.string :name
       t.string :title
       t.text :description
@@ -26,6 +26,6 @@ class CreateNodes < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :nodes
+    drop_table :items
   end
 end

@@ -1,11 +1,11 @@
-Feature:  Verify inputs for creation of new node dynamically within the page
+Feature:  Verify inputs for creation of new item dynamically within the page
   (verify all "required" fields present before submission; flag those missing)
   In order to create a wontology,
   as a contributor, I want
   to be told about bad inputs before I submit a page.
 
 
-# see nodes_create_checks.feature for basic/common functionality
+# see items_create_checks.feature for basic/common functionality
 #
 #  - field requirement checks:
 #     - required: Type, Title, Name
@@ -28,7 +28,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
   Scenario: Empty form incrementally displays flag text/icons
     # new page: focus on Type, all inputs blank, none flagged
-    When I am on the new nodes page
+    When I am on the new items page
     And I pause
     Then the element "sti_type_required" has the format "font-weight=400"
     And the element "title_required" has the format "font-weight=400"
@@ -90,9 +90,9 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
   Scenario: Empty form displays flags & dialog on (disabled) Create click
     # by default, a new/empty form can't be submitted
-    When I am on the new nodes page
+    When I am on the new items page
     And I pause
-    Then the element "node_submit" has the format "background-color=$inactive_button_color;"
+    Then the element "item_submit" has the format "background-color=$inactive_button_color;"
 
     # all the messages/icons should be in "unflagged" state, but rely
     # on the preceding case for that
@@ -113,13 +113,13 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the "MB_content" element should match "Type[^\.]+required"
     And the "MB_content" element should match "Title[^\.]+required"
     And the "MB_content" element should match "Name[^\.]+required"
-    And the element "node_submit" has the format "background-color=$inactive_button_color;"
+    And the element "item_submit" has the format "background-color=$inactive_button_color;"
 
 
   Scenario: Inputs flagged for being empty are unflagged when filled in
-    Given I am on the new nodes page
-    And I put the focus on the "node_description" element
-    When I fill in "Name" with "aNewNode"
+    Given I am on the new items page
+    And I put the focus on the "item_description" element
+    When I fill in "Name" with "aNewItem"
     And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the element "title_required" has the format "font-weight=bold"
@@ -132,9 +132,9 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
 
   Scenario: When all fields are filled in, submit button is enabled
-    Given I am on the new nodes page
+    Given I am on the new items page
     And I pause
-    When I put the focus on the "node_submit" element
+    When I put the focus on the "item_submit" element
     And I pause
     And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
@@ -146,12 +146,12 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "name_error_icon" is "error_error_icon"
     And the image "description_error_icon" is "warn_error_icon"
 
-    When I fill in "Description" with "Here's a new node"
+    When I fill in "Description" with "Here's a new item"
     And I pause
     Then the element "description_recommended" has the format "font-weight=400"
     And the image "description_error_icon" is "blank_error_icon"
 
-    When I fill in "Title" with "Another new node"
+    When I fill in "Title" with "Another new item"
     And I pause
     Then the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "blank_error_icon"
@@ -161,19 +161,19 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     Then the element "sti_type_required" has the format "font-weight=400"
     And the image "sti_type_error_icon" is "blank_error_icon"
 
-    When I fill in "Name" with "aNewNode"
+    When I fill in "Name" with "aNewItem"
     And I pause
     Then the element "name_required" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
 
-    And the element "node_submit" has the format "background-color=$active_button_color;"
+    And the element "item_submit" has the format "background-color=$active_button_color;"
 
 
   @extended
   Scenario: Re-empty fields in filled-out form
-    When I am on the new nodes page
+    When I am on the new items page
     And I pause
-    Then the element "node_submit" has the format "background-color=$inactive_button_color;"
+    Then the element "item_submit" has the format "background-color=$inactive_button_color;"
 
     When I select "Category" from "Type"
     And I type the "Tab" special key
@@ -190,27 +190,27 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "title_error_icon" is "blank_error_icon"
     And the element "name_required" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
-    And the element "node_submit" has the format "background-color=$inactive_button_color;"
+    And the element "item_submit" has the format "background-color=$inactive_button_color;"
 
-    When I type "NodeName"
+    When I type "ItemName"
     And I type the "Tab" special key
     And I pause
     Then the element "name_required" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
     And the element "description_recommended" has the format "font-weight=400"
     And the image "description_error_icon" is "blank_error_icon"
-    And the element "node_submit" has the format "background-color=$active_button_color;"
+    And the element "item_submit" has the format "background-color=$active_button_color;"
 
     When I type the "Tab" special key
     And I pause
-    Then the element "node_submit" has the format "background-color=$active_button_color;"
+    Then the element "item_submit" has the format "background-color=$active_button_color;"
     And the element "description_recommended" has the format "font-weight=bold"
     And the image "description_error_icon" is "warn_error_icon"
 
-    When I put the focus on the "node_description" element
+    When I put the focus on the "item_description" element
     And I type "Here is a very simple description."
     And I pause
-    Then the element "node_submit" has the format "background-color=$active_button_color;"
+    Then the element "item_submit" has the format "background-color=$active_button_color;"
     And the element "description_recommended" has the format "font-weight=400"
     And the image "description_error_icon" is "blank_error_icon"
 
@@ -218,7 +218,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And I pause
     Then the element "name_required" has the format "font-weight=bold"
     And the image "name_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=$inactive_button_color;"
+    And the element "item_submit" has the format "background-color=$inactive_button_color;"
     And the element "title_required" has the format "font-weight=400"
     And the image "title_error_icon" is "blank_error_icon"
 
@@ -236,11 +236,11 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "sti_type_required" has the format "font-weight=400"
     And the image "sti_type_error_icon" is "blank_error_icon"
 
-    When I select "- type of node -" from "Type"
+    When I select "- type of item -" from "Type"
     And I pause
     Then the element "sti_type_required" has the format "font-weight=bold"
     And the image "sti_type_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=$inactive_button_color;"
+    And the element "item_submit" has the format "background-color=$inactive_button_color;"
 
 
 # WontoMedia - a wontology web application

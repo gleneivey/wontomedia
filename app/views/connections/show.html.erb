@@ -28,14 +28,14 @@
     [ 'Subject', 'WmHelp:GlossaryPtoZ#anchor_Subject' ],
     [ 'Predicate', 'WmHelp:GlossaryPtoZ#anchor_Predicate' ],
     [ 'Object', 'WmHelp:GlossaryAtoO#anchor_Object' ],
-    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ],
-    [ 'Edge', 'WmHelp:GlossaryAtoO#anchor_Edge' ]
+    [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ],
+    [ 'Connection', 'WmHelp:GlossaryAtoO#anchor_Connection' ]
   ]
  %>
 
 
-<div class="headline">Edge content<%=
-  popup_help_icon "Help, edge content", "WmHelp:Popup/HeaderEdge" %>
+<div class="headline">Connection content<%=
+  popup_help_icon "Help, connection content", "WmHelp:Popup/HeaderConnection" %>
 </div>
 
 
@@ -43,7 +43,7 @@
   <tr><td>
     <b>Subject:</b>
   </td><td>
-      <%= link_to "<b>#{h @subject.title}</b>", node_path(@subject) %> &mdash;
+      <%= link_to "<b>#{h @subject.title}</b>", item_path(@subject) %> &mdash;
       (<b><%= h @subject.name %></b>)
     <p>
       <%= h @subject.description %>
@@ -53,7 +53,7 @@
   <tr><td>
     <b>Predicate:</b>
   </td><td>
-      <%= link_to "<b>#{h @predicate.title}</b>", node_path(@predicate) %>
+      <%= link_to "<b>#{h @predicate.title}</b>", item_path(@predicate) %>
       &mdash; (<b><%= h @predicate.name %></b>)
     <p>
       <%= h @predicate.description %>
@@ -63,7 +63,7 @@
   <tr><td>
     <b>Object:</b>
   </td><td>
-      <%= link_to "<b>#{h @obj.title}</b>", node_path(@obj) %> &mdash;
+      <%= link_to "<b>#{h @obj.title}</b>", item_path(@obj) %> &mdash;
       (<b><%= h @obj.name %></b>)
     <p>
       <%= h @obj.description %>
@@ -74,38 +74,40 @@
 <%= render :partial => 'common/bottom_line'    # contains an opening <div>
  %>
   <ul class="outbound-links-list">
-    <% if (@edge.flags & Edge::DATA_IS_UNALTERABLE) == 0 %>
+    <% if (@connection.flags & Connection::DATA_IS_UNALTERABLE) == 0 %>
       <li><span style="white-space: nowrap;">
-        <%= link_to 'Edit&hellip;', edit_edge_path(@edge),
+        <%= link_to 'Edit&hellip;', edit_connection_path(@connection),
                     :rel => 'nofollow' -%><%=
-        popup_help_icon "Help edit nodes", "WmHelp:Popup/NodeEdit"
+        popup_help_icon "Help edit items", "WmHelp:Popup/ItemEdit"
       -%></span></li>
 
       <li><span style="white-space: nowrap;">
-        <%= link_to 'Delete', edge_path(@edge), :rel => 'nofollow',
+        <%= link_to 'Delete', connection_path(@connection), :rel => 'nofollow',
                     :confirm => 'Are you sure?', :method => :delete -%><%=
-        popup_help_icon "Help delete nodes", "WmHelp:Popup/NodeDelete"
+        popup_help_icon "Help delete items", "WmHelp:Popup/ItemDelete"
       -%></span></li>
     <% end %>
 
     <li><span style="white-space: nowrap;">
-      <%= link_to 'Show edge list', edges_path -%><%=
-      popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowEdges"
+      <%= link_to 'Show connection list', connections_path -%><%=
+      popup_help_icon "Help for items list", "WmHelp:Popup/ShowConnections"
     -%></span></li>
 
     <li><span style="white-space: nowrap;">
-      <%= link_to 'Create a new edge', new_edge_path, :rel => 'nofollow' -%><%=
-      popup_help_icon "Help for edges create/new", "WmHelp:Popup/EdgeAdd"
+      <%= link_to 'Create a new connection', new_connection_path,
+                  :rel => 'nofollow' -%><%=
+      popup_help_icon "Help for connections create/new",
+                      "WmHelp:Popup/ConnectionAdd"
     -%></span></li>
 
     <li><span style="white-space: nowrap;">
-      <%= link_to 'Show node list', nodes_path -%><%=
-      popup_help_icon "Help for nodes list", "WmHelp:Popup/ShowNodes"
+      <%= link_to 'Show item list', items_path -%><%=
+      popup_help_icon "Help for items list", "WmHelp:Popup/ShowItems"
     -%></span></li>
 
     <li><span style="white-space: nowrap;">
-      <%= link_to 'Create a new node', new_node_path, :rel => 'nofollow' -%><%=
-      popup_help_icon "Help for nodes create/new", "WmHelp:Popup/NodeAdd"
+      <%= link_to 'Create a new item', new_item_path, :rel => 'nofollow' -%><%=
+      popup_help_icon "Help for items create/new", "WmHelp:Popup/ItemAdd"
     -%></span></li>
   </ul>
 </div>

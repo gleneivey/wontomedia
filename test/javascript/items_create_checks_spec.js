@@ -20,15 +20,15 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  before(function() { IFrame("http://localhost:3001/nodes/new"); });
+  before(function() { IFrame("http://localhost:3001/items/new"); });
 
   var titleIds = [ 'category_title', 'individual_title', 'property_title' ];
   var descIds  = [ 'category_desc', 'individual_desc', 'property_desc' ];
 
-  describe( "Dynamic input checks in nodes/new page", function(){
+  describe( "Dynamic input checks in items/new page", function(){
     describe( "Visual feedback for Type selection", function(){
       it( "'Fresh' page has no descriptive text highlighted", function(){
-        var sel = E('node_sti_type');
+        var sel = E('item_sti_type');
 
         // at the beginning, no descriptions highlighted
         for (var c=0; c < titleIds.length; c++){
@@ -39,16 +39,17 @@ Screw.Unit(function(){
         }
       });
 
-      it( "Node-type selection highlights matching text", function(){
-        var nodeTypeValue = [ 'ClassNode', 'IndividualNode', 'PropertyNode' ];
+      it( "Item-type selection highlights matching text", function(){
+        var itemTypeValue = [ 'CategoryItem', 'IndividualItem',
+          'PropertyItem' ];
         var testSequence = [ 0, 1, 2, 0, 1, 2, 1, 0, 2 ];
 
         for (var c=0; c < testSequence.length; c++){
           var seq = testSequence[c];
 
-          // select a node type...
-          changeNamedFieldToValue('node_sti_type', nodeTypeValue[seq]);
-          // ...and the text for that node type gets highlighted,
+          // select a item type...
+          changeNamedFieldToValue('item_sti_type', itemTypeValue[seq]);
+          // ...and the text for that item type gets highlighted,
           expect(E(titleIds[seq]).className).
             to(match, /titleSelectedItemDescription/);
           expect(E(descIds[seq]).className).

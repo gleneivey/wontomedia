@@ -32,12 +32,12 @@ function makeButtonSeemDisabled(button){
 
 
     // common uses for modalbox
-function cantDeleteNode_Popup(){
+function cantDeleteItem_Popup(){
   Modalbox.show(
-    "<p>A node cannot be deleted as long as it is referenced by an edge. " +
-      "Change or delete all of the edges referencing this node first " +
-      "if you want to delete this node.</p>",
-    { title: "Cannot delete this node now",
+    "<p>An item cannot be deleted as long as it is referenced by a " +
+      "connection. Change or delete all of the connections referencing " +
+      "this item first if you want to delete this item.</p>",
+    { title: "Cannot delete this item now",
       slideDownDuration: 0.25, slideUpDuration: 0.1 } );
 }
 

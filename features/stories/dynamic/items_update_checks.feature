@@ -1,42 +1,43 @@
-Feature:  Verify inputs for editing of nodes dynamically within the page
+Feature:  Verify inputs for editing of items dynamically within the page
   In order to create a wontology,
   as a contributor, I want
   to be told about bad inputs before I submit a page.
 
-# The data fields availiable in nodes/##/edit pages are a subset of
-# those in the nodes/new page.  These scenarios verify that the
-# appropriate subset of the dynamic checks performed in the nodes/new
-# page (see the 'nodes_create*.feature' acceptance tests) are also
-# performed in nodes/##/edit.
+# The data fields availiable in items/##/edit pages are a subset of
+# those in the items/new page.  These scenarios verify that the
+# appropriate subset of the dynamic checks performed in the items/new
+# page (see the 'items_create*.feature' acceptance tests) are also
+# performed in items/##/edit.
 #
 # Note: we will *not* auto-generate a suggested Name value based on
-# changes to Title when editing a node (the way the system does during
+# changes to Title when editing a item (the way the system does during
 # initial creation).  By the time you're editing, you ought to know
 # what Name you want.
 
 
-  Scenario: nodes/##/edit form defaults focus to Title control
-    Given there is 1 existing class like "fred"
-    And I am on the edit nodes page for "fred0"
-    Then the focus is on the "class_node_title" element
+  Scenario: items/##/edit form defaults focus to Title control
+    Given there is 1 existing category like "fred"
+    And I am on the edit items page for "fred0"
+    Then the focus is on the "category_item_title" element
 
-  Scenario: nodes/##/edit form has correct Tab order to controls
+
+  Scenario: items/##/edit form has correct Tab order to controls
     Given there is 1 existing individual like "wilma"
-    And I am on the edit nodes page for "wilma0"
+    And I am on the edit items page for "wilma0"
     And I pause
     When I type the "Tab" special key
-    Then the focus is on the "individual_node_name" element
+    Then the focus is on the "individual_item_name" element
     When I type the "Tab" special key
-    Then the focus is on the "individual_node_description" element
+    Then the focus is on the "individual_item_description" element
     When I type the "Tab" special key
-    Then the focus is on the "individual_node_submit" element
+    Then the focus is on the "individual_item_submit" element
 
 
   Scenario: Empty form incrementally displays flag text/icons
     # edit page: focus on Title, all inputs filled in, none flagged
-    Given there is 1 existing reiffied-property like "someNode"
-    When I am on the edit nodes page for "someNode0"
-    Then the element "reiffied_node_submit" has the format "background-color=$active_button_color;"
+    Given there is 1 existing qualified-connection like "someItem"
+    When I am on the edit items page for "someItem0"
+    Then the element "qualified_item_submit" has the format "background-color=$active_button_color;"
     And the element "title_required" has the format "font-weight=400"
     And the element "name_required" has the format "font-weight=400"
     And the element "description_recommended" has the format "font-weight=400"
@@ -46,7 +47,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
     When I fill in "Title" with ""
     And I pause
-    Then the element "reiffied_node_submit" has the format "background-color=$inactive_button_color;"
+    Then the element "qualified_item_submit" has the format "background-color=$inactive_button_color;"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=400"
     And the element "description_recommended" has the format "font-weight=400"
@@ -56,7 +57,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
     When I fill in "Name" with ""
     And I pause
-    Then the element "reiffied_node_submit" has the format "background-color=$inactive_button_color;"
+    Then the element "qualified_item_submit" has the format "background-color=$inactive_button_color;"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=bold"
     And the element "description_recommended" has the format "font-weight=400"
@@ -66,7 +67,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
 
     When I fill in "Description" with ""
     And I pause
-    Then the element "reiffied_node_submit" has the format "background-color=$inactive_button_color;"
+    Then the element "qualified_item_submit" has the format "background-color=$inactive_button_color;"
     And the element "title_required" has the format "font-weight=bold"
     And the element "name_required" has the format "font-weight=bold"
     And the element "description_recommended" has the format "font-weight=bold"
@@ -74,10 +75,10 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the image "name_error_icon" is "error_error_icon"
     And the image "description_error_icon" is "warn_error_icon"
 
-    When I fill in "Title" with "second title for some node #0"
-    And I fill in "Name" with "someNode0"
+    When I fill in "Title" with "second title for some item #0"
+    And I fill in "Name" with "someItem0"
     And I pause
-    Then the element "reiffied_node_submit" has the format "background-color=$active_button_color;"
+    Then the element "qualified_item_submit" has the format "background-color=$active_button_color;"
     And the element "title_required" has the format "font-weight=400"
     And the element "name_required" has the format "font-weight=400"
     And the element "description_recommended" has the format "font-weight=bold"
@@ -85,9 +86,10 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the image "name_error_icon" is "blank_error_icon"
     And the image "description_error_icon" is "warn_error_icon"
 
+
   Scenario: Emptied edit form displays flags & dialog on (disabled) Create click
-    Given there is 1 existing reiffied-property like "otherNode"
-    And I am on the edit nodes page for "otherNode0"
+    Given there is 1 existing qualified-connection like "otherItem"
+    And I am on the edit items page for "otherItem0"
     And I fill in "Title" with ""
     And I fill in "Name" with ""
     And I fill in "Description" with ""
@@ -100,14 +102,14 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the image "title_error_icon" is "error_error_icon"
     And the image "name_error_icon" is "error_error_icon"
     And the image "description_error_icon" is "warn_error_icon"
-    And the element "reiffied_node_submit" has the format "background-color=$inactive_button_color;"
+    And the element "qualified_item_submit" has the format "background-color=$inactive_button_color;"
     And the "MB_content" element should match "Title[^\.]+required"
     And the "MB_content" element should match "Name[^\.]+required"
 
 
   Scenario: form flags input fields whose content is too long
-    Given there is 1 existing property like "thisNode"
-    And I am on the edit nodes page for "thisNode0"
+    Given there is 1 existing property like "thisItem"
+    And I am on the edit items page for "thisItem0"
 
     # fill in fields with 1-character-too-long data, verify error indicators
     When I fill in "Title" with "This text is 256 characters long.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX."
@@ -122,7 +124,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the image "title_error_icon" is "error_error_icon"
     And the image "name_error_icon" is "error_error_icon"
     And the image "description_error_icon" is "error_error_icon"
-    And the element "property_node_submit" has the format "background-color=$inactive_button_color;"
+    And the element "property_item_submit" has the format "background-color=$inactive_button_color;"
 
     # now set fields to maximum length; observe clearing of errors flags
     When I fill in "Title" with "This text is 255 characters long.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX."
@@ -137,12 +139,12 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the image "title_error_icon" is "blank_error_icon"
     And the image "name_error_icon" is "blank_error_icon"
     And the image "description_error_icon" is "blank_error_icon"
-    And the element "property_node_submit" has the format "background-color=$active_button_color;"
+    And the element "property_item_submit" has the format "background-color=$active_button_color;"
 
 
-  Scenario: error flagged if nodes/##/edit's Name has bad Nth character
-    Given there is 1 existing property like "thatNode"
-    When I am on the edit nodes page for "thatNode0"
+  Scenario: error flagged if items/##/edit's Name has bad Nth character
+    Given there is 1 existing property like "thatItem"
+    When I am on the edit items page for "thatItem0"
     Then the element "name_nth_char" has the format "font-weight=400"
     And the image "name_error_icon" is "blank_error_icon"
 
@@ -152,12 +154,12 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the element "name_start_char" has the format "font-weight=400"
     And the element "name_too_long" has the format "font-weight=400"
     And the image "name_error_icon" is "error_error_icon"
-    And the element "property_node_submit" has the format "background-color=$inactive_button_color;"
+    And the element "property_item_submit" has the format "background-color=$inactive_button_color;"
 
 
   Scenario: Name check identifies unique and already-used values
     Given there are 2 existing individuals like "alreadyExisting"
-    And I am on the edit nodes page for "alreadyExisting0"
+    And I am on the edit items page for "alreadyExisting0"
     When I fill in "Name" with "alreadyExisting1"
     Then the element "name_must_be_unique" has the format "font-weight=400"
     And the element "name_is_unique" has the format "display=none"
@@ -172,7 +174,7 @@ Feature:  Verify inputs for editing of nodes dynamically within the page
     And the element "name_must_be_unique" has the format "font-weight=bold"
     And the element "name_is_unique" has the format "display=none"
 
-    When I fill in "Name" with "anUnusedNodeName"
+    When I fill in "Name" with "anUnusedItemName"
     Then the image "name_status_icon" is not "error_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=400"
     And the element "name_is_unique" has the format "display=none"

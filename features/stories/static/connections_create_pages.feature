@@ -1,24 +1,24 @@
-Feature:  Create and view new individual edges through non-Ajax pages
+Feature:  Create and view new individual connections through non-Ajax pages
   In order to create a wontology,
   as a contributor, I want
-  to be able to create and view edges.
+  to be able to create and view connections.
 
-  Scenario: Create new class-hierarchy-class edge
-    Given there are 2 existing classes like "itemFamily"
-    And I am on the new edges page
-    And I select "itemFamily0 : itemFamily node number 0" from "Subject"
+  Scenario: Create new category-hierarchy-category connection
+    Given there are 2 existing categories like "itemFamily"
+    And I am on the new connections page
+    And I select "itemFamily0 : itemFamily item number 0" from "Subject"
     And I select "parent_of : Parent Of (basic relationship)" from "Relates to"
-    And I select "itemFamily1 : itemFamily node number 1" from "Object"
+    And I select "itemFamily1 : itemFamily item number 1" from "Object"
     When I press "Create"
     Then I should see "successfully created"
     And I should see "itemFamily0"
     And I should see "parent_of"
     And I should see "itemFamily1"
 
-  Scenario: Create new property-sub_property_of-property edge
+  Scenario: Create new property-sub_property_of-property connection
     Given there is 1 existing property like "newProp"
-    And I am on the new edges page
-    And I select "newProp0 : newProp node number 0" from "Subject"
+    And I am on the new connections page
+    And I select "newProp0 : newProp item number 0" from "Subject"
     And I select "sub_property_of : SubProperty Of (basic relationship type)" from "Relates to"
     And I select "predecessor_of : Predecessor Of (basic relationship)" from "Object"
     When I press "Create"
@@ -27,102 +27,102 @@ Feature:  Create and view new individual edges through non-Ajax pages
     And I should see "sub_property_of"
     And I should see "predecessor_of"
 
-  Scenario: I can't create an edge duplicating an existing one
+  Scenario: I can't create an connection duplicating an existing one
     Given there are 2 existing individuals like "thing"
-    And there is an existing edge "thing0" "contains" "thing1"
-    And I am on the new edges page
-    And I select "thing0 : thing node number 0" from "Subject"
+    And there is an existing connection "thing0" "contains" "thing1"
+    And I am on the new connections page
+    And I select "thing0 : thing item number 0" from "Subject"
     And I select "contains : Contains (basic relationship)" from "Relates to"
-    And I select "thing1 : thing node number 1" from "Object"
+    And I select "thing1 : thing item number 1" from "Object"
     When I press "Create"
     Then I should see "error"
 
 
-  Scenario: I can't create an edge using a sub/super property of an existing one
+  Scenario: I can't create an connection using a sub/super property of an existing one
     Given there are 2 existing individuals like "thing"
-    And there is an existing edge "thing0" "contains" "thing1"
-    And I am on the new edges page
-    And I select "thing0 : thing node number 0" from "Subject"
+    And there is an existing connection "thing0" "contains" "thing1"
+    And I am on the new connections page
+    And I select "thing0 : thing item number 0" from "Subject"
     And I select "parent_of : Parent Of (basic relationship)" from "Relates to"
-    And I select "thing1 : thing node number 1" from "Object"
+    And I select "thing1 : thing item number 1" from "Object"
     When I press "Create"
     Then I should see "error"
 
 
-  Scenario: I can't create an explicit edge duplicating an existing implicit one
+  Scenario: I can't create an explicit connection duplicating an existing implicit one
     Given there are 2 existing individuals like "thing"
-    And there is an existing edge "thing0" "contains" "thing1"
-    And I am on the new edges page
-    And I select "thing1 : thing node number 1" from "Subject"
+    And there is an existing connection "thing0" "contains" "thing1"
+    And I am on the new connections page
+    And I select "thing1 : thing item number 1" from "Subject"
     And I select "one_of : One Of (basic relationship)" from "Relates to"
-    And I select "thing0 : thing node number 0" from "Object"
+    And I select "thing0 : thing item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
 
-  Scenario: I can't create an individual-contains-category edge
-    Given there is 1 existing class like "myClass"
+  Scenario: I can't create an individual-contains-category connection
+    Given there is 1 existing category like "myCategory"
     And there is 1 existing individual like "myItem"
-    And I am on the new edges page
-    And I select "myItem0 : myItem node number 0" from "Subject"
+    And I am on the new connections page
+    And I select "myItem0 : myItem item number 0" from "Subject"
     And I select "contains : Contains (basic relationship)" from "Relates to"
-    And I select "myClass0 : myClass node number 0" from "Object"
+    And I select "myCategory0 : myCategory item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
 
-  Scenario: I can't create an category-containedBy-individual edge
-    Given there is 1 existing class like "myClass"
+  Scenario: I can't create an category-containedBy-individual connection
+    Given there is 1 existing category like "myCategory"
     And there is 1 existing individual like "myItem"
-    And I am on the new edges page
-    And I select "myClass0 : myClass node number 0" from "Subject"
+    And I am on the new connections page
+    And I select "myCategory0 : myCategory item number 0" from "Subject"
     And I select "child_of : Child Of (basic relationship)" from "Relates to"
-    And I select "myItem0 : myItem node number 0" from "Object"
+    And I select "myItem0 : myItem item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
 
-  Scenario: I can't create an edge which would close a prohibited loop
+  Scenario: I can't create an connection which would close a prohibited loop
     Given there are 3 existing individuals like "indiv"
-    And there is an existing edge "indiv0" "predecessor_of" "indiv1"
-    And there is an existing edge "indiv1" "predecessor_of" "indiv2"
-    And I am on the new edges page
-    And I select "indiv2 : indiv node number 2" from "Subject"
+    And there is an existing connection "indiv0" "predecessor_of" "indiv1"
+    And there is an existing connection "indiv1" "predecessor_of" "indiv2"
+    And I am on the new connections page
+    And I select "indiv2 : indiv item number 2" from "Subject"
     And I select "predecessor_of : Predecessor Of (basic relationship)" from "Relates to"
-    And I select "indiv0 : indiv node number 0" from "Object"
+    And I select "indiv0 : indiv item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
 
-    # Check various prohibited edge-to-self cases.  Verify each
+    # Check various prohibited connection-to-self cases.  Verify each
     # fundamental prohibition, plus one property type that is
     # prohibited by inheritence
-  Scenario: I can't create an hierarchical_relationship edge-to-self
+  Scenario: I can't create an hierarchical_relationship connection-to-self
     Given there is 1 existing individual like "myItem"
-    And I am on the new edges page
-    And I select "myItem0 : myItem node number 0" from "Subject"
+    And I am on the new connections page
+    And I select "myItem0 : myItem item number 0" from "Subject"
     And I select "hierarchical_relationship : Hierarchical Relationship (root relationship type)" from "Relates to"
-    And I select "myItem0 : myItem node number 0" from "Object"
+    And I select "myItem0 : myItem item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
 
-  Scenario: I can't create an ordered_relationship edge-to-self
+  Scenario: I can't create an ordered_relationship connection-to-self
     Given there is 1 existing individual like "myItem"
-    And I am on the new edges page
-    And I select "myItem0 : myItem node number 0" from "Subject"
+    And I am on the new connections page
+    And I select "myItem0 : myItem item number 0" from "Subject"
     And I select "ordered_relationship : Ordered Relationship (root relationship type)" from "Relates to"
-    And I select "myItem0 : myItem node number 0" from "Object"
+    And I select "myItem0 : myItem item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 
 
-  Scenario: I can't create an one_of (implied hierarchical) edge-to-self
+  Scenario: I can't create an one_of (implied hierarchical) connection-to-self
     Given there is 1 existing individual like "myItem"
-    And I am on the new edges page
-    And I select "myItem0 : myItem node number 0" from "Subject"
+    And I am on the new connections page
+    And I select "myItem0 : myItem item number 0" from "Subject"
     And I select "one_of : One Of (basic relationship)" from "Relates to"
-    And I select "myItem0 : myItem node number 0" from "Object"
+    And I select "myItem0 : myItem item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
 

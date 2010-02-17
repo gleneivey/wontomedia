@@ -37,10 +37,10 @@ browser = Selenium::SeleniumDriver.new("localhost", 4444, "*firefox",
 
 Before do
   c = ActiveRecord::Base.connection
-  flag = Node::DATA_IS_UNALTERABLE
-  c.execute( "DELETE FROM nodes WHERE (nodes.flags & #{flag}) = 0" )
-  flag = Edge::DATA_IS_UNALTERABLE
-  c.execute( "DELETE FROM edges WHERE (edges.flags & #{flag}) = 0" )
+  flag = Item::DATA_IS_UNALTERABLE
+  c.execute( "DELETE FROM items WHERE (items.flags & #{flag}) = 0" )
+  flag = Connection::DATA_IS_UNALTERABLE
+  c.execute( "DELETE FROM connections WHERE (connections.flags & #{flag}) = 0" )
 
   @browser = browser
   @browser.start rescue nil

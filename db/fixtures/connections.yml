@@ -20,77 +20,77 @@ define_sub_property_of:
   subject: sub_property_of
   predicate: sub_property_of
   obj: hierarchical_relationship
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_inverse_relationship:
   subject: inverse_relationship
   predicate: sub_property_of
   obj: symmetric_relationship
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_parent_of:
   subject: parent_of
   predicate: sub_property_of
   obj: hierarchical_relationship
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_child_of:
   subject: child_of
   predicate: sub_property_of
   obj: hierarchical_relationship
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_parent_to_child_symmetry:
   subject: parent_of
   predicate: inverse_relationship
   obj: child_of
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_child_to_parent_symmetry:
   subject: child_of
   predicate: inverse_relationship
   obj: parent_of
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_peer_of:
   subject: peer_of
   predicate: sub_property_of
   obj: symmetric_relationship
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_one_of:
   subject: one_of
   predicate: sub_property_of
   obj: child_of
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_contains:
   subject: contains
   predicate: sub_property_of
   obj: parent_of
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_predecessor_to_successor_symmetry:
   subject: predecessor_of
   predicate: inverse_relationship
   obj: successor_of
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_successor_to_predecessor_symmetry:
   subject: successor_of
   predicate: inverse_relationship
   obj: predecessor_of
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_predecessor_of:
   subject: predecessor_of
   predicate: sub_property_of
   obj: ordered_relationship
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_successor_of:
   subject: successor_of
   predicate: sub_property_of
   obj: ordered_relationship
-  flags: <%= Edge::DATA_IS_UNALTERABLE %>
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
 

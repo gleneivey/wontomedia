@@ -20,27 +20,27 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  before(function() { IFrame("http://localhost:3001/nodes/new"); });
+  before(function() { IFrame("http://localhost:3001/items/new"); });
 
-  describe( "Dynamic input checks in nodes/new page", function(){
+  describe( "Dynamic input checks in items/new page", function(){
     describe( "Pre-submit check for  uniqueness of Name value", function(){
 
-      it( "flags redundant node Name strings", function(){
+      it( "flags redundant item Name strings", function(){
         setNameAndCheckProgress("peer_of", true);
         expectIndicatorsForAlreadyUsed();
       });
 
-      it("shows confirming message when node Name string is unique", function(){
-        setNameAndCheckProgress("aNodeThatDoesntAlreadyExist", true);
+      it("shows confirming message when item Name string is unique", function(){
+        setNameAndCheckProgress("aItemThatDoesntAlreadyExist", true);
         expectIndicatorsForUnique();
       });
 
-      it( "clears Name string confirmation on user node.Name change ",
+      it( "clears Name string confirmation on user item.Name change ",
         function(){
 
-        setNameAndCheckProgress("anotherNewNode", true);
+        setNameAndCheckProgress("anotherNewItem", true);
         expectIndicatorsForUnique();
-        changeNamedFieldToValue('node_name', "orAnotherNewNode");
+        changeNamedFieldToValue('item_name', "orAnotherNewItem");
         expectIndicatorsForNocheck();
       });
 
@@ -49,7 +49,7 @@ Screw.Unit(function(){
         expectIndicatorsForAlreadyUsed();
 
         // setup done, now try clearing....
-        changeNamedFieldToValue('node_name', "");
+        changeNamedFieldToValue('item_name', "");
 
         // should happen on any change, including =""
         expectIndicatorsForNocheck();
@@ -70,21 +70,21 @@ Screw.Unit(function(){
       });
 
       it( "doesn't check if Name 'changed' to same contents", function(){
-        setNameAndCheckProgress("newNodeX", true);
+        setNameAndCheckProgress("newItemX", true);
         expectIndicatorsForUnique();
         // setup done, now "change" to same value
-        changeNamedFieldToValue('node_name', "newNodeX");
+        changeNamedFieldToValue('item_name', "newItemX");
         expectIndicatorsForUnique();
         sleep(ajaxStartsAfter + 2*timeMargin);
         expectIndicatorsForUnique();
       });
 
       it( "abandons check if Name changed before complete", function(){
-        setNameAndCheckProgress("newNodeY", true);
+        setNameAndCheckProgress("newItemY", true);
         expectIndicatorsForUnique();
 
         // change to a different value
-        changeNamedFieldToValue('node_name', "parent_of");
+        changeNamedFieldToValue('item_name', "parent_of");
         checkBeforeWorking();
         checkWorkingStart();
 
@@ -95,15 +95,15 @@ Screw.Unit(function(){
           if (nameIconImg.src.match(/error_status_icon/))
             countOfErrorIconDisplays++;
         };
-        setNameAndCheckProgress("newNodeZ", true);
+        setNameAndCheckProgress("newItemZ", true);
         expectIndicatorsForUnique();
         expect(countOfErrorIconDisplays).to(equal, 0);
       });
 
-      it( "performs check after node.Title set, node_title.blur()", function(){
-        E('node_sti_type').value = "IndividualNode";
-        changeNamedFieldToValue('node_title', "another new node");
-        E('node_description').focus();
+      it( "performs check after item.Title set, item_title.blur()", function(){
+        E('item_sti_type').value = "IndividualItem";
+        changeNamedFieldToValue('item_title', "another new item");
+        E('item_description').focus();
 
         checkBeforeWorking();
         checkWorkingStart();
@@ -111,13 +111,13 @@ Screw.Unit(function(){
         expectIndicatorsForUnique();
       });
 
-      it( "clears Name string confirmation on auto-gen node.Name change ",
+      it( "clears Name string confirmation on auto-gen item.Name change ",
         function(){
 
         // setup
-        E('node_sti_type').value = "IndividualNode";
-        var title = E('node_title');
-        var name = E('node_name');
+        E('item_sti_type').value = "IndividualItem";
+        var title = E('item_title');
+        var name = E('item_name');
 
         // start entering a Title, which will auto-generate a Name
         changeFieldToValue(title, "start of title");
@@ -133,7 +133,7 @@ Screw.Unit(function(){
       });
 
       function setNameAndCheckProgress(newNameValue, expectAjax){
-        changeNamedFieldToValue('node_name', newNameValue);
+        changeNamedFieldToValue('item_name', newNameValue);
         checkBeforeWorking();
         if (!expectAjax) return;
         checkWorkingStart();

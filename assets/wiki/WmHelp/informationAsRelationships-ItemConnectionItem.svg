@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -12,10 +13,13 @@
    height="990"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.46"
-   sodipodi:docname="informationAsRelationships-NodeEdgeNode.svg"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="informationAsRelationships-ItemConnectionItem.svg"
    version="1.0"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/gei/Repos/Mainlines/wontomedia/doc/wiki/WmHelp/informationAsRelationships-ItemConnectionItem.png"
+   inkscape:export-xdpi="72"
+   inkscape:export-ydpi="72">
   <defs
      id="defs4">
     <marker
@@ -50,7 +54,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4486669"
-     inkscape:cx="209.88658"
+     inkscape:cx="123.25521"
      inkscape:cy="983.25529"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -59,7 +63,8 @@
      inkscape:window-height="771"
      inkscape:window-x="5"
      inkscape:window-y="49"
-     units="px" />
+     units="px"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -70,6 +75,7 @@
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
         <cc:license
            rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+        <dc:title></dc:title>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
@@ -96,64 +102,57 @@
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
        d="M 134.23497,24.521151 C 268.95295,24.521151 268.95295,24.521151 268.95295,24.521151"
        id="path2656" />
-    <g
-       id="g2682">
-      <path
-         transform="matrix(1.4744691,0,0,0.995292,-72.30266,-60.125073)"
-         d="M 134.71798,85.046623 A 41.977341,22.452997 0 1 1 50.763298,85.046623 A 41.977341,22.452997 0 1 1 134.71798,85.046623 z"
-         sodipodi:ry="22.452997"
-         sodipodi:rx="41.977341"
-         sodipodi:cy="85.046623"
-         sodipodi:cx="92.740639"
-         id="path2650"
-         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         sodipodi:type="arc" />
-      <text
-         transform="scale(1.0218886,0.9785802)"
-         id="text2678"
-         y="34.289646"
-         x="30.1959"
-         style="font-size:24.76312637px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-         xml:space="preserve"><tspan
-           y="34.289646"
-           x="30.1959"
-           id="tspan2680"
-           sodipodi:role="line">Node</tspan></text>
-    </g>
-    <g
-       id="g2687"
-       transform="translate(274.30682,0.9762171)">
-      <path
-         transform="matrix(1.4744691,0,0,0.995292,-72.30266,-60.125073)"
-         d="M 134.71798,85.046623 A 41.977341,22.452997 0 1 1 50.763298,85.046623 A 41.977341,22.452997 0 1 1 134.71798,85.046623 z"
-         sodipodi:ry="22.452997"
-         sodipodi:rx="41.977341"
-         sodipodi:cy="85.046623"
-         sodipodi:cx="92.740639"
-         id="path2689"
-         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         sodipodi:type="arc" />
-      <text
-         transform="scale(1.0218886,0.9785802)"
-         id="text2691"
-         y="34.289646"
-         x="30.1959"
-         style="font-size:24.76312637px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-         xml:space="preserve"><tspan
-           y="34.289646"
-           x="30.1959"
-           id="tspan2693"
-           sodipodi:role="line">Node</tspan></text>
-    </g>
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path2650"
+       sodipodi:cx="92.740639"
+       sodipodi:cy="85.046623"
+       sodipodi:rx="41.977341"
+       sodipodi:ry="22.452997"
+       d="m 134.71798,85.046623 a 41.977341,22.452997 0 1 1 -83.954682,0 41.977341,22.452997 0 1 1 83.954682,0 z"
+       transform="matrix(1.4744691,0,0,0.995292,-72.30266,-60.125073)" />
     <text
        xml:space="preserve"
-       style="font-size:30.2331543px;font-style:normal;font-weight:normal;opacity:0.35684647;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="163.77299"
-       y="29.767559"
+       style="font-size:24.76312637px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="34.705982"
+       y="33.908768"
+       id="text2678"
+       transform="scale(1.0218886,0.97858024)"><tspan
+         sodipodi:role="line"
+         id="tspan2680"
+         x="34.705982"
+         y="33.908768">Item</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path2689"
+       sodipodi:cx="92.740639"
+       sodipodi:cy="85.046623"
+       sodipodi:rx="41.977341"
+       sodipodi:ry="22.452997"
+       d="m 134.71798,85.046623 a 41.977341,22.452997 0 1 1 -83.954682,0 41.977341,22.452997 0 1 1 83.954682,0 z"
+       transform="matrix(1.4744691,0,0,0.995292,202.00416,-59.148856)" />
+    <text
+       xml:space="preserve"
+       style="font-size:24.76312637px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="303.13721"
+       y="34.906353"
+       id="text2691"
+       transform="scale(1.0218886,0.97858024)"><tspan
+         sodipodi:role="line"
+         id="tspan2693"
+         x="303.13721"
+         y="34.906353">Item</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:22.78106117px;font-style:normal;font-weight:normal;opacity:0.35684647;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="139.1407"
+       y="22.034845"
        id="text2695"><tspan
          sodipodi:role="line"
          id="tspan2697"
-         x="163.77299"
-         y="29.767559">edge</tspan></text>
+         x="139.1407"
+         y="22.034845">connection</tspan></text>
   </g>
 </svg>

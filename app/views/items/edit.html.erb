@@ -23,37 +23,37 @@
   <meta name="googlebot" content="noindex" />
 <% end
 
-   @title_text = filter_parenthetical h @node.title
+   @title_text = filter_parenthetical h @item.title
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
-    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ]
+    [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ]
   ]
  %>
 
-<div class="headline">Editing node<%=
-  popup_help_icon "Help node edit", "WmHelp:Popup/HeaderNodeEdit" %>
+<div class="headline">Editing item<%=
+  popup_help_icon "Help item edit", "WmHelp:Popup/HeaderItemEdit" %>
 </div>
 
 
-<% form_for(@node, :url => node_path(@node)) do |f| %>
+<% form_for(@item, :url => item_path(@item)) do |f| %>
   <%= f.error_messages %>
   <%= render :partial => "form_fields", :locals => { :f => f } %>
   <p><%= f.submit "Update", :tabindex => "10" %></p>
 <% end %>
 
 <div class="horizontal-link-list"><ul>
-  <li><%= link_to 'Cancel,&nbsp;show&nbsp;node', node_path(@node),
-                  :rel => 'nofollow' -%></li>
-  <li><%= link_to 'Cancel,&nbsp;show&nbsp;node&nbsp;list', nodes_path,
-                  :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;item', item_path(@item),
+            :rel => 'nofollow' -%></li>
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;item&nbsp;list', items_path,
+            :rel => 'nofollow' -%></li>
 </ul></div>
 
 <script type="text/javascript">
-  creatingNewNode = false;
+  creatingNewItem = false;
 </script>
-<%= javascript_include_tag "forNodesForms" %>
+<%= javascript_include_tag "forItemsForms" %>
 <script type="text/javascript">
-  plumbEventHandlersToNodeCreationElements();
-  $(controlNamePrefix + 'node_title').focus();
+  plumbEventHandlersToItemCreationElements();
+  $(controlNamePrefix + 'item_title').focus();
 </script>

@@ -19,7 +19,7 @@
 require File.join( File.dirname(__FILE__), 'test_helper' )
 require File.join( File.dirname(__FILE__), 'assert_current_schema' )
 
-class CreateEdgesTest < Test::Unit::TestCase
+class CreateConnectionsTest < Test::Unit::TestCase
   include MigrationTestHelper
   include AssertCurrentSchema
 

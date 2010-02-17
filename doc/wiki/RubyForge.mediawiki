@@ -4,8 +4,6 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-
-
 '''''RubyForge''''' (http://rubyforge.org/) is a public site providing free hosting resources for open-source software development projects. [[WontoMedia]]'s main project page on RubyForge is at:
 
  http://rubyforge.org/projects/wontomedia/

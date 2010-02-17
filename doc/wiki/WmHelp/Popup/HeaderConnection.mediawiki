@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-This page contains all of the information about this particular edge, and information from the different nodes that it references.  The [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Title Title] of each node that is referenced is a link, and can be clicked to go to the detail page for that node.
+This page contains all of the information about this particular connection, and information from the different [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Item items] that it references.  The [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Title Title] of each item that is referenced is a link, and can be clicked to go to the detail page for that item.

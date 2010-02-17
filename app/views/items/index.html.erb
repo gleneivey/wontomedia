@@ -19,28 +19,28 @@
 
 
 <%
-  require Rails.root.join( 'lib', 'helpers', 'node_helper')
-  @title_text = 'All Nodes'
+  require Rails.root.join( 'lib', 'helpers', 'item_helper')
+  @title_text = 'All Items'
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
     [ 'Name', 'WmHelp:GlossaryAtoO#anchor_Name' ],
     [ 'Title', 'WmHelp:GlossaryPtoZ#anchor_Title' ],
     [ 'Description', 'WmHelp:GlossaryAtoO#anchor_Description' ],
-    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ],
-    [ 'Edge', 'WmHelp:GlossaryAtoO#anchor_Edge' ]
+    [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ],
+    [ 'Connection', 'WmHelp:GlossaryAtoO#anchor_Connection' ]
   ]
  %>
 
 
 <div class="headline">
 
-  <%= popup_help_icon "Help, nodes list", "WmHelp:Popup/HeaderNodesIndex"
-  -%>Listing all defined nodes
+  <%= popup_help_icon "Help, items list", "WmHelp:Popup/HeaderItemsIndex"
+  -%>Listing all defined items
   <%= render :partial => 'common/top_box'    # contains an opening <div>
    %>
     <%= render :partial => "list_outbound_links",
-               :locals => { :generating_index_page => true } %>
+          :locals => { :generating_index_page => true } %>
   </div>
 </div>
 
@@ -48,20 +48,20 @@
   <% @edit_help_icon_used = false
      @delete_help_icon_used = false
 
-     @nodes.each do |node| %>
-    <% content_tag :tr, :id => h(node.name) do %>
-      <td class="firstrow"><%= wrap_node_name h node.name -%></td>
+     @items.each do |item| %>
+    <% content_tag :tr, :id => h(item.name) do %>
+      <td class="firstrow"><%= wrap_item_name h item.name -%></td>
       <td class="firstrow" style="font-weight: bold; width: 62%;">
-        <%= link_to filter_parenthetical(h node.title), node_path(node) -%></td>
+        <%= link_to filter_parenthetical(h item.title), item_path(item) -%></td>
       <td class="firstrow" style="font-size: 80%;">
-        <% generate_node_links(node, @not_in_use_hash[node.id]) %>
+        <% generate_item_links(item, @not_in_use_hash[item.id]) %>
       </td>
     <% end %>
     <tr>
       <td colspan="3" class="secondrow" style="padding-left: 2.2em;">
         <span style="font-size: 70%">
-          <%=h NodeHelper::NODE_SUBTYPES_TO_HUMAN[node.sti_type] %>:</span>
-        <%=h node.description %></td>
+          <%=h ItemHelper::ITEM_SUBTYPES_TO_HUMAN[item.sti_type] %>:</span>
+        <%=h item.description %></td>
     </tr>
   <% end %>
 </table>
@@ -69,6 +69,6 @@
 <%= render :partial => 'common/bottom_line'    # contains an opening <div>
  %>
   <%= render :partial => 'list_outbound_links',
-             :locals => { :generating_index_page => true } %>
+        :locals => { :generating_index_page => true } %>
 </div>
 

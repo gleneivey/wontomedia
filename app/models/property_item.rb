@@ -16,5 +16,5 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class PropertyNode < Node
+class PropertyItem < Item
 end

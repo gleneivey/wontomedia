@@ -18,12 +18,12 @@
 
 class FlagsColumnsDefaultZero < ActiveRecord::Migration
   def self.up
-    change_column :nodes, :flags, :integer, :null => false, :default => 0
-    change_column :edges, :flags, :integer, :null => false, :default => 0
+    change_column :items, :flags, :integer, :null => false, :default => 0
+    change_column :connections, :flags, :integer, :null => false, :default => 0
   end
 
   def self.down
-    change_column :nodes, :flags, :integer, :null => false
-    change_column :edges, :flags, :integer, :null => false
+    change_column :items, :flags, :integer, :null => false
+    change_column :connections, :flags, :integer, :null => false
   end
 end

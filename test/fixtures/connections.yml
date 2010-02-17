@@ -16,15 +16,15 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# most basic item, used by edge controller tests
-aReiffiedEdge:
+# most basic item, used by connection controller tests
+aQualifiedConnection:
   subject: testIndividual
   predicate: one
   obj: testCategory
-  edge_desc: edge_one
+  connection_desc: connection_one
   flags: 0
 
-aParentEdge:
+aParentConnection:
   subject: testCategory
   predicate: parent_of
   obj: testSubcategory
@@ -43,7 +43,7 @@ subcategoryHasValue:
   flags: 0
 
 
-# group of nodes used for testing sub_property_of relationship traversal
+# group of items used for testing sub_property_of relationship traversal
 # desired structure is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
@@ -116,57 +116,57 @@ snIRafu:
   flags: 0
 
 
-# group of nodes for testing display/sorting of edges on node pages
+# group of items for testing display/sorting of connections on item pages
 nUFAS_value_A:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: value_relationship
   obj: A
   flags: 0
 
 nUFAS_isAssigned_B:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: isAssigned
   obj: B
   flags: 0
 
 nUFAS_peer_of_X:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: peer_of
   obj: X
   flags: 0
 
 nUFAS_peer_of_Y:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: peer_of
   obj: Y
   flags: 0
 
 nUFAS_peer_of_Z:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: peer_of
   obj: Z
   flags: 0
 
 nUFAS_successor_of_C:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: successor_of
   obj: C
   flags: 0
 
 nUFAS_successor_of_D:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: successor_of
   obj: D
   flags: 0
 
 nUFAS_predecessor_of_E:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: predecessor_of
   obj: E
   flags: 0
 
 nUFAS_child_of_M:
-  subject: nodeUsedFrequentlyAsSubject
+  subject: itemUsedFrequentlyAsSubject
   predicate: child_of
   obj: M
   flags: 0
@@ -175,36 +175,36 @@ nUFAS_child_of_M:
 a_isAssigned_nUFAO:
   subject: A
   predicate: isAssigned
-  obj: nodeUsedFrequentlyAsObject
+  obj: itemUsedFrequentlyAsObject
   flags: 0
 
 b_isAssigned_nUFAO:
   subject: B
   predicate: isAssigned
-  obj: nodeUsedFrequentlyAsObject
+  obj: itemUsedFrequentlyAsObject
   flags: 0
 
 c_isAssigned_nUFAO:
   subject: C
   predicate: isAssigned
-  obj: nodeUsedFrequentlyAsObject
+  obj: itemUsedFrequentlyAsObject
   flags: 0
 
 c_peer_of_nUFAO:
   subject: C
   predicate: peer_of
-  obj: nodeUsedFrequentlyAsObject
+  obj: itemUsedFrequentlyAsObject
   flags: 0
 
 d_isAssigned_nUFAO:
   subject: D
   predicate: isAssigned
-  obj: nodeUsedFrequentlyAsObject
+  obj: itemUsedFrequentlyAsObject
   flags: 0
 
 e_isAssigned_nUFAO:
   subject: E
   predicate: isAssigned
-  obj: nodeUsedFrequentlyAsObject
+  obj: itemUsedFrequentlyAsObject
   flags: 0
 

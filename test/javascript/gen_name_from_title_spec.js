@@ -19,7 +19,7 @@
 require("spec_helper.js");
 
 
-var testType = "IndividualNode";
+var testType = "IndividualItem";
 function getCurrentType(){ return testType; }
 
 Screw.Unit(function(){
@@ -54,7 +54,7 @@ Screw.Unit(function(){
           inCt++;
 
         var lowerCase = ((inCt % 2) == 0);
-        testType = lowerCase ? "PropertyNode" : "IndividualNode";
+        testType = lowerCase ? "PropertyItem" : "IndividualItem";
 
         var inpt = longInput.substr(0, inCt);
         var len = (outCt > 80) ? 80 : outCt;
@@ -71,22 +71,22 @@ Screw.Unit(function(){
       var testCases = [
         { inStr: " now is the time ",
             outStr: "NowIsTheTime",
-            type: "ClassNode" },
-        { inStr: ">Node-title isn't lONG<",
-            outStr: "NodeTitleIsntLong",
-            type: "IndividualNode" },
-        { inStr: "Title of \"a node\"is longer",
-            outStr: "titleOfANodeIsLonger",
-            type: "PropertyNode" },
+            type: "CategoryItem" },
+        { inStr: ">Item-title isn't lONG<",
+            outStr: "ItemTitleIsntLong",
+            type: "IndividualItem" },
+        { inStr: "Title of \"a item\"is longer",
+            outStr: "titleOfAItemIsLonger",
+            type: "PropertyItem" },
         { inStr: "This is      a     String--With lots of    space",
             outStr: "ThisIsAStringWithLotsOfSpace",
-            type: "ClassNode" },
+            type: "CategoryItem" },
         { inStr: "This!title@&has#*(words$)-=delimited%_+[:;by^|\\punctuation!",
             outStr: "This_Title_Has_Words_Delimited_By_Punctuation",
-            type: "IndividualNode" },
-        { inStr: "A node  (wItH SurPrisE)",
-            outStr: "aNode_WithSurprise_",
-            type: "PropertyNode" }
+            type: "IndividualItem" },
+        { inStr: "A item  (wItH SurPrisE)",
+            outStr: "aItem_WithSurprise_",
+            type: "PropertyItem" }
       ];
 
       for (var c=0; c < testCases.length; c++){
@@ -97,7 +97,7 @@ Screw.Unit(function(){
     });
 
     it( "Ignores non-) punctuation and whitespace at end of Title", function(){
-      testType = "ClassNode";
+      testType = "CategoryItem";
       var inStr  = "A title str";
       var outStr = "ATitleStr";
       var iS, oS;
@@ -119,7 +119,7 @@ Screw.Unit(function(){
     });
 
     it( "Ignores single quotes, any position", function(){
-      testType = "PropertyNode";
+      testType = "PropertyItem";
       var inStr  = "A title str";
       var outStr = "aTitleStr";
       var iS;
@@ -131,7 +131,7 @@ Screw.Unit(function(){
     });
 
     it( "Handles digits, any position", function(){
-      testType = "IndividualNode";
+      testType = "IndividualItem";
       var inStr  = "A longer title string is more interesting";
       var outStr = "ALongerTitleStringIsMoreInteresting";
       var iS, oS;
@@ -162,7 +162,7 @@ Screw.Unit(function(){
 
       var titleElem = document.getElementById('title');
       var nameElem  = document.getElementById('name');
-      testType = "PropertyNode";
+      testType = "PropertyItem";
       changeFieldToValue(titleElem,
                          "1 Title string--turns into short'r name string.");
       expect(nameElem.value).to(equal, "titleStringTurnsIntoShortrNameString");
@@ -172,7 +172,7 @@ Screw.Unit(function(){
 
       var titleElem = document.getElementById('title');
       var nameElem  = document.getElementById('name');
-      testType = "ClassNode";
+      testType = "CategoryItem";
 
       var inStr  =
         "This title string does not have any tricky characters besides space";
@@ -196,7 +196,7 @@ Screw.Unit(function(){
 
       var titleElem = document.getElementById('title');
       var nameElem  = document.getElementById('name');
-      testType = "IndividualNode";
+      testType = "IndividualItem";
 
       var inStr  = "another  long title with   spaces";
       var outStr = "AnotherLongTitleWithSpaces";

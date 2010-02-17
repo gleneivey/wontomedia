@@ -18,7 +18,7 @@
 
 // function to highlight help text based on Type <select> element state
 function typeSelectOnchange(){
-  var sel = $('node_sti_type');
+  var sel = $('item_sti_type');
   var tags = [ "category_title",   "category_desc",
                "individual_title", "individual_desc",
                "property_title",   "property_desc" ];
@@ -29,15 +29,15 @@ function typeSelectOnchange(){
   for (var c=0; c != tags.length; c++)
     $(tags[c]).className = "";
 
-  if (sel.value == "ClassNode"){
+  if (sel.value == "CategoryItem"){
     $(tags[0]).className = "titleSelectedItemDescription";
     $(tags[1]).className = "bodySelectedItemDescription";
   }
-  else if (sel.value == "IndividualNode"){
+  else if (sel.value == "IndividualItem"){
     $(tags[2]).className = "titleSelectedItemDescription";
     $(tags[3]).className = "bodySelectedItemDescription";
   }
-  else if (sel.value == "PropertyNode"){
+  else if (sel.value == "PropertyItem"){
     $(tags[4]).className = "titleSelectedItemDescription";
     $(tags[5]).className = "bodySelectedItemDescription";
   }
@@ -53,14 +53,14 @@ var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
 
 
 // package of code to implement required-inputs-can't-be-empty checks
-//   (for nodes/new page)
+//   (for items/new page)
 
 
     // define fields subject to check, order they occur in form
-var requiredNodeElements = [ "sti_type", "title", "name",
-                              "description", "submit" ];
-var nodeElementNames = [ "Type selector", "Title field", "Name field",
-                          "Description box", "Create button" ];
+var requiredItemElements = [ "sti_type", "title", "name", "description",
+  "submit" ];
+var itemElementNames = [ "Type selector", "Title field", "Name field",
+  "Description box", "Create button" ];
 var indexTitle       = 1;
 var indexName        = 2;
 var indexDescription = 3;
@@ -68,49 +68,49 @@ var maxLengths = [ 0, 255, 80, 65535 ];
 
     // globals w/ defaults, real values figured in plumbEvent...()
 var thereIsATypeControl = false;
-var originalNodeName = "";
+var originalItemName = "";
 var controlNamePrefix = "";
-var nodeSubmit;
+var itemSubmit;
 
     // encoding: -1    -> haven't checked yet
     //           false -> no error
     //           true  -> error condition present
-var nodeFormErrors = {};
+var itemFormErrors = {};
 
 
-function plumbEventHandlersToNodeCreationElements(customizationSelector){
-  thereIsATypeControl = ($('node_sti_type') != null);
-  for (var c=0; c < requiredNodeElements.length-2; c++)
-    nodeFormErrors["node_" + requiredNodeElements[c]] =
-      creatingNewNode ? -1 : false;
-  for (var c=1; c < requiredNodeElements.length-1; c++)
-    nodeFormErrors["length_" + requiredNodeElements[c]] = false;
+function plumbEventHandlersToItemCreationElements(customizationSelector){
+  thereIsATypeControl = ($('item_sti_type') != null);
+  for (var c=0; c < requiredItemElements.length-2; c++)
+    itemFormErrors["item_" + requiredItemElements[c]] =
+      creatingNewItem ? -1 : false;
+  for (var c=1; c < requiredItemElements.length-1; c++)
+    itemFormErrors["length_" + requiredItemElements[c]] = false;
 
-  if (!creatingNewNode){
+  if (!creatingNewItem){
     var arrayOfForms = document.getElementsByTagName('form');
-    var newNodeId;
+    var newItemId;
     for (var c=0; c < arrayOfForms.length; c++){
-      newNodeId = arrayOfForms[c].id;
-      var mtch = newNodeId.match(/node$/);
+      newItemId = arrayOfForms[c].id;
+      var mtch = newItemId.match(/item$/);
       if (mtch != null)
         break;
     }
-    controlNamePrefix = newNodeId.replace(/^edit_/, "").
-                                  replace(/node_?[0-9]*$/, "");
-    originalNodeName = $(controlNamePrefix + 'node_name').value;
+    controlNamePrefix = newItemId.replace(/^edit_/, "").
+                                  replace(/item_?[0-9]*$/, "");
+    originalItemName = $(controlNamePrefix + 'item_name').value;
   }
 
 
-  nodeSubmit = $(controlNamePrefix + 'node_submit');
+  itemSubmit = $(controlNamePrefix + 'item_submit');
   if (thereIsATypeControl){
-    var ck = $(controlNamePrefix + 'node_sti_type').value;
+    var ck = $(controlNamePrefix + 'item_sti_type').value;
     if (ck != null && ck != "")
-      nodeFormErrors['node_sti_type'] = false;
+      itemFormErrors['item_sti_type'] = false;
   }
 
 
   if (thereIsATypeControl){
-    var a = $('node_sti_type');
+    var a = $('item_sti_type');
     a.observe('keyup',
       function(ev){
         if (ev.keyCode != Event.KEY_TAB){   // onfocus does all we need for this
@@ -134,28 +134,28 @@ function plumbEventHandlersToNodeCreationElements(customizationSelector){
     );
   }
 
-  var b = $(controlNamePrefix + 'node_title');
-  var c = $(controlNamePrefix + 'node_name');
+  var b = $(controlNamePrefix + 'item_title');
+  var c = $(controlNamePrefix + 'item_name');
   function checkTitle(){
     // this check is unique to Title, do here
     var mtch = b.value.match(/\n|\r/m);
     if (mtch != null && mtch.length > 0){
       $('title_multi_line').className = "helpTextFlagged";
-      nodeFormErrors['ml_title'] = true;
+      itemFormErrors['ml_title'] = true;
       $('title_error_icon').src = "/images/error_error_icon.png";
     }
     else {
       $('title_multi_line').className = "";
-      nodeFormErrors['ml_title'] = false;
+      itemFormErrors['ml_title'] = false;
     }
 
     checkFieldRequired(b);
     checkFieldLength(b, indexTitle);
     maybeClearIcon('title');
-    if (creatingNewNode){
+    if (creatingNewItem){
       var emptyToNotEmpty = generateFromTitle(b, c);
       if (emptyToNotEmpty){
-        nodeFormErrors["node_name"] = false;
+        itemFormErrors["item_name"] = false;
         $('name_required').className = "";
         maybeClearIcon('name');
       }
@@ -176,7 +176,7 @@ function plumbEventHandlersToNodeCreationElements(customizationSelector){
     checkFieldRequired(c);
     checkFieldLength(c, indexName);
     maybeClearIcon('name');
-    if (creatingNewNode)
+    if (creatingNewItem)
       generateToName(b, c);
 
 
@@ -192,33 +192,33 @@ function plumbEventHandlersToNodeCreationElements(customizationSelector){
   );
 
   function nameFieldValidityCheck(){
-    var mtch, val = $(controlNamePrefix + 'node_name').value;
+    var mtch, val = $(controlNamePrefix + 'item_name').value;
 
     $('name_start_char').className = "";
-    nodeFormErrors['char_1_name'] = false;
+    itemFormErrors['char_1_name'] = false;
     if (val.length > 0){
       mtch = val.match(/^[a-zA-Z]/);
       if (mtch == null || mtch.length == 0){
         $('name_start_char').className = "helpTextFlagged";
-        nodeFormErrors['char_1_name'] = true;
+        itemFormErrors['char_1_name'] = true;
         $('name_error_icon').src = "/images/error_error_icon.png";
       }
     }
 
     $('name_nth_char').className = "";
-    nodeFormErrors['char_N_name'] = false;
+    itemFormErrors['char_N_name'] = false;
     if (val.length > 1){
       mtch = c.value.match(/^.[a-zA-Z0-9_-]+$/);
       if (mtch == null || mtch.length == 0){
         $('name_nth_char').className = "helpTextFlagged";
-        nodeFormErrors['char_N_name'] = true;
+        itemFormErrors['char_N_name'] = true;
         $('name_error_icon').src = "/images/error_error_icon.png";
       }
     }
   }
 
 
-  var d = $(controlNamePrefix + 'node_description');
+  var d = $(controlNamePrefix + 'item_description');
   function checkDescription(){
     checkFieldRequired(d);
     checkFieldLength(d, indexDescription);
@@ -232,15 +232,15 @@ function plumbEventHandlersToNodeCreationElements(customizationSelector){
     }
   );
 
-  if (creatingNewNode)
-    makeButtonSeemDisabled(nodeSubmit);// nodes/new -- can't submit a blank form
+  if (creatingNewItem)
+    makeButtonSeemDisabled(itemSubmit);// items/new -- can't submit a blank form
   else
-    makeButtonSeemEnabled(nodeSubmit); // nodes/##/edit -- can submit as-is form
+    makeButtonSeemEnabled(itemSubmit); // items/##/edit -- can submit as-is form
 
   if (customizationSelector != "submitViaModalbox"){
-    nodeSubmit.observe('click',
+    itemSubmit.observe('click',
       function(ev){
-        if (!okToSubmitNodeForm())
+        if (!okToSubmitItemForm())
           ev.stop();
       }
     );
@@ -251,11 +251,11 @@ function plumbEventHandlersToNodeCreationElements(customizationSelector){
   b.observe('focus', function(){onfocusCommonBehavior(b);});
   c.observe('focus', function(){onfocusCommonBehavior(c);});
   d.observe('focus', function(){onfocusCommonBehavior(d);});
-  nodeSubmit.
-    observe('focus', function(){onfocusCommonBehavior(nodeSubmit);});
+  itemSubmit.
+    observe('focus', function(){onfocusCommonBehavior(itemSubmit);});
 }
 
-function flagNodeAsRequired(elemName){
+function flagItemAsRequired(elemName){
   var req = $(elemName + "_required");
   if ( req != null ){
     req.className = "helpTextFlagged";
@@ -275,19 +275,19 @@ function maybeClearIcon(field){
   if (mtch == null || mtch.length == 0){
 
     // "recommended" is a special case....
-    var descReco = nodeFormErrors["node_description"];
-    nodeFormErrors["node_description"] = false;
+    var descReco = itemFormErrors["item_description"];
+    itemFormErrors["item_description"] = false;
 
     var canClear = true;
-    for (var err in nodeFormErrors){
+    for (var err in itemFormErrors){
       mtch = err.match(new RegExp(field));
-      if (mtch != null && mtch.length > 0 && nodeFormErrors[err]){
+      if (mtch != null && mtch.length > 0 && itemFormErrors[err]){
         canClear = false;
         break;
       }
     }
 
-    nodeFormErrors["node_description"] = descReco;  // restore
+    itemFormErrors["item_description"] = descReco;  // restore
 
     if (canClear){
       if (field == "description" && descReco)
@@ -299,45 +299,45 @@ function maybeClearIcon(field){
 
 
   // if *all* the error flags are clear, then indicate that we can submit
-  for (var err in nodeFormErrors)
-    if (err != "node_description" && nodeFormErrors[err] != false){
-      makeButtonSeemDisabled(nodeSubmit);
+  for (var err in itemFormErrors)
+    if (err != "item_description" && itemFormErrors[err] != false){
+      makeButtonSeemDisabled(itemSubmit);
       return;
     }
-  makeButtonSeemEnabled(nodeSubmit);
+  makeButtonSeemEnabled(itemSubmit);
 }
 
 
 function onfocusCommonBehavior(elem){
   var eId = elem.id;
   var c;
-  for (c=0; c   <  requiredNodeElements.length &&
-            eId != controlNamePrefix + "node_" + requiredNodeElements[c];
+  for (c=0; c   <  requiredItemElements.length &&
+            eId != controlNamePrefix + "item_" + requiredItemElements[c];
        c++)
     ;
 
-  if (c >= requiredNodeElements.length)
+  if (c >= requiredItemElements.length)
     return;  // Hmmmm..... maybe not
 
   var lastToCheck = c-1;
   var errFlag = false;
   c = thereIsATypeControl ? 0 : 1;
   for (; c <= lastToCheck; c++){
-    var ck = $(controlNamePrefix + "node_" + requiredNodeElements[c]);
+    var ck = $(controlNamePrefix + "item_" + requiredItemElements[c]);
     if (ck.value == null || ck.value == ""){
 
-      nodeFormErrors["node_" + requiredNodeElements[c]] = true;
-      flagNodeAsRequired(requiredNodeElements[c]);
+      itemFormErrors["item_" + requiredItemElements[c]] = true;
+      flagItemAsRequired(requiredItemElements[c]);
 
-      if (c < requiredNodeElements.length-2)
+      if (c < requiredItemElements.length-2)
         errFlag = true;
     }
     else
-      nodeFormErrors["node_" + requiredNodeElements[c]] = false;
+      itemFormErrors["item_" + requiredItemElements[c]] = false;
   }
 
   if (errFlag)
-    makeButtonSeemDisabled(nodeSubmit);
+    makeButtonSeemDisabled(itemSubmit);
 
   // refresh everything
   if (thereIsATypeControl)
@@ -350,13 +350,13 @@ function onfocusCommonBehavior(elem){
 
 function checkFieldRequired(f){
   var idStr = f.id;
-  if (!creatingNewNode)
+  if (!creatingNewItem)
     idStr = idStr.replace(new RegExp(controlNamePrefix), "");
-  var name = idStr.match(/node_(.+)$/)[1];
+  var name = idStr.match(/item_(.+)$/)[1];
 
   if (f.value == null || f.value == ""){
-    flagNodeAsRequired(name);
-    nodeFormErrors[idStr] = true;
+    flagItemAsRequired(name);
+    itemFormErrors[idStr] = true;
   }
   else {
     var req = $(name + "_required");
@@ -365,21 +365,21 @@ function checkFieldRequired(f){
     else
       $(name + "_recommended").className = "";
 
-    nodeFormErrors[idStr] = false;
+    itemFormErrors[idStr] = false;
   }
 }
 
 function checkFieldLength(elem, index){
-  var name = elem.id.match(/node_(.+)$/)[1];
+  var name = elem.id.match(/item_(.+)$/)[1];
 
   if (elem.value.length > maxLengths[index]){
     $(name + '_too_long').className = "helpTextFlagged";
-    nodeFormErrors['length_' + name] = true;
+    itemFormErrors['length_' + name] = true;
     $(name + "_error_icon").src = "/images/error_error_icon.png";
   }
   else {
     $(name + '_too_long').className = "";
-    nodeFormErrors['length_' + name] = false;
+    itemFormErrors['length_' + name] = false;
   }
 }
 
@@ -388,25 +388,25 @@ function genDialog(){
   var newDialogText = "<p>";
   var accum = false;
 
-  for (var c=0; c < requiredNodeElements.length-2; c++){
-    if (nodeFormErrors["node_" + requiredNodeElements[c]] == true){
+  for (var c=0; c < requiredItemElements.length-2; c++){
+    if (itemFormErrors["item_" + requiredItemElements[c]] == true){
       accum = true;
-      newDialogText += "The " + nodeElementNames[c] + " is required. ";
+      newDialogText += "The " + itemElementNames[c] + " is required. ";
     }
   }
-  for (var c=1; c < requiredNodeElements.length-1; c++){
-    if (nodeFormErrors["length_" + requiredNodeElements[c]] == true){
+  for (var c=1; c < requiredItemElements.length-1; c++){
+    if (itemFormErrors["length_" + requiredItemElements[c]] == true){
       accum = true;
-      newDialogText += "The " + nodeElementNames[c] + " field must be " +
+      newDialogText += "The " + itemElementNames[c] + " field must be " +
         maxLengths[c] + " or fewer characters. ";
     }
   }
 
   if (accum){
     newDialogText += "</p>";
-    var titleText = creatingNewNode ?
-      "Can't create this node yet" :
-      "Can't update this node";
+    var titleText = creatingNewItem ?
+      "Can't create this item yet" :
+      "Can't update this item";
     Modalbox.show(newDialogText,
       { title: titleText,
         slideDownDuration: 0.25, slideUpDuration: 0.1 } );
@@ -429,8 +429,8 @@ function nameUCheckSuccess(transport){
   ajaxRequestInProgress = null;
   $('name_must_be_unique').className = "helpTextFlagged";
   $('name_status_icon').src = '/images/error_status_icon.png';
-  nodeFormErrors["unique_name"] = true;
-  makeButtonSeemDisabled(nodeSubmit);
+  itemFormErrors["unique_name"] = true;
+  makeButtonSeemDisabled(itemSubmit);
 }
 function nameUCheckFailure(transport){
   ajaxRequestInProgress = null;
@@ -446,17 +446,17 @@ function launchNameUniquenessCheck(){
   uniquenessTimerId = -1;
 
   var l = window.location;
-  var lookup = l.protocol + "//" + l.hostname + ":" + l.port + '/nodes/lookup';
+  var lookup = l.protocol + "//" + l.hostname + ":" + l.port + '/items/lookup';
   ajaxRequestInProgress = new Ajax.Request(
     lookup, {
-      method: 'get', parameters: "name=" + $F(controlNamePrefix + 'node_name'),
+      method: 'get', parameters: "name=" + $F(controlNamePrefix + 'item_name'),
       onSuccess: nameUCheckSuccess, onFailure: nameUCheckFailure
     });
 
   $('name_status_icon').src = '/images/working_status_icon.gif';
 }
 function maybeCheckNameUniqueness(delay){
-  var name = $(controlNamePrefix + 'node_name');
+  var name = $(controlNamePrefix + 'item_name');
 
   if (name.value != valueWhenLastChecked){
     valueWhenLastChecked = name.value;
@@ -470,14 +470,14 @@ function maybeCheckNameUniqueness(delay){
 
     clearNameUniquenessIndicators();
 
-    var old = nodeFormErrors["unique_name"];
-    nodeFormErrors["unique_name"] = false;
+    var old = itemFormErrors["unique_name"];
+    itemFormErrors["unique_name"] = false;
     if (old)
       maybeClearIcon('name');
 
     var mtch = $('name_error_icon').src.match(/error_error_icon/);
     if (name.value != null && name.value != "" &&
-        name.value != originalNodeName         &&
+        name.value != originalItemName         &&
         (mtch == null || mtch.length == 0)){
       if (delay > 0)
         uniquenessTimerId = setTimeout(launchNameUniquenessCheck, delay);
@@ -496,19 +496,19 @@ var dly = 200;
 
 
 function getCurrentType(){
-  return $('node_sti_type').value;
+  return $('item_sti_type').value;
 }
 
 
 
-function okToSubmitNodeForm(){
-  onfocusCommonBehavior(nodeSubmit);
+function okToSubmitItemForm(){
+  onfocusCommonBehavior(itemSubmit);
   var errors = genDialog();
 
   if (errors)
-    makeButtonSeemDisabled(nodeSubmit);
+    makeButtonSeemDisabled(itemSubmit);
   else
-    makeButtonSeemEnabled(nodeSubmit);
+    makeButtonSeemEnabled(itemSubmit);
 
   return !errors;
 }

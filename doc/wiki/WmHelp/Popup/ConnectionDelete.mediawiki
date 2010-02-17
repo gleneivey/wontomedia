@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-Click the '''Delete''' link to remove that particular edge from the system.  When clicked, '''Delete''' will cause a dialog box to be displayed, asking you to confirm that you want the edge permanently removed.
+Click the '''Delete''' link to remove that particular connection from the system.  When clicked, '''Delete''' will cause a dialog box to be displayed, asking you to confirm that you want the connection permanently removed.

@@ -18,15 +18,15 @@
 
 require 'test_helper'
 
-class ClassNodeTest < ActiveSupport::TestCase
-  test "class_node model exists" do
-    assert ClassNode.new
+class CategoryItemTest < ActiveSupport::TestCase
+  test "category_item model exists" do
+    assert CategoryItem.new
   end
 
-  test "class_node inherits from node" do
+  test "category_item inherits from item" do
     name = "cn"
-    cn = ClassNode.new( :name => name, :title => "class" )
+    cn = CategoryItem.new( :name => name, :title => "class" )
     assert cn.save
-    assert_equal Node.find_by_name(name).name, name
+    assert_equal Item.find_by_name(name).name, name
   end
 end

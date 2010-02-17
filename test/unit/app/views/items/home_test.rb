@@ -19,22 +19,22 @@
 
 require 'test_helper'
 
-class NodesHomeViewTest < ActionController::TestCase
-  tests NodesController
+class ItemsHomeViewTest < ActionController::TestCase
+  tests ItemsController
 
-  test "should have index page for nodes" do
+  test "should have index page for items" do
     get :home
-    assert_template "nodes/home"
+    assert_template "items/home"
   end
 
-  test "should show Title of known node" do
+  test "should show Title of known item" do
     get :home
-    assert_select "body", /#{nodes(:one).title}/
+    assert_select "body", /#{items(:one).title}/
   end
 
-  test "should show Description of known node" do
+  test "should show Description of known item" do
     get :home
-    assert_select "body", /#{nodes(:one).description}/
+    assert_select "body", /#{items(:one).description}/
   end
 
   test "home page shouldnt contain status" do

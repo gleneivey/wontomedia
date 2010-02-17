@@ -1,72 +1,72 @@
-Feature:  Edit individual nodes through non-Ajax pages
+Feature:  Edit individual items through non-Ajax pages
   In order to create a wontology,
   as a contributor, I want
-  to be able to change the information for existing nodes.
+  to be able to change the information for existing items.
 
-  Scenario: Change all fields of an existing node
-    Given there is 1 existing class like "fred"
-    And I am on the edit nodes page for "fred0"
-    And I fill in "Name" with "nodeD"
-    And I fill in "Title" with "Node D"
-    And I fill in "Description" with "Description for node D ought to be here"
+  Scenario: Change all fields of an existing item
+    Given there is 1 existing category like "fred"
+    And I am on the edit items page for "fred0"
+    And I fill in "Name" with "itemD"
+    And I fill in "Title" with "Item D"
+    And I fill in "Description" with "Description for item D ought to be here"
     When I press "Update"
-    Then I should see "nodeD"
-    And I should see "Node D"
-    And I should see "Description for node D ought to be here"
+    Then I should see "itemD"
+    And I should see "Item D"
+    And I should see "Description for item D ought to be here"
 
 
-  Scenario: Change all fields of an existing node, one in each of three ops
+  Scenario: Change all fields of an existing item, one in each of three ops
     Given there is 1 existing individual like "wilma"
-    And I am on the edit nodes page for "wilma0"
+    And I am on the edit items page for "wilma0"
     And I fill in "Name" with "reallyBetty"
     When I press "Update"
-    Then I should see all of "reallyBetty", "wilma node number 0", "Lorem ipsum dolor sit wilma amet, consectetur adipiscing elit. Suspendisse 0 tincidunt mauris vitae lorem."
-    And I follow "Edit this node"
+    Then I should see all of "reallyBetty", "wilma item number 0", "Lorem ipsum dolor sit wilma amet, consectetur adipiscing elit. Suspendisse 0 tincidunt mauris vitae lorem."
+    And I follow "Edit this item"
     And I fill in "Title" with "Betty Rubble disguised as Wilma"
     When I press "Update"
     Then I should see all of "reallyBetty", "Betty Rubble disguised as Wilma", "Lorem ipsum dolor sit wilma amet, consectetur adipiscing elit. Suspendisse 0 tincidunt mauris vitae lorem."
-    And I follow "Edit this node"
+    And I follow "Edit this item"
     And I fill in "Description" with "Fred is cheating"
     When I press "Update"
     Then I should see all of "reallyBetty", "Betty Rubble disguised as Wilma", "Fred is cheating"
 
 
-  Scenario: I can't change one node name to match another
-    Given there are 2 existing reiffied-properties like "someNode"
-    And I am on the edit nodes page for "someNode0"
-    And I fill in "Name" with "someNode1"
+  Scenario: I can't change one item name to match another
+    Given there are 2 existing qualified-connections like "someItem"
+    And I am on the edit items page for "someItem0"
+    And I fill in "Name" with "someItem1"
     When I press "Update"
     Then I should see "error"
 
 
-  Scenario: When I try to delete a node, it deletes
+  Scenario: When I try to delete a item, it deletes
     Given there is 1 existing property like "propFamily"
-    And I am on the show nodes page for "propFamily0"
-    And I follow "Delete this node", accepting confirmation
-    When I try to go to the show nodes page for "propFamily0"
+    And I am on the show items page for "propFamily0"
+    And I follow "Delete this item", accepting confirmation
+    When I try to go to the show items page for "propFamily0"
     Then I should see "doesn't exist"
 
 
-  Scenario: When I try to delete an in-use node, it doesn't
+  Scenario: When I try to delete an in-use item, it doesn't
     Given there are 2 existing properties like "propFamily"
-    And there is an existing edge "propFamily1" "child_of" "propFamily0"
-    And I am on the show nodes page for "propFamily0"
-    When I follow "Can't delete this node", accepting confirmation
-    Then I should see all of "propFamily0", "propFamily node number 0", "Lorem ipsum dolor sit propFamily amet, consectetur adipiscing elit. Suspendisse 0 tincidunt mauris vitae lorem."
+    And there is an existing connection "propFamily1" "child_of" "propFamily0"
+    And I am on the show items page for "propFamily0"
+    When I follow "Can't delete this item", accepting confirmation
+    Then I should see all of "propFamily0", "propFamily item number 0", "Lorem ipsum dolor sit propFamily amet, consectetur adipiscing elit. Suspendisse 0 tincidunt mauris vitae lorem."
 
 
-  Scenario: Delete links for user nodes, not for built-in nodes
+  Scenario: Delete links for user items, not for built-in items
     Given there is 1 existing individual like "anItem"
-    When I go to the index nodes page
-    Then there should be a node container for "anItem0" including the tag "a[href="/nodes/?anItem0?"][onclick*="delete"]"
-    And there should not be a node container for "sub_property_of" including the tag "a[href="/nodes/?sub_property_of?"][onclick*="delete"]"
+    When I go to the index items page
+    Then there should be a item container for "anItem0" including the tag "a[href="/items/?anItem0?"][onclick*="delete"]"
+    And there should not be a item container for "sub_property_of" including the tag "a[href="/items/?sub_property_of?"][onclick*="delete"]"
 
 
-  Scenario: Edit links for user nodes, not for built-in nodes
-    Given there is 1 existing class like "aClass"
-    When I go to the index nodes page
-    Then there should be a node container for "aClass0" including the tag "a[href="/nodes/?aClass0?/edit"]"
-    And there should not be a node container for "parent_of" including the tag "a[href="/nodes/?sub_property_of?/edit"]"
+  Scenario: Edit links for user items, not for built-in items
+    Given there is 1 existing category like "aCategory"
+    When I go to the index items page
+    Then there should be a item container for "aCategory0" including the tag "a[href="/items/?aCategory0?/edit"]"
+    And there should not be a item container for "parent_of" including the tag "a[href="/items/?sub_property_of?/edit"]"
 
 
 

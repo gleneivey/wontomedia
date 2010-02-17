@@ -22,7 +22,7 @@
   function sizeDescDiv(name){
     var h = document.viewport.getHeight() / 6;
     $(name + "_desc").style.height = h + "px";
-    var w = $("edge_" + name + "_id").getWidth();
+    var w = $("connection_" + name + "_id").getWidth();
     $(name + "_desc").style.width  = w + "px";
   }
 </script>
@@ -42,7 +42,7 @@
 
 
 <p class="directions">
-  You must select a node for each of the
+  You must select an item for each of the
   <span id="subject_required">subject</span>,
   <span id="predicate_required">relationship</span>, and
   <span id="obj_required">object</span>.
@@ -52,34 +52,34 @@
   <tr><td style="text-align: right">
     <%= f.label :subject_id %>
   </td><td>
-    <%= select_tag "edge[subject_id]",
+    <%= select_tag "connection[subject_id]",
           options_for_select(
             [[ "- this object -", "" ],
-             [ "- create a new node for this object -", "-1" ],
+             [ "- create a new item for this object -", "-1" ],
             ] +
-              nodes.map do |n|
+              items.map do |n|
                 [ h("#{n.name} : #{n.title}"), n.id ]
               end,
-            edge.subject.nil? ? "" : edge.subject.id
+            connection.subject.nil? ? "" : connection.subject.id
           ),
           :tabindex=>'10', :style=>'width: 90%;'
      %>
     <script type="text/javascript">
-      $('edge_subject_id').focus();
+      $('connection_subject_id').focus();
     </script>
-    <%= popup_help_icon "Help for edge's subject selection",
-                        "WmHelp:Popup/EdgeSubject" %>
+    <%= popup_help_icon "Help for connection's subject selection",
+                        "WmHelp:Popup/ConnectionSubject" %>
     <%= image_tag "blank_error_icon.png", :id=>"subject_error_icon", :alt=>"",
                   :size=>"16x16" %>
 
     <!-- start 'div' differently depending on 'if' -->
-      <% if edge.subject.nil? %>
+      <% if connection.subject.nil? %>
         <div id="subject_desc" class="desc">
           <%= image_tag "blank_status_icon.png", :id=>"subject_status_icon",
                         :alt=>"", :size=>"32x16" %>
       <% else %>
         <div id="subject_desc" class="">
-          <p><%= h edge.subject.description %></p>
+          <p><%= h connection.subject.description %></p>
       <% end %>
     </div>
     <script type="text/javascript">sizeDescDiv('subject');</script>
@@ -87,7 +87,7 @@
   <tr><td style="text-align: right">
     <%= f.label :predicate_id,"Relates to" %>
   </td><td>
-    <%= select_tag "edge[predicate_id]",
+    <%= select_tag "connection[predicate_id]",
           options_for_select(
             [[ "- has this relationship -", "" ],
              [ "- create a new property for this relationship -", "-1" ],
@@ -95,23 +95,23 @@
               verbs.map do |n|
                 [ h("#{n.name} : #{n.title}"), n.id ]
               end,
-            edge.predicate.nil? ? "" : edge.predicate.id
+            connection.predicate.nil? ? "" : connection.predicate.id
           ),
           :tabindex=>'20', :style=>'width: 90%;'
      %>
-    <%= popup_help_icon "Help for edge's predicate selection",
-                        "WmHelp:Popup/EdgePredicate" %>
+    <%= popup_help_icon "Help for connection's predicate selection",
+                        "WmHelp:Popup/ConnectionPredicate" %>
     <%= image_tag "blank_error_icon.png", :id=>"predicate_error_icon", :alt=>"",
                   :size=>"16x16" %>
 
     <!-- start 'div' differently depending on 'if' -->
-      <% if edge.predicate.nil? %>
+      <% if connection.predicate.nil? %>
         <div id="predicate_desc" class="desc">
           <%= image_tag "blank_status_icon.png", :id=>"predicate_status_icon",
                         :alt=>"", :size=>"32x16" %>
       <% else %>
         <div id="predicate_desc" class="">
-          <p><%= h edge.predicate.description %></p>
+          <p><%= h connection.predicate.description %></p>
       <% end %>
     </div>
     <script type="text/javascript">sizeDescDiv('predicate');</script>
@@ -119,31 +119,31 @@
   <tr><td style="text-align: right">
     <%= f.label :obj_id, "Object" %>
   </td><td>
-    <%= select_tag "edge[obj_id]",
+    <%= select_tag "connection[obj_id]",
           options_for_select(
             [[ "- to this object -", "" ],
-             [ "- create a new node for this object -", "-1" ],
+             [ "- create a new item for this object -", "-1" ],
             ] +
-              nodes.map do |n|
+              items.map do |n|
                 [ h("#{n.name} : #{n.title}"), n.id ]
               end,
-            edge.obj.nil? ? "" : edge.obj.id
+            connection.obj.nil? ? "" : connection.obj.id
           ),
           :tabindex=>'30', :style=>'width: 90%;'
      %>
-    <%= popup_help_icon "Help for edge's object selection",
-                        "WmHelp:Popup/EdgeObject" %>
+    <%= popup_help_icon "Help for connection's object selection",
+                        "WmHelp:Popup/ConnectionObject" %>
     <%= image_tag "blank_error_icon.png", :id=>"obj_error_icon", :alt=>"",
                   :size=>"16x16" %>
 
     <!-- start 'div' differently depending on 'if' -->
-      <% if edge.obj.nil? %>
+      <% if connection.obj.nil? %>
         <div id="obj_desc" class="desc">
           <%= image_tag "blank_status_icon.png", :id=>"obj_status_icon",
                         :alt=>"", :size=>"32x16" %>
       <% else %>
         <div id="obj_desc" class="">
-          <p><%= h edge.obj.description %></p>
+          <p><%= h connection.obj.description %></p>
       <% end %>
     </div>
     <script type="text/javascript">sizeDescDiv('obj');</script>

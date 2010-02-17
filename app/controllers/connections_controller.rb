@@ -16,41 +16,41 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require Rails.root.join( 'lib', 'helpers', 'node_helper')
-require Rails.root.join( 'lib', 'helpers', 'edge_helper')
+require Rails.root.join( 'lib', 'helpers', 'item_helper')
+require Rails.root.join( 'lib', 'helpers', 'connection_helper')
 
-class EdgesController < ApplicationController
+class ConnectionsController < ApplicationController
   Mime::Type.register "application/x-n3", :n3
 
 
-  # GET /edges
+  # GET /connections
   def index
-    @edges = Edge.all.reverse
+    @connections = Connection.all.reverse
     respond_to do |wants|
       wants.html
       wants.n3 do
-        e = @edges.reject { |edge|
-          (edge.flags & Edge::DATA_IS_UNALTERABLE) != 0 }
-        render :text => EdgeHelper::edge_array_to_n3(e)
+        e = @connections.reject { |connection|
+          (connection.flags & Connection::DATA_IS_UNALTERABLE) != 0 }
+        render :text => ConnectionHelper::connection_array_to_n3(e)
       end
     end
   end
 
-  # GET /edges/new
+  # GET /connections/new
   def new
     @this_is_non_information_page = true
-    @edge = Edge.new
+    @connection = Connection.new
     populate_for_new_update
   end
 
-  # POST /edges
+  # POST /connections
   def create
-    @edge = Edge.new(params[:edge])
-    @edge.flags = 0
+    @connection = Connection.new(params[:connection])
+    @connection.flags = 0
 
-    if @edge.save
-      flash[:notice] = 'Edge was successfully created.'
-      redirect_to(@edge)
+    if @connection.save
+      flash[:notice] = 'Connection was successfully created.'
+      redirect_to(@connection)
     else
       populate_for_new_update
       @this_is_non_information_page = true
@@ -58,28 +58,28 @@ class EdgesController < ApplicationController
     end
   end
 
-  # GET /edges/1
+  # GET /connections/1
   def show
-      # set @edge for view to use for link building
+      # set @connection for view to use for link building
     begin
-      @edge = Edge.find(params[:id])
+      @connection = Connection.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
 
       # populate these here because I didn't want view causing db queries
-    @subject = @edge.subject
-    @predicate = @edge.predicate
-    @obj = @edge.obj
-    @edge_desc = @edge.edge_desc
+    @subject = @connection.subject
+    @predicate = @connection.predicate
+    @obj = @connection.obj
+    @connection_desc = @connection.connection_desc
   end
 
-  # GET /edges/1/edit
+  # GET /connections/1/edit
   def edit
     begin
       @this_is_non_information_page = true
-      @edge = Edge.find(params[:id])
+      @connection = Connection.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
@@ -88,50 +88,50 @@ class EdgesController < ApplicationController
     populate_for_new_update
   end
 
-  # PUT /edges/1
+  # PUT /connections/1
   def update
     begin
-      @edge = Edge.find(params[:id])
+      @connection = Connection.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
 
-    if (@edge.flags & Edge::DATA_IS_UNALTERABLE) != 0
-      flash[:error] = 'This Edge cannot be altered.'
-      redirect_to edge_path(@edge)
-    elsif !@edge.update_attributes(params[:edge])
+    if (@connection.flags & Connection::DATA_IS_UNALTERABLE) != 0
+      flash[:error] = 'This Connection cannot be altered.'
+      redirect_to connection_path(@connection)
+    elsif !@connection.update_attributes(params[:connection])
       populate_for_new_update
       @this_is_non_information_page = true
       render :action => "edit"
     else
-      flash[:notice] = 'Edge was successfully updated.'
-      redirect_to edge_path(@edge)
+      flash[:notice] = 'Connection was successfully updated.'
+      redirect_to connection_path(@connection)
     end
   end
 
-  # DELETE /edges/1
+  # DELETE /connections/1
   def destroy
     begin
-      @edge = Edge.find(params[:id])
+      @connection = Connection.find(params[:id])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
 
-    if (@edge.flags & Edge::DATA_IS_UNALTERABLE) != 0
-      flash[:error] = 'This Edge cannot be altered.'
-      redirect_to edge_path(@edge)
+    if (@connection.flags & Connection::DATA_IS_UNALTERABLE) != 0
+      flash[:error] = 'This Connection cannot be altered.'
+      redirect_to connection_path(@connection)
     else
-      @edge.destroy
-      redirect_to edges_url
+      @connection.destroy
+      redirect_to connections_url
     end
   end
 
 private
 
   def populate_for_new_update
-    @nodes = NodeHelper.not_reiffied
-    @verbs = PropertyNode.all
+    @items = ItemHelper.not_qualified
+    @verbs = PropertyItem.all
   end
 end

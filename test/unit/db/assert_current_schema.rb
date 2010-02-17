@@ -19,7 +19,7 @@
 module AssertCurrentSchema
   def assert_current_schema
     assert_schema do |s|
-      s.table "nodes" do |t|
+      s.table "items" do |t|
         t.column    :id,              :integer
         t.column    :name,            :string
         t.column    :title,           :string
@@ -28,13 +28,13 @@ module AssertCurrentSchema
         t.column    :flags,           :integer, :null => false, :default => 0
       end
 
-      s.table "edges" do |t|
-        t.column    :id,              :integer
-        t.column    :subject_id,      :integer
-        t.column    :predicate_id,    :integer
-        t.column    :obj_id,          :integer
-        t.column    :edge_desc_id,    :integer
-        t.column    :flags,           :integer, :null => false, :default => 0
+      s.table "connections" do |t|
+        t.column    :id,                 :integer
+        t.column    :subject_id,         :integer
+        t.column    :predicate_id,       :integer
+        t.column    :obj_id,             :integer
+        t.column    :connection_desc_id, :integer
+        t.column    :flags,              :integer, :null => false, :default => 0
       end
     end
   end

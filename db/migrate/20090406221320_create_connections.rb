@@ -16,9 +16,9 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class CreateEdges < ActiveRecord::Migration
+class CreateConnections < ActiveRecord::Migration
   def self.up
-    create_table :edges do |t|
+    create_table :connections do |t|
       t.integer :subject_id
       t.integer :predicate_id
       t.integer :object_id
@@ -27,6 +27,6 @@ class CreateEdges < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :edges
+    drop_table :connections
   end
 end

@@ -19,32 +19,32 @@
 
 require 'test_helper'
 
-class NodesNewViewTest < ActionController::TestCase
-  tests NodesController
+class ItemsNewViewTest < ActionController::TestCase
+  tests ItemsController
 
-  test "should have new form for nodes" do
+  test "should have new form for items" do
     get :new
-    assert_template "nodes/new"
+    assert_template "items/new"
   end
 
-  test "nodes new form should invoke create" do
+  test "items new form should invoke create" do
     get :new
     assert_select   "form[action=?]",
         @controller.url_for(:action => :create, :only_path => true) do
       assert_select "form[method=post]", true,
-        "new-node form uses POST"
-      assert_select "select#node_sti_type", true,
-        "new-node form contains 'select' field for :sti_type attribute"
-      assert_select "input#node_name[type=text]", true,
-        "new-node form contains 'text' field for :name attribute"
-      assert_select "input#node_title[type=text]", true,
-        "new-node form contains 'text' field for :title attribute"
-      assert_select "textarea#node_description", true,
-        "new-node form contains 'textarea' field for :description attribute"
+        "new-item form uses POST"
+      assert_select "select#item_sti_type", true,
+        "new-item form contains 'select' field for :sti_type attribute"
+      assert_select "input#item_name[type=text]", true,
+        "new-item form contains 'text' field for :name attribute"
+      assert_select "input#item_title[type=text]", true,
+        "new-item form contains 'text' field for :title attribute"
+      assert_select "textarea#item_description", true,
+        "new-item form contains 'textarea' field for :description attribute"
     end
   end
 
-  test "nodes new form shouldnt contain status" do
+  test "items new form shouldnt contain status" do
     get :new
     assert_negative_view_contents
   end

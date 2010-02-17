@@ -1,20 +1,20 @@
-Feature:  Verify inputs for creation of new node dynamically within the page
+Feature:  Verify inputs for creation of new item dynamically within the page
   (verify the content of Title, Name, Description not too long)
   In order to create a wontology,
   as a contributor, I want
   to be told about bad inputs before I submit a page.
 
 
-# see nodes_create_checks.feature for basic/common functionality
+# see items_create_checks.feature for basic/common functionality
 #
 #  - field content too-long checks:
-#     - node.title not too long (255 char max)
-#     - node.name not too long
-#     - node.description not too long
+#     - item.title not too long (255 char max)
+#     - item.name not too long
+#     - item.description not too long
 
 
   Scenario: form flags input fields whose content is too long
-    Given I am on the new nodes page
+    Given I am on the new items page
     And I select "Property" from "Type"
 
     # fill in fields with 1-character-too-long data, verify error indicators
@@ -32,7 +32,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "title_error_icon" is "error_error_icon"
     And the image "name_error_icon" is "error_error_icon"
     And the image "description_error_icon" is "error_error_icon"
-    And the element "node_submit" has the format "background-color=$inactive_button_color;"
+    And the element "item_submit" has the format "background-color=$inactive_button_color;"
 
     # now set fields to maximum length; observe clearing of errors flags
     When I fill in "Title" with "This text is 255 characters long.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX."
@@ -49,7 +49,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the image "title_error_icon" is "blank_error_icon"
     And the image "name_error_icon" is "blank_error_icon"
     And the image "description_error_icon" is "blank_error_icon"
-    And the element "node_submit" has the format "background-color=$active_button_color;"
+    And the element "item_submit" has the format "background-color=$active_button_color;"
 
 
 # WontoMedia - a wontology web application

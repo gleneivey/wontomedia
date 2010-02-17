@@ -22,7 +22,7 @@ require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 class RelationAndAllSubpropertiesTest < ActiveSupport::TestCase
   test "no children make single invoke only" do
     count = 0
-    id = nodes(:one).id
+    id = items(:one).id
     relation_and_all_subproperties(id) do |sp_id|
       assert sp_id == id
       count += 1
@@ -31,7 +31,7 @@ class RelationAndAllSubpropertiesTest < ActiveSupport::TestCase
   end
 
 
-# group of nodes used for testing sub_property_of relationship traversal
+# group of items used for testing sub_property_of relationship traversal
 # structure in fixtures is:
 #   A spo B spo C spo D spo E
 #         |    spo M spo (same "Y" as below)
@@ -50,18 +50,18 @@ class RelationAndAllSubpropertiesTest < ActiveSupport::TestCase
   end
 
   test "one subproperty causes two iterations" do
-    props = [ nodes(:B).id, nodes(:A).id ]
+    props = [ items(:B).id, items(:A).id ]
     make_relation_and_all_subproperties_call(props)
   end
 
   test "two subproperty causes three iterations" do
-    props = [ nodes(:C).id, nodes(:B).id, nodes(:A).id ]
+    props = [ items(:C).id, items(:B).id, items(:A).id ]
     make_relation_and_all_subproperties_call(props)
   end
 
   test "finds subproperties with multiple inheritance" do
-    props = [ nodes(:X).id, nodes(:Y).id, nodes(:Z).id, nodes(:M).id,
-              nodes(:C).id, nodes(:B).id, nodes(:A).id ]
+    props = [ items(:X).id, items(:Y).id, items(:Z).id, items(:M).id,
+              items(:C).id, items(:B).id, items(:A).id ]
     make_relation_and_all_subproperties_call(props)
   end
 end

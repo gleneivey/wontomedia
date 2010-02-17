@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-Clicking this link will take you to another page with a form for creating a new edge.  Creating an edge is done by selecting the nodes which the new edge will reference, and can include creating new nodes directly within the edge-creation page itself.  A new edge must be different from all previously-defined edges.
+Clicking this link will take you to another page with a form for creating a new connection.  Creating a connection is done by selecting the items which the new connection will reference, and can include creating new items directly within the connection-creation page itself.  A new connection must be different from all previously-defined connections.

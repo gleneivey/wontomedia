@@ -16,5 +16,5 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class ClassNode < Node
+class CategoryItem < Item
 end

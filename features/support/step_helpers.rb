@@ -17,12 +17,12 @@
 
 
 
-def node_id_substitute(selector)
+def item_id_substitute(selector)
   subst_syntax_re = /\?([^?]+)\?/
   while selector =~ subst_syntax_re
     subst_name = $1
-    node = Node.find_by_name(subst_name)
-    selector.sub!(subst_syntax_re, node.id.to_s)
+    item = Item.find_by_name(subst_name)
+    selector.sub!(subst_syntax_re, item.id.to_s)
   end
   selector
 end

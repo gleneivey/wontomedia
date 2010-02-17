@@ -16,37 +16,37 @@
 // see <http://www.gnu.org/licenses/>.
 
 
-var nodeSelectElementHavingNewNodeAdded = null;
-var nounVerbCodeOfNewNodeBeingAdded = "";
-var priorValueOfSelectElementHavingNewNodeAdded = "";
+var itemSelectElementHavingNewItemAdded = null;
+var nounVerbCodeOfNewItemBeingAdded = "";
+var priorValueOfSelectElementHavingNewItemAdded = "";
 
-function nodeCreatePopup(selectElem, nodeType, priorValue){
-  nodeSelectElementHavingNewNodeAdded = selectElem;
-  nounVerbCodeOfNewNodeBeingAdded = nodeType;
-  priorValueOfSelectElementHavingNewNodeAdded = priorValue;
+function itemCreatePopup(selectElem, itemType, priorValue){
+  itemSelectElementHavingNewItemAdded = selectElem;
+  nounVerbCodeOfNewItemBeingAdded = itemType;
+  priorValueOfSelectElementHavingNewItemAdded = priorValue;
 
   var l = window.location;
   var newpop = l.protocol + "//" + l.hostname + ":" + l.port +
-               "/nodes/new-pop?type=" + nodeType;
+               "/items/new-pop?type=" + itemType;
   Modalbox.show(newpop, {
-    title: "Create a new node",
-    height: nodeCreatePopup_Height(),
-    width: nodeCreatePopup_Width(),
+    title: "Create a new item",
+    height: itemCreatePopup_Height(),
+    width: itemCreatePopup_Width(),
     overlayClose: false,
     slideDownDuration: 0.25,
     slieUpDuration: 0.1
   });
 }
 
-function nodeCreatePopup_Height(){
+function itemCreatePopup_Height(){
   return document.viewport.getHeight() - 30;
 }
 
-function nodeCreatePopup_Width(){
+function itemCreatePopup_Width(){
   return Math.floor(document.viewport.getWidth() * 0.62);
 }
 
-function nodeCreatePopup_Submit(buttonElement){
+function itemCreatePopup_Submit(buttonElement){
   var l = window.location;
   var postUrl = buttonElement.form.action;
   if (!(postUrl.match(/^http:/)))
@@ -54,13 +54,13 @@ function nodeCreatePopup_Submit(buttonElement){
       buttonElement.form.action;
 
   Modalbox.show(postUrl, {
-    title: "Create a new node",
-    height: nodeCreatePopup_Height(),
-    width: nodeCreatePopup_Width(),
+    title: "Create a new item",
+    height: itemCreatePopup_Height(),
+    width: itemCreatePopup_Width(),
 
     method: "post",
     params: Form.serialize(buttonElement.form.id),
-    afterLoad: nodeCreatePopup_MakeSelection,
+    afterLoad: itemCreatePopup_MakeSelection,
 
     overlayClose: false,
     slideDownDuration: 0.25,
@@ -68,29 +68,29 @@ function nodeCreatePopup_Submit(buttonElement){
   });
 }
 
-function nodeCreatePopup_Cancel(){
-  nodeSelectElementHavingNewNodeAdded.value =
-    priorValueOfSelectElementHavingNewNodeAdded;
+function itemCreatePopup_Cancel(){
+  itemSelectElementHavingNewItemAdded.value =
+    priorValueOfSelectElementHavingNewItemAdded;
   Modalbox.hide();
 }
 
-function nodeCreatePopup_MakeSelection(){
+function itemCreatePopup_MakeSelection(){
   if (!($('MB_content').innerHTML.match(
-      /Node\s+was\s+successfully\s+created/i))){
-    nodeSelectElementHavingNewNodeAdded.value =
-      priorValueOfSelectElementHavingNewNodeAdded;
+      /Item\s+was\s+successfully\s+created/i))){
+    itemSelectElementHavingNewItemAdded.value =
+      priorValueOfSelectElementHavingNewItemAdded;
     return;
   }
 
-    // grab content of new node
-  var idNo = $('node_id').innerHTML;
-  var name = $('node_name').innerHTML;
-  var title = $('node_title').innerHTML;
+    // grab content of new item
+  var idNo = $('item_id').innerHTML;
+  var name = $('item_name').innerHTML;
+  var title = $('item_title').innerHTML;
 
-    // add new node to all (appropriate) <select> controls
-  var controlsToAdd = (nounVerbCodeOfNewNodeBeingAdded == "noun") ?
-    [ 'edge_subject_id', 'edge_obj_id' ]                          :
-    [ 'edge_subject_id', 'edge_predicate_id', 'edge_obj_id' ];
+    // add new item to all (appropriate) <select> controls
+  var controlsToAdd = (nounVerbCodeOfNewItemBeingAdded == "noun") ?
+    [ 'connection_subject_id', 'connection_obj_id' ]               :
+    [ 'connection_subject_id', 'connection_predicate_id', 'connection_obj_id' ];
   for (var c=0; c < controlsToAdd.length; c++){
     var txt = document.createTextNode(name + " : " + title);
     var newOptionElem = document.createElement("option");
@@ -99,12 +99,12 @@ function nodeCreatePopup_MakeSelection(){
     $(controlsToAdd[c]).appendChild(newOptionElem);
   }
 
-    // make new node the selection in the operation-originating <select> control
-  nodeSelectElementHavingNewNodeAdded.value = idNo;
-  nodeSelectElementHavingNewNodeAdded.simulate('change');
+    // make new item the selection in the operation-originating <select> control
+  itemSelectElementHavingNewItemAdded.value = idNo;
+  itemSelectElementHavingNewItemAdded.simulate('change');
   // Note: we're being lazy.  Just setting the value will cause an Ajax
-  //    fetch to the server for the node's description.  However, we've
-  //    already got it in the nodes/show page content that we're
+  //    fetch to the server for the item's description.  However, we've
+  //    already got it in the items/show page content that we're
   //    interrogating for idNo, name, and title.  However, supressing this
   //    fetch would take several lines of code and establish a tight linkage
   //    between here and the on-change logic for <select> elements.

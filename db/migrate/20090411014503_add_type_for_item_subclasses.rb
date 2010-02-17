@@ -16,9 +16,9 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class AddTypeForNodeSubclasses < ActiveRecord::Migration
+class AddTypeForItemSubclasses < ActiveRecord::Migration
   def self.up
-    change_table :nodes do |t|
+    change_table :items do |t|
       t.string :type
     end
   end

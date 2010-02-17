@@ -21,30 +21,30 @@ require Rails.root.join( 'app', 'helpers', 'format_helper' )
 include(FormatHelper)
 
 
-class NodesShowHelperTest < ActionView::TestCase
-  test "generate self-node title text" do
-    title = "a test node"
-    name  = "test_node"
-    @node = Node.new( :name => name, :title => title)
-    @node.save
-    @node_hash= {}
-    @node_hash[@node.id] = @node
+class ItemsShowHelperTest < ActionView::TestCase
+  test "generate self-item title text" do
+    title = "a test item"
+    name  = "test_item"
+    @item = Item.new( :name => name, :title => title)
+    @item.save
+    @item_hash= {}
+    @item_hash[@item.id] = @item
 
-    result = self_string_or_other_link(@node.id)
+    result = self_string_or_other_link(@item.id)
     assert /#{title}/ =~ result
     assert /#{name}/  =~ result
     assert /href/     =~ result
   end
 
-  test "generate link to other node including title text" do
-    title = "one test node"
-    name = "one_node"
-    n = Node.new( :name => name, :title => title )
-    @node = Node.new( :name => "another_node", :title => "another test node")
-    n.save; @node.save
-    @node_hash= {}
-    @node_hash[n.id] = n
-    @node_hash[@node.id] = @node
+  test "generate link to other item including title text" do
+    title = "one test item"
+    name = "one_item"
+    n = Item.new( :name => name, :title => title )
+    @item = Item.new( :name => "another_item", :title => "another test item")
+    n.save; @item.save
+    @item_hash= {}
+    @item_hash[n.id] = n
+    @item_hash[@item.id] = @item
 
     result = self_string_or_other_link(n.id)
     assert /#{title}/ =~ result

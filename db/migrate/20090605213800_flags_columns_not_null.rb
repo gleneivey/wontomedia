@@ -18,12 +18,12 @@
 
 class FlagsColumnsNotNull < ActiveRecord::Migration
   def self.up
-    change_column :nodes, :flags, :integer, :null => false
-    change_column :edges, :flags, :integer, :null => false
+    change_column :items, :flags, :integer, :null => false
+    change_column :connections, :flags, :integer, :null => false
   end
 
   def self.down
-    change_column :nodes, :flags, :integer
-    change_column :edges, :flags, :integer
+    change_column :items, :flags, :integer
+    change_column :connections, :flags, :integer
   end
 end

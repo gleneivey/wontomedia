@@ -20,9 +20,9 @@
 
 <p class="inputpara">
   <%= f.label :title %>
-  <%= popup_help_icon "Help for title", "WmHelp:Popup/NodeTitle" %>
+  <%= popup_help_icon "Help for title", "WmHelp:Popup/ItemTitle" %>
   <%= image_tag "blank_error_icon.png", :id=>"title_error_icon", :alt=>"",
-                :size=>"16x16" -%>
+        :size=>"16x16" -%>
   <br />
   <%= f.text_field :title, :tabindex => "2", :style => "width: 95%;" %>
 </p><p class="directions">
@@ -36,11 +36,11 @@
 
 <p class="inputpara">
   <%= f.label :name %>
-  <%= popup_help_icon "Help for name", "WmHelp:Popup/NodeName" %>
+  <%= popup_help_icon "Help for name", "WmHelp:Popup/ItemName" %>
   <%= image_tag "blank_error_icon.png", :id=>"name_error_icon", :alt=>"",
-                :size=>"16x16" %>
+        :size=>"16x16" %>
   <%= image_tag "blank_status_icon.png", :id=>"name_status_icon", :alt=>"",
-                :size=>"32x16" %>
+        :size=>"32x16" %>
   <br />
   <%= f.text_field :name, :tabindex => "3", :style => "width: 95%;" %>
 </p><p class="directions">
@@ -48,21 +48,21 @@
   <span id="name_start_char">Start with a letter.</span>
   <span id="name_nth_char">Letters, numbers, - and _ are OK.</span>
   <span id="name_too_long">No more than 80 characters.</span>
-  <span id="name_must_be_unique">Must be unique for every node.</span>
+  <span id="name_must_be_unique">Must be unique for every item.</span>
   <span id="name_is_unique" class="confirmationTextInvisible">
     'Name' is unique!</span>
 </p>
 
 <p class="inputpara">
   <%= f.label :description %>
-  <%= popup_help_icon "Help for description", "WmHelp:Popup/NodeDescription" %>
+  <%= popup_help_icon "Help for description", "WmHelp:Popup/ItemDescription" %>
   <%= image_tag "blank_error_icon.png", :id=>"description_error_icon", :alt=>"",
-                :size=>"16x16" %>
+        :size=>"16x16" %>
   <br />
   <%= f.text_area :description, :style => "width: 95%; height: 7em",
-                                :tabindex => "4" %>
+        :tabindex => "4" %>
 </p><p class="directions">
-  Describe what this node represents.
+  Describe what this item represents.
   <span id="description_recommended">Recommended.</span>
   <span id="description_too_long">Less than 64K characters.</span>
   No formatting.

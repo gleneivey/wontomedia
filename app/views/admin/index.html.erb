@@ -28,43 +28,43 @@
 <h2>Data Backup and Restore</h2>
 
 <p><%=
-  link_to "Download all nodes in YAML",
-    :controller => 'nodes', :action => 'index', :format => 'yaml',
+  link_to "Download all items in YAML",
+    :controller => 'items', :action => 'index', :format => 'yaml',
     :rel => 'nofollow'
   %>
 
-  to backup node data for future restore.
+  to backup item data for future restore.
 </p>
 
 <p><%=
-  link_to "Download all edges in 'Notation 3' (aka N3) format",
-    :controller => 'edges', :action => 'index', :format => 'n3',
+  link_to "Download all connections in 'Notation 3' (aka N3) format",
+    :controller => 'connections', :action => 'index', :format => 'n3',
     :rel => 'nofollow'
   %>
 
-  to backup edge data for future restore.
+  to backup connection data for future restore.
 </p>
 
-<% form_tag( { :action => 'node_up' }, :multipart => true ) do %>
-  <p><label for="node_upload">Upload a YAML file containing definitions
-    for new nodes</lable><br/>
+<% form_tag( { :action => 'item_up' }, :multipart => true ) do %>
+  <p><label for="item_upload">Upload a YAML file containing definitions
+    for new items</lable><br/>
 
-    <%= file_field 'node_upload', 'nodefile' %>
+    <%= file_field 'item_upload', 'itemfile' %>
     <%= submit_tag "Upload" %>
     <br/>
 
-    Note: all nodes must be loaded into the system before uploading any
-    edge data that references them.
+    Note: all items must be loaded into the system before uploading any
+    connection data that references them.
   </p>
 <% end %>
 
 
-<% form_tag( { :action => 'edge_up' }, :multipart => true ) do %>
-  <p><label for="edge_upload">Upload an N3 file containing definitions
-    for new edges.  (Edges are defined by creating URIs that are bare
-    anchors using the related node's "name" fields.) </lable><br/>
+<% form_tag( { :action => 'connection_up' }, :multipart => true ) do %>
+  <p><label for="connection_upload">Upload an N3 file containing definitions
+    for new connections.  (Connections are defined by creating URIs that
+    are bare anchors using the related item's "name" fields.) </lable><br/>
 
-    <%= file_field 'edge_upload', 'edgefile' %>
+    <%= file_field 'connecction_upload', 'connectionfile' %>
     <%= submit_tag 'Upload' %>
   </p>
 <% end %>

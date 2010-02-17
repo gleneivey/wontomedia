@@ -4,16 +4,14 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
+A [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]] is made up of [[WmHelp:GlossaryAtoO#anchor_Item|items]] representing "things" and [[WmHelp:GlossaryAtoO#anchor_Connection|connections]] representing their relationships to each other.  In [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]], there is a web page with a unique address (its own URL) for each item.  By default, this page describes the item that it is "about" by showing the item's identifying information (its [[WmHelp:GlossaryPtoZ#anchor_Title|Title]], [[WmHelp:GlossaryAtoO#anchor_Name|Name]], and [[WmHelp:GlossaryAtoO#anchor_Description|Description]]), all of the connections that reference the item, and references to all of the other items involved in those connections.
 
-
-A [[WmHelp:GlossaryPtoZ#anchor_Wontology|wontology]] is made up of [[WmHelp:GlossaryAtoO#anchor_Node|nodes]] representing "things" and [[WmHelp:GlossaryAtoO#anchor_Edge|edges]] representing their relationships to each other.  In [[WmHelp:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]], there is a web page with a unique address (its own URL) for each node.  By default, this page describes the node that it is "about" by showing the node's identifying information (its [[WmHelp:GlossaryPtoZ#anchor_Title|Title]], [[WmHelp:GlossaryAtoO#anchor_Name|Name]], and [[WmHelp:GlossaryAtoO#anchor_Description|Description]]), all of the edges that reference the node, and references to all of the other nodes involved in those edges.
-
-In an individual node's page, all of the references to other nodes are web links, and can be followed to any of those nodes' pages.  In this way, you can start from any node in a wontology and navigate to any other node that is related to it.
+In an individual item's page, all of the references to other items are web links, and can be followed to any of those items' pages.  In this way, you can start from any item in a wontology and navigate to any other item that is related to it.
 
 A few tips:
 
-* Not all nodes are related to each other, even indirectly.  Depending on your starting point, large sections of the wontology may be unreachable simply by browsing.  Of course, since this is most common in the case of different sets of nodes in the wontology describing entirely different subject areas, it isn't necessarily a bad thing.
-* Remember that [[WmHelp:GlossaryPtoZ#anchor_Property|properties]] (the [[WmHelp:GlossaryPtoZ#anchor_Predicate|predicates]] of edges) are nodes, too.  Viewing the page for a property node will not only show its relationship(s) to other properties, but all of the edges which reference it as a predicate.  For frequently used properties, this can provide a place from which most non-property nodes can be found.
-* WontoMedia generates pages that list all nodes and all edges, respectively:
-** http://wontology.org/nodes
-** http://wontology.org/edges
+* Not all items are related to each other, even indirectly.  Depending on your starting point, large sections of the wontology may be unreachable simply by browsing.  Of course, since this is most common in the case of different sets of items in the wontology describing entirely different subject areas, it isn't necessarily a bad thing.
+* Remember that [[WmHelp:GlossaryPtoZ#anchor_Property|properties]] (the [[WmHelp:GlossaryPtoZ#anchor_Predicate|predicates]] of connections) are items, too.  Viewing the page for a property item will not only show its relationship(s) to other properties, but all of the connections which reference it as a predicate.  For frequently used properties, this can provide a place from which most non-property items can be found.
+* WontoMedia generates pages that list all items and all connections, respectively:
+** http://wontology.org/items
+** http://wontology.org/connections

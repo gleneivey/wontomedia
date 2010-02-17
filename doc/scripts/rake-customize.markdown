@@ -34,11 +34,11 @@ will recursively find all files and directories under your
 copied into your WontoMedia directory (in which the rake command was
 executed).  Assuming the following directory structure/content:
 
-    ~/myWontology/app/views/nodes/_home_introductory_text.html.erb
+    ~/myWontology/app/views/items/_home_introductory_text.html.erb
 
 this rake task will do the equivalent of:
 
-    ln -s ~/myWontology/app/views/nodes/_home_introductory_text.html.erb [wontomedia-root]/app/views/nodes
+    ln -s ~/myWontology/app/views/items/_home_introductory_text.html.erb [wontomedia-root]/app/views/items
 
 However, the rake task uses absolute paths, so it will have to be
 re-executed if you later move either the WontoMedia directory or one

@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-This control allows you to select the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Type Type] of the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Node node] you are creating.  The type of a node determines what kind(s) of relationships they can be used in.
+This control allows you to select the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Type Type] of the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Item item] you are creating.  The type of a item determines what kind(s) of relationships they can be used in.

@@ -19,14 +19,14 @@
 
 
 <%
-  @title_text = h( filter_parenthetical( @node.title ) )
+  @title_text = h( filter_parenthetical( @item.title ) )
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
     [ 'Name', 'WmHelp:GlossaryAtoO#anchor_Name' ],
     [ 'Title', 'WmHelp:GlossaryPtoZ#anchor_Title' ],
     [ 'Description', 'WmHelp:GlossaryAtoO#anchor_Description' ],
-    [ 'Node', 'WmHelp:GlossaryAtoO#anchor_Node' ]
+    [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ]
   ]
  %>
 
@@ -42,7 +42,7 @@
    unless @popup_flag %>
      <div style="height: 600px; float: left; padding-right: 1em;">&nbsp;</div>
      <div class="margin-help-icon">
-       <%= popup_help_icon "Help, node content", "WmHelp:Popup/HeaderNode" %>
+       <%= popup_help_icon "Help, item content", "WmHelp:Popup/HeaderItem" %>
      </div>
 <% end %>
 
@@ -50,23 +50,23 @@
 <% # populate top (title/name/desc) section of page
  %>
 <p style="margin-bottom: 0; font-weight: bold;">
-  <%= text_has_tip 'node_title', h( @node.title ),
-        '&nbsp;<b>Title</b> of this <b>Node</b>&nbsp;' %>
+  <%= text_has_tip 'item_title', h( @item.title ),
+        '&nbsp;<b>Title</b> of this <b>Item</b>&nbsp;' %>
 </p>
 
-<p id="node_name_para">
-  <%= text_has_tip 'node_name', h( @node.name ),
-        '&nbsp;<b>Name</b> of this <b>Node</b>&nbsp;' %>
+<p id="item_name_para">
+  <%= text_has_tip 'item_name', h( @item.name ),
+        '&nbsp;<b>Name</b> of this <b>Item</b>&nbsp;' %>
 </p>
 
 <p>
-  <%= text_has_tip 'node_description', h( @node.description ),
-        '&nbsp;<b>Description</b> of this <b>Node</b>&nbsp;' %>
+  <%= text_has_tip 'item_description', h( @item.description ),
+        '&nbsp;<b>Description</b> of this <b>Item</b>&nbsp;' %>
 </p>
 
 <%    # embed this for testability and future JavaScript
  %>
-<div id="node_id" style="display: none"><%= h @node.id -%></div>
+<div id="item_id" style="display: none"><%= h @item.id -%></div>
 
 
 
@@ -78,8 +78,8 @@
   <% end %>
 </p>
 
-<% # populate bottom (edges referencing this node) section of page
-   unless @edge_list.empty? %>
+<% # populate bottom (connections referencing this item) section of page
+   unless @connection_list.empty? %>
 
 
   <% # track things to do only once:
@@ -91,35 +91,35 @@
      @edit_help_icon_used = false
      @delete_help_icon_used = false
 
-     array_of_arrays_of_edges = @edge_list.to_enum
+     array_of_arrays_of_connections = @connection_list.to_enum
 
 
-     # first, put all edges where current node is the subject into indented list
+     # first, put all connections w/ current item-is-subject into indented list
      begin
        while true do               # exit via break or exception
 
-         edge_array = array_of_arrays_of_edges.next
+         connection_array = array_of_arrays_of_connections.next
 
-         # check ID of first edge's subject node against "this" node's ID
-         break if @edge_hash[edge_array[0]].subject_id != @node.id
+         # check ID of first connection's subject item against "this" item's ID
+         break if @connection_hash[connection_array[0]].subject_id != @item.id
 
-         edge_array.each do |edge_id|
-           e = @edge_hash[edge_id]
+         connection_array.each do |connection_id|
+           e = @connection_hash[connection_id]
 
            unless list_open_output
              list_open_output = true
 
-             # question-icon for edges-list pop-up help
+             # question-icon for connections-list pop-up help
              unless @popup_flag  %>
                <div class="margin-help-icon">
-                 <%= popup_help_icon "Help, edges referencing a node",
-                                     "WmHelp:Popup/HeaderNodeEdgeList" %>
+                 <%= popup_help_icon "Help, connections referencing a item",
+                       "WmHelp:Popup/HeaderItemConnectionList" %>
                </div>
 <%           end  %>
 
              <ul>
-               <%= text_has_tip nil, (h filter_parenthetical @node.title),
-                     (h @node.name) %>
+               <%= text_has_tip nil, (h filter_parenthetical @item.title),
+                     (h @item.name) %>
                <ul style="list-style-type: none;">
 <%         end
 
@@ -129,27 +129,27 @@
                </li>
 <%           end %>
              <li>
-               <%= n = @node_hash[e.predicate_id]
+               <%= n = @item_hash[e.predicate_id]
                    link_has_tip nil, (h filter_parenthetical n.title ),
-                                node_path(n), h( n.name ) %>
+                     item_path(n), h( n.name ) %>
                <ul style="list-style-type: none;">
 <%         end %>
 
            <li>
              <div style="float: right; font-size: 80%; margin-right: 6em;">
-               <%  generate_edge_links(e) %>
+               <%  generate_connection_links(e) %>
              </div>
-             <%= n = @node_hash[e.obj_id]
+             <%= n = @item_hash[e.obj_id]
                  link_has_tip nil, (h filter_parenthetical n.title ),
-                              node_path(n), h( n.name ) %>
+                   item_path(n), h( n.name ) %>
            </li>
 
 <%         last_predicate_id = e.predicate_id
 
-         end                       # .each over edge_array
-       end                         # while over array-of-edge_array's
-     rescue StopIteration          # out of edges
-       edge_array = nil            #   none for table
+         end                       # .each over connection_array
+       end                         # while over array-of-connection_array's
+     rescue StopIteration          # out of connections
+       connection_array = nil      #   none for table
      end
 
 
@@ -161,18 +161,18 @@
        <p style="line-height: 50%; font-size: 50%;">&nbsp;</p>
 <%   end
 
-     # now put any remaining edges into a table
-     if edge_array
+     # now put any remaining connections into a table
+     if connection_array
        loop do                     # until exception on .next at loop's end
 
          unless table_open_output
            table_open_output = true
 
-           # question-icon for edges-table pop-up help
+           # question-icon for connections-table pop-up help
            unless @popup_flag  %>
              <div class="margin-help-icon">
-               <%= popup_help_icon "Help, edges referencing a node",
-                                   "WmHelp:Popup/HeaderNodeEdgeTable" %>
+               <%= popup_help_icon "Help, connections referencing a item",
+                     "WmHelp:Popup/HeaderItemConnectionTable" %>
              </div>
 <%         end
 
@@ -180,29 +180,29 @@
          end %>
 
          <tbody>
-           <% edge_array.each do |edge_id| %>
+           <% connection_array.each do |connection_id| %>
              <tr>
                <td>
-                 <%= e = @edge_hash[edge_id]
+                 <%= e = @connection_hash[connection_id]
                      self_string_or_other_link(e.subject_id) %>
-               </td><td class="edgecolumn">
+               </td><td class="connectioncolumn">
                  <%= self_string_or_other_link(e.predicate_id) %>
                </td><td>
                  <%= self_string_or_other_link(e.obj_id) %>
                </td><td style="font-size: 80%">
-                 <% generate_edge_links(e) %>
+                 <% generate_connection_links(e) %>
                </td>
              </tr>
            <% end %>
          </tbody>
     <%
-         edge_array = array_of_arrays_of_edges.next
+         connection_array = array_of_arrays_of_connections.next
 
-       end                      # loop over ..._edges iterator
-     end                        # if any edges to put in table
+       end                      # loop over ..._connections iterator
+     end                        # if any connections to put in table
 
      if table_open_output
        output_table_close
      end
-   end                          # unless @edge_list.empty?
+   end                          # unless @connection_list.empty?
  %>

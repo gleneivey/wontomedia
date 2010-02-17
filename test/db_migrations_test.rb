@@ -20,7 +20,7 @@ path_to_db_tests = File.join( File.dirname(__FILE__), 'unit', 'db' )
 require File.join( File.join( path_to_db_tests, 'test_helper' ) )
 require File.join( File.join( path_to_db_tests, 'assert_current_schema' ) )
 
-class CreateEdgesTest < Test::Unit::TestCase
+class CreateConnectionsTest < Test::Unit::TestCase
   include MigrationTestHelper
   include AssertCurrentSchema
 

@@ -18,18 +18,18 @@
 
 ActionController::Routing::Routes.draw do |map|
   map.admin_index   '/admin', :controller => 'admin', :action => 'index'
-  map.admin_node_up '/admin/node_up', :controller => 'admin',
-    :action => 'node_up'
-  map.admin_edge_up '/admin/edge_up', :controller => 'admin',
-    :action => 'edge_up'
+  map.admin_item_up '/admin/item_up', :controller => 'admin',
+    :action => 'item_up'
+  map.admin_connection_up '/admin/connection_up', :controller => 'admin',
+    :action => 'connection_up'
 
-  map.nodes_lookup '/nodes/lookup', :controller => :nodes, :action => :lookup
-  map.nodeCreatePopup '/nodes/new-pop',
-    :controller => :nodes, :action => :newpop
-  map.resources :nodes
+  map.items_lookup '/items/lookup', :controller => :items, :action => :lookup
+  map.itemCreatePopup '/items/new-pop',
+    :controller => :items, :action => :newpop
+  map.resources :items
 
-  map.resources :edges
-  map.root :controller => "nodes", :action => "home"
+  map.resources :connections
+  map.root :controller => "items", :action => "home"
 
   # Install the default routes as the lowest priority.
 #  map.connect ':controller/:action/:id'

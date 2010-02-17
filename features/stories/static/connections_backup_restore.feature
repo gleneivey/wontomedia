@@ -1,15 +1,15 @@
-Feature:  Download (for backup) and upload (for restore) all edges in N3
+Feature:  Download (for backup) and upload (for restore) all connections in N3
   In order to safeguard the content of a wontology,
   as an administrator, I want
-  to be able to download and upload the system's edges.
+  to be able to download and upload the system's connections.
 
   @not_for_selenium
-  Scenario: Download edges.n3
+  Scenario: Download connections.n3
     Given there are 4 existing individuals like "indiv"
-    And there is an existing edge "indiv1" "child_of" "indiv0"
-    And there is an existing edge "indiv2" "child_of" "indiv1"
-    And there is an existing edge "indiv3" "child_of" "indiv2"
-    When I go to the path "/edges.n3"
+    And there is an existing connection "indiv1" "child_of" "indiv0"
+    And there is an existing connection "indiv2" "child_of" "indiv1"
+    And there is an existing connection "indiv3" "child_of" "indiv2"
+    When I go to the path "/connections.n3"
     Then the response should contain 6 matches of "indiv"
 
 

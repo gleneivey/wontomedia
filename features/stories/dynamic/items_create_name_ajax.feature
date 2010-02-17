@@ -1,13 +1,13 @@
-Feature:  Verify inputs for creation of new node dynamically within the page
+Feature:  Verify inputs for creation of new item dynamically within the page
   (query server to verify that Name is unique before submitting form)
   In order to create a wontology,
   as a contributor, I want
   to be told about bad inputs before I submit a page.
 
 
-# see nodes_create_checks.feature for basic/common functionality
+# see items_create_checks.feature for basic/common functionality
 #
-#  - check that Name value from user doesn't conflict with an existing node
+#  - check that Name value from user doesn't conflict with an existing item
 #     - if focus on Name field, begin uniqueness check 0.4s after last change
 #     - on any focus change in page, check Name for changes since last
 #       uniqueness check.  If Name changed, start new check
@@ -24,14 +24,14 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
   Scenario: Name check identifies unique and already-used values
     Given there is 1 existing individual like "alreadyExisting"
-    When I am on the new nodes page
+    When I am on the new items page
     Then the image "name_status_icon" is "blank_status_icon"
 
     When I fill in "Name" with "alreadyExisting0"
     Then the element "name_is_unique" has the format "display=none"
     And the element "name_must_be_unique" has the format "font-weight=400"
 
-    # total elapsed time from node.Name.onchange > 0.40
+    # total elapsed time from item.Name.onchange > 0.40
     When I wait 0.20 seconds
     Then the image "name_status_icon" is "working_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=400"
@@ -42,7 +42,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
     And the element "name_must_be_unique" has the format "font-weight=bold"
     And the element "name_is_unique" has the format "display=none"
 
-    When I fill in "Name" with "anUnusedNodeName"
+    When I fill in "Name" with "anUnusedItemName"
     Then the image "name_status_icon" is not "error_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=400"
     And the element "name_is_unique" has the format "display=none"
@@ -55,7 +55,7 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 
 
 #### Note: add checks for no "Name is unique" flagging to Name tests
-#### in the nodes_create_invalid -checks feature
+#### in the items_create_invalid -checks feature
 
 # WontoMedia - a wontology web application
 # Copyright (C) 2010 - Glen E. Ivey

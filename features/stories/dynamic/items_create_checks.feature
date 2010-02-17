@@ -1,4 +1,4 @@
-Feature:  Verify inputs for creation of new node dynamically within the page
+Feature:  Verify inputs for creation of new item dynamically within the page
   (set focus on Type onload; highlight descriptive text matching Type selection)
   In order to create a wontology,
   as a contributor, I want
@@ -11,34 +11,35 @@ Feature:  Verify inputs for creation of new node dynamically within the page
 #  - focus is automatically on first form control when page is loaded
 #  - form tab-order is: Type, Title, Name, Description, Create(button)
 #
-#  - node.sti_type choice feedback: emphasize type name in descriptive/help
+#  - item.sti_type choice feedback: emphasize type name in descriptive/help
 #     text to match the type currently selected in the control
 #
-#  - see "nodes_create_required_fields" for required input behaviors
-#  - see "nodes_create_too_long" for text input content too long behaviors
-#  - see "nodes_create_invalid" for text input invalid behaviors
-#  - see "nodes_create_auto_name" for auto-generation of Name from Title
-#  - see "nodes_create_name_ajax" for Name uniqueness pre-submit check
-
-  Scenario: nodes/new form defaults focus to Type "select" control
-    When I am on the new nodes page
-    Then the focus is on the "node_sti_type" element
+#  - see "items_create_required_fields" for required input behaviors
+#  - see "items_create_too_long" for text input content too long behaviors
+#  - see "items_create_invalid" for text input invalid behaviors
+#  - see "items_create_auto_name" for auto-generation of Name from Title
+#  - see "items_create_name_ajax" for Name uniqueness pre-submit check
 
 
-  Scenario: nodes/new form has correct Tab order to controls
-    Given I am on the new nodes page
+  Scenario: items/new form defaults focus to Type "select" control
+    When I am on the new items page
+    Then the focus is on the "item_sti_type" element
+
+
+  Scenario: items/new form has correct Tab order to controls
+    Given I am on the new items page
     When I type the "Tab" special key
-    Then the focus is on the "node_title" element
+    Then the focus is on the "item_title" element
     When I type the "Tab" special key
-    Then the focus is on the "node_name" element
+    Then the focus is on the "item_name" element
     When I type the "Tab" special key
-    Then the focus is on the "node_description" element
+    Then the focus is on the "item_description" element
     When I type the "Tab" special key
-    Then the focus is on the "node_submit" element
+    Then the focus is on the "item_submit" element
 
 
-  Scenario: selection of node.sti_type should highlight matching descr. text
-    Given I am on the new nodes page
+  Scenario: selection of item.sti_type should highlight matching descr. text
+    Given I am on the new items page
     When I select "Category" from "Type"
     Then the element "category_title" has the format "font-weight=bold"
     And the element "category_title" has the format "text-decoration=underline"
