@@ -29,9 +29,9 @@ db/schema.rb
 VERSION.yml
 
     # frozen source files, have headers compliant with policies when written
-#!lock            d596633a320426fb533290dcfc17daed0e374525
+!lock            df1dbdf78eb147032f4e0781ceb79ae1d0984e69
 db/migrate/2009*.rb
-#!unlock
+!unlock
 
     # one-time auto-generated files, never to be modified
     #  "lock" directive contains git commit # of acceptable version
