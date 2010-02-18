@@ -1,0 +1,7 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+This is a list of all of the [http://wiki.wontology.org/wiki/help.php?title=Help:GlossaryAtoO#anchor_Item item] currently defined in the system.  The [http://wiki.wontology.org/wiki/help.php?title=Help:GlossaryAtoO#anchor_Name Name], [http://wiki.wontology.org/wiki/help.php?title=Help:GlossaryPtoZ#anchor_Title Title], and [http://wiki.wontology.org/wiki/help.php?title=Help:GlossaryAtoO#anchor_Description Description] are listed for each item, and clicking on a item's Title will take you to that item's page, which also includes a list of all the [http://wiki.wontology.org/wiki/help.php?title=Help:GlossaryAtoO#anchor_Connection connections] that reference the item.

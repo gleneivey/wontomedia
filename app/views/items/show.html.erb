@@ -23,10 +23,10 @@
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
-    [ 'Name', 'WmHelp:GlossaryAtoO#anchor_Name' ],
-    [ 'Title', 'WmHelp:GlossaryPtoZ#anchor_Title' ],
-    [ 'Description', 'WmHelp:GlossaryAtoO#anchor_Description' ],
-    [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ]
+    [ 'Name', 'Help:GlossaryAtoO#anchor_Name' ],
+    [ 'Title', 'Help:GlossaryPtoZ#anchor_Title' ],
+    [ 'Description', 'Help:GlossaryAtoO#anchor_Description' ],
+    [ 'Item', 'Help:GlossaryAtoO#anchor_Item' ]
   ]
  %>
 
@@ -42,7 +42,7 @@
    unless @popup_flag %>
      <div style="height: 600px; float: left; padding-right: 1em;">&nbsp;</div>
      <div class="margin-help-icon">
-       <%= popup_help_icon "Help, item content", "WmHelp:Popup/HeaderItem" %>
+       <%= popup_help_icon "Help, item content", "Help:Popup/HeaderItem" %>
      </div>
 <% end %>
 
@@ -113,7 +113,7 @@
              unless @popup_flag  %>
                <div class="margin-help-icon">
                  <%= popup_help_icon "Help, connections referencing a item",
-                       "WmHelp:Popup/HeaderItemConnectionList" %>
+                       "Help:Popup/HeaderItemConnectionList" %>
                </div>
 <%           end  %>
 
@@ -172,7 +172,7 @@
            unless @popup_flag  %>
              <div class="margin-help-icon">
                <%= popup_help_icon "Help, connections referencing a item",
-                     "WmHelp:Popup/HeaderItemConnectionTable" %>
+                     "Help:Popup/HeaderItemConnectionTable" %>
              </div>
 <%         end
 

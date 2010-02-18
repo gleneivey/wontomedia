@@ -1,0 +1,11 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+In a [[Help:GlossaryPtoZ#anchcor_Wontology|wontology]] information is represented as a collection of [[Help:GlossaryAtoO#anchor_Item|items]] (see the tutorial "[[Help:Tutorials/CreatingAnItem|Creating a item]]") and [[Help:GlossaryAtoO#anchor_Connection|connections]] (see the tutorial "[[Help:Tutorials/Creating a Connection|Creating a connection]]").
+
+This tutorial describes the creation of a simple unordered list.  You can make a list in an [[Help:GlossaryAtoO#anchor_Ontology|ontology]] ordered, but that requires the creation of more connections ([[Help:GlossaryPtoZ#anchor_Relationship|relationships]]) between the list entries than will be shown here, and typically will use [[Help:GlossaryPtoZ#anchor_Property|properties]] from the [[Help:GlossaryPtoZ#anchor_RDF|RDF]] standard (rdf:Seq, rdf:List, rdf:fist, rdf:rest, rdf:_1, rdfs:member).  These properties are not yet provided as a built-in part of [[Help:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]], as described in the [[Major Roadmap|planned features page]].
+
+The tutorial also doesn't address nested lists (lists where some entries are actually lists with entries of their own).  Nested lists are a one type of [[Help:GlossaryAtoO#anchor_Hierarchy|hierarchy]], and there is a separate tutorial building on this one that addresses the [[Help:Tutorials/CreatingAHierarchy|creation of a hierarchy]].

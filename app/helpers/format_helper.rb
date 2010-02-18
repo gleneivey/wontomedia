@@ -87,7 +87,7 @@ module FormatHelper
     help_link = ''
     unless used_flag
       used_flag = true
-      help_link = popup_help_icon help_alt, ("WmHelp:Popup/" + which_help)
+      help_link = popup_help_icon help_alt, ("Help:Popup/" + which_help)
     end
     return used_flag, ( content_tag( 'span', action_link + help_link,
                                      :style => "white-space: nowrap;" ) + " " )

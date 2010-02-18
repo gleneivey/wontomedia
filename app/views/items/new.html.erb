@@ -29,10 +29,10 @@
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
-    [ 'Category', 'WmHelp:GlossaryAtoO#anchor_Category' ],
-    [ 'Individual', 'WmHelp:GlossaryAtoO#anchor_Individual' ],
-    [ 'Property', 'WmHelp:GlossaryAtoO#anchor_Property' ],
-    [ 'Item', 'WmHelp:GlossaryAtoO#anchor_Item' ]
+    [ 'Category', 'Help:GlossaryAtoO#anchor_Category' ],
+    [ 'Individual', 'Help:GlossaryAtoO#anchor_Individual' ],
+    [ 'Property', 'Help:GlossaryAtoO#anchor_Property' ],
+    [ 'Item', 'Help:GlossaryAtoO#anchor_Item' ]
   ]
  %>
 
@@ -66,7 +66,7 @@
       "Category" is for groups of things, for concepts, and for the
       upper levels of hierarchies<%=
         popup_help_icon 'Definition of hierarchies in a wontology',
-          'WmHelp:GlossaryAtoO#anchor_Hierarchy' -%>.
+          'Help:GlossaryAtoO#anchor_Hierarchy' -%>.
       (Though a hierarchy made up entirely of concepts could be all
       Categories.)  Categories can "contain" other categories or
       individuals.
@@ -82,13 +82,13 @@
 
       "Property" is used to define relationships<%=
         popup_help_icon 'Definition of relationships in a wontology',
-          'WmHelp:GlossaryPtoZ#anchor_Relationship' -%>
+          'Help:GlossaryPtoZ#anchor_Relationship' -%>
       between other items.  Once you create a new Property item<%=
         popup_help_icon 'Definition of Item',
-          'WmHelp:GlossaryAtoO#anchor_Item' -%>,
+          'Help:GlossaryAtoO#anchor_Item' -%>,
       you should create one or more connections<%=
         popup_help_icon 'Definition of Connection',
-          'WmHelp:GlossaryAtoO#anchor_Connection' -%>
+          'Help:GlossaryAtoO#anchor_Connection' -%>
       that relate that property to other existing properties.  In
       general, you will use the "sub_property_of" property in order to
       create these connections.  For example, if you were creating a
@@ -99,11 +99,11 @@
       symmetric_relationship</code>".  This example will cause
       "spouseOf" to be treated as a "peer" relationship<%=
         popup_help_icon 'Peer relationships in a wontology',
-          'WmHelp:GlossaryPtoZ#anchor_Peer' -%>
+          'Help:GlossaryPtoZ#anchor_Peer' -%>
       (rather than a hierarchical one), and as a symmetric
       relationship<%=
         popup_help_icon 'Symmetric relationships in a wontology',
-          'WmHelp:GlossaryPtoZ#anchor_Symmetric' -%>,
+          'Help:GlossaryPtoZ#anchor_Symmetric' -%>,
       so that creating a "spouseOf" connection from one item to another
       implies an connection going the other direction even if it is not
       defined explicitly.

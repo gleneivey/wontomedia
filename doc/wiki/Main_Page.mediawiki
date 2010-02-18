@@ -8,7 +8,7 @@
 
 '''Welcome''' to the wiki for the [[WontoMedia]] web application. WontoMedia is free/libre/open-source software (FLOSS, licensed under the [http://www.fsf.org/licensing/licenses/agpl-3.0.html AGPL v3]), being developed by a distributed/dispersed volunteer team using agile methods.  Additional introductory and contact information can be found [http://wontomedia.rubyforge.org/ on the project's home page].
 
-Eventually this wiki will also contain [[UserReference]] information and [[SystemAdministration]] documentation, but we're still very early in development, and are creating pages to help new developers join the project and work with the WontoMedia software itself.
+Eventually this wiki will also contain [[User Reference]] information and [[System Administration]] documentation, but we're still very early in development, and are creating pages to help new developers join the project and work with the WontoMedia software itself.
 
 == Installing WontoMedia ==
 
@@ -16,22 +16,22 @@ Eventually this wiki will also contain [[UserReference]] information and [[Syste
 
   gem install wontomedia
 
-If this command is familiar to you, and you know how to update a Rails applications' <tt>database.yml</tt>, then this should be all you need. For more information, please see [[InstallFromScratch]] for a set of step-by-step instructions.
+If this command is familiar to you, and you know how to update a Rails applications' <tt>database.yml</tt>, then this should be all you need. For more information, please see [[Install from Scratch]] for a set of step-by-step instructions.
 
 '''To install WontoMedia for development''', it is better to obtain it directly from our ''development'' repository on [[GitHub]]:
 
   ''cd to the directory that you want wontomedia '''below''' ''
   git clone git://github.com/gleneivey/wontomedia.git
 
-And we have more information on [[SettingUpYourDevelopmentEnvironment]] separately.
+And we have more information on [[Setting Up Your Development Environment]] separately.
 
 == Developer's References ==
 
 Our latest source code is on GitHub (we push to the [http://rubyforge.org/scm/?group_id=7903 Git repository on RubyForge] for each minor release, but not when each "user story" is done).  You can install directly from it (see above) or [http://github.com/gleneivey/wontomedia/tree/master use GitHub's web-based source browser] to investigate our source.
 
-* [[IveJustGotALittleChange]] &mdash; The minimal steps for volunteering a code change ("contribution guidelines"), pull request, or patch
-* [[SettingUpYourDevelopmentEnvironment]] &mdash; Alternatives for installation sources, tool dependencies, configuring your <tt>database.yml</tt>, running tests
-* [[AdditionalDevelopmentInformation]] &mdash; Things you'll want to know if you're thinking about doing more than a little change or two.
+* [[I've Just Got a Little Change]] &mdash; The minimal steps for volunteering a code change ("contribution guidelines"), pull request, or patch
+* [[Setting Up Your Development Environment]] &mdash; Alternatives for installation sources, tool dependencies, configuring your <tt>database.yml</tt>, running tests
+* [[Additional Development Information]] &mdash; Things you'll want to know if you're thinking about doing more than a little change or two.
 
 For reference, the tools we use are as follows (all [http://www.fsf.org/about/what-is-free-software free software]):
 
@@ -52,11 +52,11 @@ For reference, the tools we use are as follows (all [http://www.fsf.org/about/wh
 
 === Planned Functionality ===
 
-There are many different directions in which we can expand [[WontoMedia]]'s functionality.  How development will proceed will be dictated primarily by developer interest in different feature areas. The overall planning process is centered on [http://www.mountaingoatsoftware.com/article_view/27 user stories]. Middle- and long-term feature areas are defined by a collection of [[EpicStories]] and our [[MajorRoadmap|major-features road map]].  These stories are being incrementally defined and decomposed into smaller, actionable stories, which we manage using [https://www.pivotaltracker.com/projects/9280/stories Pivotal Tracker].
+There are many different directions in which we can expand [[WontoMedia]]'s functionality.  How development will proceed will be dictated primarily by developer interest in different feature areas. The overall planning process is centered on [http://www.mountaingoatsoftware.com/article_view/27 user stories]. Middle- and long-term feature areas are defined by a collection of [[Epic Stories]] and our [[Major Roadmap|major-features road map]].  These stories are being incrementally defined and decomposed into smaller, actionable stories, which we manage using [https://www.pivotaltracker.com/projects/9280/stories Pivotal Tracker].
 
 === Architecture ===
 
 The following wiki pages provide information on [[WontoMedia]]'s internal structure and operation:
 
-* [[UserVocabulary]] &mdash; the terminology and concepts WontoMedia exposes to users and their foundations in knowledge representation
-* [[KeyModels]] &mdash; the contents and relationships of the system's central Rails model objects, how they are used, and how they relate to the capabilities presented to the user
+* [[User Vocabulary]] &mdash; the terminology and concepts WontoMedia exposes to users and their foundations in knowledge representation
+* [[Key Models]] &mdash; the contents and relationships of the system's central Rails model objects, how they are used, and how they relate to the capabilities presented to the user

@@ -1,9 +1,0 @@
-<!-- Copyright (c)  2010  Glen E. Ivey
-     Permission is granted to copy, distribute and/or modify this document
-     under the terms of the GNU Free Documentation License, Version 1.3;
-     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
-     A copy of the license is in the file COPYING.DOCUMENTATION
-  -->
-This table shows all of the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Connection connections] that reference this [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Item item] as [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Predicate predicate] and/or [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Object object].  Each connection is represented by a row of the [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryPtoZ#anchor_Title Titles] of the three items that the connection references.  Each connection references three items: the connection's [http://wiki.wontology.org/wiki/help.php?title=WmHelp:GlossaryAtoO#anchor_Subject subject], predicate, and object.
-
-The Titles of items other than this one are links that will show the details page for each corresponding item.  Each connection in the list has a '''Show''' link that will take you to a page with all of the information about the connection and the items it references.  Connections that can be modified also have an '''Edit...''' link to go to the editing page for that connection, and a '''Delete''' link to remove the connection from within this page.

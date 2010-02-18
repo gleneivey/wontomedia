@@ -6,7 +6,7 @@
   -->
 == Introduction ==
 
-This page provides detailed instructions for installing [[WontoMedia]] on your system, so that the system (server) you install it on will provide a wontology ([[WmHelp:GlossaryPtoZ#anchor_Wontology|glossary entry]]) for you or others to use.  If you have any problems, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list].
+This page provides detailed instructions for installing [[WontoMedia]] on your system, so that the system (server) you install it on will provide a wontology ([[Help:GlossaryPtoZ#anchor_Wontology|glossary entry]]) for you or others to use.  If you have any problems, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list].
 
 == Supported Platforms ==
 
@@ -24,7 +24,7 @@ WontoMedia has been developed and tested on the following system configuration:
 
 === WontoMedia on Commercial Hosting Providers ===
 
-WontoMedia has been installed and tested on shared servers at [http://www.a2hosting.com/ A2 Hosting].  [[InstallingOnA2Hosting]] provides details of the steps involved.
+WontoMedia has been installed and tested on shared servers at [http://www.a2hosting.com/ A2 Hosting].  [[Installing on A2 Hosting]] provides details of the steps involved.
 
 == Installation Steps ==
 

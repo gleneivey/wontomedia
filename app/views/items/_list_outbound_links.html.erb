@@ -25,7 +25,7 @@
     <li><span style="white-space: nowrap;">
       <%= link_to 'View all items', items_path -%><%
       unless @have_displayed_out_links %><%=
-        popup_help_icon "Help for items list", "WmHelp:Popup/ShowItems" -%><%
+        popup_help_icon "Help for items list", "Help:Popup/ShowItems" -%><%
       end %>
     </span></li>
   <% end %>
@@ -33,7 +33,7 @@
   <li><span style="white-space: nowrap;">
     <%= link_to 'Create a new item', new_item_path, :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
-      popup_help_icon "Help for items create/new", "WmHelp:Popup/ItemAdd" -%><%
+      popup_help_icon "Help for items create/new", "Help:Popup/ItemAdd" -%><%
     end %>
   </span></li>
 
@@ -41,7 +41,7 @@
     <%= link_to 'View all connections', connections_path -%><%
     unless @have_displayed_out_links %><%=
       popup_help_icon "Help for connections list",
-        "WmHelp:Popup/ShowConnections" -%><%
+        "Help:Popup/ShowConnections" -%><%
     end %>
   </span></li>
 
@@ -50,7 +50,7 @@
           :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
       popup_help_icon "Help for connections create/new",
-        "WmHelp:Popup/ConnectionAdd" -%><%
+        "Help:Popup/ConnectionAdd" -%><%
     end %>
   </span></li>
 </ul>
