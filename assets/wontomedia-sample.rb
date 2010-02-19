@@ -37,6 +37,11 @@ WontoMedia = OpenStruct.new({
 #      :data_page_slot => "your-google-slot-number-here"
 #              # create additional _slot variables for different Google ad units
 #    })
+  }),
+
+  :analytics => OpenStruct.new({
+    :google => OpenStruct.new({
+#      :profile_id => "your-UA-number-here"
+    })
   })
 })
-

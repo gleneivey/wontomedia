@@ -18,7 +18,7 @@
 %>
 
 
-<% unless @this_is_non_information_page or ENV['RAILS_ENV']=='test' %>
+<% unless @this_is_non_information_page or RAILS_ENV == 'test' %>
   <% if WontoMedia.ads.google and
         WontoMedia.ads.google.publisher_id and
         WontoMedia.ads.google.data_page_slot %>

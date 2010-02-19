@@ -46,11 +46,11 @@
 
 
 
-# so we can make sure the 'test' db is seeded before tests run
-require File.join( RAILS_ROOT, 'test', 'seed_helper' )
 
 
 begin   # don't force Blue Ridge dependency on non-developers
+  # so we can make sure the 'test' db is seeded before tests run
+  require File.join( RAILS_ROOT, 'test', 'seed_helper' )
 
   plugin_prefix = "#{RAILS_ROOT}/vendor/plugins/blue-ridge"
   require File.join(plugin_prefix, "lib", "blue_ridge")
