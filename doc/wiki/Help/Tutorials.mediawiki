@@ -9,7 +9,7 @@ This page lists all of our tutorials on creating and maintaining information in 
 * Thinking of [[Help:Information as Relationships|information as relationships]]
 * [[Help:Wontology Concepts|Wontology concepts]]
 * Glossary of wontology terms, [[Help:GlossaryAtoO|A through O]] and [[Help:GlossaryPtoZ|P through Z]]
-* Relationships [[Help:Built-in Relationships|built into]] the [[WontoMedia]] web application.
+* Relationships [[Help:Built-in Relationship Types|built into]] the [[WontoMedia]] web application.
 
 <h3>Tutorials</h3>
 
