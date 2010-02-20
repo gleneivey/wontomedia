@@ -1,6 +1,8 @@
 *~
 config/database.yml
 config/initializers/wontomedia.rb
+*_packaged.js
+*_packaged.css
 db/*.db
 log/*.log
 pkg

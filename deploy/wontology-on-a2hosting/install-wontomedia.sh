@@ -23,3 +23,4 @@ cp public/stylesheets/*.gif  public
 sed --in-place=.backup -e "$GEMPATH_SED_COMMAND" config/environment.rb
 
 RAILS_ENV=production rake customize[default-custom:~/wontology.org]
+RAILS_ENV=production rake asset:packager:build_all

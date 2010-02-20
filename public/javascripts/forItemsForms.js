@@ -16,36 +16,6 @@
 // see <http://www.gnu.org/licenses/>.
 
 
-// function to highlight help text based on Type <select> element state
-function typeSelectOnchange(){
-  var sel = $('item_sti_type');
-  var tags = [ "category_title",   "category_desc",
-               "individual_title", "individual_desc",
-               "property_title",   "property_desc" ];
-
-  if ($(tags[0]) == null)   // this version of form w/o explanatory text
-    return;
-
-  for (var c=0; c != tags.length; c++)
-    $(tags[c]).className = "";
-
-  if (sel.value == "CategoryItem"){
-    $(tags[0]).className = "titleSelectedItemDescription";
-    $(tags[1]).className = "bodySelectedItemDescription";
-  }
-  else if (sel.value == "IndividualItem"){
-    $(tags[2]).className = "titleSelectedItemDescription";
-    $(tags[3]).className = "bodySelectedItemDescription";
-  }
-  else if (sel.value == "PropertyItem"){
-    $(tags[4]).className = "titleSelectedItemDescription";
-    $(tags[5]).className = "bodySelectedItemDescription";
-  }
-}
-
-
-
-
 var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
                           //   wait after Name change before check
 
@@ -76,6 +46,16 @@ var itemSubmit;
     //           false -> no error
     //           true  -> error condition present
 var itemFormErrors = {};
+
+
+    // after key presses, have to wait for browser to update the input field
+    // before we check it (delay in ms)
+var dly = 200;
+
+
+var valueWhenLastChecked = "";
+var uniquenessTimerId = -1;
+var ajaxRequestInProgress = null;
 
 
 function plumbEventHandlersToItemCreationElements(customizationSelector){
@@ -421,10 +401,6 @@ function clearNameUniquenessIndicators(){
     $('name_is_unique').className = "confirmationTextInvisible";
     $('name_status_icon').src = '/images/blank_status_icon.png';
 }
-
-var valueWhenLastChecked = "";
-var uniquenessTimerId = -1;
-var ajaxRequestInProgress = null;
 function nameUCheckSuccess(transport){
   ajaxRequestInProgress = null;
   $('name_must_be_unique').className = "helpTextFlagged";
@@ -489,12 +465,6 @@ function maybeCheckNameUniqueness(delay){
 
 
 
-
-  // after key presses, have to wait for browser to update the input field
-  // before we check it (delay in ms)
-var dly = 200;
-
-
 function getCurrentType(){
   return $('item_sti_type').value;
 }
@@ -513,3 +483,29 @@ function okToSubmitItemForm(){
   return !errors;
 }
 
+// function to highlight help text based on Type <select> element state
+function typeSelectOnchange(){
+  var sel = $('item_sti_type');
+  var tags = [ "category_title",   "category_desc",
+               "individual_title", "individual_desc",
+               "property_title",   "property_desc" ];
+
+  if ($(tags[0]) == null)   // this version of form w/o explanatory text
+    return;
+
+  for (var c=0; c != tags.length; c++)
+    $(tags[c]).className = "";
+
+  if (sel.value == "CategoryItem"){
+    $(tags[0]).className = "titleSelectedItemDescription";
+    $(tags[1]).className = "bodySelectedItemDescription";
+  }
+  else if (sel.value == "IndividualItem"){
+    $(tags[2]).className = "titleSelectedItemDescription";
+    $(tags[3]).className = "bodySelectedItemDescription";
+  }
+  else if (sel.value == "PropertyItem"){
+    $(tags[4]).className = "titleSelectedItemDescription";
+    $(tags[5]).className = "bodySelectedItemDescription";
+  }
+}

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-02-16}
+  s.date = %q{2010-02-20}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -72,6 +72,7 @@ Gem::Specification.new do |s|
      "app/views/layouts/home.html.erb",
      "app/views/layouts/popup.html.erb",
      "assets/wontomedia-sample.rb",
+     "config/asset_packages.yml",
      "config/boot.rb",
      "config/cucumber.yml",
      "config/database-mysql-development.yml",
@@ -140,6 +141,7 @@ Gem::Specification.new do |s|
      "public/javascripts/jquery.js",
      "public/javascripts/modalbox.js",
      "public/javascripts/prototype.js",
+     "public/javascripts/reconcileJQueryAndPrototype.js",
      "public/robots.txt",
      "public/stylesheets/blank.gif",
      "public/stylesheets/fancy_close.png",
@@ -176,7 +178,13 @@ Gem::Specification.new do |s|
      "script/process/reaper",
      "script/process/spawner",
      "script/runner",
-     "script/server"
+     "script/server",
+     "vendor/plugins/asset_packager/CHANGELOG",
+     "vendor/plugins/asset_packager/README",
+     "vendor/plugins/asset_packager/Rakefile",
+     "vendor/plugins/asset_packager/about.yml",
+     "vendor/plugins/asset_packager/init.rb",
+     "vendor/plugins/asset_packager/install.rb"
   ]
   s.homepage = %q{http://wontomedia.rubyforge.org}
   s.rdoc_options = ["--charset=UTF-8"]

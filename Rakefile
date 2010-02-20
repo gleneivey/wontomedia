@@ -52,12 +52,15 @@ ENDOSTRING
     s.extra_rdoc_files = ["README"]
 
     s.files =  FileList["[A-Z]*", "assets/wontomedia-sample.rb",
+      "vendor/plugins/asset_packager/*",
       "{app,config,bin,db,default-custom,generators,lib,public,script}/**/*"].
-        exclude("database.yml", "wontomedia.rb") do |maybe_exclude|
-          File.symlink?( maybe_exclude )
-        end
+        exclude("database.yml", "wontomedia.rb",
+            "**/*_packaged.js", "**/*_packaged.css"
+          ) do |maybe_exclude|
+	    File.symlink?( maybe_exclude )
+	  end
     s.test_files = []
-    # Note: 1) Explicitly add any future non-testing packages under 'vendor'
+    # Note: 1) Explicitly add any other non-testing packages under 'vendor'
     # 2) Exclude all of our symbolic links
     # 3)
     #     .autotest cucumber.yml .gitignore
@@ -172,6 +175,6 @@ end # namespace :test
 # redefine Rail's basic test task so that we get a reasonable execution order
 Rake::Task[:test].clear!
 desc 'Run all unit, functional, integration, and policy checks'
-task :test => [ "test:policies", "test:dev", "test:dbmigrations",
-                "test:functionals", "test:javascripts", "test:integration",
-                "build", "cucumber:ok" ]
+task :test => [ "test:policies", "asset:packager:build_all", "test:dev",
+                "test:dbmigrations", "test:functionals", "test:javascripts",
+                "test:integration", "build", "cucumber:ok" ]

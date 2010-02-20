@@ -29,16 +29,13 @@
     <% else %>
       <title><%= WontoMedia.site_title -%></title>
     <% end %>
-    <%= stylesheet_link_tag 'scaffold' %>
-    <%= stylesheet_link_tag 'modalbox' %>
-    <%= stylesheet_link_tag 'fancybox.css' %>
-    <%= stylesheet_link_tag 'wm' %>
-    <%= javascript_include_tag 'jquery' %>
-    <% if RAILS_ENV == 'test'               # patch compatibility between
-                                            # jQuery/fancybox and env.js
-     %>
+    <%= stylesheet_link_merged :base %>
+
+    <% if RAILS_ENV == 'test' %>
+      <%= javascript_include_tag 'jquery' %>
       <script>
-        if (HTMLImageElement){
+        if (HTMLImageElement){                   // patch compatibility between
+                                                 // jQuery+fancybox and env.js
           var hackImageConstructor = function(){
             this.HTMLImageElement = HTMLImageElement;
             this.HTMLImageElement(document); // note closure
@@ -48,14 +45,11 @@
           jQuery.support.opacity = true;     // short-circuit junk in 'fancybox'
         }
       </script>
+      <%= javascript_include_merged :topAfterJQuery %>
+    <% else %>
+      <%= javascript_include_merged :top %>
     <% end %>
-    <%= javascript_include_tag 'fancybox'   # load while '$' == 'jQuery' in JS
-     %>
-    <script>
-      jQuery.noConflict();         // free-up '$' for 'prototype' (in :defaults)
-    </script>
-    <%= javascript_include_tag :defaults %>
-    <%= javascript_include_tag 'modalbox' %>
+
     <%= yield :head %>
   </head>
   <body style="margin-top: 0">
@@ -64,34 +58,36 @@
 
       <div id="block-footer" style="width: 100%; clear: both">
         <p class="fine-print">
-Copyright &copy; 2010, Glen E. Ivey &mdash;
-
-Powered by
-  <%= link_to 'WontoMedia', 'http://wontomedia.rubyforge.org/' %>
-&mdash; Software and page templates licensed under
-  <%= link_to 'GNU AGPL v3', 'http://www.gnu.org/licenses/agpl-3.0.html' %>
-&mdash; Page content licensed under
-  <%= link_to 'GNU FDL v1.3', 'http://www.gnu.org/licenses/fdl-1.3.html' %>
+          Copyright &copy; 2010, Glen E. Ivey &mdash;
+          Powered by <%= link_to 'WontoMedia',
+            'http://wontomedia.rubyforge.org/' %>
+          &mdash; Software and page templates licensed under
+          <%= link_to 'GNU AGPL v3',
+            'http://www.gnu.org/licenses/agpl-3.0.html' %>
+          &mdash; Page content licensed under <%= link_to 'GNU FDL v1.3',
+            'http://www.gnu.org/licenses/fdl-1.3.html' %>
         </p>
       </div>
     </div>
-    <% unless RAILS_ENV == 'test'
+    <%= yield(:first_bottom_page_js) %>
+    <%= javascript_include_merged :bottomJS %>
+    <% unless RAILS_ENV == 'test' # include Google Analytics
          if WontoMedia.analytics.google and
             WontoMedia.analytics.google.profile_id %>
-      <script type="text/javascript">
-        var gaJsHost = (("https:" == document.location.protocol) ?
-          "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost +
-          "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"
-        ));
-      </script>
-      <script type="text/javascript">
-        try {
-          var pageTracker = _gat._getTracker(
-            "<%= WontoMedia.analytics.google.profile_id -%>");
-          pageTracker._trackPageview();
-        } catch(err) {}</script>
-    <%   end %>
+           <script type="text/javascript">
+             var gaJsHost = (("https:" == document.location.protocol) ?
+               "https://ssl." : "http://www.");
+             document.write(unescape("%3Cscript src='" + gaJsHost +
+"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E" ));
+           </script>
+           <script type="text/javascript">
+             try {
+               var pageTracker = _gat._getTracker(
+                 "<%= WontoMedia.analytics.google.profile_id -%>");
+               pageTracker._trackPageview();
+             } catch(err) {}</script>
+      <% end %>
     <% end %>
+    <%= yield(:last_bottom_page_js) %>
   </body>
 </html>

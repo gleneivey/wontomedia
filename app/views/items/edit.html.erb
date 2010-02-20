@@ -49,11 +49,15 @@
             :rel => 'nofollow' -%></li>
 </ul></div>
 
-<script type="text/javascript">
-  creatingNewItem = false;
-</script>
-<%= javascript_include_tag "forItemsForms" %>
-<script type="text/javascript">
-  plumbEventHandlersToItemCreationElements();
-  $(controlNamePrefix + 'item_title').focus();
-</script>
+<% content_for :first_bottom_page_js do %>
+  <script type="text/javascript">
+    inAnItemsForm = true;
+    creatingNewItem = false;
+  </script>
+<% end %>
+<% content_for :last_bottom_page_js do %>
+  <script type="text/javascript">
+    plumbEventHandlersToItemCreationElements();
+    $(controlNamePrefix + 'item_title').focus();
+  </script>
+<% end %>

@@ -61,14 +61,10 @@
                   :rel => 'nofollow' -%></li>
 </ul></div>
 
-
-<script type="text/javascript">
-  creatingNewConnection = false;
-  creatingNewItem = true;
-</script>
-<%= javascript_include_tag "forConnectionsForms" %>
-<%= javascript_include_tag "event.simulate" %> <!-- used by following -->
-<%= javascript_include_tag "itemCreatePopup" %>
-    <!-- following used by /items/new-pop if loaded by itemCreatePopup.js -->
-<%= javascript_include_tag "forItemsForms" %>
-<%= javascript_include_tag "itemTitleToName" %>
+<% content_for :first_bottom_page_js do %>
+  <script type="text/javascript">
+    inAConnectionsForm = true;
+    creatingNewConnection = false;
+    creatingNewItem = true;
+  </script>
+<% end %>

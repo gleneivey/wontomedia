@@ -17,15 +17,10 @@
 
 
 var selectElems = [ "subject", "predicate", "obj", "submit" ];
-var connectionSubmit = $('connection_submit');
+var connectionSubmit;
 var l = window.location;
 var base = l.protocol + "//" + l.hostname + ":" + l.port;
-
-var lastValue = {
-  subject   : $('connection_subject_id').value,
-  predicate : $('connection_predicate_id').value,
-  obj       : $('connection_obj_id').value
-};
+var lastValue = {}
 
 
     // define fields subject to check, order they occur in form
@@ -37,29 +32,34 @@ var connectionElementNames = [ "Subject selector", "Relationship selector",
     //           false -> no error
     //           true  -> error condition present
 var connectionFormErrors = {};
-for (var c=0; c < requiredConnectionElements.length-1; c++)
-  connectionFormErrors[requiredConnectionElements[c]] =
-    creatingNewConnection ? -1 : false;
 
 
+if ((typeof inAConnectionsForm !== 'undefined') && inAConnectionsForm){
+  connectionSubmit = $('connection_submit');
 
-for (var c=0; c < selectElems.length; c++){
-  createOnchangeHandler(selectElems[c]);
-  createOnfocusHandler(selectElems[c]);
+  lastValue = {
+    subject   : $('connection_subject_id').value,
+    predicate : $('connection_predicate_id').value,
+    obj       : $('connection_obj_id').value
+  };
+
+  for (var c=0; c < requiredConnectionElements.length-1; c++)
+    connectionFormErrors[requiredConnectionElements[c]] =
+      creatingNewConnection ? -1 : false;
+
+  for (var c=0; c < selectElems.length; c++){
+    createOnchangeHandler(selectElems[c]);
+    createOnfocusHandler(selectElems[c]);
+  }
+
+  if (creatingNewConnection)
+        // connections/new -- can't submit a blank form
+    makeButtonSeemDisabled(connectionSubmit);
+  else  // connections/##/edit -- can submit as-is form
+    makeButtonSeemEnabled(connectionSubmit);
+
+  connectionSubmit.observe('click', submitOnclickHandler);
 }
-
-
-if (creatingNewConnection)
-      // connections/new -- can't submit a blank form
-  makeButtonSeemDisabled(connectionSubmit);
-else
-      // connections/##/edit -- can submit as-is form
-  makeButtonSeemEnabled(connectionSubmit);
-
-connectionSubmit.observe('click', submitOnclickHandler);
-
-
-
 
 
 function createOnchangeHandler(thisName){
@@ -216,5 +216,3 @@ function maybeShowErrorDialog(){
   }
   return accum;
 }
-
-
