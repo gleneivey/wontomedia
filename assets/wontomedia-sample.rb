@@ -40,8 +40,8 @@ WontoMedia = OpenStruct.new({
   }),
 
   :analytics => OpenStruct.new({
-    :google => OpenStruct.new({
+#    :google => OpenStruct.new({
 #      :profile_id => "your-UA-number-here"
-    })
+#    })
   })
 })

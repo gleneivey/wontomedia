@@ -107,6 +107,9 @@ DoASystemCommand( "cd $gemInstallDir; " .
     # put in place links to customization files
 DoASystemCommand( "cd $gemInstallDir; " .
                   "rake customize[default-custom]" );
+    # build the "packaged" versions of JS and CSS files
+DoASystemCommand( "cd $gemInstallDir; " .
+                  "rake asset:packager:build_all" );
 
 
 print "\n\nInstallation appears to have completed successfully,\n";

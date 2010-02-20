@@ -22,11 +22,11 @@ WontoMedia has been developed and tested on the following system configuration:
 
 === WontoMedia on Commercial Hosting Providers ===
 
-WontoMedia has been installed and tested on shared servers at [http://www.a2hosting.com/ A2 Hosting].  [[InstallingOnA2Hosting]] provides details of the steps involved.
+WontoMedia has been installed and tested on shared servers at [http://www.a2hosting.com/ A2 Hosting].  [[Installing on A2 Hosting]] provides details of the steps involved.
 
 == Installation Steps ==
 
-=== Preparing for WontoMedia Source
+=== Preparing for WontoMedia Source ===
 
 If you have already installed WontoMedia as a gem, it is recommended that you uninstall the gem before setting up a development environment.
 
@@ -51,7 +51,7 @@ From the directory ''in which'' you want to create your <tt>wontomedia</tt> file
 
  git clone git://github.com/gleneivey/wontomedia.git
 
-(substituting the Git URL you decided on).  This will create a <tt>wontomedia</tt> directory, and populate it with the WontoMedia source code plus all revision control files.  In your development, you will use <tt>git commit</tt> locally, and then either prepare a patch or push to a network repository when you want to share your changes. (See [[IveJustGotALittleChange]].)
+(substituting the Git URL you decided on).  This will create a <tt>wontomedia</tt> directory, and populate it with the WontoMedia source code plus all revision control files.  In your development, you will use <tt>git commit</tt> locally, and then either prepare a patch or push to a network repository when you want to share your changes. (See [[I've Just Got a Little Change]].)
 
 === Configuring ===
 
@@ -95,15 +95,15 @@ You will likely want to replace the values of (at least) all the items shown in 
 
 Also, the sample file assumes that you are using the same "database user" (and therefore password) for all three databases.  If you have multiple database users, you may substitute different information into each block in the file.
 
-Of course, you will have to actually create the databases and database user(s) that you name in <tt>database.yml</tt> using your database tools.  (Recall that [[InstallFromScratch]] contains instructions for using the <tt>mysql</tt> command-line tool for creating one database if you are using the MySQL database.)
+Of course, you will have to actually create the databases and database user(s) that you name in <tt>database.yml</tt> using your database tools.  (Recall that [[Install from Scratch]] contains instructions for using the <tt>mysql</tt> command-line tool for creating one database if you are using the MySQL database.)
 
 ==== <tt>wontomedia.rb</tt> ====
 
-As described in [[InstallFromScratch]], you must create a <tt>config/initializers/wontomedia.rb</tt> file, which you can do by copying and customizing <tt>assets/wontomedia-sample.rb</tt>.
+As described in [[Install from Scratch]], you must create a <tt>config/initializers/wontomedia.rb</tt> file, which you can do by copying and customizing <tt>assets/wontomedia-sample.rb</tt>.
 
 === Install Development Dependencies ===
 
-In addition to the packages you must have installed in order to run WontoMedia (again, see [[InstallFromScratch]]), there are a number of other packages used by WontoMedia's automated test suite and by other developers.  These should be installed prior to attempting to use <tt>rake</tt> on WontoMedia.  The install commands needed are:
+In addition to the packages you must have installed in order to run WontoMedia (again, see [[Install from Scratch]]), there are a number of other packages used by WontoMedia's automated test suite and by other developers.  These should be installed prior to attempting to use <tt>rake</tt> on WontoMedia.  The install commands needed are:
 
  apt-get install libxml2-dev libxslt1-dev
  gem1.8 install nokogiri
@@ -133,16 +133,19 @@ You can find instructions on using alternative customization files and different
 # If you are making a change that is specific to your installation of WontoMedia, you should create a separate, parallel directory structure entirely ''outside of'' your WontoMedia source tree for your local version of the customization file(s).  Keep in mind that you only need to make copies of the customization files that you actually want to modify, and can use the <tt>rake customize[default-custom:your-directory]</tt> form of the command to combine your local changes with the default customization files you want to use unmodified.  It would likely be wise to place your customization directory(ies) under (Git) revision control, but WontoMedia does not necessitate this.
 # If your are making your change(s) in order to incorporate a new installation-specific string or parameter, consider whether it would be appropriate to add a new customization value in <tt>config/initializers/wontomedia.rb</tt> (with matching changes in all of the core and <tt>default-custom</tt> files that are appropriate) instead of hard-coding your customization directly into your local WontoMedia source.
 # Be very cautious of making changes to WontoMedia that involve moving files from one of the standard Ruby-on-Rails directories into <tt>default-custom</tt>.  If you have decided that you need to make part of the WontoMedia core into customizable files, consider dividing the core file(s) into parts.  For an example, see the division between <tt>app/views/items/home.html.erb</tt> and <tt>app/views/layouts/home.html.erb</tt>.  The view in <tt>items</tt> is customizable, to control what content is placed in the home page and how it is ordered, but home-page in <tt>layouts</tt> is not customizable to provide the common structure through which the desired content is presented.  If you do make a new customizable file, if it is based on an existing "core" WontoMedia file, remember to use <tt>git mv</tt> (instead of <tt>git rm</tt> followed by <tt>git add</tt>) to preserve the revision history for the portions of the file that you do not modify.
-# Remember that WontoMedia is open-source software distributed under the "copy-left" Affero General Public License (the [http://www.gnu.org/licenses/agpl-3.0.html|GNU AGPLv3]).  This license requires that you make the modified versions of any WontoMedia files you change publicly available.  This doesn't apply to the sample files for the <tt>config</tt> files that you ''have'' to create (<tt>database.yml</tt> and <tt>initializers/wontomedia.rb</tt>), but it ''does'' apply to the default customization files under the <tt>default-custom</tt> directory.
+# Remember that WontoMedia is open-source software distributed under the "copy-left" Affero General Public License (the [http://www.gnu.org/licenses/agpl-3.0.html|GNU AGPLv3]).  This license requires that you make the modified versions of any WontoMedia files you change publicly available.  This doesn't apply to the samples for the <tt>config</tt> files that you ''have'' to create (<tt>database.yml</tt> and <tt>initializers/wontomedia.rb</tt>), but it ''does'' apply to the default customization files under the <tt>default-custom</tt> directory.
 
 === Validating Your Installation ===
 
 After all of the preceding steps, you should be able to run WontoMedia's automated test set to verify your install and development environment:
 
+ rake customize[default-custom]
  rake
 
-To create an installable gem from your local code (which is automatically done as part of the default rake task executed by "rake"-with-no-options), use the command:
+Of course, you will use different directory names in the argument to the <tt>customize</tt> task (in the square brackets) if you have local customizations for your wontology site.  Also, any time you re-execute the <tt>customize</tt> task, you should either execute <tt>rake asset:packager:build_all</tt> yourself (to re-incorporate your customizations into the packaged JavaScript and CSS files WontoMedia uses) or re-execute <tt>rake</tt> without any arguments to rebuilt and retest everything incorporating your customizations.
+
+To create an installable gem from your local code (which is automatically done as part of the default rake task executed by <tt>rake</tt>-with-no-options), use the command:
 
  rake build
 
-If all of these commands run cleanly, you're ready so start making changes in your local environment.  Good hunting!
+If all of these commands run cleanly, you're ready to start making changes in your local environment.  Good hunting!

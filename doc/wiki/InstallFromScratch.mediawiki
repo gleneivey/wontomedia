@@ -83,7 +83,7 @@ For a '''database other than MySQL''', you should install using your system's pa
 
 ==== Configuring Your Database ====
 
-Whether you had to install MySQL or it was already present, a database must be configured for WontoMedia to use.  You must create a new logical database under the server's control, and may wish to create a new database "user" for WontoMedia to use.  To accomplish this (on Linux for MySQL), the following commands may be used.  The first command will be given at the Linux command prompt, and the rest to the interactive mysql tool itself.  Also, this assumes that you have assigned a password to the database's ''root'' user.  If not, ommit the <tt>-p</tt> option from the <tt>mysql</tt> command and it won't prompt for a password.
+Whether you had to install MySQL or it was already present, a database must be configured for WontoMedia to use.  You must create a new logical database under the server's control, and may wish to create a new database "user" for WontoMedia to use.  To accomplish this (on Linux for MySQL), the following commands may be used.  The first command will be given at the Linux command prompt, and the rest to the interactive mysql tool itself.  Also, this assumes that you have assigned a password to the database's ''root'' user.  If not, omit the <tt>-p</tt> option from the <tt>mysql</tt> command and it won't prompt for a password.
 
  mysql -u root -p
  '''mysql>''' CREATE DATABASE ''[db-name-for-wontomedia]'';
@@ -158,6 +158,11 @@ which contains a set of Ruby configuration structure definitions like:
  #      :data_page_slot => "your-google-slot-number-here"
  #              # create additional _slot variables for different Google ad units
  #    })
+   }),
+   :analytics => OpenStruct.new({
+ #    :google => OpenStruct.new({
+ #      :profile_id => "your-UA-number-here"
+ #    })
    })
  })
 
@@ -186,6 +191,12 @@ The <tt>customize</tt> rake task can be used to combine together the standard ve
  doc/customization.markdown
 
 with the latest version of [http://github.com/gleneivey/wontomedia/blob/master/doc/customization.markdown customization.markdown available from GitHub].
+
+Finally, WontoMedia uses the <tt>asset_packager</tt> Rails plug-in to manage the JavaScript (<tt>.js</tt>) and Cascading Style-Sheet (<tt>.css</tt>) files that are included in the pages it serves.  To build the packages to be served from the files included in the WontoMedia gem, you must run:
+
+ rake asset:packager:build_all
+
+Note that you should ''not'' run the <tt>asset_packager</tt> task before the <tt>customize</tt> task, because some of the files included by the packager are customizable.  And, therefore, any time you chanage your customizations or re-run the <tt>customize</tt> task, you should re-run the <tt>asset_packager</tt> command to be safe.
 
 ==== Running WontoMedia ====
 

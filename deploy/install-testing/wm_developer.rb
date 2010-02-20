@@ -63,6 +63,7 @@ exc "ln -s /usr/lib/firefox-3.0.11/firefox /usr/bin/firefox-bin"
 
 puts "If you want autotest to execute Cucumber tests, remember to add 'export AUTOFEATURE=\"true autospec\"' to the bottom of your .bashrc file (or the equivalent for your shell)."
 puts "Don't forget to run initialzing rake commands:"
-puts "    'rake db:reseed' (for a new installation) prior to starting development."
+puts "    'rake db:reseed' (for a new installation)"
 puts "    'rake customize[default-custom]' (or equivalent for your local customizations)"
-
+puts "    'rake asset:packager:build_all'"
+puts "prior to starting development."

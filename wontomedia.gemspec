@@ -105,6 +105,8 @@ Gem::Specification.new do |s|
      "default-custom/public/images/logo.png",
      "default-custom/public/images/logo.svg",
      "default-custom/public/stylesheets/wm.css",
+     "doc/customization.markdown",
+     "doc/scripts/rake-customize.markdown",
      "lib/helpers/connection_helper.rb",
      "lib/helpers/item_helper.rb",
      "lib/helpers/tripple_navigation.rb",
