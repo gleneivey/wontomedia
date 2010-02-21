@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-02-20}
+  s.date = %q{2010-02-21}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -186,7 +186,28 @@ Gem::Specification.new do |s|
      "vendor/plugins/asset_packager/Rakefile",
      "vendor/plugins/asset_packager/about.yml",
      "vendor/plugins/asset_packager/init.rb",
-     "vendor/plugins/asset_packager/install.rb"
+     "vendor/plugins/asset_packager/install.rb",
+     "vendor/plugins/asset_packager/lib/jsmin.rb",
+     "vendor/plugins/asset_packager/lib/synthesis/asset_package.rb",
+     "vendor/plugins/asset_packager/lib/synthesis/asset_package_helper.rb",
+     "vendor/plugins/asset_packager/tasks/asset_packager_tasks.rake",
+     "vendor/plugins/asset_packager/test/asset_package_helper_development_test.rb",
+     "vendor/plugins/asset_packager/test/asset_package_helper_production_test.rb",
+     "vendor/plugins/asset_packager/test/asset_packager_test.rb",
+     "vendor/plugins/asset_packager/test/asset_packages.yml",
+     "vendor/plugins/asset_packager/test/assets/javascripts/application.js",
+     "vendor/plugins/asset_packager/test/assets/javascripts/bar.js",
+     "vendor/plugins/asset_packager/test/assets/javascripts/controls.js",
+     "vendor/plugins/asset_packager/test/assets/javascripts/dragdrop.js",
+     "vendor/plugins/asset_packager/test/assets/javascripts/effects.js",
+     "vendor/plugins/asset_packager/test/assets/javascripts/foo.js",
+     "vendor/plugins/asset_packager/test/assets/javascripts/prototype.js",
+     "vendor/plugins/asset_packager/test/assets/stylesheets/bar.css",
+     "vendor/plugins/asset_packager/test/assets/stylesheets/foo.css",
+     "vendor/plugins/asset_packager/test/assets/stylesheets/header.css",
+     "vendor/plugins/asset_packager/test/assets/stylesheets/screen.css",
+     "vendor/plugins/asset_packager/test/assets/stylesheets/subdir/bar.css",
+     "vendor/plugins/asset_packager/test/assets/stylesheets/subdir/foo.css"
   ]
   s.homepage = %q{http://wontomedia.rubyforge.org}
   s.rdoc_options = ["--charset=UTF-8"]

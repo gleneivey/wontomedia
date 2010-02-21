@@ -56,8 +56,9 @@
       </div>
     </div>
     <div id="column-left">
-      <img src="/images/logo.png" alt="Logo" width="96%"
-           style="margin-bottom: 0.7ex; margin-top: 0.5ex;" />
+      <%= link_to(
+            image_tag( '/images/logo.png', :alt=>'Logo', :width=>'100%',
+              :style=>'margin-bottom: 0.7ex;' ), root_url ) %>
       <%= render :partial => "common/amazon_ads" %>
     </div>
   </div>

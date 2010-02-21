@@ -45,8 +45,6 @@ config/initializers/mime_types.rb
 config/initializers/new_rails_defaults.rb
 config/locales/en.yml
 public/dispatch.rb
-!lock            5ba265e898097d9c0c44c6b9ed4812292597d4b6
-public/stylesheets/scaffold.css
 !lock            d6865e2d0348cf0bcd928eec0c8aac98dbc6fbbd
 config/boot.rb
 !lock            651adf6bc0e0700e310dca8cc99069cb7261d5b9
