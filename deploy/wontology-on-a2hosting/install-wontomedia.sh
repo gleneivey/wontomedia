@@ -30,10 +30,10 @@ RAILS_ENV=production rake asset:packager:build_all
  # our packaged CSS style sheets
 rm $HOSTING_HOME_DIR/www/stylesheets/*
 mkdir $HOSTING_HOME_DIR/www/stylesheets
-cp $INSTALL_DIR/stylesheets/*_packaged.css $HOSTING_HOME_DIR/www/stylesheets
+cp $INSTALL_DIR/public/stylesheets/*_packaged.css $HOSTING_HOME_DIR/www/stylesheets
 gzip $HOSTING_HOME_DIR/www/stylesheets/*
  # and our packaged JavaScript sources
 rm $HOSTING_HOME_DIR/www/javascripts/*
 mkdir $HOSTING_HOME_DIR/www/javascripts
-cp $INSTALL_DIR/javascripts/*_packaged.css $HOSTING_HOME_DIR/www/javascripts
+cp $INSTALL_DIR/public/javascripts/*_packaged.css $HOSTING_HOME_DIR/www/javascripts
 gzip $HOSTING_HOME_DIR/www/javascripts/*
