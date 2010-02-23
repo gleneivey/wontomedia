@@ -35,5 +35,5 @@ gzip $HOSTING_HOME_DIR/www/stylesheets/*
  # and our packaged JavaScript sources
 rm $HOSTING_HOME_DIR/www/javascripts/*
 mkdir $HOSTING_HOME_DIR/www/javascripts
-cp $INSTALL_DIR/public/javascripts/*_packaged.css $HOSTING_HOME_DIR/www/javascripts
+cp $INSTALL_DIR/public/javascripts/*_packaged.js $HOSTING_HOME_DIR/www/javascripts
 gzip $HOSTING_HOME_DIR/www/javascripts/*
