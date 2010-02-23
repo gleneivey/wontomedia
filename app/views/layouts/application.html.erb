@@ -28,17 +28,17 @@
        style="float: right; width: 85%; margin-top: 8ex;">
     <div id="column-content" class="content" style="float: left; width: 81.8%;">
       <% unless @this_is_non_information_page %>
-        <%= render :partial => "common/glossary_help_box" -%>
+        <%= render :partial => "layouts/glossary_help_box" -%>
       <% end %>
-      <%= render :partial => "common/status_msgs" -%>
+      <%= render :partial => "layouts/status_msgs" -%>
       <%= yield -%>
     </div>
     <div id="column-right"
          style="float: right; width: 16.9%; text-align: center; margin-top: 0;">
       <% if @this_is_non_information_page %>
-        <%= render :partial => "common/glossary_help_box" -%>
+        <%= render :partial => "layouts/glossary_help_box" -%>
       <% end %>
-      <%= render :partial => "common/google_ads" %>
+      <%= render :partial => "layouts/google_ads" %>
     </div>
   </div>
 
@@ -46,20 +46,20 @@
     <div id="container-absolutes">
       <div id="block-search"
            style="width: 19%; position: absolute; top: 0; right: 0;">
-        <%= render :partial => "common/search_box" %>
+        <%= render :partial => "layouts/search_box" %>
       </div>
       <div id="page-top-controls"
            style="position: absolute; top: 0; right: 16.9%;">
-        <%= render :partial => "common/master_help" %>
-        <%= render :partial => "common/language_select" %>
-        <%= render :partial => "common/login_controls" %>
+        <%= render :partial => "layouts/master_help" %>
+        <%= render :partial => "layouts/language_select" %>
+        <%= render :partial => "layouts/login_controls" %>
       </div>
     </div>
     <div id="column-left">
       <%= link_to(
             image_tag( '/images/logo.png', :alt=>'Logo', :width=>'100%',
               :style=>'margin-bottom: 0.7ex;' ), root_url ) %>
-      <%= render :partial => "common/amazon_ads" %>
+      <%= render :partial => "layouts/amazon_ads" %>
     </div>
   </div>
 <% end -%>
