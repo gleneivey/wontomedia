@@ -64,11 +64,11 @@
     <dl><dt id="category_title">Category</dt><dd id="category_desc">
 
       "Category" is for groups of things, for concepts, and for the
-      upper levels of hierarchies<%=
+      upper levels of <%=
         popup_help_icon 'Definition of hierarchies in a wontology',
-          'Help:GlossaryAtoO#anchor_Hierarchy' -%>.
+          'hierarchies', 'Help:GlossaryAtoO#anchor_Hierarchy' -%>.
       (Though a hierarchy made up entirely of concepts could be all
-      Categories.)  Categories can "contain" other categories or
+      Categories.)  Categories can "contain" other categories and/or
       individuals.
 
     </dd><dt id="individual_title">Individual</dt><dd id="individual_desc">
@@ -80,14 +80,14 @@
 
     </dd><dt id="property_title">Property</dt><dd id="property_desc">
 
-      "Property" is used to define relationships<%=
+      "Property" is used to define <%=
         popup_help_icon 'Definition of relationships in a wontology',
-          'Help:GlossaryPtoZ#anchor_Relationship' -%>
-      between other items.  Once you create a new Property item<%=
-        popup_help_icon 'Definition of Item',
+          'relationships', 'Help:GlossaryPtoZ#anchor_Relationship' -%>
+      between other items.  Once you create a new Property <%=
+        popup_help_icon 'Definition of Item', 'item',
           'Help:GlossaryAtoO#anchor_Item' -%>,
-      you should create one or more connections<%=
-        popup_help_icon 'Definition of Connection',
+      you should create one or more <%=
+        popup_help_icon 'Definition of Connection', 'connections',
           'Help:GlossaryAtoO#anchor_Connection' -%>
       that relate that property to other existing properties.  In
       general, you will use the "sub_property_of" property in order to
@@ -97,13 +97,12 @@
       creation of connections using this new property <em>means</em>, you
       can create the connection "<code>spouseOf sub_property_of
       symmetric_relationship</code>".  This example will cause
-      "spouseOf" to be treated as a "peer" relationship<%=
-        popup_help_icon 'Peer relationships in a wontology',
+      "spouseOf" to be treated as a "peer" <%=
+        popup_help_icon 'Peer relationships in a wontology', 'relationship',
           'Help:GlossaryPtoZ#anchor_Peer' -%>
-      (rather than a hierarchical one), and as a symmetric
-      relationship<%=
+      (rather than a hierarchical one), and as a symmetric <%=
         popup_help_icon 'Symmetric relationships in a wontology',
-          'Help:GlossaryPtoZ#anchor_Symmetric' -%>,
+          'relationship', 'Help:GlossaryPtoZ#anchor_Symmetric' -%>,
       so that creating a "spouseOf" connection from one item to another
       implies an connection going the other direction even if it is not
       defined explicitly.

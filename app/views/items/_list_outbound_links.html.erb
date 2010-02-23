@@ -20,39 +20,40 @@
 <% @have_displayed_out_links = false unless defined? @have_displayed_out_links
  %>
 
-<ul class="outbound-links-list">
+<ul>
   <% if !defined? generating_index_page or !generating_index_page %>
-    <li><span style="white-space: nowrap;">
+    <li>
       <%= link_to 'View all items', items_path -%><%
       unless @have_displayed_out_links %><%=
-        popup_help_icon "Help for items list", "Help:Popup/ShowItems" -%><%
+        popup_help_icon "Help for items list", nil, "Help:Popup/ShowItems" -%><%
       end %>
-    </span></li>
+    </li>
   <% end %>
 
-  <li><span style="white-space: nowrap;">
+  <li>
     <%= link_to 'Create a new item', new_item_path, :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
-      popup_help_icon "Help for items create/new", "Help:Popup/ItemAdd" -%><%
+      popup_help_icon "Help for items create/new", nil,
+        "Help:Popup/ItemAdd" -%><%
     end %>
-  </span></li>
+  </li>
 
-  <li><span style="white-space: nowrap;">
+  <li>
     <%= link_to 'View all connections', connections_path -%><%
     unless @have_displayed_out_links %><%=
-      popup_help_icon "Help for connections list",
+      popup_help_icon "Help for connections list", nil,
         "Help:Popup/ShowConnections" -%><%
     end %>
-  </span></li>
+  </li>
 
-  <li><span style="white-space: nowrap;">
+  <li>
     <%= link_to 'Create a new connection', new_connection_path,
           :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
-      popup_help_icon "Help for connections create/new",
+      popup_help_icon "Help for connections create/new", nil,
         "Help:Popup/ConnectionAdd" -%><%
     end %>
-  </span></li>
+  </li>
 </ul>
 
 <% @have_displayed_out_links = true %>

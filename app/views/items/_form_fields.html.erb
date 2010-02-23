@@ -20,7 +20,7 @@
 
 <p class="inputpara">
   <%= f.label :title %>
-  <%= popup_help_icon "Help for title", "Help:Popup/ItemTitle" %>
+  <%= popup_help_icon "Help for title", nil, "Help:Popup/ItemTitle" %>
   <%= image_tag "blank_error_icon.png", :id=>"title_error_icon", :alt=>"",
         :size=>"16x16" -%>
   <br />
@@ -36,7 +36,7 @@
 
 <p class="inputpara">
   <%= f.label :name %>
-  <%= popup_help_icon "Help for name", "Help:Popup/ItemName" %>
+  <%= popup_help_icon "Help for name", nil, "Help:Popup/ItemName" %>
   <%= image_tag "blank_error_icon.png", :id=>"name_error_icon", :alt=>"",
         :size=>"16x16" %>
   <%= image_tag "blank_status_icon.png", :id=>"name_status_icon", :alt=>"",
@@ -55,7 +55,8 @@
 
 <p class="inputpara">
   <%= f.label :description %>
-  <%= popup_help_icon "Help for description", "Help:Popup/ItemDescription" %>
+  <%= popup_help_icon "Help for description", nil,
+        "Help:Popup/ItemDescription" %>
   <%= image_tag "blank_error_icon.png", :id=>"description_error_icon", :alt=>"",
         :size=>"16x16" %>
   <br />

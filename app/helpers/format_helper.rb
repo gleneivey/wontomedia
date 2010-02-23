@@ -38,35 +38,22 @@ module FormatHelper
     wrapped
   end
 
-  def generate_connection_links(e)
-    @show_help_icon_used, fragment =
-      a_help_link( link_to( 'Show', connection_path(e) ),
-        @show_help_icon_used, 'Help show connection', 'ConnectionShow' )
-    concat( fragment )
-
-    if (e.flags & Connection::DATA_IS_UNALTERABLE) == 0
-      @edit_help_icon_used, fragment =
-        a_help_link( link_to( 'Edit&hellip;', edit_connection_path(e),
-            :rel => 'nofollow' ),
-          @edit_help_icon_used, 'Help edit connection', 'ConnectionEdit' )
-      concat( fragment )
-
-      @delete_help_icon_used, fragment =
-        a_help_link( link_to( 'Delete', connection_path(e), :rel => 'nofollow',
-            :confirm => 'Are you sure?', :method => :delete ),
-          @delete_help_icon_used, 'Help delete connection', 'ConnectionDelete' )
-      concat( fragment )
+  def popup_help_icon( alt, text, target )
+    content = ''
+    if text
+      content += '<span style="white-space: nowrap;">' + text
     end
-  end
-
-  def popup_help_icon( alt, target )
-    link_to(
+    content += link_to(
       (
         image_tag( 'help_icon.png', :alt=>alt, :class=>'image-in-text' ) +
         '<span class="tip">Help</span>'
       ),
       WontoMedia.popup_url_prefix + target, :tabindex => '0',
       :class => 'iframeBox linkhastip' )
+    if text
+      content += '</span>'
+    end
+    return content
   end
 
   def text_has_tip( id, text, tip )
@@ -83,11 +70,11 @@ module FormatHelper
     link_to inner, href, :class=>'linkhastip', :tabindex=>'0'
   end
 
-  def a_help_link( action_link, used_flag, help_alt, which_help )
+  def a_help_link( text, action_link, used_flag, help_alt, which_help )
     help_link = ''
     unless used_flag
       used_flag = true
-      help_link = popup_help_icon help_alt, ("Help:Popup/" + which_help)
+      help_link = popup_help_icon help_alt, text, ("Help:Popup/" + which_help)
     end
     return used_flag, ( content_tag( 'span', action_link + help_link,
                                      :style => "white-space: nowrap;" ) + " " )

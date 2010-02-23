@@ -1,6 +1,7 @@
 
 /* color palette:
-  content background:      white
+  text:                                          black
+  content background:                            white
   page background:         almost-white blue     #f8f8ff
   in-content divider:      very light blue       #e8e8ff
   active area background:  light blue            #d0d0ff
@@ -8,6 +9,10 @@
                            dk blue               #040460
   unvisited link color:                          #1d43c0
   visited link color:                            #64439d
+  accent color:                                  yellow
+    (logo fill, bullets)
+  subdued accent:          light yellow          #ffff60
+    (question-mark help icon)
 */
 
 
@@ -47,15 +52,13 @@ a:hover {
   text-decoration: underline;
 }
 
-div {
+#column-left,
+#column-right {
   overflow: hidden;
 }
-div#fancybox-outer,
-div#column-content {
+div#fancybox-outer {
   overflow: visible;
 }
-
-
 
 
         /* settings for the basic division of pages into areas and boxes */
@@ -95,6 +98,7 @@ div#column-content {
   font-size: 60%;
   color: #040460;
   text-align: center;
+  padding-top: 1.5ex;
 }
 .blue-text {
   color: #040460;
@@ -113,19 +117,37 @@ hr {
   background-color: #b0b0ff;
 }
 
-/*.vertical-link-list*/
-.horizontal-link-list {        /* empty CSS rule affects stuff--my head hurts */
-}                              /*   at least on Firefox 3.0.17 */
+.horizontal-link-list {
+  text-align: center;
+}
 .horizontal-link-list ul {
   margin: 0;
-  text-align: center;
-  padding-left: 0;
+  padding: 0;
+  padding-top: 1ex;
 }
-.horizontal-link-list ul li {
+.horizontal-link-list li {
   display: inline;
+  white-space: nowrap;
 }
 .horizontal-link-list ul li + li {
   margin-left: 1.5em;
+}
+.vertical-link-list ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  margin-left: 0.35em;
+  margin-bottom: 0.5ex;
+}
+.vertical-link-list p {
+  padding: 0;
+  margin: 0;
+  line-height: 110%;
+}
+.vertical-link-list li {
+  padding-right: 0.5em;
+  padding-left: 1em;
+  text-indent: -1em;
 }
 
 
@@ -257,7 +279,7 @@ p.directions {
 }
 
 .confirmationTextInvisible {
-  display: none;
+  color: white;
 }
 
 .confirmationTextShow {

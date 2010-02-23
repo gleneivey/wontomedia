@@ -35,7 +35,8 @@
 
 
 <div class="headline">Connection content<%=
-  popup_help_icon "Help, connection content", "Help:Popup/HeaderConnection" %>
+  popup_help_icon "Help, connection content", nil,
+    "Help:Popup/HeaderConnection" %>
 </div>
 
 
@@ -71,43 +72,42 @@
   </td></tr>
 </table>
 
-<%= render :partial => 'common/bottom_line'    # contains an opening <div>
- %>
-  <ul class="outbound-links-list">
+<div class="horizontal-link-list">
+  <ul>
     <% if (@connection.flags & Connection::DATA_IS_UNALTERABLE) == 0 %>
-      <li><span style="white-space: nowrap;">
-        <%= link_to 'Edit&hellip;', edit_connection_path(@connection),
-                    :rel => 'nofollow' -%><%=
-        popup_help_icon "Help edit items", "Help:Popup/ItemEdit"
-      -%></span></li>
-
-      <li><span style="white-space: nowrap;">
-        <%= link_to 'Delete', connection_path(@connection), :rel => 'nofollow',
-                    :confirm => 'Are you sure?', :method => :delete -%><%=
-        popup_help_icon "Help delete items", "Help:Popup/ItemDelete"
-      -%></span></li>
+      <li>
+        <%= popup_help_icon( "Help edit items",
+              link_to( 'Edit&hellip;', edit_connection_path(@connection),
+                :rel => 'nofollow' ),
+             "Help:Popup/ItemEdit" ) -%></li>
+      <li>
+        <%= popup_help_icon( "Help delete items",
+              link_to( 'Delete', connection_path(@connection),
+                :rel => 'nofollow', :confirm => 'Are you sure?',
+                :method => :delete ),
+             "Help:Popup/ItemDelete" ) -%></li>
     <% end %>
 
-    <li><span style="white-space: nowrap;">
+    <li>
       <%= link_to 'Show connection list', connections_path -%><%=
-      popup_help_icon "Help for items list", "Help:Popup/ShowConnections"
-    -%></span></li>
+      popup_help_icon "Help for items list", nil, "Help:Popup/ShowConnections"
+    -%></li>
 
-    <li><span style="white-space: nowrap;">
+    <li>
       <%= link_to 'Create a new connection', new_connection_path,
                   :rel => 'nofollow' -%><%=
-      popup_help_icon "Help for connections create/new",
+      popup_help_icon "Help for connections create/new", nil,
                       "Help:Popup/ConnectionAdd"
-    -%></span></li>
+    -%></li>
 
-    <li><span style="white-space: nowrap;">
+    <li>
       <%= link_to 'Show item list', items_path -%><%=
-      popup_help_icon "Help for items list", "Help:Popup/ShowItems"
-    -%></span></li>
+      popup_help_icon "Help for items list", nil, "Help:Popup/ShowItems"
+    -%></li>
 
-    <li><span style="white-space: nowrap;">
+    <li>
       <%= link_to 'Create a new item', new_item_path, :rel => 'nofollow' -%><%=
-      popup_help_icon "Help for items create/new", "Help:Popup/ItemAdd"
-    -%></span></li>
+      popup_help_icon "Help for items create/new", nil, "Help:Popup/ItemAdd"
+    -%></li>
   </ul>
 </div>

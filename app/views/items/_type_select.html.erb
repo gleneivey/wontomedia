@@ -20,7 +20,7 @@
 
 <p class="inputpara">
   <%= f.label :sti_type, "Type" %>
-  <%= popup_help_icon "Help for type", "Help:Popup/ItemType" %>
+  <%= popup_help_icon "Help for type", nil, "Help:Popup/ItemType" %>
   <%= if @type == "verb"
         selections = [ [ "Property",      "PropertyItem" ] ]
         @item.sti_type = "PropertyItem"

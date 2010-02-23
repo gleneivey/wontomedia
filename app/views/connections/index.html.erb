@@ -32,13 +32,13 @@
 
 
 <div class="headline">
-  <%= popup_help_icon "Help, connections list",
+  <%= popup_help_icon "Help, connections list", nil,
                       "Help:Popup/HeaderConnectionsIndex"
   -%>Listing all defined connections
-  <%= render :partial => 'common/top_box'    # contains an opening <div>
-   %>
-    <%= render :partial => 'index_outbound_links' %>
-  </div>
+</div>
+<div class="noncontent vertical-link-list"
+    style="float: left; margin-left: 2em;">
+  <%= render :partial => 'index_outbound_links' %>
 </div>
 
 <table class="tight-table index-table" style="clear: both;">
@@ -80,7 +80,6 @@
 </table>
 
 
-<%= render :partial => 'common/bottom_line'    # contains an opening <div>
- %>
+<div class="horizontal-link-list">
   <%= render :partial => 'index_outbound_links' %>
 </div>

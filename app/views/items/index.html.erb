@@ -35,10 +35,11 @@
 
 <div class="headline">
 
-  <%= popup_help_icon "Help, items list", "Help:Popup/HeaderItemsIndex"
+  <%= popup_help_icon "Help, items list", nil, "Help:Popup/HeaderItemsIndex"
   -%>Listing all defined items
-  <%= render :partial => 'common/top_box'    # contains an opening <div>
-   %>
+
+  <div class="noncontent vertical-link-list"
+      style="float: left; margin-left: 2em;">
     <%= render :partial => "list_outbound_links",
           :locals => { :generating_index_page => true } %>
   </div>
@@ -66,8 +67,7 @@
   <% end %>
 </table>
 
-<%= render :partial => 'common/bottom_line'    # contains an opening <div>
- %>
+<div class="horizontal-link-list">
   <%= render :partial => 'list_outbound_links',
         :locals => { :generating_index_page => true } %>
 </div>
