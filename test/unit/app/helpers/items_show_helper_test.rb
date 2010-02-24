@@ -16,11 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require 'test_helper'
-require Rails.root.join( 'app', 'helpers', 'format_helper' )
-include(FormatHelper)
-
-
 class ItemsShowHelperTest < ActionView::TestCase
   test "generate self-item title text" do
     title = "a test item"

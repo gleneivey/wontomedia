@@ -17,8 +17,6 @@
 
 
 
-require 'test_helper'
-
 class ConnectionsShowViewTest < ActionController::TestCase
   tests ConnectionsController
   def get_connections_show()

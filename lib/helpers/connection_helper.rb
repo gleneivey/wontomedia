@@ -16,7 +16,18 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class ConnectionHelper
+# This module provides a container for methods that manipulate or
+# transform Connection objects.
+module ConnectionHelper
+
+  # This method renders a multi-line string in the 'n3' format (aka
+  # 'Notation3' standardized by the W3C, see
+  # http://en.wikipedia.org/wiki/Notation3 for an introduction) from
+  # an array of Connection models.
+  #
+  # This is currently a trivial but correct implementation.  It supports
+  # our current data model, but will need a significant upgrade when
+  # WontoMedia begins to support reiffied edges (blank nodes), etc.
   def self.connection_array_to_n3(connections)
     result = ""
     connections.each do |connection|

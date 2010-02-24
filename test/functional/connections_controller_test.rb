@@ -17,7 +17,6 @@
 
 
 require 'enumerator'
-require 'test_helper'
 
 class ConnectionsControllerTest < ActionController::TestCase
   test "should get index" do

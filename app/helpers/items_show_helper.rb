@@ -16,6 +16,9 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require Rails.root.join( 'app', 'helpers', 'format_helper' )
+include(FormatHelper)
+
 module ItemsShowHelper
   def self_string_or_other_link(item_id)
     n = @item_hash[item_id]

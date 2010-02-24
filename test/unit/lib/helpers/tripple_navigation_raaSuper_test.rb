@@ -16,14 +16,11 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require 'test_helper'
-require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
-
 class RelationAndAllSuperpropertiesTest < ActiveSupport::TestCase
   test "no parents make single invoke only" do
     count = 0
     id = items(:one).id
-    relation_and_all_superproperties(id) do |sp_id|
+    TrippleNavigation.relation_and_all_superproperties(id) do |sp_id|
       assert sp_id == id
       count += 1
     end
@@ -40,7 +37,7 @@ class RelationAndAllSuperpropertiesTest < ActiveSupport::TestCase
   def make_relation_and_all_superproperties_call(props)
     count = 0
     checklist = props
-    relation_and_all_superproperties( props[0] ) do |sp_id|
+    TrippleNavigation.relation_and_all_superproperties( props[0] ) do |sp_id|
       assert props.include?(sp_id)
       checklist -= [ sp_id ]
       count += 1

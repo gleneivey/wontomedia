@@ -17,8 +17,6 @@
 
 
 
-require 'test_helper'
-
 class ItemsHomeViewTest < ActionController::TestCase
   tests ItemsController
 

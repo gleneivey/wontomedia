@@ -17,8 +17,6 @@
 
 
 
-require 'test_helper'
-
 class ItemsShowViewTest < ActionController::TestCase
   tests ItemsController
   def get_items_show(name)

@@ -143,9 +143,6 @@ namespace :test do
   Rake::Task['test:dbmigrations'].comment =
     "Run the database migration unit test (test/db_migrations_test.rb)"
 
-  task :db do
-    # nothing
-  end
   task :db => [ "test:dbunits", "test:dbmigrations" ]
   Rake::Task['test:db'].comment =
     "Run database tests (test:dbunits, test:dbmigrations)"
@@ -168,6 +165,10 @@ namespace :test do
     ruby File.join( "policy", "ckFilesUtils", "ckCopyrightNotices.rb" )
     ruby File.join( "policy", "ckFilesUtils", "ckCustomizationFilesPresent.rb" )
   end
+
+  desc "Execute all the tests for Ruby code."
+  task :ruby => [ "test:dev", "test:dbmigrations", "test:functionals",
+    "test:integration", "build", "cucumber:static_ok"]
 end # namespace :test
 
 

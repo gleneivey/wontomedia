@@ -17,8 +17,6 @@
 
 
 
-require 'test_helper'
-
 class ItemsNewpopViewTest < ActionController::TestCase
   tests ItemsController
 

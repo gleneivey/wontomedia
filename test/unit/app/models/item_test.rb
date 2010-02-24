@@ -16,8 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require 'test_helper'
-
 class ItemTest < ActiveSupport::TestCase
   test "item model exists" do
     assert Item.new

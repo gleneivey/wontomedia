@@ -17,8 +17,6 @@
 
 
 
-require 'test_helper'
-
 class ItemsIndexViewTest < ActionController::TestCase
   tests ItemsController
 

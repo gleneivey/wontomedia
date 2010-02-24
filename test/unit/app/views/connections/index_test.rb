@@ -16,13 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-
-require 'test_helper'
-require Rails.root.join( 'app', 'helpers', 'items_show_helper' )
-include(ItemsShowHelper)
 require Rails.root.join( 'app', 'helpers', 'format_helper' )
 include(FormatHelper)
-
 
 class ConnectionsIndexViewTest < ActionController::TestCase
   tests ConnectionsController
@@ -40,13 +35,13 @@ class ConnectionsIndexViewTest < ActionController::TestCase
   test "should show Title of predicate item for known connection" do
     get :index
     assert_select "body",
-      /#{regex_escape ItemsShowHelper.filter_parenthetical Connection.last.predicate.title}/
+      /#{regex_escape FormatHelper.filter_parenthetical Connection.last.predicate.title}/
   end
 
   test "should show Title of object item for known connection" do
     get :index
     assert_select "body",
-      /#{regex_escape ItemsShowHelper.filter_parenthetical Connection.all[1].obj.title}/
+      /#{regex_escape FormatHelper.filter_parenthetical Connection.all[1].obj.title}/
   end
 
   test "should show Name of self item for known connection" do

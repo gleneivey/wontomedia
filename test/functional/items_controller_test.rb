@@ -16,8 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require 'test_helper'
-
 class ItemsControllerTest < ActionController::TestCase
   test "should get homepage" do
     get :home
@@ -272,7 +270,7 @@ class ItemsControllerTest < ActionController::TestCase
     known_value_connections = []
     Connection.all( :conditions => "subject_id = #{source.id}").
         each do |connection|
-      if check_properties(
+      if TrippleNavigation.check_properties(
           :does         => connection.predicate.id,
           :inherit_from => value_id,
           :via          => spo_id )
@@ -294,7 +292,7 @@ class ItemsControllerTest < ActionController::TestCase
                             :obj       => connection.obj            )
       assert connection_copy.save
 
-      if check_properties(
+      if TrippleNavigation.check_properties(
           :does         => connection.predicate.id,
           :inherit_from => value_id,
           :via          => spo_id )

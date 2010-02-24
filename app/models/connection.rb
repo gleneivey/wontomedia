@@ -59,7 +59,8 @@ private
         # is there an existing connection with a predicate that is a
         # sub-property or super-property of the current predicate?
     # check for duplicate connection and all super-properties
-    relation_and_all_superproperties(predicate_id) do |super_prop|
+    TrippleNavigation.relation_and_all_superproperties(
+        predicate_id) do |super_prop|
       unless (Connection.all( :conditions => [
           "subject_id = ? AND predicate_id = ? AND obj_id = ?",
           subject_id, super_prop, obj_id ] ).empty? )
@@ -69,7 +70,8 @@ private
     end
 
     # check for sub-properties
-    relation_and_all_subproperties(predicate_id) do |sub_prop|
+    TrippleNavigation.relation_and_all_subproperties(
+        predicate_id) do |sub_prop|
       unless (Connection.all( :conditions => [
           "subject_id = ? AND predicate_id = ? AND obj_id = ?",
           subject_id, sub_prop, obj_id ] ).empty? )
@@ -89,8 +91,10 @@ private
       inverse_id = Item.find_by_name("inverse_relationship").id
 
       connections.each do |e|
-        relation_and_all_superproperties(predicate_id) do |proposed_rel|
-          relation_and_all_superproperties(e.predicate_id) do |existing_rel|
+        TrippleNavigation.relation_and_all_superproperties(
+            predicate_id) do |proposed_rel|
+          TrippleNavigation.relation_and_all_superproperties(
+              e.predicate_id) do |existing_rel|
             if Connection.all( :conditions => [
               "subject_id = ? AND predicate_id = ? AND obj_id = ?",
                 proposed_rel, inverse_id, existing_rel ] ).length > 0
@@ -113,7 +117,7 @@ private
     # check for "individual parent_of category"
     if subItem.sti_type == ItemHelper::ITEM_INDIVIDUAL_CLASS_NAME  &&
        objItem.sti_type == ItemHelper::ITEM_CATEGORY_CLASS_NAME
-      if check_properties(
+      if TrippleNavigation.check_properties(
           :does => predicate_id,
           :inherit_from => Item.find_by_name("parent_of").id,
           :via => spo_id)
@@ -126,7 +130,7 @@ private
     # check for "category child_of individual"
     if subItem.sti_type == ItemHelper::ITEM_CATEGORY_CLASS_NAME  &&
        objItem.sti_type == ItemHelper::ITEM_INDIVIDUAL_CLASS_NAME
-      if check_properties(
+      if TrippleNavigation.check_properties(
           :does => predicate_id,
           :inherit_from => Item.find_by_name("child_of").id,
           :via => spo_id)
@@ -147,9 +151,9 @@ private
       Item.find_by_name("predecessor_of").id,
       Item.find_by_name("successor_of").id
     ].each do |prop_id|
-      if check_properties(
+      if TrippleNavigation.check_properties(
           :does => predicate_id, :inherit_from => prop_id, :via => spo_id)
-        if check_properties(
+        if TrippleNavigation.check_properties(
             :does => obj_id, :link_to => subject_id,
             :through_children_of => prop_id )
           errors.add :subject, 'this relationship would create a loop.'
@@ -162,7 +166,7 @@ private
     if subject_id == obj_id
       [ "inverse_relationship", "hierarchical_relationship",
         "ordered_relationship" ].each do |relation_name|
-        if check_properties(
+        if TrippleNavigation.check_properties(
             :does         => predicate_id,
             :inherit_from => Item.find_by_name(relation_name).id,
             :via          => spo_id  )

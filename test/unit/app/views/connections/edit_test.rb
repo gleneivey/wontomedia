@@ -17,8 +17,6 @@
 
 
 
-require 'test_helper'
-
 class ConnectionsEditViewTest < ActionController::TestCase
   tests ConnectionsController
 

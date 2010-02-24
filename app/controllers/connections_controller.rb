@@ -16,7 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require Rails.root.join( 'lib', 'helpers', 'item_helper')
 require Rails.root.join( 'lib', 'helpers', 'connection_helper')
 
 class ConnectionsController < ApplicationController
@@ -31,7 +30,7 @@ class ConnectionsController < ApplicationController
       wants.n3 do
         e = @connections.reject { |connection|
           (connection.flags & Connection::DATA_IS_UNALTERABLE) != 0 }
-        render :text => ConnectionHelper::connection_array_to_n3(e)
+        render :text => ConnectionHelper.connection_array_to_n3(e)
       end
     end
   end

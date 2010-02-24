@@ -16,13 +16,13 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# This class is a container for methods that manipulate or transform
-# Item objects.  Most are class methods and can be used without
-# an ItemHelper instance.
-class ItemHelper
+# This module provides a container for methods that manipulate or
+# transform Item objects, and constants related to Item objects.  The
+# constants are related to the single-table-inheritance structure
+# between Item and its specialized child classes, and don't fit into
+# any of the individual model classes themselves.
+module ItemHelper
 
-  # These constants are here ItemHelper because they apply across all
-  # of the single-table-inheritance models that derive from Item
   ITEM_CLASS_NAME            = "Item"
   ITEM_CATEGORY_CLASS_NAME   = "CategoryItem"
   ITEM_INDIVIDUAL_CLASS_NAME = "IndividualItem"
@@ -48,6 +48,10 @@ class ItemHelper
     'QualifiedItem' => 'Qualified Connection'
   }
 
+
+  # This method is a wrapper for Rails' Item.find(), except that it
+  # checks the sti_type of the item found, then creates and returns an
+  # instance of the correct Item child class.
   def self.find_typed_item(*args)
     n = Item.find(*args)
     if n.nil?                                  ||
@@ -74,6 +78,12 @@ class ItemHelper
     class_of_item_to_find.find(*args)
   end
 
+  # Use this method in place of <tt>new Item</tt> in order to create
+  # an Item child class (STI) instance matching a type string you have
+  # available.  (Note: if you know when writing a piece of code what
+  # item subtype you're trying to create, simply create that directly
+  # rather than using this method.  _E.g._, <tt>new
+  # PropertyItem</tt>.)
   def self.new_typed_item(type_string, *args)
     if type_string.nil?
       return nil
@@ -105,15 +115,24 @@ class ItemHelper
     new_item
   end
 
+  # Takes an Item object, +n+, and returns a symbol-indexed hash
+  # containing each of the Item's data fields.
   def self.item_to_hash(n)
-# again, I ought to be able to make the list programatically....
+# Really ought to be doing this programatically from the schema....
     { :id => n.id, :name => n.name, :title => n.title, :flags => n.flags,
       :description => n.description, :sti_type => n.sti_type }
   end
 
+
+  # This method is equivalent to Rails' Item.all(), except that it
+  # only finds/returns "noun"-type items (Category and Individual
+  # items, but not Property or Qualified items).
   def self.nouns
     CategoryItem.all + IndividualItem.all
   end
+
+  # This method is equivalent to Rails' Item.all(), except that it
+  # only finds/returns Items with an sti_type other than Qualified.
   def self.not_qualified
     CategoryItem.all + IndividualItem.all + PropertyItem.all
   end

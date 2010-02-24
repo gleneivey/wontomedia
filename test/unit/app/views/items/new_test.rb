@@ -16,9 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-
-require 'test_helper'
-
 class ItemsNewViewTest < ActionController::TestCase
   tests ItemsController
 

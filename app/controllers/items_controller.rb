@@ -16,8 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require Rails.root.join( 'lib', 'helpers', 'item_helper')
-require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 require 'yaml'
 
 class ItemsController < ApplicationController
@@ -150,7 +148,8 @@ class ItemsController < ApplicationController
     connections = []
     connections_to_delete = []
     used_as_subj.each do |connection|
-      if check_properties( :does => connection.predicate_id, :via => spo_id,
+      if TrippleNavigation.check_properties(
+          :does => connection.predicate_id, :via => spo_id,
           :inherit_from => value_id )
         connections << connection.id
         connections_to_delete << connection

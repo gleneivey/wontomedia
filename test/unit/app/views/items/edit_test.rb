@@ -17,9 +17,6 @@
 
 
 
-require 'test_helper'
-require Rails.root.join( 'lib', 'helpers', 'item_helper' )
-
 class ItemsEditViewTest < ActionController::TestCase
   tests ItemsController
 

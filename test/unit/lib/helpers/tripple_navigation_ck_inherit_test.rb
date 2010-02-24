@@ -16,20 +16,19 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require 'test_helper'
-require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
-
 class CheckPropertiesInheritTest < ActiveSupport::TestCase
   test "item with no properties doesnt inherit from anything" do
-    assert !check_properties( :does         => items(:two).id,
-                              :inherit_from => items(:one).id,
-                              :via          => items(:A).id     )
+    assert !TrippleNavigation.check_properties(
+      :does         => items(:two).id,
+      :inherit_from => items(:one).id,
+      :via          => items(:A).id     )
   end
 
   test "item with simple property doesnt inherit" do
-    assert !check_properties( :does         => items(:testCategory).id,
-                              :inherit_from => items(:testIndividual).id,
-                              :via          => items(:one).id     )
+    assert !TrippleNavigation.check_properties(
+      :does         => items(:testCategory).id,
+      :inherit_from => items(:testIndividual).id,
+      :via          => items(:one).id     )
   end
 
 
@@ -40,20 +39,23 @@ class CheckPropertiesInheritTest < ActiveSupport::TestCase
 #        spo Z spo Y spo X
 
   test "item inherits from itself regardless" do
-    assert check_properties(  :does         => items(:A).id,
-                              :inherit_from => items(:A).id,
+    assert TrippleNavigation.check_properties(
+      :does         => items(:A).id,
+      :inherit_from => items(:A).id,
       :via => Item.find_by_name("sub_property_of").id )
   end
 
   test "item with single-connection inheritence" do
-    assert check_properties(  :does         => items(:A).id,
-                              :inherit_from => items(:B).id,
+    assert TrippleNavigation.check_properties(
+      :does         => items(:A).id,
+      :inherit_from => items(:B).id,
       :via => Item.find_by_name("sub_property_of").id )
   end
 
   test "item inherits through multiple items" do
-    assert check_properties(  :does         => items(:A).id,
-                              :inherit_from => items(:E).id,
+    assert TrippleNavigation.check_properties(
+      :does         => items(:A).id,
+      :inherit_from => items(:E).id,
       :via => Item.find_by_name("sub_property_of").id )
   end
 end

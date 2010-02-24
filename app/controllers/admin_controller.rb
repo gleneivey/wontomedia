@@ -16,7 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require Rails.root.join( 'lib', 'helpers', 'item_helper')
 require 'yaml'
 
 class AdminController < ApplicationController
