@@ -1,3 +1,7 @@
+"README" file for general-documentation directory of the WontoMedia package
+Copyright (C) 2010 - Glen E. Ivey
+  (see the end of this file for copyright/licensing information)
+
 This directory contains documentation for the WontoMedia application.
 There are two kinds of things located here:  the
 automatically-generated RDoc documentation if/when you build it from
@@ -27,3 +31,14 @@ documentation.  The files and sub-directories here are as follows:
    executing the command `rake doc:app`, after which you can view the
    documentation by loading the file `doc/app/index.html` from your
    web browser.
+
+----------------------------------------------------------------
+
+    Permission is granted to copy, distribute and/or modify this
+    document under the terms of the GNU Free Documentation License,
+    Version 1.3, published by the Free Software Foundation; with no
+    Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+
+    You should have received a copy of the GNU Free Documentation
+    License along with document in the file COPYING.DOCUMENTATION.  If
+    not, see <http://www.gnu.org/licenses/>.

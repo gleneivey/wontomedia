@@ -1,3 +1,6 @@
+Copyright (C) 2010 - Glen E. Ivey
+  (see the end of this file for copyright/licensing information)
+
 # rake customize[directory-path:directory-path]
 
 This rake task operates recursively through each directory provided,
@@ -68,4 +71,13 @@ then contain as little as a single file (with the correct,
 Rails-matching relative path) that replaced only a single link
 pointing into the default-custom directory.
 
+----------------------------------------------------------------
 
+    Permission is granted to copy, distribute and/or modify this
+    document under the terms of the GNU Free Documentation License,
+    Version 1.3, published by the Free Software Foundation; with no
+    Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+
+    You should have received a copy of the GNU Free Documentation
+    License along with document in the file COPYING.DOCUMENTATION.  If
+    not, see <http://www.gnu.org/licenses/>.
