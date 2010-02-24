@@ -28,30 +28,30 @@ Feature:  Verify inputs for creation of new item dynamically within the page
     Then the image "name_status_icon" is "blank_status_icon"
 
     When I fill in "Name" with "alreadyExisting0"
-    Then the element "name_is_unique" has the format "display=none"
+    Then the element "name_is_unique" has the format "color=$inactive_confirmation_color;"
     And the element "name_must_be_unique" has the format "font-weight=400"
 
     # total elapsed time from item.Name.onchange > 0.40
     When I wait 0.20 seconds
     Then the image "name_status_icon" is "working_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=none"
+    And the element "name_is_unique" has the format "color=$inactive_confirmation_color;"
 
     When I wait for Ajax requests to complete
     Then the image "name_status_icon" is "error_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=bold"
-    And the element "name_is_unique" has the format "display=none"
+    And the element "name_is_unique" has the format "color=$inactive_confirmation_color;"
 
     When I fill in "Name" with "anUnusedItemName"
     Then the image "name_status_icon" is not "error_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=none"
+    And the element "name_is_unique" has the format "color=$inactive_confirmation_color;"
 
     When I wait for Ajax requests to complete
     And I pause
     Then the image "name_status_icon" is "good_status_icon"
     And the element "name_must_be_unique" has the format "font-weight=400"
-    And the element "name_is_unique" has the format "display=inline"
+    And the element "name_is_unique" has the format "color=$active_confirmation_color;"
 
 
 #### Note: add checks for no "Name is unique" flagging to Name tests

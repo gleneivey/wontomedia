@@ -20,3 +20,5 @@
    # have to use global variables....
 $active_button_color   = "rgb(208, 208, 255)"
 $inactive_button_color = "rgb(255, 255, 255)"
+$active_confirmation_color   = "rgb(103, 148, 255)"
+$inactive_confirmation_color = "rgb(255, 255, 255)"
