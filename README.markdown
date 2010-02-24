@@ -23,6 +23,12 @@ above, with more details at:
     http://wiki.wontology.org/InstallFromScratch
     http://wiki.wontology.org/SettingUpYourDevelopmentEnvironment
 
+Once you've got WontoMedia, you can find some design and workflow
+documentation in the WontoMedia source directory under the `doc`
+directory.  If you run the `rake doc:app` command, RDoc documentation
+will be extracted and can be viewed in a browser starting from
+`doc/app/index.html`.
+
 And if you have any questions or feedback about the projet, there are
 our:
 
@@ -35,7 +41,8 @@ our:
 Finally, you can also find us at:
 
     http://github.com/gleneivey/wontomedia/tree/master
-    https://www.pivotaltracker.com/projects/9280/stories
+    http://www.pivotaltracker.com/projects/9280/stories
+    http://twitter.com/wontomedia
 
 ----------------------------------------------------------------
 

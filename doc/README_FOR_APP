@@ -1,0 +1,47 @@
+WontoMedia is a Ruby-on-Rails web application for the community
+creation of information classification schemes.  It is free software,
+available under the AGPL v3.
+
+General information on the project is in, and pointed to from, the
+project-wide README.markdown file.  This is located two directories
+above this set of RDoc pages, and also available at
+http://github.com/gleneivey/wontomedia/blob/master/README.markdown
+
+In addition to the documentation of WontoMedia's Ruby source code here
+in these pages, there are extensive automated tests for WontoMedia's
+behavior, which make up the "other half" of WontoMedia's
+documentation.  The following is a brief description of where these
+tests are located.  For more information see
+http://wiki.wontology.org/Testing_Your_Work
+
+System-level acceptance tests, which validate the primary user-visible
+features and behaviors, are located in the directories:
+
+    features/stories/static
+    features/stories/dynamic
+
+The "stories" (individual user tasks that can be performed using
+WontoMedia) are divided between these two directories based on whether
+all of the behavior being tested is implemented by WontoMedia's
+server-side Ruby code (the stories in the +static+ directory) or is
+implemented in part by browser-side technologies like JavaScript code
+downloaded in/by the web pages WontoMedia (the stories in the
++dynamic+ directory).
+
+Each story is stored in a separate .+feature+ file.  These are
+interpreted by the test tool *Cucumber* (see
+http://wiki.github.com/aslakhellesoy/cucumber ), and are intended to
+be human-readable.  The particular Cucumber dialect we use references
+component names within web pages, but having seen and worked with
+WontoMedia some, the meaning of these references should be clear.
+
+All other tests for WontoMedia are located under the +test+
+directory:
+
+[*test/functional*, *test/integration*, and *test/fixtures*] The content of these directories follow standard Rails practice.
+
+[*test/javascript*] This directory contains the unit tests for the portions of WontoMedia written in JavaScript that execute within web browsers accessing a WontoMedia server.  These tests are written for and executed by the open-source tool *Blue Ridge*, see http://github.com/relevance/blue-ridge/
+
+[*test/unit/app*] This directory contains the rest of the standard Rails unit tests.  It contains the sub-directories +helpers+, +models+, and +views+, which match what is typically found directly under the +test+ directory in some other Rails projects.
+
+[*test/unit/config*, *test/unit/db*, and *test/unit/lib*] These directories contain unit tests for the code located in the project's top-level +config+, +db+, and +lib+, respectively.  The tests in these directories use the standard Rails testing frameworks, plus the publicly-available +migration_test_helper+ gem.
