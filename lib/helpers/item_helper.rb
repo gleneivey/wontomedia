@@ -16,12 +16,18 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+# This class is a container for methods that manipulate or transform
+# Item objects.  Most are class methods and can be used without
+# an ItemHelper instance.
 class ItemHelper
-  ITEM_KLASS_NAME            = "Item"
-  ITEM_CATEGORY_KLASS_NAME   = "CategoryItem"
-  ITEM_INDIVIDUAL_KLASS_NAME = "IndividualItem"
-  ITEM_PROPERTY_KLASS_NAME   = "PropertyItem"
-  ITEM_QUALIFIED_KLASS_NAME  = "QualifiedItem"
+
+  # These constants are here ItemHelper because they apply across all
+  # of the single-table-inheritance models that derive from Item
+  ITEM_CLASS_NAME            = "Item"
+  ITEM_CATEGORY_CLASS_NAME   = "CategoryItem"
+  ITEM_INDIVIDUAL_CLASS_NAME = "IndividualItem"
+  ITEM_PROPERTY_CLASS_NAME   = "PropertyItem"
+  ITEM_QUALIFIED_CLASS_NAME  = "QualifiedItem"
 
   ITEM_SUBTYPES_FROM_TEXT = {
     "item"                 => Item,           "Item"           => Item,
@@ -50,7 +56,10 @@ class ItemHelper
       return nil
     end
 
-    klass = case n.sti_type
+# I think that this statement:
+#    ITEM_SUBTYPES_FROM_TEXT[n.sti_type].find(*args)
+# ought to work.  But it doesn't.  So instead, we do the following:
+    class_of_item_to_find = case n.sti_type
             when "Item"                 then Item
             when "item"                 then Item
             when "CategoryItem"         then CategoryItem
@@ -62,8 +71,7 @@ class ItemHelper
             when "QualifiedItem"        then QualifiedItem
             when "qualified-connection" then QualifiedItem
             end
-#    ITEM_SUBTYPES_FROM_TEXT[n.sti_type].find(*args)
-    klass.find(*args)
+    class_of_item_to_find.find(*args)
   end
 
   def self.new_typed_item(type_string, *args)
@@ -79,7 +87,7 @@ class ItemHelper
 
 # absolutely no idea why this ugly thing works, but simply hash lookup
 # below causes failure deep in Rails' guts during new()
-    klass = case type_string
+    class_of_item_to_create = case type_string
             when "Item"                 then Item
             when "item"                 then Item
             when "CategoryItem"         then CategoryItem
@@ -91,14 +99,14 @@ class ItemHelper
             when "QualifiedItem"        then QualifiedItem
             when "qualified-connection" then QualifiedItem
             end
-#    klass = ITEM_SUBTYPES_FROM_TEXT[type_string]
-    k = klass.new(*args)
-    k.flags = 0
-    k
+#    class_of_item_to_create = ITEM_SUBTYPES_FROM_TEXT[type_string]
+    new_item = class_of_item_to_create.new(*args)
+    new_item.flags = 0
+    new_item
   end
 
   def self.item_to_hash(n)
-      # again, I ought to be able to make the list programatically....
+# again, I ought to be able to make the list programatically....
     { :id => n.id, :name => n.name, :title => n.title, :flags => n.flags,
       :description => n.description, :sti_type => n.sti_type }
   end

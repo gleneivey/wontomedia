@@ -111,8 +111,8 @@ private
     subItem = Item.find(subject_id)
     objItem = Item.find(obj_id)
     # check for "individual parent_of category"
-    if subItem.sti_type == ItemHelper::ITEM_INDIVIDUAL_KLASS_NAME  &&
-       objItem.sti_type == ItemHelper::ITEM_CATEGORY_KLASS_NAME
+    if subItem.sti_type == ItemHelper::ITEM_INDIVIDUAL_CLASS_NAME  &&
+       objItem.sti_type == ItemHelper::ITEM_CATEGORY_CLASS_NAME
       if check_properties(
           :does => predicate_id,
           :inherit_from => Item.find_by_name("parent_of").id,
@@ -124,8 +124,8 @@ private
     end
 
     # check for "category child_of individual"
-    if subItem.sti_type == ItemHelper::ITEM_CATEGORY_KLASS_NAME  &&
-       objItem.sti_type == ItemHelper::ITEM_INDIVIDUAL_KLASS_NAME
+    if subItem.sti_type == ItemHelper::ITEM_CATEGORY_CLASS_NAME  &&
+       objItem.sti_type == ItemHelper::ITEM_INDIVIDUAL_CLASS_NAME
       if check_properties(
           :does => predicate_id,
           :inherit_from => Item.find_by_name("child_of").id,
