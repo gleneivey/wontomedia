@@ -52,19 +52,24 @@ module ItemsShowHelper
 
   def generate_item_links(n, not_in_use)
     if (n.flags & Item::DATA_IS_UNALTERABLE) == 0
-      @edit_help_icon_used, fragment =
-        a_help_link( '', link_to( 'Edit&hellip;', edit_item_path(n),
-          :rel => 'nofollow'),
-        @edit_help_icon_used, 'Help edit item', 'ItemEdit' )
-      concat( fragment )
+      concat(
+        link_with_help_icon({
+          :destination => link_to( 'Edit&hellip;', edit_item_path(n),
+            :rel => 'nofollow'),
+        :already_generated => @edit_help_icon_used,
+        :help_alt => 'Help edit item',
+        :which_help => 'ItemEdit' }) )
+      @edit_help_icon_used = true
 
       if not_in_use
-        @delete_help_icon_used, fragment =
-          a_help_link( '',
-            link_to( 'Delete', item_path(n), :rel => 'nofollow',
+        concat(
+          link_with_help_icon({
+            :destination => link_to( 'Delete', item_path(n), :rel => 'nofollow',
               :method => :delete, :confirm => 'Are you sure?'),
-            @delete_help_icon_used, 'Help delete item', 'ItemDelete' )
-        concat( fragment )
+            :already_generated => @delete_help_icon_used,
+            :help_alt => 'Help delete item',
+            :which_help => 'ItemDelete' }) )
+        @delete_help_icon_used = true
       end
     end
   end

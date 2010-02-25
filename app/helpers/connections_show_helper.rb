@@ -26,27 +26,40 @@ module ConnectionsShowHelper
   # Connection is flagged as <tt>DATA_IS_UNALTERABLE</tt>, it also
   # generates an "Edit..." link to +con+'s <tt>connections/edit</tt>
   # page and a "Delete" link that will invoke
-  # <tt>connections/destroy</tt>.  All of the links have a "help" icon
-  # and popup, see FormatHelper.a_help_link().
+  # <tt>connections/destroy</tt>.  The links are generated with a
+  # "help" icon linking to a popup (see
+  # FormatHelper.link_with_help_icon) _if_ the link being generated is
+  # the first occurrance of that link in the current view.  An instance
+  # variable is created within the current view object to flag the
+  # generation of each type of link.
   def generate_connection_links(con)
-    @show_help_icon_used, fragment =
-      a_help_link( '', link_to( 'Show', connection_path(con) ),
-        @show_help_icon_used, 'Help show connection', 'ConnectionShow' )
-    concat( fragment )
+    concat(
+      link_with_help_icon({
+        :destination => link_to( 'Show', connection_path(con) ),
+        :already_generated => @show_help_icon_used,
+        :help_alt => 'Help show connection',
+        :which_help => 'ConnectionShow' }) )
+    @show_help_icon_used = true
 
     if (con.flags & Connection::DATA_IS_UNALTERABLE) == 0
-      @edit_help_icon_used, fragment =
-        a_help_link( '', link_to( 'Edit&hellip;', edit_connection_path(con),
-            :rel => 'nofollow' ),
-          @edit_help_icon_used, 'Help edit connection', 'ConnectionEdit' )
-      concat( fragment )
+      concat(
+        link_with_help_icon({
+          :destination => link_to(
+            'Edit&hellip;', edit_connection_path(con), :rel => 'nofollow' ),
+          :already_generated => @edit_help_icon_used,
+          :help_alt => 'Help edit connection',
+          :which_help => 'ConnectionEdit' }) )
+      @edit_help_icon_used = true
 
-      @delete_help_icon_used, fragment =
-        a_help_link( '', link_to( 'Delete', connection_path(con),
-            :rel => 'nofollow', :confirm => 'Are you sure?',
-            :method => :delete ),
-          @delete_help_icon_used, 'Help delete connection', 'ConnectionDelete' )
-      concat( fragment )
+      concat(
+        link_with_help_icon({
+          :destination => link_to(
+            'Delete', connection_path(con), :rel => 'nofollow',
+            :confirm => 'Are you sure?', :method => :delete ),
+          :already_generated => @delete_help_icon_used,
+          :help_alt => 'Help delete connection',
+          :which_help =>'ConnectionDelete' }) )
+      @delete_help_icon_used = true
     end
   end
 end
