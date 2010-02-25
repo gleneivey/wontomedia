@@ -16,6 +16,14 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+#### I've got no idea why this 'require' is necessary.  Without it, all
+# the unit tests pass, but the ItemHelper.nouns call below fails when
+# run in production.  Even more odd, if run in 'development' (so that
+# each Ruby file is reloaded at each request, this 'require' only has
+# to be present for the _first_ request serviced after the server
+# starts.  It can be deleted, this file reloaded, and then ItemHelper
+# references will work normally.  Go figure. -- gei 2010/2/24
+require Rails.root.join( 'lib', 'helpers', 'item_helper')
 require 'yaml'
 
 class ItemsController < ApplicationController
