@@ -42,7 +42,7 @@
    unless @popup_flag %>
      <div style="height: 600px; float: left; padding-right: 1em;">&nbsp;</div>
      <div class="margin-help-icon">
-       <%= popup_help_icon "Help, item content", nil, "Help:Popup/HeaderItem" %>
+       <%= popup_help_icon "Help, item content", "Help:Popup/HeaderItem" %>
      </div>
 <% end %>
 
@@ -113,7 +113,7 @@
              unless @popup_flag  %>
                <div class="margin-help-icon">
                  <%= popup_help_icon "Help, connections referencing a item",
-                       nil, "Help:Popup/HeaderItemConnectionList" %>
+                       "Help:Popup/HeaderItemConnectionList" %>
                </div>
 <%           end  %>
 
@@ -171,7 +171,7 @@
            # question-icon for connections-table pop-up help
            unless @popup_flag  %>
              <div class="margin-help-icon">
-               <%= popup_help_icon "Help, connections referencing a item", nil,
+               <%= popup_help_icon "Help, connections referencing a item",
                      "Help:Popup/HeaderItemConnectionTable" %>
              </div>
 <%         end

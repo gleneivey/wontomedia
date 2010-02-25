@@ -9,6 +9,12 @@ project-wide README.markdown file.  This is located two directories
 above this set of RDoc pages, and also available at
 http://github.com/gleneivey/wontomedia/blob/master/README.markdown
 
+Note that when you generated this RDoc, it was made from the full
+source tree of your installation.  This means that if your
+installation includes customization files (see
+<tt>doc/customization.markdown</tt>), then any classes and methods you
+have defined locally will be included in your local set of RDoc pages.
+
 In addition to the documentation of WontoMedia's Ruby source code here
 in these pages, there are extensive automated tests for WontoMedia's
 behavior, which make up the "other half" of WontoMedia's

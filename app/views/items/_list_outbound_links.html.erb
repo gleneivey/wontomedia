@@ -25,7 +25,7 @@
     <li>
       <%= link_to 'View all items', items_path -%><%
       unless @have_displayed_out_links %><%=
-        popup_help_icon "Help for items list", nil, "Help:Popup/ShowItems" -%><%
+        popup_help_icon "Help for items list", "Help:Popup/ShowItems" -%><%
       end %>
     </li>
   <% end %>
@@ -33,15 +33,14 @@
   <li>
     <%= link_to 'Create a new item', new_item_path, :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
-      popup_help_icon "Help for items create/new", nil,
-        "Help:Popup/ItemAdd" -%><%
+      popup_help_icon "Help for items create/new", "Help:Popup/ItemAdd" -%><%
     end %>
   </li>
 
   <li>
     <%= link_to 'View all connections', connections_path -%><%
     unless @have_displayed_out_links %><%=
-      popup_help_icon "Help for connections list", nil,
+      popup_help_icon "Help for connections list",
         "Help:Popup/ShowConnections" -%><%
     end %>
   </li>
@@ -50,7 +49,7 @@
     <%= link_to 'Create a new connection', new_connection_path,
           :rel => 'nofollow' -%><%
     unless @have_displayed_out_links %><%=
-      popup_help_icon "Help for connections create/new", nil,
+      popup_help_icon "Help for connections create/new",
         "Help:Popup/ConnectionAdd" -%><%
     end %>
   </li>
