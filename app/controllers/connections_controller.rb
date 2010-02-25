@@ -20,19 +20,31 @@
 
 require Rails.root.join( 'lib', 'helpers', 'connection_helper')
 
+# See also the matching model Connection
 class ConnectionsController < ApplicationController
   Mime::Type.register "application/x-n3", :n3
 
 
   # GET /connections
+  #
+  # Note that +index+ is capable of rendering in multiple
+  # formats. <tt>/connections</tt> and <tt>/connections.html</tt>
+  # yield a human-readable page in HTML markup.
+  # <tt>/connections.n3</tt> renders all Connections in the database
+  # as N3-format text, with no additional prose or links intended for
+  # users.  For more information on N3 (Notation3) see
+  # http://en.wikipedia.org/wiki/Notation3.  Note that, in order to
+  # support this, this controller registers the MIME type
+  # <tt>application/x-n3</tt> with Rails, and associates it with the
+  # <tt>.n3</tt> file extension.
   def index
     @connections = Connection.all.reverse
     respond_to do |wants|
       wants.html
       wants.n3 do
-        e = @connections.reject { |connection|
+        con = @connections.reject { |connection|
           (connection.flags & Connection::DATA_IS_UNALTERABLE) != 0 }
-        render :text => ConnectionHelper.connection_array_to_n3(e)
+        render :text => ConnectionHelper.connection_array_to_n3(con)
       end
     end
   end
@@ -61,7 +73,7 @@ class ConnectionsController < ApplicationController
 
   # GET /connections/1
   def show
-      # set @connection for view to use for link building
+    # set @connection for view to use for link building
     begin
       @connection = Connection.find(params[:id])
     rescue
@@ -69,7 +81,7 @@ class ConnectionsController < ApplicationController
       return
     end
 
-      # populate these here because I didn't want view causing db queries
+    # populate these here because I didn't want view causing db queries
     @subject = @connection.subject
     @predicate = @connection.predicate
     @obj = @connection.obj

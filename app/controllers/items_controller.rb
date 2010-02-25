@@ -28,6 +28,7 @@
 require Rails.root.join( 'lib', 'helpers', 'item_helper')
 require 'yaml'
 
+# See also the matching model Item
 class ItemsController < ApplicationController
   # GET /
   def home
@@ -36,6 +37,12 @@ class ItemsController < ApplicationController
   end
 
   # GET /items
+  #
+  # Note that +index+ is capable of rendering in multiple
+  # formats. <tt>/items</tt> and <tt>/items.html</tt> yield a
+  # human-readable page in HTML markup.  <tt>/items.yaml</tt> renders
+  # all fields from all Items in the database as YAML-format text,
+  # with no additional prose or links intended for users.
   def index
     @items = Item.all.reverse
     @not_in_use_hash = {}
@@ -65,6 +72,15 @@ class ItemsController < ApplicationController
   end
 
   # GET /items/new-pop
+  #
+  # This operation is intended to provide a version of
+  # <tt>/items/new</tt> suitable for Ajax fetching fromm and display
+  # in a pop-up <tt><div></tt> in an already-rendered page.  Correct
+  # operation of the page fragment rendered by this action depends on
+  # the surrounding page having already loaded the form's JavaScript
+  # and style dependencies.  Implementing this behavior depends on the
+  # <tt>popup_flag</tt> field passed between Items +actions+ and
+  # +views+; see their source for additional details.
   def newpop
     @item = Item.new
     @type = params[:type]
@@ -102,6 +118,16 @@ class ItemsController < ApplicationController
   end
 
   # GET /items/1
+  #
+  # Note that +show+ is capable of rendering in multiple
+  # formats. <tt>/items/1</tt> and <tt>/items/1.html</tt> yield a
+  # human-readable page in HTML markup.  <tt>/items/1.json</tt>
+  # renders all fields from the specified Item as JSON-format text,
+  # with no additional prose or links intended for users.  In the JSON
+  # case, only information about the specific Item requested is
+  # returned.  When a full web page is generated, information is
+  # included about all other Items which are involved in Connections
+  # that directly reference the requested Item.
   def show
     begin
       @item = Item.find(params[:id])
@@ -243,8 +269,8 @@ class ItemsController < ApplicationController
 
   # PUT /items/1
   def update
-      # we want to be agnostic WRT processing item subclasses, so remap
-      # name of incoming parameters if we're actually handling a child
+    # we want to be agnostic WRT processing item subclasses, so remap
+    # name of incoming parameters if we're actually handling a child
     params.each do |k,v|
       if k =~ /_item/
         params["item"] = v
@@ -297,7 +323,22 @@ class ItemsController < ApplicationController
     end
   end
 
-  # LOOKUP /items/lookup?name=aItemName
+  # GET /items/lookup?name=anItemName
+  #
+  # This operation is similar to an abbreviated +show+.  It always
+  # sends an HTML fragment (not a complete/valid page) to the
+  # requester, either an error message (plus <tt>:status => 404</tt>,
+  # if the requested item doesn't exist) or a string representation of
+  # the Item's +id+ field (plus <tt>:status => 200</tt>).  While this
+  # is technically a RESTful request, it uses a string (rather than a
+  # database ID number as is the default for Rails requests) as the
+  # request parameter, and the parameter is encoded in the query
+  # string portion of the URL (rather than the path portion, in order
+  # to simplify creation of the matching route).
+  #
+  # This request is primarily intended to be used by Ajax code
+  # executing within another page that has already been served by
+  # WontoMedia.
   def lookup
     # huge kludge for testability.  Need to ensure that we don't respond
     # so quickly (e.g., in setups where client and server are on the same
@@ -308,12 +349,12 @@ class ItemsController < ApplicationController
     end
 
     begin
-      n = Item.find_by_name(params[:name])
-      if n.nil?
+      item = Item.find_by_name(params[:name])
+      if item.nil?
         render :text => "<p>Didn't find Item</p>\n", :status => 404
         return
       end
-      id = n.id
+      id = item.id
     rescue
       render :text => "<p>Didn't find Item</p>\n", :status => 404
       return

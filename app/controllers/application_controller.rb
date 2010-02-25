@@ -18,6 +18,10 @@
 #++
 
 
+# This is the Rails-standard ApplicationController class, which
+# inherits from <tt>ActionController::Base</tt> and is the base class
+# for all of WontoMedia's controller classes.  See the source for
+# WontoMedia's global controller configuration.
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery

@@ -20,13 +20,28 @@
 
 require 'yaml'
 
+# There is no model matching this controller.  It is intended to
+# provide access to and processing of pages used to administer a
+# WontoMedia installation.
 class AdminController < ApplicationController
+
   # GET /admin/
+  #
+  # This action renders the primary administration page.  This page
+  # includes links to <tt>/items.yaml</tt> and
+  # <tt>/connections.n3</tt> so that an administrator can download the
+  # complete content of a wontology for backup.  It also includes form
+  # controls for uploading <tt>.yaml</tt> files of Item records and
+  # <tt>.n3</tt> files of Connection records to be added to the
+  # installation's database.
   def index
     @this_is_non_information_page = true
   end
 
   # POST /admin/item_up
+  #
+  # This is a form processing action supporting a file-upload control
+  # for <tt>.yaml</tt> files of Items.
   def item_up
     @this_is_non_information_page = true
     count = 0
@@ -80,6 +95,12 @@ class AdminController < ApplicationController
   end
 
   # POST /admin/connection_up
+  #
+  # This is a form processing action supporting a file-upload control
+  # for <tt>.n3</tt> files of Connections.  <b>Note</b> that
+  # WontoMedia currently uses a <em>trivial, fragile</em> N3 processor
+  # that is unlikely to process N3 files other than those that
+  # WontoMedia produces.
   def connection_up
     @this_is_non_information_page = true
     count = unparsed = 0
