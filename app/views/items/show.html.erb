@@ -50,18 +50,19 @@
 <% # populate top (title/name/desc) section of page
  %>
 <p style="margin-bottom: 0; font-weight: bold;">
-  <%= text_has_tip 'item_title', h( @item.title ),
-        '&nbsp;<b>Title</b> of this <b>Item</b>&nbsp;' %>
+  <%= text_with_tooltip h( @item.title ),
+        '&nbsp;<b>Title</b> of this <b>Item</b>&nbsp;', 'item_title' %>
 </p>
 
 <p id="item_name_para">
-  <%= text_has_tip 'item_name', h( @item.name ),
-        '&nbsp;<b>Name</b> of this <b>Item</b>&nbsp;' %>
+  <%= text_with_tooltip h( @item.name ),
+        '&nbsp;<b>Name</b> of this <b>Item</b>&nbsp;', 'item_name' %>
 </p>
 
 <p>
-  <%= text_has_tip 'item_description', h( @item.description ),
-        '&nbsp;<b>Description</b> of this <b>Item</b>&nbsp;' %>
+  <%= text_with_tooltip h( @item.description ),
+        '&nbsp;<b>Description</b> of this <b>Item</b>&nbsp;',
+        'item_description' %>
 </p>
 
 <%    # embed this for testability and future JavaScript
@@ -118,7 +119,7 @@
 <%           end  %>
 
              <ul>
-               <%= text_has_tip nil, (h filter_parenthetical @item.title),
+               <%= text_with_tooltip (h filter_parenthetical @item.title),
                      (h @item.name) %>
                <ul style="list-style-type: none;">
 <%         end
@@ -130,8 +131,8 @@
 <%           end %>
              <li>
                <%= n = @item_hash[e.predicate_id]
-                   link_has_tip nil, (h filter_parenthetical n.title ),
-                     item_path(n), h( n.name ) %>
+                   link_with_tooltip (h filter_parenthetical n.title ),
+                     h( n.name ), item_path(n) %>
                <ul style="list-style-type: circle;">
 <%         end %>
 
@@ -140,8 +141,8 @@
                <%  generate_connection_links(e) %>
              </div>
              <%= n = @item_hash[e.obj_id]
-                 link_has_tip nil, (h filter_parenthetical n.title ),
-                   item_path(n), h( n.name ) %>
+                 link_with_tooltip (h filter_parenthetical n.title ),
+                   h( n.name ), item_path(n) %>
            </li>
 
 <%         last_predicate_id = e.predicate_id

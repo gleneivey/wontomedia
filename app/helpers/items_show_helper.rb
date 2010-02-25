@@ -24,9 +24,9 @@ module ItemsShowHelper
     n = @item_hash[item_id]
     title = h filter_parenthetical n.title
     if item_id == @item.id    # self
-      text_has_tip nil, title, h( n.name )
+      text_with_tooltip title, h( n.name )
     else                      # other
-      link_has_tip nil, title, item_path(n), h( n.name )
+      link_with_tooltip title, h( n.name ), item_path(n)
     end
   end
 

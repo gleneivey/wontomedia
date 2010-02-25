@@ -87,14 +87,29 @@ module FormatHelper
     content
   end
 
-  def text_has_tip( id, text, tip )
+  # This method wraps a block of text in HTML markup that provides it
+  # with a (CSS-based) 'tooltip'-like popup on mouse-over.  The
+  # arguments are:
+  #
+  # [text] The text string to wrap and make sensitive to mouse-over.  It may contain additional HTML markup, but cannot contain outbound links (e.g., <tt><a href=...></tt>).
+  # [tip] The content for the popup 'tooltip'.  This may also contain HTML markup, but links should be avoided because of both usability considerations (moving the mouse within the tooltip can be challenging because it could go away if the cursors path strays outside the union of the text's and tip's bounding boxes) and the fact that some browsers will confuse links in the tooltip with the dummy link tag that this helper creates.
+  # [id] This helper creates a <tt><span></tt> tag around the supplied text.  If +id+ is non-+nil+, its value will be used to create an +id+ attribute for the span.
+  def text_with_tooltip( text, tip, id = nil )
     span = id.nil? ? '<span>' : "<span id='#{id}'>"
     inner = "#{span}#{text}</span>" +
       "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
     link_to inner, "#", :class=>'texthastip', :tabindex=>'0'
   end
 
-  def link_has_tip( id, text, href, tip )
+  # This method creates a link wraped in HTML markup that provides it
+  # with a (CSS-based) 'tooltip'-like popup on mouse-over.  The
+  # arguments are:
+  #
+  # [text] The content for the link (anchor tag) generated.  It may be any HTML string that would be valid within a link.
+  # [tip] The content for the popup 'tooltip'.  This may also contain HTML markup, but links should be avoided because of both usability considerations (moving the mouse within the tooltip can be challenging because it could go away if the cursors path strays outside the union of the text's and tip's bounding boxes) and the fact that some browsers will confuse links in the tooltip with the link that causes the tooltip to be displayed.
+  # [href] The value of this argument will be used to generate the +href+ attribute of the link created.  It is passed directly to Rails' <tt>link_to</tt> helper, so any string, or Rails object or route that can be converted to a URL can be used.
+  # [id] This helper creates a <tt><span></tt> tag around the generated link.  If +id+ is non-+nil+, its value will be used to create an +id+ attribute for the span.
+  def link_with_tooltip( text, tip, href, id = nil )
     span = id.nil? ? '<span>' : "<span id='#{id}'>"
     inner = "#{span}#{text}</span>" +
       "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"

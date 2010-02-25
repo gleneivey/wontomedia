@@ -56,17 +56,16 @@
   <% @connections.each do |connection| %>
     <% content_tag :tr, :id => connection.id do %>
       <td class='firstrow secondrow'><%=
-        link_has_tip nil, "#{h filter_parenthetical connection.subject.title}",
-                     item_path(connection.subject),
-                     h( connection.subject.name ) %></td>
+        link_with_tooltip "#{h filter_parenthetical connection.subject.title}",
+          h( connection.subject.name ), item_path(connection.subject) -%></td>
       <td class='firstrow secondrow'><%=
-        link_has_tip nil,
-                     "#{h filter_parenthetical connection.predicate.title}",
-                     item_path(connection.predicate),
-                     h( connection.predicate.name ) %></td>
+        link_with_tooltip(
+          "#{h filter_parenthetical connection.predicate.title}",
+          h( connection.predicate.name ), item_path(connection.predicate) )
+      -%></td>
       <td class='firstrow secondrow'><%=
-        link_has_tip nil, "#{h filter_parenthetical connection.obj.title}",
-                     item_path(connection.obj), h( connection.obj.name ) %></td>
+        link_with_tooltip "#{h filter_parenthetical connection.obj.title}",
+          h( connection.obj.name ), item_path(connection.obj) -%></td>
       <td class='firstrow secondrow' style="font-size: 80%">
         <% generate_connection_links(connection) %></td>
 <!--
