@@ -18,5 +18,6 @@
 #++
 
 
+# This model class is a child of Item using Rails' single-table inheritance.
 class QualifiedItem < Item
 end
