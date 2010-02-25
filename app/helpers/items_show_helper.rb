@@ -1,3 +1,4 @@
+#--
 # WontoMedia - a wontology web application
 # Copyright (C) 2010 - Glen E. Ivey
 #    www.wontology.com
@@ -14,6 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
+#++
 
 
 require Rails.root.join( 'app', 'helpers', 'format_helper' )
