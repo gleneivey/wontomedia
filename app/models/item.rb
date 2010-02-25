@@ -18,7 +18,28 @@
 #++
 
 
+# Model for the representation of "items" (things that can be related
+# to each other through "connections") in WontoMedia's database.  The
+# schema listing the data fields for an Item is, of course, in
+# db/schema.rb.  And Rails' automatically-provided model methods are
+# based on the field names there.
+#
+# WontoMedia uses Rails' "single-table inheritance" to create several
+# specialized types of Item objects, all of which are stored in the
+# same database table together.  The type of object a particular table
+# row represents is determined by that object's <tt>sti_type</tt>
+# field.  There are a number of constants and methods in the module
+# ItemHelper that can be used load or evaluate +sti_type+ and to
+# perform generic operations on Item instances that correctly preserve
+# their child class.
+#
+# A great deal of this model's behavior is provided through Rails
+# validation methods (<tt>validates_...</tt>), see the source for
+# details.
 class Item < ActiveRecord::Base
+
+  # This constant is a bit mask for Item.flags.  A non-zero value
+  # indicates that the Item instance should not be user-modifiable.
   DATA_IS_UNALTERABLE = 1
 
 
@@ -54,8 +75,12 @@ class Item < ActiveRecord::Base
 
 
 
-  # hack to provide default; alternative @ http://blog.phusion.nl/2008/10/03/47/
-  def flags
+  # This method is a hack to provide a legitimate default value for
+  # the +flags+ field of an Item that hasn't been initialized yet.
+  # Alternative at http://blog.phusion.nl/2008/10/03/47/
+  def flags #:nodoc:
+    # Note that the default value returned here must/does match the
+    # column default specified in the database schema
     self[:flags] or 0
   end
 end

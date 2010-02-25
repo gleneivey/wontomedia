@@ -1,5 +1,4 @@
 Copyright (C) 2010 - Glen E. Ivey
-------------------------------------------------
 
 WontoMedia is a Ruby-on-Rails web application for the community
 creation of information classification schemes.  It is free software,
@@ -54,8 +53,6 @@ directory:
 [*test/unit/app*] This directory contains the rest of the standard Rails unit tests.  It contains the sub-directories +helpers+, +models+, and +views+, which match what is typically found directly under the +test+ directory in some other Rails projects.
 
 [*test/unit/config*, *test/unit/db*, and *test/unit/lib*] These directories contain unit tests for the code located in the project's top-level +config+, +db+, and +lib+, respectively.  The tests in these directories use the standard Rails testing frameworks, plus the publicly-available +migration_test_helper+ gem.
-
----------------------------------------------------------------------------
 
 This document, other documentation, and standardized help text
 included in this package are licensed under the GNU FDL v1.3:

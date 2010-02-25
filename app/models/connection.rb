@@ -21,7 +21,20 @@
 require Rails.root.join( 'lib', 'helpers', 'item_helper')
 require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
 
+# Model for the representation of "connections" (which are used to
+# make statements about the relationships between "item") in
+# WontoMedia's database.  The schema listing the data fields for a
+# Connection is, of course, in db/schema.rb.  And Rails'
+# automatically-provided model methods are based on the field names
+# there.
+#
+# A great deal of this model's behavior is provided by Rails
+# <tt>belongs_to</tt> relations between Connection object fields and
+# Item objects (see source).
 class Connection < ActiveRecord::Base
+
+  # This constant is a bit mask for Item.flags.  A non-zero value
+  # indicates that the Item instance should not be user-modifiable.
   DATA_IS_UNALTERABLE = 1
 
 
@@ -41,14 +54,26 @@ class Connection < ActiveRecord::Base
 
 
 
-  # hack to provide default; alternative @ http://blog.phusion.nl/2008/10/03/47/
-  def flags
+  # This method is a hack to provide a legitimate default value for
+  # the +flags+ field of an Item that hasn't been initialized yet.
+  # Alternative at http://blog.phusion.nl/2008/10/03/47/
+  def flags #:nodoc:
+    # Note that the default value returned here must/does match the
+    # column default specified in the database schema
     self[:flags] or 0
   end
 
 
 private
-  def complex_validations
+
+  # This method performs checks to determine whether an individual
+  # Connection, if placed in the context of the rest of WontoMedia's
+  # database, would violate any rules about the structure of the
+  # relationship network.  It is automatically invoked using Rails'
+  # <tt>before_validation</tt> hook.  In the event that one or more
+  # checks fail, this method returns +false+ and places the
+  # appropriate message(s) in the +errors+ flash.
+  def complex_validations() #:doc:
     [ [subject_id, :subject], [predicate_id, :predicate],
       [obj_id, :obj] ].each do |tocheck|
       field, symbol = *tocheck
@@ -173,7 +198,7 @@ private
             :inherit_from => Item.find_by_name(relation_name).id,
             :via          => spo_id  )
           errors.add :subject,
-'cannot create an ordered/hierarchical relationship from a item to itself'
+'cannot create an ordered/hierarchical relationship from an item to itself'
           return false
         end
       end
