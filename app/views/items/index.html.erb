@@ -55,7 +55,7 @@
       <td class="firstrow" style="font-weight: bold; width: 62%;">
         <%= link_to filter_parenthetical(h item.title), item_path(item) -%></td>
       <td class="firstrow" style="font-size: 80%;">
-        <% generate_item_links(item, @not_in_use_hash[item.id]) %>
+        <% generate_item_links(item) %>
       </td>
     <% end %>
     <tr>

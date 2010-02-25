@@ -18,8 +18,8 @@
 #++
 
 
-# Helpers for app/views/connections/show
-module ConnectionsShowHelper
+# Helpers for app/views/connections/* pages
+module ConnectionsHelper
 
   # This method appends its output directly to the page being built.
   # It takes a Connection model instance, and generates a set of HTML
