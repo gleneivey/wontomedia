@@ -20,6 +20,19 @@
 
 desc "This creates symbolic links to customization files in other directories"
 task :customize, :path_list do |t, args|
+
+  # first, clear out all symbolic links from any previous
+  # configurations--we don't want to leave any old ones lying around
+  # pointing into customization directories we aren't currently using.
+  FileList[ "*", "**/*"].
+    exclude do |maybe_not_link|
+      !File.symlink?(maybe_not_link)
+    end.
+    each do |link_to_delete|
+      File.delete link_to_delete
+    end
+
+  # now, build new links
   paths = args[:path_list].split(':')
   paths.each do |p|
     path = File.expand_path(p)
