@@ -214,7 +214,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{wontomedia}
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme}
 
   if s.respond_to? :specification_version then

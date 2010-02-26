@@ -74,6 +74,10 @@ ENDOSTRING
   end
 
   task :build => :gemspec    # don't build a gem from a stale spec
+  Jeweler::RubyforgeTasks.new do |rubyforge|
+    rubyforge.doc_task = "doc:app"
+  end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "WARNING: Missing development dependency.  'Jeweler' and/or 'rubyforge' not available. Install them with:\n    'sudo gem install rubyforge'\n    'sudo gem install technicalpickles-jeweler -s http://gems.github.com'"
 end
