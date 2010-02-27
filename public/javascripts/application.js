@@ -50,6 +50,7 @@ jQuery(document).ready(function() {
                         "Click outside box or type 'ESC' to close</span>"; },
     'transitionIn'  : 'elastic',
     'transitionOut' : 'elastic',
+    'width'         : '80%',
     'type'          : 'iframe'
   });
 });
