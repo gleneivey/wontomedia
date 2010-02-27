@@ -7,6 +7,7 @@
   active area background:  light blue            #d0d0ff
   content border:          2nd-darkest blue      #b0b0ff
                            dk blue               #040460
+  error color:             dk red                #990000  ; scaffold.css, .png's
   unvisited link color:                          #1d43c0
   visited link color:                            #64439d
   accent color:                                  yellow
@@ -275,7 +276,7 @@ p.directions {
 
 .helpTextFlagged {
   font-weight: bold;
-  color: #e80000;
+  color: #990000;
 }
 
 .confirmationTextInvisible {
@@ -284,7 +285,7 @@ p.directions {
 
 .confirmationTextShow {
   display: inline;
-  color: #6794ff;
+  color: #b0b0ff;
 }
 
 .activeButton {

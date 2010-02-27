@@ -1,12 +1,12 @@
 .fieldWithErrors {
   padding: 2px;
-  background-color: red;
+  background-color: #990000;
   display: table;
 }
 
 #errorExplanation {
   width: 400px;
-  border: 2px solid red;
+  border: 2px solid #990000;
   padding: 7px;
   padding-bottom: 12px;
   margin-bottom: 20px;
