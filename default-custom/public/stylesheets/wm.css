@@ -184,6 +184,8 @@ p.unimplemented {
 }
 .tip {
   display: none;
+  font-weight: normal;
+  white-space: nowrap;
 }
 .texthastip:hover .tip,
 .linkhastip:hover .tip {

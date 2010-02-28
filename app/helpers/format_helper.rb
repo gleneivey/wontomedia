@@ -99,7 +99,7 @@ module FormatHelper
   def text_with_tooltip( text, tip, id = nil )
     span = id.nil? ? '<span>' : "<span id='#{id}'>"
     inner = "#{span}#{text}</span>" +
-      "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
+      "<span class='tip'>#{tip}</span>"
     link_to inner, "#", :class=>'texthastip', :tabindex=>'0'
   end
 
@@ -114,7 +114,7 @@ module FormatHelper
   def link_with_tooltip( text, tip, href, id = nil )
     span = id.nil? ? '<span>' : "<span id='#{id}'>"
     inner = "#{span}#{text}</span>" +
-      "<span class='tip' style='white-space: nowrap;'>#{tip}</span>"
+      "<span class='tip'>#{tip}</span>"
     link_to inner, href, :class=>'linkhastip', :tabindex=>'0'
   end
 
