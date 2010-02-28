@@ -23,18 +23,26 @@
         WontoMedia.ads.google.publisher_id and
         WontoMedia.ads.google.data_page_slot %>
 
-    <div id="block-google" class="box" style="width: 98%; text-align: center;">
-      <script type="text/javascript"><!--
-        google_ad_client = "<%= WontoMedia.ads.google.publisher_id -%>";
-          /* Wontology Column */
-        google_ad_slot = "<%= WontoMedia.ads.google.data_page_slot -%>";
-        google_ad_width = 160;
-        google_ad_height = 600;
-        //--></script>
-      <script type="text/javascript"
-              src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-      </script>
-    </div>
+    <div id="block-google-ad" class="box"
+        style="width: 98%; height: 600px; text-align: center;"></div>
+    <script>
+      if (typeof adsToLoadInPage === 'undefined')
+        adsToLoadInPage = new Array();
+      adsToLoadInPage[ adsToLoadInPage.length ] = 'block-google-ad';
+    </script>
 
+    <% content_for :last_bottom_page_js do %>
+      <div id="block-google-ad-content" style="display: none;">
+        <script type="text/javascript"><!--
+          google_ad_client = "<%= WontoMedia.ads.google.publisher_id -%>";
+          google_ad_slot = "<%= WontoMedia.ads.google.data_page_slot -%>";
+          google_ad_width = 160;
+          google_ad_height = 600;
+          //--></script>
+        <script type="text/javascript"
+                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+        </script>
+      </div>
+    <% end %>
   <% end %>
 <% end %>

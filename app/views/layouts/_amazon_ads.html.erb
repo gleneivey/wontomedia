@@ -22,37 +22,47 @@
   <% if WontoMedia.ads.amazon and
         WontoMedia.ads.amazon.associate_id %>
 
-    <div id="block-amazon" class="box" style="width: 98%; text-align: center;">
-      <script type="text/javascript"><!--
-          // adjust for our fluid-width layout as possible
-        // TODO: really ought to repeat these calculations in a
-        //   window-resize event handler....
-        divWidth = $('block-amazon').style.width;
-        if (divResult = divWidth.match(/^([0-9.]+)%$/)){
-          floatWidth = $('float-left').style.width;       // always a %
-          floatWidth = parseFloat(floatWidth) / 100;
+    <div id="block-amazon-ad" class="box"
+        style="width: 98%; height: 600px; text-align: center;"></div>
+    <script>
+      if (typeof adsToLoadInPage === 'undefined')
+        adsToLoadInPage = new Array();
+      adsToLoadInPage[ adsToLoadInPage.length ] = 'block-amazon-ad';
+    </script>
 
-          divWidth = parseFloat(divResult[0]) / 100;
-          divWidth = divWidth * floatWidth * window.innerWidth;
-          amazon_ad_width = Math.floor(divWidth - 4).toString();
-        }
-        else if (divResult = divWidth.match(/^([0-9.]+)px$/))
-          amazon_ad_width = (parseInt(divResult[0]) - 4) + "px";
+    <% content_for :last_bottom_page_js do %>
+      <div id="block-amazon-ad-content" style="display: none;">
+        <script type="text/javascript"><!--
+            // adjust for our fluid-width layout as possible
+          // TODO: really ought to repeat these calculations in a
+          //   window-resize event handler....
+          divWidth = $('block-amazon-ad').style.width;
+          if (divResult = divWidth.match(/^([0-9.]+)%$/)){
+            floatWidth = $('float-left').style.width;       // always a %
+            floatWidth = parseFloat(floatWidth) / 100;
 
-        amazon_ad_width = (parseInt(amazon_ad_width) >= 160)? "160":"120";
+            divWidth = parseFloat(divResult[0]) / 100;
+            divWidth = divWidth * floatWidth * window.innerWidth;
+            amazon_ad_width = Math.floor(divWidth - 4).toString();
+          }
+          else if (divResult = divWidth.match(/^([0-9.]+)px$/))
+            amazon_ad_width = (parseInt(divResult[0]) - 4) + "px";
+
+          amazon_ad_width = (parseInt(amazon_ad_width) >= 160)? "160":"120";
 
 
-          // boiler-plate from Amazon
-        amazon_ad_tag = "<%= WontoMedia.ads.amazon.associate_id -%>";
-        amazon_ad_height = "600";
-        amazon_ad_logo = "hide";
-        amazon_ad_border = "hide";
-        amazon_color_link = "1D43C0";
-        amazon_color_logo = "040460";
-      //--></script>
-      <script type="text/javascript"
-              src="http://www.assoc-amazon.com/s/ads.js"></script>
-    </div>
-
+            // boiler-plate from Amazon
+          amazon_ad_tag = "<%= WontoMedia.ads.amazon.associate_id -%>";
+          amazon_ad_height = "600";
+          amazon_ad_logo = "hide";
+          amazon_ad_border = "hide";
+          amazon_color_link = "040460";
+          amazon_color_logo = "1D43C0";
+          //-->
+        </script>
+        <script type="text/javascript"
+                src="http://www.assoc-amazon.com/s/ads.js"></script>
+      </div>
+    <% end %>
   <% end %>
 <% end %>

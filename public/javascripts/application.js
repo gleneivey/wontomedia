@@ -16,10 +16,23 @@
 // see <http://www.gnu.org/licenses/>.
 
 
+    // invoked at bottom of app/views/layouts/base.html.erb
+function loadAdsInPage(){
+  if (typeof adsToLoadInPage !== 'undefined')
+    for (var c =0; c < adsToLoadInPage.length; c++){
+      var targetDiv = document.getElementById( adsToLoadInPage[c] );
+      var divWithAd =
+        document.getElementById( adsToLoadInPage[c] + '-content' );
 
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
-
+      // remove the ad div from the main document
+      var parent = divWithAd.parentNode;
+      parent.removeChild( divWithAd );
+      // put the ad div into its target location on the page
+      targetDiv.appendChild( divWithAd );
+      // and make it visible
+      divWithAd.style.display = 'block';
+    }
+}
 
 
     // common to several forms
@@ -54,4 +67,3 @@ jQuery(document).ready(function() {
     'type'          : 'iframe'
   });
 });
-
