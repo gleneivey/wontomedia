@@ -23,12 +23,12 @@
         WontoMedia.ads.google.publisher_id and
         WontoMedia.ads.google.data_page_slot %>
 
+    <!-- specifying the height for this div prevents re-layout when content
+         is added later in page load.  Must update if ad unit changes -->
     <div id="block-google-ad" class="box"
         style="width: 98%; height: 600px; text-align: center;"></div>
     <script>
-      if (typeof adsToLoadInPage === 'undefined')
-        adsToLoadInPage = new Array();
-      adsToLoadInPage[ adsToLoadInPage.length ] = 'block-google-ad';
+      addToDivsToMove('block-google-ad');
     </script>
 
     <% content_for :last_bottom_page_js do %>

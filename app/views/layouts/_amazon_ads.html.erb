@@ -22,12 +22,12 @@
   <% if WontoMedia.ads.amazon and
         WontoMedia.ads.amazon.associate_id %>
 
+    <!-- specifying the height for this div prevents re-layout when content
+         is added later in page load.  Must update if ad unit changes -->
     <div id="block-amazon-ad" class="box"
         style="width: 98%; height: 600px; text-align: center;"></div>
     <script>
-      if (typeof adsToLoadInPage === 'undefined')
-        adsToLoadInPage = new Array();
-      adsToLoadInPage[ adsToLoadInPage.length ] = 'block-amazon-ad';
+      addToDivsToMove('block-amazon-ad');
     </script>
 
     <% content_for :last_bottom_page_js do %>
@@ -56,6 +56,7 @@
           amazon_ad_height = "600";
           amazon_ad_logo = "hide";
           amazon_ad_border = "hide";
+          amazon_color_border = "f8f8ff";
           amazon_color_link = "040460";
           amazon_color_logo = "1D43C0";
           //-->

@@ -17,12 +17,12 @@
 
 
     // invoked at bottom of app/views/layouts/base.html.erb
-function loadAdsInPage(){
-  if (typeof adsToLoadInPage !== 'undefined')
-    for (var c =0; c < adsToLoadInPage.length; c++){
-      var targetDiv = document.getElementById( adsToLoadInPage[c] );
+function moveAndDisplayDelayedDivs(){
+  if (typeof divsToMove !== 'undefined')
+    for (var c =0; c < divsToMove.length; c++){
+      var targetDiv = document.getElementById( divsToMove[c] );
       var divWithAd =
-        document.getElementById( adsToLoadInPage[c] + '-content' );
+        document.getElementById( divsToMove[c] + '-content' );
 
       // remove the ad div from the main document
       var parent = divWithAd.parentNode;

@@ -16,4 +16,14 @@
 // see <http://www.gnu.org/licenses/>.
 
 
+// this has to execute between when we load jQuery and when we load Prototype
 jQuery.noConflict();         // free-up '$' for 'prototype' (in :defaults)
+
+
+// these are WontoMedia helpers that need to be available at the top of page
+function addToDivsToMove(divId){
+  if (typeof divsToMove === 'undefined')
+    divsToMove = new Array();
+  divsToMove[ divsToMove.length ] = divId;
+}
+
