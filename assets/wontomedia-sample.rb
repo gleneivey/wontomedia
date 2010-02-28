@@ -28,9 +28,12 @@ WontoMedia = OpenStruct.new({
 
   :ads => OpenStruct.new({
 #    :amazon => OpenStruct.new({
+#              # the color scheme of Amazon ads is controlled from JS constants
+#              # in /app/views/layouts/_amazon_ads.html.erb
 #      :associate_id => "your-amazon-id-here"
 #    }),
 #    :google => OpenStruct.new({
+#              # the color scheme of Google ads is controlled from their site
 #      :publisher_id => "your-google-id-here",
 #              # "data page" is used in the partial common/_google_ads,
 #              # which is used in [items or connections]/[index or show] pages
