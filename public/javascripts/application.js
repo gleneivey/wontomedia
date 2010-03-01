@@ -21,8 +21,7 @@ function moveAndDisplayDelayedDivs(){
   if (typeof divsToMove !== 'undefined')
     for (var c =0; c < divsToMove.length; c++){
       var targetDiv = document.getElementById( divsToMove[c] );
-      var divWithAd =
-        document.getElementById( divsToMove[c] + '-content' );
+      var divWithAd = document.getElementById( divsToMove[c] + '-content' );
 
       // remove the ad div from the main document
       var parent = divWithAd.parentNode;
