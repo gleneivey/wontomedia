@@ -5,8 +5,8 @@
 
     # Note, when this changes, DUPLICATE in wm_purge_to_scratch.pl
     #  AND the rubygems download URL probably has to, too
-$RUBY_GEMS_WITH_VERSION= "rubygems-1.3.5";
-$RUBY_GEMS_DOWNLOAD_NUM= "60718";
+$RUBY_GEMS_WITH_VERSION= "rubygems-1.3.6";
+$RUBY_GEMS_DOWNLOAD_NUM= "69365";
 
 
 sub DoASystemCommand {
@@ -23,7 +23,7 @@ DoASystemCommand( "apt-get -y $aptLoadOptions install ruby rdoc ri" );
         # now the RubyGems package manager
 if (!-e "$RUBY_GEMS_WITH_VERSION.tgz"){
     DoASystemCommand( "wget http://rubyforge.org/frs/download.php/" .
-                           "$RUBY)GEMS_DOWNLOAD_NUM/" .
+                           "$RUBY_GEMS_DOWNLOAD_NUM/" .
                            "$RUBY_GEMS_WITH_VERSION.tgz" );
 }
 DoASystemCommand( "tar -xzf $RUBY_GEMS_WITH_VERSION.tgz" );
@@ -92,15 +92,20 @@ DoASystemCommand( "gem1.8 install wontomedia" );
 
 
         # now, trivial test that the install we just did works
-    # make a locally-valid "database.yml" file from sample
 $gemInstallDir= `ls -d /usr/lib/ruby/gems/1.8/gems/wontomedia*`;
 chomp $gemInstallDir;
+    # make a locally-valid "database.yml" file from sample
 DoASystemCommand(
     "sed -e 's/wontomedia_production/wm_test_db/g' " .
     "    -e 's/wontomedia-user/wm/g' " .
     "    -e 's/replace-bad-passwd/wm-pass/g' " .
     " $gemInstallDir/config/database-mysql.yml > " .
     "   $gemInstallDir/config/database.yml "          );
+    # make a local/minimal "config/initializers/wontomedia.rb"
+DoASystemCommand(
+    "cp $gemInstallDir/assets/wontomedia-sample.rb " .
+       "$gemInstallDir/config/initializers/wontomedia.rb " .
+
     # initialize the database
 DoASystemCommand( "cd $gemInstallDir; " .
                   "RAILS_ENV=production rake db:reseed" );
@@ -108,6 +113,7 @@ DoASystemCommand( "cd $gemInstallDir; " .
 DoASystemCommand( "cd $gemInstallDir; " .
                   "rake customize[default-custom]" );
     # build the "packaged" versions of JS and CSS files
+DoASystemCommand( "mkdir $gemInstallDir/tmp" );  # just in case....
 DoASystemCommand( "cd $gemInstallDir; " .
                   "rake asset:packager:build_all" );
 
