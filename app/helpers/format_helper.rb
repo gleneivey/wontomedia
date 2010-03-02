@@ -151,4 +151,13 @@ module FormatHelper
     return content_tag( 'span', params[:destination] + help_link,
       :style => "white-space: nowrap;" ) + " "
   end
+
+  def logo_image
+    logo_name = (File.exists? (
+      Rails.root.join( 'public', 'images', 'logo.jpg'))) ?
+        '/images/logo.jpg' :
+        '/images/logo.png'
+    image_tag( logo_name, :alt=>'Logo', :width=>'99%',
+      :style=>'margin-bottom: 0.7ex;' )
+  end
 end
