@@ -210,6 +210,16 @@ p + table {   margin-bottom: 1.5em;  }
   letter-spacing: -0.3em;
 }
 
+#block-help {
+  float: right;
+  border-width: 1px;
+  border-color: #b0b0ff;
+  border-style: none solid solid;
+  padding: 0 0.3em;
+  height: 2.7ex;
+  font-size: 200%;
+}
+
 
         /* styles first intended for item & connection info tables:
          *   app/views/ ** /index, home, show                                 */

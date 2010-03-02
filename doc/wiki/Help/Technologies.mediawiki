@@ -4,7 +4,9 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-This [[Help:GlossaryPtoZ#anchor_Wontology|wontology]] web site runs on the [[Help:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] web application software.  This page provides a brief description of how it is constructed and the general-purposed components and technologies it uses.
+<css>
+h2 { clear: right; }
+</css>This [[Help:GlossaryPtoZ#anchor_Wontology|wontology]] web site runs on the [[Help:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]] web application software.  This page provides a brief description of how it is constructed and the general-purposed components and technologies it uses.
 
 As a web application, WontoMedia has components that run on the web server, and other components that download with the web pages and are run by your browser.  The browser sends commands and requests for information to the server, which updates the stored information so that other people can see it.
 

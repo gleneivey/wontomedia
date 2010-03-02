@@ -1,0 +1,48 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+This page is an index and map to all of the information pages in our help system.  If you've got any questions that aren't addressed here, feel free to contact us on our [http://rubyforge.org/forum/?group_id=7903 discussion forum] or [http://rubyforge.org/mail/?group_id=7903 email list] (send to list at <code>development at wontology dot org</code>).
+
+== Core Pages ==
+
+The following pages provide fundamental introduction to the concepts involved in a wontology:
+
+* [[Help:Information as Relationships|Information as Relationships]]
+* [[Help:Wontology Concepts|Wontology Concepts]]
+* [[Help:Naming Conventions|Naming Conventions]]
+* [[Help:Browsing a Wontology|Browsing a Wontology]]
+* [[Help:Built-in Relationship Types|Built-in Relationship Types]]
+
+In addition, there is a '''''Glossary''''', broken into pages for words from '''[[Help:GlossaryAtoO|A to O]]''' and '''[[Help:GlossaryPtoZ| P to Z]]'''.
+
+== Tutorials and Popup Help ==
+
+We also have a [[Help:Tutorials|set of step-by-step tutorials]].  To work through them without having any steps that have not been previously explained, the should be done in the following order:
+
+# [[Help:Tutorials/Creating an Item|Creating an Item]]
+# [[Help:Tutorials/Creating a Connection|Creating a Connection]]
+# [[Help:Tutorials/Creating a List|Creating a simple List]]
+# [[Help:Tutorials/Creating a Hierarchy|Creating a Hierarchy]]
+# [[Help:Tutorials/Categories vs. Individuals|Distinguishing categories and individuals]]
+# [[Help:Tutorials/Creating a Property|Creating a new type of Relationship]]
+# [[Help:Tutorials/Using SPO|Using sub_property_of]]
+
+We also store all of the text for the different popup-help items in a [[WontoMedia]]-run web site in the same wiki.  There is a separate [http://wiki.wontology.org/wiki/index.php?title=Special%3APrefixIndex&from=Popup&namespace=100 list of all the help popups].
+
+== Details and Software ==
+
+Finally, there are pages with additional details:
+
+* about the [[Help:Technologies|Technologies]] used by [[WontoMedia]] web sites
+* [[Help:About Wontology.org|About Wontology.org]]
+* about our [[Major Roadmap|feature development roadmap]]
+
+And for interested software developers, see
+
+* the [[Main Page|software development project wiki]]
+** [[Install from Scratch]]
+** [[Setting Up Your Development Environment]]
+** [[Testing Your Work]]

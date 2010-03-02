@@ -17,8 +17,6 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<% if @display_unimplemented %>
-<div id="block-help" style="float: right;">
-  <span class="unimplemented">[top-level "Help" link]</span>
+<div id="block-help">
+  <%= link_to 'Help', WontoMedia.help_url_prefix + "Help:Main_Page" %>
 </div>
-<% end %>
