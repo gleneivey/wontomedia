@@ -29,13 +29,16 @@
 ### and GitHub's other guides (http://github.com/guides/)
 test_git_source = "git://github.com/gleneivey/wontomedia.git"
 
+def exc(cmd)
+  puts cmd
+  `#{cmd}`
+  exit $?.exitstatus if $?.exitstatus != 0
+end
+
 
           # clone WontoMedia from a repository
-cmd = "git clone #{test_git_source}"
-puts cmd
-`#{cmd}`
-exit $?.exitstatus if $?.exitstatus != 0
-
+exc "git clone #{test_git_source}"
+exc "cp wontomedia/assets/wontomedia-sample.rb wontomedia/config/initializers/wontomedia.rb"
 
           # write a new "database.yml" file in our Git directory
 puts "wontomedia/config/database.yml"

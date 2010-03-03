@@ -13,6 +13,7 @@ gem install rspec-rails --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin
 gem install    cucumber --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin
 gem install   rubyforge --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin
 gem install     mongrel --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin
+gem install   gemcutter --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin
 gem install technicalpickles-jeweler   --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin
 gem install    migration_test_helper   --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin
 gem install          selenium-client   --install-dir $TESTING_GEMS --bindir $TESTING_GEMS/bin

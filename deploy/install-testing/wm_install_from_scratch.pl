@@ -104,7 +104,7 @@ DoASystemCommand(
     # make a local/minimal "config/initializers/wontomedia.rb"
 DoASystemCommand(
     "cp $gemInstallDir/assets/wontomedia-sample.rb " .
-       "$gemInstallDir/config/initializers/wontomedia.rb " .
+    "$gemInstallDir/config/initializers/wontomedia.rb " );
 
     # initialize the database
 DoASystemCommand( "cd $gemInstallDir; " .
