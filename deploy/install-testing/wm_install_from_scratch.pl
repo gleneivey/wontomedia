@@ -17,9 +17,21 @@ sub DoASystemCommand {
 }
 
 
-
         # first Ruby itself
-DoASystemCommand( "apt-get -y $aptLoadOptions install ruby rdoc ri" );
+DoASystemCommand( "apt-get -y $aptLoadOptions install ruby rdoc ri rake" );
+$rubyVersion = `ruby --version`;
+if ($rubyVersion !~ /^ruby\s+1\.8\.([0-9]+)/i){
+    die "Ruby version must be at least 1.8.7.  The version installed by default by your package manager reported a different version (below).  You will likely have to install manually.\n    $rubyVersion";
+}
+$minorVersion = $1;
+if (($minorVersion + 0) < 7){
+    die "Ruby version must be at least 1.8.7.  The version installed by default by your package manager reported a different version (below).  You will likely have to install manually.\n    $rubyVersion";
+}
+elsif (($minorVersion + 0) > 7){
+    print STDERR "WARNING:  WontoMedia has been tested on Ruby version 1.8.7.  The version installed by default by your package manager appears newer.  If you have problems with your new WontoMedia installation, consider downgrading Ruby before trying other fixes.  Your Ruby interpreter reported the version:\n    $rubyVersion";
+}
+
+
         # now the RubyGems package manager
 if (!-e "$RUBY_GEMS_WITH_VERSION.tgz"){
     DoASystemCommand( "wget http://rubyforge.org/frs/download.php/" .

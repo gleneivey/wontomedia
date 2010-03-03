@@ -64,8 +64,8 @@ system "rm -rf /root/.gem /root/.gemrc /usr/bin/gem .gem " .
              " /usr/local/lib/site_ruby/1.8/ubygems.rb " .
              " /usr/lib/ruby/gems ";
 system "rm -rf $RUBY_GEMS_WITH_VERSION";
-system "apt-get -y purge ruby rdoc ri ruby1.8 rdoc1.8 ri1.8 " .
-                       " libruby1.8 irb1.8 libreadline-ruby1.8 ";
+system "apt-get -y purge ruby rdoc ri rake ruby1.8 rdoc1.8 ri1.8 " .
+                       " libruby1.8 irb1.8 libreadline-ruby1.8 libreadline5 ";
 system "apt-get autoremove";
 
 

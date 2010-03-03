@@ -39,6 +39,7 @@ end
           # clone WontoMedia from a repository
 exc "git clone #{test_git_source}"
 exc "cp wontomedia/assets/wontomedia-sample.rb wontomedia/config/initializers/wontomedia.rb"
+exc "mkdir wontomedia/tmp"
 
           # write a new "database.yml" file in our Git directory
 puts "wontomedia/config/database.yml"
