@@ -16,7 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require 'test_helper'
 require File.join( File.dirname(__FILE__), '..', 'test_helper' )
 
 class ItemsDataTest < ActiveSupport::TestCase

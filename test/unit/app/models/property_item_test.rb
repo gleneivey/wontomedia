@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class PropertyItemTest < ActiveSupport::TestCase
   test "property_item model exists" do
     assert PropertyItem.new

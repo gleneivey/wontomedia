@@ -16,6 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
 require 'enumerator'
 
 class ConnectionsControllerTest < ActionController::TestCase

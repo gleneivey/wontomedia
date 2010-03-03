@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class RelationAndAllSuperpropertiesTest < ActiveSupport::TestCase
   test "no parents make single invoke only" do
     count = 0

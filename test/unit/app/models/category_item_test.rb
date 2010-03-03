@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class CategoryItemTest < ActiveSupport::TestCase
   test "category_item model exists" do
     assert CategoryItem.new

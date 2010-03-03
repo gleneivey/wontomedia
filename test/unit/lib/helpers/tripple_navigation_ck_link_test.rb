@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class CheckPropertiesLinkTest < ActiveSupport::TestCase
   test "" do
   end

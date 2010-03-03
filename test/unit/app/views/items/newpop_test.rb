@@ -16,6 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
 
 class ItemsNewpopViewTest < ActionController::TestCase
   tests ItemsController

@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class CheckPropertiesInheritTest < ActiveSupport::TestCase
   test "item with no properties doesnt inherit from anything" do
     assert !TrippleNavigation.check_properties(

@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class RoutesTest < ActionController::IntegrationTest
   test "home page is items-index" do
     assert_routing '/', { :controller => "items", :action => "home" }

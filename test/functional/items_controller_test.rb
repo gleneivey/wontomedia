@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class ItemsControllerTest < ActionController::TestCase
   test "should get homepage" do
     get :home

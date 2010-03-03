@@ -16,7 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require "#{File.dirname(__FILE__)}/../test_helper"
+require File.join( File.dirname(__FILE__), '..', 'test_helper' )
 
 require "webrat"
 Webrat.configure do |config|

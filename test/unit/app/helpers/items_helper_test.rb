@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class ItemsHelperTest < ActionView::TestCase
   test "generate self-item title text" do
     title = "a test item"

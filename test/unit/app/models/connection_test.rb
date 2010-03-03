@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
+
 class EgdeTest < ActiveSupport::TestCase
   test "connection model exists" do
     assert Connection.new

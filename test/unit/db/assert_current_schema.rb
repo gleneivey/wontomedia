@@ -16,6 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require File.join( File.dirname(__FILE__), 'test_helper' )
+
 module AssertCurrentSchema
   def assert_current_schema
     assert_schema do |s|

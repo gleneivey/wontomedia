@@ -16,6 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require 'test_helper'
 require Rails.root.join( 'app', 'helpers', 'format_helper' )
 include(FormatHelper)
 
