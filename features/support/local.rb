@@ -16,7 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-#### lines copied from env.rb, which we don't use directly any more
+#### lines copied from env.rb, which we don't use any more
 
 ENV["RAILS_ENV"] ||= "cucumber"
 require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')

@@ -16,6 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+require File.join( File.dirname(__FILE__), 'local')
 require 'spec/expectations'
 require 'selenium'
 

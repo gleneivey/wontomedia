@@ -15,6 +15,10 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
 
+
+require File.join( File.dirname(__FILE__), 'local')
+
+
 Webrat.configure do |config|
   config.mode = :rails
   config.open_error_files = false
