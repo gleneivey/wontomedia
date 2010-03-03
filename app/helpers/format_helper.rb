@@ -153,7 +153,7 @@ module FormatHelper
   end
 
   def logo_image
-    logo_name = (File.exists? (
+    logo_name = (File.exists?(
       Rails.root.join( 'public', 'images', 'logo.jpg'))) ?
         '/images/logo.jpg' :
         '/images/logo.png'

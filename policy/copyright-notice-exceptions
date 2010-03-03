@@ -68,6 +68,7 @@ COPYING.DOCUMENTATION
 *.ico
 *.svg
 *.png
+*.jpg
 
     # not worth hassle of license notice
 public/robots.txt
