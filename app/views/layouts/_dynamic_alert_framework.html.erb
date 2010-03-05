@@ -40,9 +40,13 @@
 
 
 <div id="alert_show_link">
+  <%= link_to_function "Show Alert", "dynamic_alert_show_box();" %>
 </div>
 
 <div id="alert_box">
+  <div id="alert_box_close_link">
+    <%= link_to_function "X", "dynamic_alert_show_link();" %>
+  </div>
   <%= open(FormatHelper::ALERT_CONTENT_PATH).read %>
 </div>
 

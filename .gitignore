@@ -1,6 +1,6 @@
 config/database.yml
 config/initializers/wontomedia.rb
-app/views/layouts/_dynamic_alert_content.html.erb
+app/views/layouts/_dynamic_alert_content.html
 doc/app
 *_packaged.js
 *_packaged.css

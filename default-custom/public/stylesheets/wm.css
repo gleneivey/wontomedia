@@ -220,6 +220,24 @@ p + table {   margin-bottom: 1.5em;  }
   font-size: 200%;
 }
 
+#alert_box {
+  width: 30%;
+  position: fixed;
+  top: 18px;
+  left: 35%;
+  z-index: 150;
+  font-size: 110%;
+  font-weight: bold;
+  background: url("/images/alert_background.png") repeat;
+  text-align: center;
+}
+#alert_box_close_link {
+  float: right;
+  border: solid 1px #1d43c0;
+  margin: 0 5px;
+}
+  
+
 
         /* styles first intended for item & connection info tables:
          *   app/views/ ** /index, home, show                                 */
