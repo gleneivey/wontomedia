@@ -15,7 +15,25 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
 
+#### Active lines here at the top of file.  Unused Rails boiler-plate down below
 
+RAILS_GEM_VERSION = '~> 2.3' unless defined? RAILS_GEM_VERSION
+require File.join(File.dirname(__FILE__), 'boot')
+
+Rails::Initializer.run do |config|
+#  config.log_level = :debug
+
+  config.frameworks -= [ :action_mailer ]
+  config.time_zone = 'UTC'
+  config.action_controller.session = {
+    :session_key => '_wontomedia_session',
+    :secret      => '1f59de398da7f80aca3f4a943eae6e8f5759efe7ec9e7690c57a4f485012f4f487ccf4530d4885a70fb20f51801306ddc50688b00bb3616da44303238cb15a64'
+  }
+end
+
+
+
+###########################################################################
 
 # Be sure to restart your server when you modify this file
 
@@ -24,12 +42,12 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '~> 2.3' unless defined? RAILS_GEM_VERSION
+#RAILS_GEM_VERSION = '~> 2.3' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
-require File.join(File.dirname(__FILE__), 'boot')
+#require File.join(File.dirname(__FILE__), 'boot')
 
-Rails::Initializer.run do |config|
+#Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -62,7 +80,7 @@ Rails::Initializer.run do |config|
   # Make Time.zone default to the specified zone, and make Active Record store time values
   # in the database in UTC, and return them converted to the specified local zone.
   # Run "rake -D time" for a list of tasks for finding time zone names. Comment line to use default local time.
-  config.time_zone = 'UTC'
+#  config.time_zone = 'UTC'
 
   # The internationalization framework can be changed to have another default locale (standard is :en) or more load paths.
   # All files from config/locales/*.rb,yml are added automatically.
@@ -73,10 +91,10 @@ Rails::Initializer.run do |config|
   # If you change this key, all old sessions will become invalid!
   # Make sure the secret is at least 30 characters and all random,
   # no regular words or you'll be exposed to dictionary attacks.
-  config.action_controller.session = {
-    :session_key => '_wontomedia_session',
-    :secret      => '1f59de398da7f80aca3f4a943eae6e8f5759efe7ec9e7690c57a4f485012f4f487ccf4530d4885a70fb20f51801306ddc50688b00bb3616da44303238cb15a64'
-  }
+#  config.action_controller.session = {
+#    :session_key => '_wontomedia_session',
+#    :secret      => '1f59de398da7f80aca3f4a943eae6e8f5759efe7ec9e7690c57a4f485012f4f487ccf4530d4885a70fb20f51801306ddc50688b00bb3616da44303238cb15a64'
+#  }
 
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
@@ -91,4 +109,4 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   # Please note that observers generated using script/generate observer need to have an _observer suffix
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
-end
+#end
