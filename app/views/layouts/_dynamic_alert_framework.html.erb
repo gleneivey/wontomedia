@@ -39,15 +39,21 @@
 %>
 
 
-<div id="alert_show_link">
+<div id="alert_show_link"
+    style="display: none; margin-top: 0.7ex; margin-bottom: 0.7ex;">
   <%= link_to_function "Show Alert", "dynamic_alert_show_box();" %>
 </div>
 
-<div id="alert_box">
+<div id="alert_box" style="display: none;">
   <div id="alert_box_close_link">
     <%= link_to_function "X", "dynamic_alert_show_link();" %>
   </div>
   <%= open(FormatHelper::ALERT_CONTENT_PATH).read %>
 </div>
 
-
+<script>
+  if (Cookie.get( alert_cookie_name ) == "true")
+    document.getElementById('alert_show_link').style.display = 'block';
+  else
+    document.getElementById('alert_box').style.display = 'block';
+</script>

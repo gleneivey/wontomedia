@@ -21,10 +21,12 @@ javascripts:
   - fancybox
   - reconcileJQueryAndPrototype
   - prototype
+  - cookies
 - topAfterJQuery:
   - fancybox
   - reconcileJQueryAndPrototype
   - prototype
+  - cookies
 - bottomJS:
   - effects
   - controls

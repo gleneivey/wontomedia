@@ -66,3 +66,16 @@ jQuery(document).ready(function() {
     'type'          : 'iframe'
   });
 });
+
+
+function dynamic_alert_show_box(){
+  Cookie.set( alert_cookie_name, "false" );
+  document.getElementById('alert_box').style.display = 'block';
+  document.getElementById('alert_show_link').style.display = 'none';
+}
+
+function dynamic_alert_show_link(){
+  Cookie.set( alert_cookie_name, "true" );
+  document.getElementById('alert_box').style.display = 'none';
+  document.getElementById('alert_show_link').style.display = 'block';
+}

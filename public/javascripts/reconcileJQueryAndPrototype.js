@@ -27,3 +27,4 @@ function addToDivsToMove(divId){
   divsToMove[ divsToMove.length ] = divId;
 }
 
+alert_cookie_name = 'show_alert';
