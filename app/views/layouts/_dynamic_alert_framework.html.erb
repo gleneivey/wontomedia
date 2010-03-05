@@ -1,0 +1,49 @@
+<%
+# WontoMedia - a wontology web application
+# Copyright (C) 2010 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see "http://www.gnu.org/licenses/".
+%>
+
+
+<%
+# strategy: when an alert is present, it is displayed in one of two ways:
+#  1) show a floating box with the alert message fixed near the top
+#     of the browser window.  Message box includes an "X" close button.
+#  2) show a single-line "Show Alert" link below the upper-right logo
+#     and above the other right-column boxes
+#
+#  When a visitor first views a site page after an alert is posted,
+#  the box is displayed, and it is displayed on all subsequent pages
+#  until the alert is removed or the visitor takes action.  When the
+#  box's "X" is clicked, the box is un-displayed and the link is
+#  added.  This state then persists on subsequent pages.  When the
+#  "Show Alert" list is clicked, the box is re-displayed and the link
+#  removed, and the box resumes its persitence across pages.
+#
+# implementation: alert text and managing JS code is included only
+#  when an alert is present.  Use a session cookie, set and read from
+#  JS on the links, to control whether the box or link is displayed.
+%>
+
+
+<div id="alert_show_link">
+</div>
+
+<div id="alert_box">
+  <%= open(FormatHelper::ALERT_CONTENT_PATH).read %>
+</div>
+
+

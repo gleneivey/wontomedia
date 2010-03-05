@@ -160,4 +160,16 @@ module FormatHelper
     image_tag( logo_name, :alt=>'Logo', :width=>'99%',
       :style=>'margin-bottom: 0.7ex;' )
   end
+
+
+  ALERT_CONTENT_NAME = 'dynamic_alert_content'
+  ALERT_CONTENT_PATH = Rails.root.join(
+    'app', 'views', 'layouts', '_' + ALERT_CONTENT_NAME + '.html' )
+  def allpages_alert
+    if File.exists? ALERT_CONTENT_PATH
+      render :partial => File.join( 'layouts', 'dynamic_alert_framework' )
+    else
+      ''
+    end
+  end
 end
