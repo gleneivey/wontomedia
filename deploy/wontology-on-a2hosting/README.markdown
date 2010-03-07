@@ -11,7 +11,8 @@ Git repository for release builds changes, and when we migrate to
 supporting multiple hosts and sites, additional/other hosting
 providers, etc.
 
-In short, the deployment procedure is as follows:
+In short, the deployment procedure is as follows (note: parameters for
+'wontology.org' installation):
 
  * from any web browser, back up the current database content by fetching
    both a 'items.yaml' and an 'connections.n3' file from
@@ -23,7 +24,7 @@ In short, the deployment procedure is as follows:
 
  * from the root of the A2 user account:
      [  shutdown WontoMedia via web/cPanel RoR widget ]
-      $ ./install-wontomedia.sh
+      $ ./install-wontomedia.rb wontology
       $ cd etc/rails_apps/WontoMedia                   # if necessary
       $ RAILS_ENV=production rake db:reseed            # if necessary
      [  start WontoMedia via web/cPanel RoR widget ]
@@ -34,26 +35,17 @@ These scripts make the following assumption about the A2 host's configuration:
  * All cPanel setup (database & db user creation, RoR app creation [for
    the 'production' environment], port forwarding) has already been done
  * the A2 account's local user name is:  glenivey
- * the A2 account's user's local gem path is:
-      /home/glenivey/ruby/gems
-   (the A2 default)
- * the cPanel RoR configuration for the app's home directory is:
-      /home/glenivey/etc/rails_apps/WontoMedia
-   (the A2 default path for an app named "WontoMedia")
- * the correct content for the app's local config-directory files is
-   located at:
-      /home/glenivey/wm.*
+ * the A2 account's directories are organized as indicated by the constants
+   at the top of install-wontomedia.rb
 
 At a high level, installation is accomplished by:
  * building a release gem locally
  * scp'ing the gem to the A2 host
  * performing "gem install -l" on the new gem
- * copying in the config/* files
- * updating the config/environment.rb file to include the account-specific
-   gem directory
+ * copying in and updating the config/* files
  * ensuring that there is symbolic link from the point in ~/etc where A2
    expects the RoR app that points to the correct place in the local
-   gem directory
+   gem install directory
 
 ----------------------------------------------------------------
 

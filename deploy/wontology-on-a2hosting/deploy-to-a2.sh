@@ -1,6 +1,7 @@
 
-scp -P 7822 deploy/wontology-on-a2hosting/install-wontomedia.sh    \
+scp -P 7822 deploy/wontology-on-a2hosting/install-wontomedia.rb    \
             pkg/wontomedia-*.gem                                   \
                 glenivey@www.wontology.org:/home/glenivey
-scp -P 7822 config/initializers/wontomedia.rb                      \
-                glenivey@www.wontology.org:/home/glenivey/wm.wontomedia.rb
+# still valid, just don't need to do every time:
+#scp -P 7822 config/initializers/wontomedia.rb                      \
+#                glenivey@www.wontology.org:/home/glenivey/SiteConfigs/wm.wontomedia.rb
