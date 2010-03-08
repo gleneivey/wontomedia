@@ -42,10 +42,12 @@ WontoMedia development uses the [http://www.kernel.org/pub/software/scm/git/docs
 
 There are several URLs you can install from, depending on your intentions.  Fortunately, changing your "origin" repository later is straight-forward, so there is no problem if your use of WontoMedia changes over time.  In particular:
 
-* <tt>git://github.com/gleneivey/wontomedia.git</tt> is the "Public" clone URL for a working repository on GitHub.  If in doubt, use this one.  This repository receives the most frequent updates, and is the primary repository for our continuous integration and automated testing.  The HEAD of this repository should be functional nearly all the time (''e.g.'', barring CI failures), but may contain partial implementations of UI features.
+* <tt>git://github.com/gleneivey/wontomedia.git</tt> is the "Public" clone URL for our "working" repository on GitHub.  If in doubt, use this one.  This repository receives the most frequent updates, and is the primary repository for our continuous integration and automated testing.  The HEAD of the <tt>master</tt> branch in this repository should be functional nearly all the time (''e.g.'', barring CI failures), but may contain partial implementations of UI features.
 * <tt>git@github.com:gleneivey/wontomedia.git</tt> points to the same repository as the above, but is for use by people with commit access.  Our policy is to grant committer access to anyone requesting it, in the hope that we'll have few cases where we end up having to revoke access.  To request, email to <code>development at wontology dot org</code> or [http://github.com/inbox/new send a GitHub message] to <tt>gleneivey</tt>.
-* <tt>git://rubyforge.org/wontomedia.git</tt> is the clone URL for the stable/release repository on RubyForge.  Code will be pushed from GitHub to RubyForge on completion of each "user story".
-* ''[your own GitHub repository URL]'' [http://github.com/guides/fork-a-project-and-submit-your-modifications The work flow provided by GitHub], which we hope to use extensively, is based on developers creating their own "forked" repositories, submitting their changes there, and then making "pull requests" against the repository from which they forked.  If you're going to be making more than occasional changes to WontoMedia, you should consider this option.  And when you do create your own WontoMedia fork on GitHub, you will have your own "committer" Git URL for that repository, and should clone from that.
+* <tt>git://rubyforge.org/wontomedia.git</tt> is the clone URL for the stable/release repository on RubyForge.  Code will be pushed from GitHub to RubyForge on completion of each "user story", and the latest numbered, stable release is the HEAD of the <tt>master</tt> branch.
+* ''[your own GitHub repository URL]'' [http://github.com/guides/fork-a-project-and-submit-your-modifications The work flow provided by GitHub], which we hope to use extensively, is based on developers creating their own "forked" repositories, submitting their changes there, and then making "pull requests" to the repository from which they forked.  If you're going to be making more than occasional changes to WontoMedia, you should consider this option.  And when you do create your own WontoMedia fork on GitHub, you will have your own "committer" Git URL for that repository, and should clone from that.
+
+For more information on how, when, and why source changes are merged from one repository/branch to another, see our [[Development and Release Process]].
 
 From the directory ''in which'' you want to create your <tt>wontomedia</tt> file tree, execute the command:
 
@@ -120,7 +122,7 @@ Before starting WontoMedia for the first time, you must initialize your developm
 
  rake db:reseed
 
-if you have not done this already and/or you'd like to discard any data you've added to earlier WontoMedia installations on this system.
+if you have not done this already and/or you'd like to discard any data you've added to earlier WontoMedia installations on using the same database-connection settings.
 
 You must also configure the links from the standard Ruby-on-Rails directories in your WontoMedia source tree to the customization files you wish to use.  To use the sample/default customization files included with WontoMedia (a good starting point), run the command:
 

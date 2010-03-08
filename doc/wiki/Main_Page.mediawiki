@@ -12,9 +12,12 @@ Eventually this wiki will also contain [[User Reference]] information and [[Syst
 
 == Installing WontoMedia ==
 
-'''To install WontoMedia for use''' on your own system, your intranet, or publicly on the Internet, it is recommended to install the latest release gem from our repository on [[RubyForge]]:
+'''To install WontoMedia for use''' on your own system, your intranet, or publicly on the Internet, it is recommended to install the latest release gem:
 
   gem install wontomedia
+
+(Source from our repository on [[RubyForge]], actual gem hosting via
+Gemcutter from <tt>rubygems.org</tt>.)
 
 If this command is familiar to you, and you know how to update a Rails applications' <tt>database.yml</tt>, then this should be all you need. For more information, please see [[Install from Scratch]] for a set of step-by-step instructions.
 
@@ -27,10 +30,11 @@ And we have more information on [[Setting Up Your Development Environment]] sepa
 
 == Developer's References ==
 
-Our latest source code is on GitHub (we push to the [http://rubyforge.org/scm/?group_id=7903 Git repository on RubyForge] for each minor release, but not when each "user story" is done).  You can install directly from it (see above) or [http://github.com/gleneivey/wontomedia/tree/master use GitHub's web-based source browser] to investigate our source.
+Our latest source code is on GitHub.  (We push to <tt>master</tt> in our [http://rubyforge.org/scm/?group_id=7903 Git repository on RubyForge] for each numbered release.  See our [[Development and Release Process]] for more details on what types of code you can find where.)  You can install directly from it (see above) or [http://github.com/gleneivey/wontomedia/tree/master use GitHub's web-based source browser] to investigate our source.
 
-* [[I've Just Got a Little Change]] &mdash; The minimal steps for volunteering a code change ("contribution guidelines"), pull request, or patch
-* [[Setting Up Your Development Environment]] &mdash; Alternatives for installation sources, tool dependencies, configuring your <tt>database.yml</tt>, running tests
+* [[I've Just Got a Little Change]] &mdash; The minimal steps for volunteering a code change ("contribution guidelines"), pull request, or patch.
+* [[Setting Up Your Development Environment]] &mdash; Alternatives for installation sources, tool dependencies, local configuration files you have to create/modify, and running tests.
+* [[Development and Release Process]] &mdash; The organization of our project's code into branches within web repositories, and what you can expect for newness versus stability.
 * [[Additional Development Information]] &mdash; Things you'll want to know if you're thinking about doing more than a little change or two.
 
 For reference, the tools we use are as follows (all [http://www.fsf.org/about/what-is-free-software free software]):
@@ -39,7 +43,7 @@ For reference, the tools we use are as follows (all [http://www.fsf.org/about/wh
 * the [http://rubyonrails.org/ Ruby-on-Rails] web application framework (v2.3.5) on top of the [http://www.mysql.com/ MySQL] database server (v5.0)
 * the [http://www.kernel.org/pub/software/scm/git/docs/ Git] source code management system (v1.6)
 * the [http://www.rubygems.org/ Gems] Ruby software packaging and distribution system (v1.3.5)
-* [http://rubyforge.org/projects/wontomedia/ RubyForge], the open-source Ruby project hosting site, which hosts hosts our [http://wontomedia.rubyforge.org/ project web site]
+* [http://rubyforge.org/projects/wontomedia/ RubyForge], the open-source Ruby project hosting site, which hosts our [http://wontomedia.rubyforge.org/ project web site]
 * [https://github.com/gleneivey/wontomedia/tree GitHub], the public Git repository web site
 * various Ruby and web-based automated-testing tools, including:
 ** [http://cukes.info/ Cucumber] for our automated acceptance testing framework (v0.6.2)
@@ -52,7 +56,7 @@ For reference, the tools we use are as follows (all [http://www.fsf.org/about/wh
 
 === Planned Functionality ===
 
-There are many different directions in which we can expand [[WontoMedia]]'s functionality.  How development will proceed will be dictated primarily by developer interest in different feature areas. The overall planning process is centered on [http://www.mountaingoatsoftware.com/article_view/27 user stories]. Middle- and long-term feature areas are defined by a collection of [[Epic Stories]] and our [[Major Roadmap|major-features road map]].  These stories are being incrementally defined and decomposed into smaller, actionable stories, which we manage using [https://www.pivotaltracker.com/projects/9280/stories Pivotal Tracker].
+There are many different directions in which we can expand [[WontoMedia]]'s functionality.  How development will proceed will be dictated primarily by developer interest in different feature areas. The overall planning process is centered on [http://www.mountaingoatsoftware.com/article_view/27 user stories]. Middle- and long-term feature areas are defined by a collection of [[Epic Stories]] and our [[Major Roadmap|major-features road map]].  These stories are being incrementally defined and decomposed into smaller, actionable stories, which we manage using [https://www.pivotaltracker.com/projects/9280 Pivotal Tracker].
 
 === Architecture ===
 

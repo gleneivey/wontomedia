@@ -1,0 +1,137 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+
+[[File:Branches.png|220px|border|right|link=#Organization of Branches|alt=go to Organization of Branches|Branches]]
+
+''Don't Panic!''  Yes, this page has the word "process" in the title, but it is primarily about how source code changes flow through our various Git repositories and their branches to become incorporated in releases.
+
+== Terminology ==
+
+WontoMedia is being developed in an [http://en.wikipedia.org/wiki/Agile_software "agile" style].  This means many things, but for the purposes of this page, the most important are that we organize development around [http://www.agileadvice.com/archives/2006/08/seventeen_tips.html iterations] and [http://www.mountaingoatsoftware.com/article_view/27 stories].  To facilitate this style of development we used the distributed version control tool [http://www.kernel.org/pub/software/scm/git/docs/ Git], to maintain our shared "repositories" and their "branches".
+
+;Iteration
+:An iteration is a chunk of calendar time, the end of which is marked by a new software release.  Currently, we're using two week iterations.  At the end of each, the work which has been ''completed'' during the iteration (that is, all changes except those that are part of stories still being developed) has all been integrated, our most rigorous level of testing has executed and passed, and the updated software is given a new [[#Version Numbering|version number]], and made available at the HEAD of the <tt>master</tt> branch in our Git repository on [[RubyForge]] (which causes it to become the default any time anyone on the Internet executes the command <tt>gem install wontomedia</tt>).  To see where we currently are in the iteration cycle, see our page on [http://www.pivotaltracker.com/projects/9280 Pivotal Tracker].
+;Story
+:A story is the atomic unit of both feature-definition and development work.  As an agile project, we develop code through the incremental addition of small, vertically integrated, customer-visible and -valuable system features.  At the completion of any one story, the entire system is both in a production-worthy condition and has/does something useful that it didn't before.  Note that we say "customer" rather than user; our set of customers ("stake holders" if you like) is much broader than just people who use a WontoMedia web site, and a story only has to provide value to one (type of) customer in order to be valid.  Stories are defined by the goal a customer wants to accomplish and the desired customer interaction with the system (the "plot" of the story).  For WontoMedia development, each story's title and goal (and some notes) are captured in [http://www.pivotaltracker.com/projects/9280 Pivotal Tracker], and the user scenario(s) that make up the story are captured in its [http://testdrivendeveloper.com/2008/04/02/AcceptanceTestDrivenDevelopmentExplained.aspx acceptance tests] (stored in the <tt>features</tt> directory in WontoMedia's source code, and evaluated using the tool [http://cukes.info/ Cucumber]).
+;Repository
+:We use the Git distributed version control tool.  For Git, a repository is a collection of files and matching revision history information.  Anyone doing development on WontoMedia will have at least one local repository.  In addition, we currently have two primary, shared, public, web-based Git repositories:
+:* the repository [http://rubyforge.org/projects/wontomedia/ on RubyForge] contains the current released version of WontoMedia and (separately) the most stable work already completed for the next release.
+:* the repository [http://github.com/gleneivey/wontomedia on GitHub] is a working area, for exchange between different developers, with the latest finished code.
+;Branch
+:A Git repository can contain multiple divergent versions of the same project.  Each independent group of changes is called a ''branch''.  Branches are created starting with an existing version of the software in the repository.  Then software changes are made and periodically "committed" into a Git branch, where they accumulate into a divergent version of WontoMedia, but don't affect the versions of WontoMedia in other branches in the same repository.  Eventually, work in a branch will be complete and stabilized, at which point all of the changes can be merged into another (more stable, more widely distributed) branch, and the original branch closed.
+;<tt>HEAD</tt>
+:In Git terminology, <tt>HEAD</tt> refers to the complete state of the code in a branch, taking into account ''all'' changes through the very latest.
+;<tt>master</tt>
+:A Git repository can contain any number of branches, but by convention all repositories contain a branch named <tt>master</tt> that is expected to contain the preferred state of the project the repository contains.
+
+== Organization of Branches ==
+
+[[File:Branches.png|right]]
+* '''C''': a Git <tt>commit</tt> of changes to a branch (most likely a <tt>push</tt> of changes from a developer's local mirror of a shared repository's content).  Small C's represent changes that must be made to resolve conflicts from a merge.
+* '''T''': placing a tag (label) on the then-HEAD state of a branch so that configuration of files can be easily identified in fugure.
+* '''R''': a release; changing the version number of WontoMedia, building new gems, and pushing those gems out for public distribution.
+* solid arrow down: creating the lower branch from the then-HEAD state of the upper, or merging the full state of the upper branch into the lower.
+* solid arrow up: merging changes from the lower branch into the upper.
+* dotted arrow up: merge of in-progress work
+* light dotted arrow: merge of changes required to resolve conflicts from an earlier merge
+
+
+;RubyForge <tt>master</tt>
+:The <tt>master</tt> branch in the RubyForge repository contains the official released version of the WontoMedia software.  The code at the HEAD of this branch should always be in working order, and the only changes that should ever be made directly in this branch are the updating of WontoMedia's built-in version number.
+;RubyForge <tt>rc</tt> branch
+:The <tt>rc</tt> branch ("rc" for "release candidate") on RubyForge is the location where completed, believed-to-be-working code changes are accumulated and receive their final and most-extensive testing.  It should be rare that bugs in WontoMedia are discovered on this branch, and (since most bugs will be fixed on a branch containing the code change that caused them) even rarer that changes will be made directly in this branch.  Code is deployed from here to our beta-testing web site <tt>wontology.org</tt>.
+;GitHub <tt>master</tt>
+:The <tt>master</tt> branch on GitHub is the location where completed work is accumulated prior to merging it into the <tt>rc</tt> branch on RubyForge.  Changes are merged into <tt>master</tt> on GitHub when developers believe that they are done with the task and that the code is bug-free.  The code in this branch is the focus of the majority of our cross-platform testing.  The results of the final merges for an iteration into GitHub <tt>master</tt> (from <tt>tweaks</tt> or otherwise-unmerged changes from <tt>early-integration</tt>) will be tagged with the anticipated version number of the release.
+;GitHub <tt>early-integration</tt> branch
+:The <tt>early-integration</tt> branch is used to integrate the changes associated with different parallel tracks of development prior to their inclusion in GitHub's <tt>master</tt>.  After a developer has made one or several changes to their local development branch, they can "check out" and merge their changes into <tt>early-integration</tt>.  If the automated tests fail after the merge, they should make changes so that they pass again.  Once the tests pass (and assuming that no additional changes have been made to <tt>early-integration</tt> on GitHub while they were working), the results of the merge can be pushed from their local <tt>early-integration</tt> branch back to the one on GitHub where others will be able to see them.  The <tt>early-integration</tt> branch allows developers working on different stories to observe how other people's work is evolving the WontoMedia source as a whole, and to ensure that integration problems can be worked out well in advance of the end of the iteration and the release.  Wherever possible, changes made in <tt>early-integration</tt> to resolve conflicts between changes in two stories should be merged back into the branch of one of the stories, so that those changes don't have to be repeated or merged separately into GitHub <tt>master</tt> when the second of the conflicting stories is merged there.
+;GitHub ''story'' branches
+:In the figure, the branches marked <tt>[story]</tt> represent the line of development (itself possibly the merge of work done by several developers) that corresponds to a single user story listed in Pivotal Tracker.  The name of the branch should be a mnemonic for the story's title in Tracker, which will be changed to include the branch name chosen when work on the story starts.  When story development is complete, the HEAD state of a story branch is merged into GitHub <tt>master</tt>, the new HEAD of the <tt>master</tt> branch is tagged with the story branch's name, and (barring integration problems or other bugs discovered later in the process) no further changes are committed to the story branch.  At the end of the release ''after'' the one in which the story is included, the story branch is removed from the repository.
+;GitHub <tt>tweaks</tt> branch
+:The <tt>tweaks</tt> branch in GitHub is like a communal (all developers) story branch, except not dedicated to any particular story.  It is intended for small changes made/discovered while other implementation is going on, but which don't fit within the definition of any particular story.  After a developer pushes the commits of a "tweak", they merge the changes into the <tt>early-integration</tt> branch and resolve any conflicts.  At the end of an iteration, all work done in the <tt>tweaks</tt> branch is merged into GitHub <tt>master</tt> for final pre-release testing.  Note that this process assumes that publicly-available changes made in the <tt>tweaks</tt> branch are atomic.  Developers can make tweaks over the span of several git commits, but if so all the commits must be held in the developer's local version of the GitHub repository until the change is finished before they can be (merged and) pushed as a unit.
+
+== Checklists ==
+
+=== Per-Story Work ===
+
+* Starting development for a story
+:# mark story as Started in Pivotal Tracker
+:# create a new branch from <tt>master</tt> in GitHub, named for the story
+:# add the branch's name as the first word of the story's title in Pivotal Tracker
+:# push the new branch (still empty) back to GitHub
+
+* Doing development on a story
+** commit changes to the story branch in your local repository frequently (on each TDD "green")
+** merge and push those changes to the GitHub story branch almost as frequently
+** optionally, merge from and push to 'early-integration' on GitHub, each time you (are ready to) perform/pass a full regression test run (goal would be at least once a day)
+
+* Completing development of a story
+:# do full local testing after last anticipated change for story
+:# merge with 'early-integrate'
+:## pull anyone else's recent changes from GitHub 'early-integrate'
+:## resolve conflicts, if necessary
+:## repeat full local testing, if pull included any changes (fix all problems discovered by testing, ending with a clean full local test run)
+:## push merged changes back to 'early-integrate'
+:# merge with 'master' on GitHub (same sub-steps)
+:# merge with 'rc'
+:# mark story as Finished in Pivotal Tracker
+
+=== Per-Iteration/Releases ===
+
+# Iteration end, preparation for release
+## merge from 'tweaks' to 'master' on GitHub:
+### pull from 'master' to 'tweaks'
+### if there were changes merged:
+### wait for results of Continuous Integration
+#### fix any problems discovered with commits to the 'tweaks' branch
+#### repeat until CI is clean
+### push from 'tweaks' to 'master'
+## merge from 'master' on GitHub to 'rc' on RubyForge (same sub-steps)
+## merge from 'rc' to 'master' on RubyForge (same sub-steps)
+# Perform release
+## checkout RubyForge 'master' to you local workspace
+## run the appropriate <tt>rake version:bump:...</tt> command
+## run <tt>rake release</tt>
+## push 'master' back to RubyForge
+# Prepare for next iteration
+## merge from 'master' to 'rc' on RubyForge (there should be no changes other than the Jeweler-maintaned gem version number and release tag)
+## merge from 'rc' on RubyForge to 'master' on GitHub (ditto)
+## within the GitHub repository, merge from 'master' to both 'early-integration' and 'tweaks' (there might be changes to merge at this point, depending on what has happened while the release process was being performed)
+## delete branches corresponding to stories completed and released in the iteration ''before'' the one that just concluded (<tt>git branch -d ''[story]''</tt>, <tt>git push origin :''[story]''</tt>)
+## ''Every'' developer who is working on a story started but not completed in the prior iteration must pull and merge from 'early-integration' on GitHub
+
+=== Deployment ===
+
+* As soon as Continuous Integration runs cleanly following the merge of a new completed story into 'master' on GitHub, the new software can be deployed to <tt>wontology.org</tt>, our beta-testing site.
+* The new release gems generated at the end of each iteration will be deployed onto production wontology sites we control a week after the conclusion of the iteration.
+
+== Version Numbering ==
+
+WontoMedia uses a fairly traditional version numbering scheme:  each version number is made up of three integers separated by decimal points (periods), like "1.0.3".  We conform to [http://docs.rubygems.org/read/chapter/7 RubyGems' rational version number policy].
+
+The first integer in our version number is the ''major'' version number.  An increase in the major version number between two releases indicates a significant advance in functionality and/or the introduction of a non-backward-compatible change to a service API.
+
+The second integer in our version number is the ''minor'' version number.  It is reset to zero each time the major version number is increased.  An increase in the minor version number indicates an incompatible change in the way WontoMedia is installed or configured, or in the way it stores information in its database.  When upgrading an existing WontoMedia installation to a version of software with a higher minor version number than the currently-running version of WontoMedia, additional upgrade steps will be required.
+
+The third/final integer in a version number is the ''patch'' number.  (The RubyGems' policy refers to this as the "build" number, but the tool we use for maintaining our gemspec and managing the version number it contains, [http://github.com/technicalpickles/jeweler Jeweler], refers to the last component of a version number as the "patch" number.)  The patch number is incremented for each new release that does ''not'' contain changes that force one of the other version number components to change.  When the major and/or minor version numbers change, the patch number is returned to zero.
+
+== Pivotal Tracker Conventions ==
+
+These conventions are intended to be helpful rather than burdensome, so not all stories may have each item here.  Also, the conventions have evolved over time, so older stories (both completed and planned-but-not-recently-updated) will not have all of them.
+
+* Use appropriate story types.  Pivotal Tracker differentiates four different types of stories.  We attempt to use them consistently with how Tracker intends:
+** <tt>Feature</tt> stories are the "real" stories.  A tracker-story should be marked as a Feature only when incorporating it into the project delivers actual value to an identified customer.
+** <tt>Bug</tt> stories are for tracking work to fix (make it behave as originally intended) an already-completed Feature story.  If a bug is found while a Feature is still being worked on, it is just fixed&mdash;no need to recognize its (fleeting) existence in Tracker or any other tool.  Work to enhance an existing feature should be its own story.
+** <tt>Chore</tt> stories are things that have to be done, but don't add customer value.  They're maintenance, system configuration, and "staying above water" items.  Changing source copyright notices at the beginning of each year, or integrating a new release of an external tool we use are examples of chores.
+** <tt>Release</tt> stories aren't really "stories" at all, just milestone markers in the stream of other stories to be worked on.  We move a release's status to "Accepted" once all work is completed to test, tag, and release the matching software to the RubyForge repository and into rubygems.org distribution.
+* Labels identify the story's customer.  Tracker allows "labels" to be associated with a story.  We have defined a set of labels that represent the different customers for WontoMedia features/stories, and each story should be labeled with the customer(s) that are appropriate.
+** The <tt>debt</tt> label is special.  Instead of being a customer, we use debt to label Chores (and only chores) that have to do with cleaning up a mess that we made (knowningly or not) while implementing an earlier story.  debt-Chores are like bugs:  a bug is something we've got to fix that is user/customer-visible.  A debt-Chore is something that needs fixing internal to WontoMedia or its infrastructure.  This is often used to track places where our automated testing is incomplete, or source-code refactors that are too large to be done in the course of other development work.
+* Point scale:  Tracker supplies a [http://en.wikipedia.org/wiki/Story_points Story Points] mechanism for recording estimates of the relative effort required to implement stories.  The estimates (''not'' commitments) made for planned stories should be made consistent with those for the other stories completed in the last few months.  Note that we do ''not'' update story point values to match "how long something really took".  First, since a "point" isn't an amount of calendar time or developer effort, this isn't possible.  Second, points are intended to provide an empirical means of (roughly) translating work estimates into calendar time by projecting from past performance.  If estimates are revised after work starts, it invalidates the ability to project forward from past estimates.  The exception to this is when a story is broken down into multiple smaller stories.  This should be rare (stories that have not already been broken down into the smallest possible incremental development, "[http://www.scrumalliance.org/resource_download/337 epics]", are kept on our [[Major Roadmap]] and [[Epic Stories]] wiki pages), and doubly-rare after development on a story has started.
+* First paragraph of Feature story descriptions follows the "As a ''<user role>'', I want ''<goal>'', so that ''<reason>''" user story convention.
+* Git branch name at start of story title.  Each story is implemented in its own branch in a Git repository.  For the convenience of developers trying to match the changes in a repository to the work in progress in Tracker, the first word (or hyphenated word group) at the start of a story title in Tracker is the name that will be used for the Git repository branch.  Branch names should be mnemonic for the entire story title, must be unique among all work in progress, and are better if unique across the entire project's history.
+* Description includes acceptance-test file name(s).  At the end of a story description in tracker should be the name(s) of the acceptance test (Cucumber feature) files that are being modified or created as part of the story's implementation.  This list need not be created before implementation starts, and can be updated as needed.
+
+Note that updates to WontoMedia's content on Tracker are available via [http://www.pivotaltracker.com/projects/9280/activities/5316b280492dc3d07f5ca1234917a897 RSS] and on twitter: [http://www.twitter.com/wontomedia @wontomedia].
