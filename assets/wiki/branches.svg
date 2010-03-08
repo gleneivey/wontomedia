@@ -14,7 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="branches.svg">
+   sodipodi:docname="branches.svg"
+   inkscape:export-filename="/home/gei/Repos/Mainlines/wontomedia/doc/wiki/branches.png"
+   inkscape:export-xdpi="108"
+   inkscape:export-ydpi="108">
   <defs
      id="defs4">
     <marker
@@ -2317,9 +2320,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="156.93271"
-     inkscape:cy="1005.7502"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="309.05744"
+     inkscape:cy="854.71699"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2511,12 +2514,6 @@
        id="path4688-4-8-0"
        inkscape:path-effect="#path-effect4690-1-5-1"
        inkscape:original-d="m 148.13396,219.15447 -31.01814,-84.44799 31.60336,84.44799" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:none"
-       d="m 733.39364,323.03202 4.01772,-302.035586 4.01772,302.035606 c -2.37206,-48.25266 -5.61745,-47.97463 -8.03544,-2e-5 z"
-       id="path5314"
-       inkscape:path-effect="#path-effect5316"
-       inkscape:original-d="m 737.41136,20.996434 0,302.035606" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
