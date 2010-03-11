@@ -1,0 +1,28 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+<!-- This page is always served for the "Add Content" link on the
+     home page of http://wontology.org/.  However, it is written
+     generically and with references to "this site" so that it is also
+     an acceptable page for any WontoMedia-based site that does not
+     (yet) have its own customized reference pages.  If you make edits
+     here, please try to keep these dual uses in mind.
+  -->
+All of the content on this site was added and is maintained by visitors just like you, our contributors.  Hopefully, you'll find both browsing information and adding to it to be easy.
+
+Feel free to begin editing the [[Help:GlossaryAtoO#anchor_Description|descriptions]] of [[Help:GlossaryAtoO#anchor_Item|items]] in the [[Help:GlossaryPtoZ#anchor_Wontology|wontology]] right away if you see any errors or have information to add.  Note that there is no "preview" function.  Just go ahead and submit your change, and then edit the description again if it didn't come out the way you wanted it to.
+
+If this is your first time working with ontology-like information, before you start adding new items or creating new [[Help:GlossaryAtoO#anchor_Connection|connections]] between items, you might want to review the following pages:
+
+* [[Help:Information as Relationships|Information as Relationships]]
+* [[Help:Wontology Concepts|Wontology Concepts]]
+* [[Help:Naming Conventions|Naming Conventions]]
+
+[[Help:Built-in Relationship Types]] is a more advanced page, but very important if you want to create a new ''type'' of connection that can be established between items.
+
+When adding new information, you'll usually be able to follow the precedent set by the existing items and their connections.  However, don't hesitate to expand the data in new directions where you think it is appropriate.
+
+[[Help:Main Page|All of the online help pages]] linked to from within the site are located together in the wiki.  Also, there is a ''glossary'', broken into pages for words from '''[[Help:GlossaryAtoO|A to O]]''' and '''[[Help:GlossaryPtoZ| P to Z]]'''.  And we also have a set of [[Help:Tutorials]] with step-by-step instructions for some of the most common types of editing operations.

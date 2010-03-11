@@ -1,0 +1,44 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+This is the main press page for the WontoMedia software development project and the http://wontology.org/ web site that uses it.  See also [http://wiki.wontology.org/wiki/help.php?title=Adas_Daughters:Press_Info the press page] for http://AdasDaughters.org/, which also runs WontoMedia.
+
+== Summary ==
+
+'''''WontoMedia''''' is a web application package for hosting a Wontology (a [[Wikipedia:Wiki|Wiki]]-[[Wikipedia:Ontology_(information_science)|Ontology]]): a classification scheme created and maintained by a community.  It is free/libre/open-source software ([[Wikipedia:FLOSS|FLOSS]]).
+
+Definitions (from our glossary):
+
+* [[Help:GlossaryPtoZ#anchor_Wontology|Wontology]]
+* [[Help:GlossaryAtoO#anchor_Ontology|Ontology]]
+
+WontoMedia is written in [http://ruby-lang.org/ Ruby] (with [[Wikipedia::JavaScript]] for in-browser features) on top of the [http://rubyonrails.org/ Ruby-on-Rails] framework.  It has been developed and deployed on Linux systems, but should run on any server systems supported by Ruby-on-Rails, and be accessible from any modern web browser.
+
+For more introductory information, see:
+
+* [[WontoMedia]]
+* http://wontomedia.rubyforge.org
+* the [[Help:GlossaryPtoZ#anchor_WontoMedia|WontoMedia entry in our glossary]]
+* WontoMedia's on-line [[Help:Main Page|help pages]] 
+
+Development of WontoMedia began in March of 2009, with <tt>wontology.org</tt> opening for public alpha in January 2010, and the first version-numbered release in February of 2010.  Please see [http://rubygems.org/gems/wontomedia our entry on RubyGems.org] for the latest version number and release date.
+
+== Contacts ==
+
+The project founder is Glen Ivey.  Please contact for any press questions:
+
+* email: <tt>gleneivey at wontology dot org</tt>
+* alternate email: <tt>gei at mcn dot org</tt>
+* twitter: [http://twitter.com/gleneivey @gleneivey]
+* telephone: 707-367-3156 (USA Pacific-time)
+* other:
+** [http://github.com/gleneivey/ GitHub account]
+** <tt>gleneivey</tt> on Skype, Yahoo! IM, and AIM
+
+== Sites Using WontoMedia ==
+
+* http://wontology.org/
+* http://adasdaughters.org/
