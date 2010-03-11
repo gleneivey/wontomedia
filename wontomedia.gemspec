@@ -74,6 +74,7 @@ Gem::Specification.new do |s|
      "assets/wontomedia-sample.rb",
      "config/asset_packages.yml",
      "config/boot.rb",
+     "config/caliper.yml",
      "config/cucumber.yml",
      "config/database-mysql-development.yml",
      "config/database-mysql.yml",
