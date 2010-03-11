@@ -22,21 +22,27 @@ ActionController::Routing::Routes.draw do |map|
   map.redirect '/connections/*c', '/w/connections', :keep_path => :c,
     :permanent => true
 
-    # more specific routes that override...
+  # more specific routes that override...
   map.items_lookup '/items/lookup', :controller => :items, :action => :lookup,
     :path_prefix => '/w'
   map.itemCreatePopup '/items/new-pop', :controller => :items,
     :action => :newpop, :path_prefix => '/w'
 
-    # .... these general routes
+  # .... these general routes
   map.root :controller => "items", :action => "home"
   map.resources :items, :path_prefix => '/w'
-
   map.resources :connections, :path_prefix => '/w'
 
+  # 'admin' isn't RESTful, so need named routes for all
   map.admin_index   '/w/admin', :controller => 'admin', :action => 'index'
   map.admin_item_up '/w/admin/item_up', :controller => 'admin',
     :action => 'item_up'
   map.admin_connection_up '/w/admin/connection_up', :controller => 'admin',
     :action => 'connection_up'
+
+  # pretty URLs for items (match against all the "/w/" paths first)
+  map.item_by_name '/:name', :controller => :items, :action => 'show',
+    :conditions => { :method => :get }
+  map.edit_item_by_name '/:name/edit', :controller => :items, :action => 'edit',
+    :conditions => { :method => :get }
 end

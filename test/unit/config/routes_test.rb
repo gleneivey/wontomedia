@@ -99,6 +99,24 @@ class ConnectionIdRestRoutesTest < ActionController::IntegrationTest
   end
 end
 
+class ItemNameRestRoutesTest < ActionController::IntegrationTest
+  test "show item page" do
+    name = 'aItem'
+    assert_equal   "/#{name}", item_by_name_path(:name => name)
+    assert_routing "/#{name}", options_for_item( name, 'show')
+  end
+
+  test "edit item page" do
+    name = 'bItem'
+    assert_equal   "/#{name}/edit", edit_item_by_name_path(:name => name)
+    assert_routing "/#{name}/edit", options_for_item( name, 'edit')
+  end
+
+  def options_for_item( name, action )
+    { :controller => 'items', :action => action, :name => name }
+  end
+end
+
 class OldIdRoutesRedirectTest < ActionController::IntegrationTest
   def assert_redirected( path )
     assert_does_recognize path, { :controller => "redirect_routing",

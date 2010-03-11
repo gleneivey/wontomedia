@@ -80,27 +80,28 @@ class ItemsShowViewTest < ActionController::TestCase
         # all following are tests of the HTML page
 
   test "item-show page should contain item-edit link" do
-    n = get_items_show(:two)
-    assert_select "a[href=?]", edit_item_path(n)
+    item = get_items_show(:two)
+    assert_select "a[href=?]", edit_item_by_name_path(item.name)
   end
 
   test "item-show page 4 unused items should contain item-delete link" do
-    n = get_items_show(:two)
-    assert_select "a[href=?]", item_path(n) #sloppy, should verify :method
+    item = get_items_show(:two)
+      # sloppy, should verify :method
+    assert_select "a[href=?]", item_path(item)
   end
 
   test "item-show page 4 in-use items should contain cant-delete-item link" do
-    n = get_items_show(:one)
+    get_items_show(:one)
     assert_select "a[href=\"#\"][onclick*=\"cantDelete\"]"
   end
 
   test "item-show page should contain items-index link" do
-    n = get_items_show(:two)
+    get_items_show(:two)
     assert_select "a[href=?]", items_path
   end
 
   test "item-show page should contain connections-new link" do
-    n = get_items_show(:two)
+    get_items_show(:two)
     assert_select "a[href=?]", new_connection_path
   end
 
@@ -109,20 +110,20 @@ class ItemsShowViewTest < ActionController::TestCase
       items(:testCategory),
       items(:testSubcategory),              # subcategoryHasValue
       items(:isAssigned)
-    ].each do |n|
+    ].each do |item|
       get_items_show(:testIndividual)
-      assert_select "body", /#{n.title}/
-      assert_select "a[href=?]", item_path(n)
+      assert_select "body", /#{item.title}/
+      assert_select "a[href=?]", item_by_name_path(item.name)
     end
   end
 
   test "item-show page should contain links for connections" do
     [ connections(:aQualifiedConnection),
       connections(:subcategoryHasValue)
-    ].each do |e|
+    ].each do |connection|
       get_items_show(:testIndividual)
-      assert_select "a[href=?]", edit_connection_path(e)
-      assert_select "a[href=?]", connection_path(e)
+      assert_select "a[href=?]", edit_connection_path(connection)
+      assert_select "a[href=?]", connection_path(connection)
     end
   end
 
@@ -139,7 +140,8 @@ class ItemsShowViewTest < ActionController::TestCase
         test_sense = (item.flags & Item::DATA_IS_UNALTERABLE) == 0
 
         # edit link present/absent
-        assert_select( "a[href=\"#{edit_item_path(item)}\"]", test_sense )
+        assert_select( "a[href=\"#{edit_item_by_name_path(item.name)}\"]",
+          test_sense )
 
         # delete link present/absent
         item_not_in_use =

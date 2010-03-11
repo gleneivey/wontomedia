@@ -112,7 +112,7 @@ class ItemsController < ApplicationController
         render :action => "show", :layout => "popup"
       else
         flash[:notice] = 'Item was successfully created.'
-        redirect_to item_path(@item)
+        redirect_to item_by_name_path(@item.name)
       end
     end
   end
@@ -130,7 +130,8 @@ class ItemsController < ApplicationController
   # that directly reference the requested Item.
   def show
     begin
-      @item = Item.find(params[:id])
+      @item = params[:name].nil? ?
+        Item.find(params[:id]) : Item.find_by_name(params[:name])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
@@ -259,12 +260,14 @@ class ItemsController < ApplicationController
   # GET /items/1/edit
   def edit
     begin
-      @this_is_non_information_page = true
-      @item = Item.find(params[:id])
+      @item = params[:name].nil? ?
+        Item.find(params[:id]) : Item.find_by_name(params[:name])
     rescue
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
+
+    @this_is_non_information_page = true
   end
 
   # PUT /items/1
@@ -286,7 +289,7 @@ class ItemsController < ApplicationController
 
     if (@item.flags & Item::DATA_IS_UNALTERABLE) != 0
       flash[:error] = 'This Item cannot be altered.'
-      redirect_to item_path(@item)
+      redirect_to item_by_name_path(@item.name)
     elsif (!params[:item].nil? && !params[:item][:name].nil? &&
           params[:item][:name] =~ /[:.]/                     )  ||
         !@item.update_attributes(params[:item])
@@ -295,7 +298,7 @@ class ItemsController < ApplicationController
       render :action => "edit"
     else
       flash[:notice] = 'Item was successfully updated.'
-      redirect_to item_path(@item)
+      redirect_to item_by_name_path(@item.name)
     end
   end
 
@@ -310,13 +313,13 @@ class ItemsController < ApplicationController
 
     if (@item.flags & Item::DATA_IS_UNALTERABLE) != 0
       flash[:error] = 'This Item cannot be altered.'
-      redirect_to item_path(@item)
+      redirect_to item_by_name_path(@item.name)
     elsif !(Connection.all( :conditions =>
         [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
           @item.id, @item.id, @item.id ]).empty?)
       flash[:error] = 'This Item is in use by 1+ Connections. ' +
         'Those must be modified or deleted first.'
-      redirect_to item_path(@item)
+      redirect_to item_by_name_path(@item.name)
     else
       @item.destroy
       redirect_to items_url
