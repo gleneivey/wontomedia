@@ -22,7 +22,7 @@
   <ul>
     <% if (@item.flags & Item::DATA_IS_UNALTERABLE) == 0 %>
       <li>
-        <%= link_to 'Edit this item', edit_item_path(@item),
+        <%= link_to 'Edit this item', edit_item_by_name_path(@item.name),
               :rel => 'nofollow' -%><%=
             popup_help_icon "Help edit items", "Help:Popup/ItemEdit" -%>
       </li>

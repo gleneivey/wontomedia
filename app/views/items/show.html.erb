@@ -130,9 +130,9 @@
                </li>
 <%           end %>
              <li>
-               <%= n = @item_hash[e.predicate_id]
-                   link_with_tooltip (h filter_parenthetical n.title ),
-                     h( n.name ), item_path(n) %>
+               <%= item = @item_hash[e.predicate_id]
+                   link_with_tooltip (h filter_parenthetical item.title ),
+                     h( item.name ), item_by_name_path(item.name) %>
                <ul style="list-style-type: circle;">
 <%         end %>
 
@@ -140,9 +140,9 @@
              <div style="float: right; font-size: 80%; margin-right: 6em;">
                <%  generate_connection_links(e) %>
              </div>
-             <%= n = @item_hash[e.obj_id]
-                 link_with_tooltip (h filter_parenthetical n.title ),
-                   h( n.name ), item_path(n) %>
+             <%= item = @item_hash[e.obj_id]
+                 link_with_tooltip (h filter_parenthetical item.title ),
+                   h( item.name ), item_by_name_path(item.name) %>
            </li>
 
 <%         last_predicate_id = e.predicate_id

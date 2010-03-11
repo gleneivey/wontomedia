@@ -60,7 +60,8 @@ class ItemsIndexViewTest < ActionController::TestCase
         test_sense = (item.flags & Item::DATA_IS_UNALTERABLE) == 0
 
         # edit link present/absent
-        assert_select( "*##{item.name} a[href=\"#{edit_item_path(item)}\"]",
+        assert_select(
+          "*##{item.name} a[href=\"#{edit_item_by_name_path(item.name)}\"]",
           test_sense   )
 
         # delete link present/absent

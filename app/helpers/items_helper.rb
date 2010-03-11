@@ -33,12 +33,12 @@ module ItemsHelper
   # argument Item is different from the page's item, then the +title+
   # will be displayed as a link to _that_ Item's +show+ page.
   def self_string_or_other_link(item_id)
-    n = @item_hash[item_id]
-    title = h filter_parenthetical n.title
+    item = @item_hash[item_id]
+    title = h filter_parenthetical item.title
     if item_id == @item.id    # self
-      text_with_tooltip title, h( n.name )
+      text_with_tooltip title, h( item.name )
     else                      # other
-      link_with_tooltip title, h( n.name ), item_path(n)
+      link_with_tooltip title, h( item.name ), item_by_name_path(item.name)
     end
   end
 
@@ -82,8 +82,8 @@ module ItemsHelper
     if (item.flags & Item::DATA_IS_UNALTERABLE) == 0
       concat(
         link_with_help_icon({
-          :destination => link_to( 'Edit&hellip;', edit_item_path(item),
-            :rel => 'nofollow'),
+          :destination => link_to( 'Edit&hellip;',
+            edit_item_by_name_path(item.name), :rel => 'nofollow'),
         :already_generated => @edit_help_icon_used,
         :help_alt => 'Help edit item',
         :which_help => 'ItemEdit' }) )

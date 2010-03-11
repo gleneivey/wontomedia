@@ -65,8 +65,8 @@ Feature:  Edit individual items through non-Ajax pages
   Scenario: Edit links for user items, not for built-in items
     Given there is 1 existing category like "aCategory"
     When I go to the index items page
-    Then there should be an item container for "aCategory0" including the tag "a[href="/w/items/?aCategory0?/edit"]"
-    And there should not be an item container for "parent_of" including the tag "a[href="/w/items/?sub_property_of?/edit"]"
+    Then there should be an item container for "aCategory0" including the tag "a[href="/aCategory0/edit"]"
+    And there should not be an item container for "parent_of" including the tag "a[href="/sub_property_of/edit"]"
 
 
 

@@ -53,7 +53,8 @@
     <% content_tag :tr, :id => h(item.name) do %>
       <td class="firstrow"><%= wrap_item_name h item.name -%></td>
       <td class="firstrow" style="font-weight: bold; width: 62%;">
-        <%= link_to filter_parenthetical(h item.title), item_path(item) -%></td>
+        <%= link_to filter_parenthetical(h item.title),
+              item_by_name_path(item.name) -%></td>
       <td class="firstrow" style="font-size: 80%;">
         <% generate_item_links(item) %>
       </td>

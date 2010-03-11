@@ -40,7 +40,8 @@
 <% nouns_listed = 0
    @nouns.each do |item| %>
      <p class="item-title">
-       <%= link_to "#{h filter_parenthetical item.title}", item_path(item) %>
+       <%= link_to "#{h filter_parenthetical item.title}",
+             item_by_name_path(item.name) %>
      </p>
      <p class="item-desc">
        <% desc = h item.description
