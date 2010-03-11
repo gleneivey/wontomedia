@@ -59,8 +59,9 @@
 <% end -%>
 
 <% content_for :left_column do %>
+  <%= render :partial => "layouts/local_navigation",
+        :layout => "layouts/navigation_menu" %>
 <% if @display_unimplemented %>
-  <%= render :partial => "common/navigation_menu" %>
   <div id="block-announcements" class="box">
     <p class="unimplemented">[area for displaying announcements (new
       feature deployments, scheduled down-time, etc.) to users]</p>

@@ -172,4 +172,10 @@ module FormatHelper
       ''
     end
   end
+
+  def site_content_url( page_name )
+    WontoMedia.site_content_url_prefix +
+    page_name +
+    WontoMedia.site_content_url_postfix
+  end
 end

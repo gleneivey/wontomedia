@@ -101,6 +101,7 @@ Gem::Specification.new do |s|
      "db/schema.rb",
      "default-custom/app/views/items/_home_introductory_text.html.erb",
      "default-custom/app/views/items/home.html.erb",
+     "default-custom/app/views/layouts/_local_navigation.html.erb",
      "default-custom/public/favicon.ico",
      "default-custom/public/images/logo.png",
      "default-custom/public/images/logo.svg",

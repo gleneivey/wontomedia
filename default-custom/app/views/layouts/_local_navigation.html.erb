@@ -17,16 +17,15 @@
 # see "http://www.gnu.org/licenses/".
 %>
 
-<div id="block-navigation" class="box">
-  <ul style="margin: 0; margin-bottom: 0.6ex; padding: 0; padding-left: 1.5em;">
-    <li><%= link_to "Add Content",
-              site_content_url("Contributing") -%></li>
-    <li><%= link_to "About this site",
-              site_content_url("About") -%></li>
-    <%= yield %>
+<li><%= link_to "Contact Us", site_content_url("Contact_Us") -%></li>
+<li><%= link_to "Press Shortcut", site_content_url("Press_Info") -%></li>
+<li>Follow
+  <%= image_tag 'twitter_icon.png', :alt=>'twitter', :class=>'image-in-text' %>
+  <ul style="font-size: 80%; padding-left: 0.4em;">
     <li>
-      <span style="font-size: 60%">powered by</span>
-      <%= link_to "WontoMedia",
-            "#{WontoMedia.help_url_prefix}WontoMedia" -%></li>
-  </ul>
-</div>
+      <%= link_to "@wontology", "http://twitter.com/wontology" -%> (this site)
+    </li><li>
+      <%= link_to "@wontomedia", "http://twitter.com/wontomedia" -%>
+      (hosting software)
+  </li></ul>
+</li>

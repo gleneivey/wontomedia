@@ -25,6 +25,9 @@ WontoMedia = OpenStruct.new({
     # change these if you use a local wiki, but will work to use public
   :help_url_prefix  => "http://wiki.wontology.org/wiki/help.php?title=",
   :popup_url_prefix => "http://wiki.wontology.org/wiki/popup.php?title=",
+  :site_content_url_prefix =>
+    "http://wiki.wontology.org/wiki/help.php?title=Wontology:",
+  :site_content_url_postfix => '',
 
   :ads => OpenStruct.new({
 #    :amazon => OpenStruct.new({
