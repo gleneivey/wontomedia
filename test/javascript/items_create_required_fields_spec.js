@@ -20,7 +20,7 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  before(function() { IFrame("http://localhost:3001/items/new"); });
+  before(function() { IFrame("http://localhost:3001/w/items/new"); });
 
   var submitId = "item_submit";
   var flagTextIds = [ "sti_type_required", "title_required", "name_required",

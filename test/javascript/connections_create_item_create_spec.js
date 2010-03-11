@@ -27,7 +27,7 @@ Screw.Unit(function(){
   describe( "Dynamic information and checks in connections/new page",
       function(){
     describe( "connections/new has popup new item creation", function(){
-      before(function() { IFrame("http://localhost:3001/connections/new"); });
+      before(function() { IFrame("http://localhost:3001/w/connections/new"); });
 
       it( "has items/new option in all three SELECTs", function(){
         var selectors = [ 'connection_subject_id', 'connection_predicate_id',

@@ -45,7 +45,7 @@ Screw.Unit(function(){
   describe( "Dynamic information and checks in connections/new page",
       function(){
     describe( "connections/new behavior that doesn't need item IDs", function(){
-      before(function() { IFrame("http://localhost:3001/connections/new"); });
+      before(function() { IFrame("http://localhost:3001/w/connections/new"); });
 
       it( "has all blank item descriptions in a 'fresh' page", function(){
         var descriptionDivs = [ "subject_desc", "predicate_desc", "obj_desc" ];
@@ -61,7 +61,7 @@ Screw.Unit(function(){
 
       var itemNamesToIdsHash = {};
       before(function(){
-        IFrame("http://localhost:3001/items");
+        IFrame("http://localhost:3001/w/items");
 
         var allAnchors = D().getElementsByTagName("a");
         for (var c=0; c < allAnchors.length; c++){
@@ -74,7 +74,7 @@ Screw.Unit(function(){
           }
         }
 
-        IFrame("http://localhost:3001/connections/new");
+        IFrame("http://localhost:3001/w/connections/new");
       });
 
 

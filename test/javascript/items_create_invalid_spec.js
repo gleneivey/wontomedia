@@ -20,7 +20,7 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  before(function() { IFrame("http://localhost:3001/items/new"); });
+  before(function() { IFrame("http://localhost:3001/w/items/new"); });
 
   function doPresets(presets){
     // make sure we trigger onchange handlers, so other error checks done

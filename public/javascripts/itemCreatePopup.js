@@ -27,7 +27,7 @@ function itemCreatePopup(selectElem, itemType, priorValue){
 
   var l = window.location;
   var newpop = l.protocol + "//" + l.hostname + ":" + l.port +
-               "/items/new-pop?type=" + itemType;
+               "/w/items/new-pop?type=" + itemType;
   Modalbox.show(newpop, {
     title: "Create a new item",
     height: itemCreatePopup_Height(),
