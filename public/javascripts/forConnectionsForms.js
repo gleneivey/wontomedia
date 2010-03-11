@@ -84,7 +84,7 @@ function createOnchangeHandler(thisName){
         else {
           clearError(thisName);
           divToWorking(thisName);
-          new Ajax.Request(base + "/items/" + thisElem.value + ".json", {
+          new Ajax.Request(base + "/w/items/" + thisElem.value + ".json", {
             method: 'get',
             onSuccess: function(response){
               var itemObject = response.responseJSON;

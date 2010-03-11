@@ -422,7 +422,8 @@ function launchNameUniquenessCheck(){
   uniquenessTimerId = -1;
 
   var l = window.location;
-  var lookup = l.protocol + "//" + l.hostname + ":" + l.port + '/items/lookup';
+  var lookup = l.protocol + "//" + l.hostname + ":" + l.port +
+    '/w/items/lookup';
   ajaxRequestInProgress = new Ajax.Request(
     lookup, {
       method: 'get', parameters: "name=" + $F(controlNamePrefix + 'item_name'),

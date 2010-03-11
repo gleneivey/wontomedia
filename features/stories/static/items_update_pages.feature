@@ -39,7 +39,7 @@ Feature:  Edit individual items through non-Ajax pages
     Then I should see "error"
 
 
-  Scenario: When I try to delete a item, it deletes
+  Scenario: When I try to delete an item, it deletes
     Given there is 1 existing property like "propFamily"
     And I am on the show items page for "propFamily0"
     And I follow "Delete this item", accepting confirmation
@@ -58,15 +58,15 @@ Feature:  Edit individual items through non-Ajax pages
   Scenario: Delete links for user items, not for built-in items
     Given there is 1 existing individual like "anItem"
     When I go to the index items page
-    Then there should be a item container for "anItem0" including the tag "a[href="/items/?anItem0?"][onclick*="delete"]"
-    And there should not be a item container for "sub_property_of" including the tag "a[href="/items/?sub_property_of?"][onclick*="delete"]"
+    Then there should be an item container for "anItem0" including the tag "a[href="/w/items/?anItem0?"][onclick*="delete"]"
+    And there should not be an item container for "sub_property_of" including the tag "a[href="/w/items/?sub_property_of?"][onclick*="delete"]"
 
 
   Scenario: Edit links for user items, not for built-in items
     Given there is 1 existing category like "aCategory"
     When I go to the index items page
-    Then there should be a item container for "aCategory0" including the tag "a[href="/items/?aCategory0?/edit"]"
-    And there should not be a item container for "parent_of" including the tag "a[href="/items/?sub_property_of?/edit"]"
+    Then there should be an item container for "aCategory0" including the tag "a[href="/w/items/?aCategory0?/edit"]"
+    And there should not be an item container for "parent_of" including the tag "a[href="/w/items/?sub_property_of?/edit"]"
 
 
 

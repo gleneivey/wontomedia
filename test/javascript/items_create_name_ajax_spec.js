@@ -20,7 +20,7 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  before(function() { IFrame("http://localhost:3001/items/new"); });
+  before(function() { IFrame("http://localhost:3001/w/items/new"); });
 
   describe( "Dynamic input checks in items/new page", function(){
     describe( "Pre-submit check for  uniqueness of Name value", function(){

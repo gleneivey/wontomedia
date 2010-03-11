@@ -39,7 +39,7 @@ class HomeThroughCreateTest < ActionController::IntegrationTest
     click_button "Create"
     assert_response :success,
       "items-create POST failed"
-    assert_match %r%/items/[0-9]+%, path,
+    assert_match %r%/w/items/[0-9]+%, path,
       "New item creation didn't end up at items-show page"
     assert_select "body", /successfully created/
 
@@ -50,7 +50,7 @@ class HomeThroughCreateTest < ActionController::IntegrationTest
     assert_contain "Lorem ipsum dolor sit"
 
     # to item-index page, new content there too?
-    visit "/items"
+    visit "/w/items"
     assert_response :success,
       "item-index page GET failed"
     assert_contain "itemB"

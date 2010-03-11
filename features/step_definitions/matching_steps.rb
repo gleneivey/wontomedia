@@ -32,7 +32,7 @@ Then /^I should see all of "(.+)"$/ do |patterns|
 end
 
 
-Then /^there should(.*)be a item container for "([^\"]+)" including the tag "(.+)"$/ do |test_sense, item_name, selector|
+Then /^there should(.*)be an item container for "([^\"]+)" including the tag "(.+)"$/ do |test_sense, item_name, selector|
 
   selector = item_id_substitute(selector)
   assert_have_selector      "*##{item_name}"

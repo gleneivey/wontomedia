@@ -20,9 +20,9 @@
 When /^I (am on|go to|try to go to) the (\S+) (\S+) page$/ do |fu, action,
                                                                    controller|
   if action == "index"
-    visit "/#{controller}/"
+    visit "/w/#{controller}/"
   else
-    visit "/#{controller}/#{action}"
+    visit "/w/#{controller}/#{action}"
   end
   if !@browser.nil?
     selenium.get_eval( "window.focus();" )
@@ -45,15 +45,15 @@ When /^I (am on|go to|try to go to) the (\S+) connections page for "(.+)" "(.+)"
 
   if action == "show"
     if e.nil?
-      visit "/connections/0"
+      visit "/w/connections/0"
     else
-      visit "/connections/#{e.id}"
+      visit "/w/connections/#{e.id}"
     end
   else
     if e.nil?
-      visit "/connections/0/#{action}"
+      visit "/w/connections/0/#{action}"
     else
-      visit "/connections/#{e.id}/#{action}"
+      visit "/w/connections/#{e.id}/#{action}"
     end
   end
   if !@browser.nil?
@@ -66,17 +66,24 @@ When /^I (am on|go to|try to go to) the (\S+) items page for "([^"]+)"$/ do |fu,
   n = Item.first(:conditions => "name = '#{item}'")
   if action == "show"
     if n.nil?
-      visit "/items/0"
+      visit "/w/items/0"
     else
-      visit "/items/#{n.id}"
+      visit "/w/items/#{n.id}"
     end
   else
     if n.nil?
-      visit "/items/0/#{action}"
+      visit "/w/items/0/#{action}"
     else
-      visit "/items/#{n.id}/#{action}"
+      visit "/w/items/#{n.id}/#{action}"
     end
   end
+  if !@browser.nil?
+    Kernel.sleep(1.5)
+  end
+end
+
+When /^I (am on|go to|try to go to) the item page for "([^"]+)"$/ do |fu, item_name|
+  visit "/#{item_name}"
   if !@browser.nil?
     Kernel.sleep(1.5)
   end

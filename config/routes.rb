@@ -17,21 +17,26 @@
 
 
 ActionController::Routing::Routes.draw do |map|
-  map.admin_index   '/admin', :controller => 'admin', :action => 'index'
-  map.admin_item_up '/admin/item_up', :controller => 'admin',
-    :action => 'item_up'
-  map.admin_connection_up '/admin/connection_up', :controller => 'admin',
-    :action => 'connection_up'
+  #### temporary: 301's for old-style REST URLs outside of the /w/ space
+  map.redirect '/items/*i', '/w/items', :keep_path => :i, :permanent => true
+  map.redirect '/connections/*c', '/w/connections', :keep_path => :c,
+    :permanent => true
 
-  map.items_lookup '/items/lookup', :controller => :items, :action => :lookup
-  map.itemCreatePopup '/items/new-pop',
-    :controller => :items, :action => :newpop
-  map.resources :items
+    # more specific routes that override...
+  map.items_lookup '/items/lookup', :controller => :items, :action => :lookup,
+    :path_prefix => '/w'
+  map.itemCreatePopup '/items/new-pop', :controller => :items,
+    :action => :newpop, :path_prefix => '/w'
 
-  map.resources :connections
+    # .... these general routes
   map.root :controller => "items", :action => "home"
+  map.resources :items, :path_prefix => '/w'
 
-  # Install the default routes as the lowest priority.
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
+  map.resources :connections, :path_prefix => '/w'
+
+  map.admin_index   '/w/admin', :controller => 'admin', :action => 'index'
+  map.admin_item_up '/w/admin/item_up', :controller => 'admin',
+    :action => 'item_up'
+  map.admin_connection_up '/w/admin/connection_up', :controller => 'admin',
+    :action => 'connection_up'
 end

@@ -20,7 +20,7 @@ require("spec_helper.js");
 
 
 Screw.Unit(function(){
-  before(function() { IFrame("http://localhost:3001/items/new"); });
+  before(function() { IFrame("http://localhost:3001/w/items/new"); });
 
   var titleIds = [ 'category_title', 'individual_title', 'property_title' ];
   var descIds  = [ 'category_desc', 'individual_desc', 'property_desc' ];
