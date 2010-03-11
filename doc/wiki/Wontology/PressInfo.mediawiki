@@ -22,7 +22,7 @@ For more introductory information, see:
 * [[WontoMedia]]
 * http://wontomedia.rubyforge.org
 * the [[Help:GlossaryPtoZ#anchor_WontoMedia|WontoMedia entry in our glossary]]
-* WontoMedia's on-line [[Help:Main Page|help pages]] 
+* WontoMedia's on-line [[Help:Main Page|help pages]]
 
 Development of WontoMedia began in March of 2009, with <tt>wontology.org</tt> opening for public alpha in January 2010, and the first version-numbered release in February of 2010.  Please see [http://rubygems.org/gems/wontomedia our entry on RubyGems.org] for the latest version number and release date.
 
