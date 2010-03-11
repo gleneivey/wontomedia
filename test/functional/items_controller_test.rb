@@ -89,7 +89,7 @@ class ItemsControllerTest < ActionController::TestCase
       post :create, :item => { :name => name, :title => "title",
                                :sti_type => "CategoryItem" }
     end
-    assert_redirected_to item_path(assigns(:item))
+    assert_redirected_to item_by_name_path(name)
     assert_not_nil Item.find_by_name(name)
   end
 
@@ -363,7 +363,7 @@ class ItemsControllerTest < ActionController::TestCase
     assert_no_difference('Item.count') do
       put :update, :id => n.id, :item => h
     end
-    assert_redirected_to item_path(assigns(:item))
+    assert_redirected_to item_by_name_path(new_name)
     assert_not_nil Item.find_by_name(new_name)
   end
 
@@ -382,7 +382,7 @@ class ItemsControllerTest < ActionController::TestCase
 
     # right output?
     assert assigns(:item) == before
-    assert_redirected_to item_path(before)
+    assert_redirected_to item_by_name_path(name)
   end
 
   # validation tests here because these restrictions are enforced by
@@ -461,7 +461,7 @@ private
     assert_difference('Item.count', 0) do
       delete :destroy, :id => n.id
     end
-    assert_redirected_to item_path(n)
+    assert_redirected_to item_by_name_path(name)
     assert_not_nil n == Item.find_by_name(name)
   end
 end

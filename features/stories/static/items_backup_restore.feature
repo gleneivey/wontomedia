@@ -6,7 +6,7 @@ Feature:  Download (for backup) and upload (for restore) all items in YAML
   @not_for_selenium
   Scenario: Download items.yml
     Given there are 3 existing individuals like "anItem"
-    When I go to the path "/items.yaml"
+    When I go to the path "/w/items.yaml"
     Then the response should contain 9 matches of "anItem"
 
 

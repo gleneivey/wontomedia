@@ -28,8 +28,8 @@ class AdminController < ApplicationController
   # GET /admin/
   #
   # This action renders the primary administration page.  This page
-  # includes links to <tt>/items.yaml</tt> and
-  # <tt>/connections.n3</tt> so that an administrator can download the
+  # includes links to <tt>/w/items.yaml</tt> and
+  # <tt>/w/connections.n3</tt> so that an administrator can download the
   # complete content of a wontology for backup.  It also includes form
   # controls for uploading <tt>.yaml</tt> files of Item records and
   # <tt>.n3</tt> files of Connection records to be added to the

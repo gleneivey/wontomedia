@@ -31,7 +31,8 @@ class HomeThroughCreateTest < ActionController::IntegrationTest
       "items-new form GET failed"
 
     # post the item-new form, expect to arrive at item-show page
-    fill_in "name",        :with => "itemB"
+    name = "itemB"
+    fill_in "name",        :with => name
     fill_in "title",       :with => "Test item"
     fill_in "description", :with =>
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -39,7 +40,7 @@ class HomeThroughCreateTest < ActionController::IntegrationTest
     click_button "Create"
     assert_response :success,
       "items-create POST failed"
-    assert_match %r%/items/[0-9]+%, path,
+    assert_match %r%^/#{name}$%, path,
       "New item creation didn't end up at items-show page"
     assert_select "body", /successfully created/
 
@@ -50,7 +51,7 @@ class HomeThroughCreateTest < ActionController::IntegrationTest
     assert_contain "Lorem ipsum dolor sit"
 
     # to item-index page, new content there too?
-    visit "/items"
+    visit "/w/items"
     assert_response :success,
       "item-index page GET failed"
     assert_contain "itemB"

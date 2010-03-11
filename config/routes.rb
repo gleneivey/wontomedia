@@ -17,21 +17,32 @@
 
 
 ActionController::Routing::Routes.draw do |map|
-  map.admin_index   '/admin', :controller => 'admin', :action => 'index'
-  map.admin_item_up '/admin/item_up', :controller => 'admin',
+  #### temporary: 301's for old-style REST URLs outside of the /w/ space
+  map.redirect '/items/*i', '/w/items', :keep_path => :i, :permanent => true
+  map.redirect '/connections/*c', '/w/connections', :keep_path => :c,
+    :permanent => true
+
+  # more specific routes that override...
+  map.items_lookup '/items/lookup', :controller => :items, :action => :lookup,
+    :path_prefix => '/w'
+  map.itemCreatePopup '/items/new-pop', :controller => :items,
+    :action => :newpop, :path_prefix => '/w'
+
+  # .... these general routes
+  map.root :controller => "items", :action => "home"
+  map.resources :items, :path_prefix => '/w'
+  map.resources :connections, :path_prefix => '/w'
+
+  # 'admin' isn't RESTful, so need named routes for all
+  map.admin_index   '/w/admin', :controller => 'admin', :action => 'index'
+  map.admin_item_up '/w/admin/item_up', :controller => 'admin',
     :action => 'item_up'
-  map.admin_connection_up '/admin/connection_up', :controller => 'admin',
+  map.admin_connection_up '/w/admin/connection_up', :controller => 'admin',
     :action => 'connection_up'
 
-  map.items_lookup '/items/lookup', :controller => :items, :action => :lookup
-  map.itemCreatePopup '/items/new-pop',
-    :controller => :items, :action => :newpop
-  map.resources :items
-
-  map.resources :connections
-  map.root :controller => "items", :action => "home"
-
-  # Install the default routes as the lowest priority.
-#  map.connect ':controller/:action/:id'
-#  map.connect ':controller/:action/:id.:format'
+  # pretty URLs for items (match against all the "/w/" paths first)
+  map.item_by_name '/:name', :controller => :items, :action => 'show',
+    :conditions => { :method => :get }
+  map.edit_item_by_name '/:name/edit', :controller => :items, :action => 'edit',
+    :conditions => { :method => :get }
 end

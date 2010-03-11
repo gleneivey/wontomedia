@@ -9,7 +9,7 @@ Feature:  Download (for backup) and upload (for restore) all connections in N3
     And there is an existing connection "indiv1" "child_of" "indiv0"
     And there is an existing connection "indiv2" "child_of" "indiv1"
     And there is an existing connection "indiv3" "child_of" "indiv2"
-    When I go to the path "/connections.n3"
+    When I go to the path "/w/connections.n3"
     Then the response should contain 6 matches of "indiv"
 
 

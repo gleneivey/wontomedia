@@ -43,7 +43,7 @@
 <% end %>
 
 <div class="horizontal-link-list"><ul>
-  <li><%= link_to 'Cancel,&nbsp;show&nbsp;item', item_path(@item),
+  <li><%= link_to 'Cancel,&nbsp;show&nbsp;item', item_by_name_path(@item.name),
             :rel => 'nofollow' -%></li>
   <li><%= link_to 'Cancel,&nbsp;show&nbsp;item&nbsp;list', items_path,
             :rel => 'nofollow' -%></li>

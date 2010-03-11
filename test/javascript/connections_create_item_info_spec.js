@@ -45,7 +45,7 @@ Screw.Unit(function(){
   describe( "Dynamic information and checks in connections/new page",
       function(){
     describe( "connections/new behavior that doesn't need item IDs", function(){
-      before(function() { IFrame("http://localhost:3001/connections/new"); });
+      before(function() { IFrame("http://localhost:3001/w/connections/new"); });
 
       it( "has all blank item descriptions in a 'fresh' page", function(){
         var descriptionDivs = [ "subject_desc", "predicate_desc", "obj_desc" ];
@@ -58,32 +58,8 @@ Screw.Unit(function(){
     });
 
     describe( "Display of descriptions for selected items", function(){
+      before(function() { IFrame("http://localhost:3001/w/connections/new"); });
 
-      var itemNamesToIdsHash = {};
-      before(function(){
-        IFrame("http://localhost:3001/items");
-
-        var allAnchors = D().getElementsByTagName("a");
-        for (var c=0; c < allAnchors.length; c++){
-          var href = allAnchors[c].href;
-          if (href){
-            var key = allAnchors[c].innerHTML;
-            mtch = href.match(/items\/([0-9]+)/);
-            if (mtch != null && mtch.length > 0)
-              itemNamesToIdsHash[key] = mtch[1];
-          }
-        }
-
-        IFrame("http://localhost:3001/connections/new");
-      });
-
-
-      function getItemIdByName(itemName){
-        var itemId = itemNamesToIdsHash[itemName];
-        expect(itemId).to_not(be_undefined);
-        expect(itemId).to_not(be_null);
-        return itemId;
-      }
 
       it( "fetches item description when Subject selected", function(){
         expectAjaxStart("subject", "A second item");
@@ -92,13 +68,23 @@ Screw.Unit(function(){
           /This category could contain anything/);
       });
 
-      function expectAjaxStart(divName, itemName){
-        var itemId = getItemIdByName(itemName);
+      function expectAjaxStart(divName, itemTitle){
+        var itemId = getItemIdByTitle(itemTitle);
         changeNamedFieldToValue('connection_' + divName + '_id', itemId);
         sleep(timeMargin);
-        expectDivToContainImgMatching(divName + '_desc',
-                                      /working_status_icon/);
+        expectDivToContainImgMatching(divName + '_desc', /working_status_icon/);
         expect(E(divName + '_desc').className).to(equal, "desc");
+      }
+
+      function getItemIdByTitle(itemTitle){
+        sel = E('connection_subject_id');
+        for (var c=0; c < sel.options.length; c++){
+          opt = sel.options[c];
+          if ((-1 != opt.text.search(new RegExp(" : " + itemTitle + "$"))) ||
+              (-1 != opt.text.search(new RegExp(" : " + itemTitle + " \\(")))   )
+            return opt.value;
+        }
+        expect(false);  // fail if we don't find the name
       }
 
       function expectDescriptionText(divName, descRE){

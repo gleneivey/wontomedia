@@ -43,7 +43,8 @@
   <tr><td>
     <b>Subject:</b>
   </td><td>
-      <%= link_to "<b>#{h @subject.title}</b>", item_path(@subject) %> &mdash;
+      <%= link_to "<b>#{h @subject.title}</b>",
+            item_by_name_path(@subject.name) %> &mdash;
       (<b><%= h @subject.name %></b>)
     <p>
       <%= h @subject.description %>
@@ -53,7 +54,8 @@
   <tr><td>
     <b>Predicate:</b>
   </td><td>
-      <%= link_to "<b>#{h @predicate.title}</b>", item_path(@predicate) %>
+      <%= link_to "<b>#{h @predicate.title}</b>",
+            item_by_name_path(@predicate.name) %>
       &mdash; (<b><%= h @predicate.name %></b>)
     <p>
       <%= h @predicate.description %>
@@ -63,8 +65,8 @@
   <tr><td>
     <b>Object:</b>
   </td><td>
-      <%= link_to "<b>#{h @obj.title}</b>", item_path(@obj) %> &mdash;
-      (<b><%= h @obj.name %></b>)
+      <%= link_to "<b>#{h @obj.title}</b>", item_by_name_path(@obj.name) %>
+      &mdash; (<b><%= h @obj.name %></b>)
     <p>
       <%= h @obj.description %>
     </p>
