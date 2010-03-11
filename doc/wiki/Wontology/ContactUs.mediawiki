@@ -1,0 +1,28 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+This is contact information both for the http://wontology.org/ web site and for the development project for the [[WontoMedia]] web application software that the site runs.
+
+* For press and media, see our [[Wontology:Press Info|press page]], which includes additional contacts.
+
+== wontology.org ==
+
+* For problems with the web site, please email <tt>webmaster at wontology dot org</tt>.
+* For other questions about the use of the web site, the kind of data it does or should contain, etc., you can directly email <tt>gleneivey at wontology dot org</tt> or consider using the public resources (forum, email list, issue tracker) listed below.
+* And we're on Twitter as [http://twitter.com/wontology @wontology], where we post information about activity on the site.
+
+== WontoMedia ==
+
+* The main starting places for information about the WontoMedia software are:
+** [[Main Page|The WontoMedia wiki]],
+** [http://github.com/gleneivey/wontomedia the software repository] on [http://github.com/ GitHub], and
+** [http://wontomedia.rubyforge.org/ the project home page] on [http://rubyforge.org/projects/wontomedia/ RubyForge]
+* For discussion of the WontoMedia software, including any questions about the operation of a web site running WontoMedia, try
+** [http://rubyforge.org/forum/?group_id=7903 the WontoMedia discussion forum],
+** [http://rubyforge.org/mail/?group_id=7903 the WontoMedia email list] (which you can post to be emailing <tt>wontomedia-development at rubyforge dot org</tt>), or
+** [http://rubyforge.org/tracker/?group_id=7903 our issue tracker]
+* If you don't want to use any of the above, then for questions about the WontoMedia software, or the possibility of deploying it on your own systems, email <tt>development at wontology dot org</tt>.
+* The WontoMedia project also has a Twitter account, [http://twitter.com/wontomedia @wontomedia], which receives information about changes to, plans for, and releases of the WontoMedia software.  In particular, updates to our planned task list maintained using [http://www.pivotaltracker.com/projects/9280 Pivotal Tracker] are automatically posted to @wontomedia.
