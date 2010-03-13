@@ -19,12 +19,304 @@
 # "item" schema: name, sti_type, title, description
 
 
+#### Category items at the root of the built-in schema:
+
+Item_Class:
+  name: Item_Class
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Class of all Items (foundation class)
+  description: >-
+    This category item is the foundation for the hierarchy of items
+    that represent "classes."  A class is an item, some of whose
+    properties make statements about the other items that are
+    "instances" of that class.  Wontologies can be constructed where
+    the membership (set of instances) in the class are determined by
+    rules that compare against the other items in the wontology, but
+    more commonly, a class' instance items are explicitly identified
+    using the is_instance_of property.
+
+    Any item that is to represent a "class" (a category whose child
+    items are "instances" of the class) should be identified as a
+    child of this category or one of this category's other children
+    using the sub_class_of property.
+
+
+Property_Item:
+  name: Property_Item
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Class of all Property Items (foundation class)
+  description: >-
+    This category item is the base of the hierarchy of items that are
+    properties.  It is a class, and is therefore identified as such by
+    the connection "Property_Item is_instance_of Item_Class".  The
+    absolute requirement to identify items as being "property type"
+    (as opposed to individual or category) is to specify that when
+    they are created.  However, most properties will also be
+    identified as such by the existence of either the connection
+    "[property] sub_property_of [another property]" or "[property]
+    is_instance_of [another property class]".  In the second of these
+    connection forms "another property class" will be either
+    Property_Item or one of its children.
+
+
+Type_Item:
+  name: Type_Item
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Class of all Scalar Types (foundation class)
+  description: >-
+    This category item is the class that contains all items
+    representing possible "types" for the values of property objects
+    that are constants (rather than other items).  For example, in the
+    connection "SallySinger sBirthdayIs 'March 10, 1977'", the object
+    of the "sBirthdayIs" property is a date constant.  The type for
+    data constants is represented in the system by the item
+    "Date_Value", which is one of the members of this class.  All of
+    the constant types that the system is capable of handling are
+    represented by members of "Type_Item".  (Note that, if the type of
+    information you want to use as a constant object doesn't have a
+    matching "Type_Item" member, you can use the generic
+    "String_Value" type.)
+
+
+String_Value:
+  name: String_Value
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: String (scalar type)
+  description: >-
+    This item represents a particular type of constant value that can
+    be used as the object of connections.  For example, in the
+    statement "SallySinger sFavoriteColorIs 'Blue'", "Blue" is a
+    String-type constant value.  The system doesn't perform any
+    checks on the content of String constant aside from ensuring that
+    they are not empty and not too long.
+
+
+Integer_Value:
+  name: Integer_Value
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Integer (scalar type)
+  description: >-
+    This item represents a particular type of consant value that can
+    be used as the object of connections.  For example, in the
+    statement "SallySinger sTestScoreIs '45'", "45" is an Integer-type
+    constant.  The system will only allow the digits 0 through 9
+    (possibly with a leading minus sign, '-') to be entered for a
+    connections constant object if it is marked as "Integer_Value".
+
+
+Number_Value:
+  name: Number_Value
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Any Number (scalar type)
+  description: >-
+    This item represents a particular type of constant value that can
+    be used as the object of connections.  For example, in the
+    statement "SallySinger sPercentileRankingInClassIs '88.75'", the
+    object value "88.75" is a number (in this point, a floating-point
+    number with a fractional part).  The system will accept any number
+    that can be typed, and attempts to parse number formats that
+    include non-number characters (such as the "e" or "E" in
+    scientific notation).  The system does not have a way to represent
+    fractions, imaginary numbers, repeating digits, or significant
+    figures.
+
+
+Boolean_Value:
+  name: Boolean_Value
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Boolean ('True' or 'False' scalar type)
+  description: >-
+    This item represents a particular type of constant value that can
+    be used as the object of connections.  For example, in the
+    statement "SallySinger paysTaxesOnTime-Is 'True'", "true" is the
+    Boolean constant object of the connection.  Sometimes the value of
+    a Boolean-type constant can be input by selecting a specific
+    web-page control, and other types it has to be typed into a
+    text-entry box.  When typed, only the words "true" or "false"
+    should be used, although the capitalization ("true", "True",
+    "TRUE") doesn't matter.  In addition, for connections that use
+    properties that express a true/false state but whose objects are
+    Items rather than constants, the system provides the built-in
+    Items "Value_True" and "Value_False" that can be selected as a
+    relationship's object.
+
+
+Value_True:
+  name: Value_True
+  sti_type: IndividualItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: True (a constant value)
+  description: >-
+    This item is provide for use as the object of connections that
+    express a simple (true or false) fact.  For example, "Value_True"
+    is the object of the connection "BillTheDog hasFleas Value_True".
+
+
+Value_False:
+  name: Value_False
+  sti_type: IndividualItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: False (a constant value)
+  description: >-
+    This item is provide for use as the object of connections that
+    express a simple (true or false) fact.  For example, "Value_False"
+    is the object of the connection "BettyTheCat hasFleas
+    Value_False".
+
+
+URL_Value:
+  name: URL_Value
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Web Address (scalar type for URL strings)
+  description: >-
+    This item represents a particular type of constant value that can
+    be used as the object of connections.  For example, in the
+    statement "SallySinger webSiteIs 'http://sally-stringer.tld/'",
+    the "http..." string is a Web Address-type constant value.  The
+    system checks the address (URL) supplied for syntax, but does not
+    currently test that the location referenced actually exists.  In
+    addition to the web address itself, a URL_Value-constant can
+    contain additional text, separated from the web address by
+    spaces.  (Note that URLs are not allowed to contain spaces, so
+    there is no opportunity for confusion.)  When creating pages that
+    use a URL_Value to create links, if additional text is present in
+    the URL_Value, it will be used for the text of the link instead of
+    the actual web address.
+
+
 #### Minimal set of types (predicates) for connections
 #### this is WontoMedia's native "schema", and represents the minimal
 #### typing information used by the UI
 
-
         # relationships we expect ontology-contributors to use
+property_subject_is:
+  name: property_subject_is
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Property's Subject is a (defining relationship)
+  description: >-
+    This property is used to define/restrict the set of items that
+    are permissable choices for the subject item of another property.
+    For example, consider the connection "myRelationship
+    property_subject_is MyClass".  The existence of this connection
+    restricts the content of the wontology so that the only acceptable
+    subject items for relationships where "myRelationship" is the
+    predicate are items that are instances of "MyClass" or of one of
+    MyClass' child sub-classes.
+
+    When a property_subject_is relationship is created, it affects the
+    options available for creating and editing connections--pages
+    will be populated only with options consistent with the current
+    state of the data.
+
+
+property_object_is:
+  name: property_object_is
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Property's Object is a (defining relationship)
+  description: >-
+    This property is used to define/restrict the set of items that are
+    permissable choices for the object item of another property.  For
+    example, consider the statement "myRelationship
+    property_object_is myClass".  The existence of this connection
+    restricts the content of the wontology so that the only acceptable
+    subject items for relationships where "myRelationship" is the
+    predicate are items that are instances of "myClass" or of one of
+    myClass' child sub-classes.
+
+
+applies_to_class:
+  name: applies_to_class
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Applies to the Class (defining relationship)
+  description: >-
+    This property is used to provide hints about the connections a
+    user will likely create to go with items that are instances of a
+    particular class.  For example, a wontology that is intended to
+    contain a number of items that represent people, might contain a
+    category item named "Person" to represent the class of all the
+    individual person items.  Given that class, the connection
+    "birthDate applies_to_class Person" makes the statement that it is
+    likely (not mandatory) that each item which is_instance_of Person
+    will have at least one connection using the property "birthDate"
+    as a predicate.  The system uses this information to automatically
+    create, each time a user makes a new instance item, a list of
+    connections (with empty object item references) for the user to
+    fill in.
+
+
+has_scalar_object:
+  name: has_scalar_object
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Has a Scalar Value for its Object (defining relationship)
+  description: >-
+    This property is used to define/restrict the permissable choices
+    for the object item of another property.  For example, consider
+    the statement "myRelationship has_scalar_object String_Value".
+    This connection says that the objects of all connections that use
+    "myRelationship" as their predicate should be scalar (single
+    valued) constants, and that String_Value is the acceptable type
+    for those constants.
+
+    When a connection like this is present, and a new connection is
+    being defined, once a has_scalar_object-property is selected, only
+    a text-entry box (and not an item selector) will be displayed, and
+    its content will be limited to what is acceptable for the type
+    specified by the has_scalar_object relationship's own object item.
+
+
+has_item_object:
+  name: has_item_object
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Has an Item for its Object (defining relationship)
+  description: >-
+    This property is used to define/restrict the set of permissable
+    choices for the object item of another property.  For example,
+    consider the statement "myRelationship has_item_object
+    'True'".  This connection says that the objects of all
+    connections that use "myRelationship" as their predicate should be
+    an item and not a constant.  (Note that the existence of a
+    connection using has_item_object is the important thing, and that
+    the object of such a connection is ignored.  By convention it is
+    filled in with the String "True", but this is not checked by the
+    system.)
+
+    When a connection like this is present, and a new connection is
+    being defined, once a has_item_object-property is selected, only
+    an item selector (and not a text-entry box) will be displayed.
+
+
+max_uses_per_item:
+  name: max_uses_per_item
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Maximum Number of Uses Per Item is (defining relationship)
+  description: >-
+    This property is used to define/restrict how connections using a
+    particular predicate item can be made.  The subject of connections
+    using max_uses_per_item must be a property item, and the object
+    must be an integer constant.  For example, if a wontology contains
+    the connection "myProperty max_uses_per_item 7", it will prevent
+    users from creating more than seven connections using "myProperty"
+    as predicate with the same subject item.  Connections using this
+    property affect the count (cardinality) of the specified
+    relationship's subject items only, and does not place restrictions
+    on the number of times an item can be referenced as the object of
+    connections.
+
+
 peer_of:
   name: peer_of
   sti_type: PropertyItem
@@ -35,13 +327,13 @@ peer_of:
     relationship between equals.  This would be appropriate, for
     example, as a description of the "synonym" relationship that might
     occur between the entries for two words in a thesaurus.
-    WontoMedia makes two assumptions about individuals that have a
+    The system makes two assumptions about individuals that have a
     Peer-Of relationship to each other.  First, the relationship is
     assumed to be bidirectional.  Saying that "A is a Peer-Of B"
     implies that "B is a Peer-Of A", and it doesn't matter which of
     the two "directions" is used when the relationship is first
     created.  Second, when showing the graph of relationships between
-    individuals, WontoMedia will attempt to indicate Peer-Of
+    individuals, the system will attempt to indicate Peer-Of
     relationships as primarily horizontal.
 
 
@@ -57,7 +349,7 @@ one_of:
     "macintosh" in "macintosh is One-Of computer") is assumed to be
     more specific or more narrow than the object of the relationship
     ("B" and "computer").  When showing a graph of connections
-    between items, WontoMedia will attempt to indicate 'One-Of'
+    between items, the system will attempt to indicate 'One-Of'
     relationships as primarily vertical, with the object-item drawn
     nearer "the root" of the graph and the subject-item toward "the
     leaves".
@@ -87,7 +379,7 @@ contains:
     relationship ("A" in the relationship "A Contains B", and like
     "spacecraft" in "spacecraft Contains apollo") is more general or
     broad than the object of the relationship ("B" and "apollo").
-    When showing a graph of connections between items, WontoMedia
+    When showing a graph of connections between items, the system
     will attempt to indicate 'Contains' relationships as primarily
     vertical, with the subject-item drawn nearer "the root" of the
     graph and the object-item toward "the leaves".
@@ -101,7 +393,7 @@ contains:
     'Child Of' are opposites of each other, and 'One Of' is a child of
     'Child Of'.  But this does not make 'Contains' and 'Child Of'
     opposites of each other, though an approximation of opposite-ness
-    could be inferred.  WontoMedia will not automatically cause a
+    could be inferred.  The system will not automatically cause a
     'Child Of' relationship to be created when a 'Contains'
     relationship is.
 
@@ -118,7 +410,7 @@ parent_of:
     like "vehicle" in "vehicle is Parent-Of spacecraft") is a
     super-set of the object of the relationship ("B" and
     "spacecraft").  When showing a graph of connections between
-    items, WontoMedia will attempt to indicate 'Parent Of'
+    items, the system will attempt to indicate 'Parent Of'
     relationships as primarily vertical, with the subject-item drawn
     nearer "the root" of the graph and the object-item toward "the
     leaves".
@@ -131,7 +423,7 @@ parent_of:
     'Parent Of' is the opposite of 'Child Of'.  Creating a
     relationship that states one category is 'Parent Of' another is
     exactly the same as creating a 'Child Of' relationship with the
-    subject and object reversed, and WontoMedia will list the
+    subject and object reversed, and the system will list the
     relationship between then using both relationship names (which
     name is given priority depends on which item is more central to
     the display).
@@ -148,7 +440,7 @@ child_of:
     relationship ("A" in the relationship "A is a Child-Of B", and
     like "spacecraft" in "spacecraft is Child-Of vehicle") is a subset
     of the object of the relationship ("B" and "vehicle").  When
-    showing a graph of connections between items, WontoMedia will
+    showing a graph of connections between items, the system will
     attempt to indicate 'Child Of' relationships as primarily
     vertical, with the object-item drawn nearer "the root" of the
     graph and the subject-item toward "the leaves".
@@ -161,7 +453,7 @@ child_of:
     'Child Of' is the opposite of 'Parent Of'.  Creating a
     relationship that states one category is 'Child Of' another is
     exactly the same as creating a 'Parent Of' relationship with the
-    subject and object reversed, and WontoMedia will list the
+    subject and object reversed, and the system will list the
     relationship between then using both relationship names (which
     name is given priority depends on which item is more central to
     the display).
@@ -202,11 +494,11 @@ inverse_relationship:
     relationships relate to each other.  This relationship is used to
     denote that two other relationships are symmetric and inseparable
     opposites of each other.  For example, "Child-Of has
-    Inverse-Relationship to Parent-Of".  WontoMedia will interpret any
+    Inverse-Relationship to Parent-Of".  The system will interpret any
     two relationships linked by 'Inverse Relationship' (or by a
     non-built in relationship that is marked as a 'SubProperty Of'
     'Inverse Relationship') as being identical antonyms of each
-    other.  Any time one relationship is created, WontoMedia will
+    other.  Any time one relationship is created, the system will
     automatically infer, create, and show the matching opposite
     (inverse) relationship's name.
 
@@ -220,18 +512,53 @@ sub_property_of:
     This relationship is used to relate two other relationships to
     each other.  The statement "A is a SubProperty-Of B" says that the
     relationship A makes a more specific, narrow claim about items it
-    relates than the relationship B does.  However, if WontoMedia has
+    relates than the relationship B does.  However, if the system has
     special behavior or handling for relationship B, the 'SubProperty
     Of' statement allows it to determine it should apply that special
     behavior to A as well.
 
-    For example, when drawing relationship graphs, WontoMedia attempts
+    For example, when drawing relationship graphs, the system attempts
     to draw all instances of 'Symmetric Relationship" in a primarily
     horizontal way.  There is a built-in statement that "Peer-Of is a
     SubProperty-Of Symmetric-Relationship", which causes 'Peer Of'
     relationships to be (preferentially) drawn horizontally, as will
-    be any other types of relationships that are added to an ontology
-    with WontoMedia.
+    be any other types of relationships that are added to a sontology.
+
+
+sub_class_of:
+  name: sub_class_of
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: SubClass Of (basic relationship type)
+  description: >-
+    This relationship is used to connect two items, both representing
+    classes, indicating that the subject item is a sub-class of the
+    object item.  For example, the connection "Ships is a SubClass-Of
+    Vehicles" links the two class items, and makes the statement that
+    "Ships" are a more specific kind of "Vehicles".  Once this
+    connection is established, the system will behave as if everything
+    that is true about "Vehicles" is also true for "Ships" (although
+    not vice-versa).  For example, if another property is defined such
+    that its object items are required to be instances of the "Vehicles"
+    class, then having this connection allows instances of "Ships" to
+    be used as well.  But, another property whose objects are required
+    to be "Ships" is not affected, and other "Vehicles" still cannot
+    be used.
+
+
+is_instance_of:
+  name: is_instance_of
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Is an Instance Of (basic relationship type)
+  description: >-
+    This relationship is used to connect one item with a second item
+    representing the class of which the first item is a member.  For
+    example, the connection "QueenMary is_instance_of Ships" states
+    that the Queen Mary is a ship, and allows the system to apply all
+    of the rules that pertain to instances of "Ships" to the
+    "QueenMary" item, and allows the "QueenMary" item to be referenced
+    from contexts that require a member of "Ships".
 
 
         # fundamental property classes; the root of the property universe
@@ -241,7 +568,7 @@ symmetric_relationship:
   flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Symmetric Relationship (root relationship type)
   description: >-
-    This is a root element in WontoMedia's internal schema.  All
+    This is a root element in the system's internal schema.  All
     relationship (property) classes are children of one of three root
     relationship types, including this one.
 
@@ -251,7 +578,7 @@ value_relationship:
   flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Value Relationship (root relationship type)
   description: >-
-    This is a root element in WontoMedia's internal schema.  All
+    This is a root element in the system's internal schema.  All
     relationship (property) classes are children of one of three root
     relationship types, including this one.
 
@@ -261,7 +588,7 @@ hierarchical_relationship:
   flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Hierarchical Relationship (root relationship type)
   description: >-
-    This is a root element in WontoMedia's internal schema.  All
+    This is a root element in the system's internal schema.  All
     relationship (property) classes are children of one of three root
     relationship types, including this one.
 
@@ -271,7 +598,7 @@ ordered_relationship:
   flags: <%= Item::DATA_IS_UNALTERABLE %>
   title: Ordered Relationship (root relationship type)
   description: >-
-    This is a root element in WontoMedia's internal schema.
+    This is a root element in the system's internal schema.
     Properties should be made sub_property_of  this property if they
     imply an order between their subject and object.  Among other
-    things, this property allows WontoMedia to make UI decisions.
+    things, this property allows the system to make UI decisions.

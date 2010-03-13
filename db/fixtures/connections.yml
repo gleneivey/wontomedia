@@ -16,8 +16,104 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+define_Item_Class:
+  subject: Item_Class
+  predicate: sub_class_of
+  obj: Item_Class
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Property_Item:
+  subject: Property_Item
+  predicate: sub_class_of
+  obj: Item_Class
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Type_Item:
+  subject: Type_Item
+  predicate: sub_class_of
+  obj: Item_Class
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_String_Value:
+  subject: String_Value
+  predicate: sub_class_of
+  obj: Type_Item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Integer_Value:
+  subject: Integer_Value
+  predicate: sub_class_of
+  obj: Type_Item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Number_Value:
+  subject: Number_Value
+  predicate: sub_class_of
+  obj: Type_Item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Boolean_Value:
+  subject: Boolean_Value
+  predicate: sub_class_of
+  obj: Type_Item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Value_True:
+  subject: Value_True
+  predicate: is_instance_of
+  obj: Boolean_Value
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Value_False:
+  subject: Value_False
+  predicate: is_instance_of
+  obj: Boolean_Value
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_URL_Value:
+  subject: URL_Value
+  predicate: sub_class_of
+  obj: String_Value
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+set_ordered_class:
+  subject: ordered_relationship
+  predicate: sub_class_of
+  obj: Property_Item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+set_hierarchical_class:
+  subject: hierarchical_relationship
+  predicate: sub_class_of
+  obj: Property_Item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+set_value_class:
+  subject: value_relationship
+  predicate: sub_class_of
+  obj: Property_Item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+set_symmetric_class:
+  subject: symmetric_relationship
+  predicate: sub_class_of
+  obj: Property_Item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
 define_sub_property_of:
   subject: sub_property_of
+  predicate: sub_property_of
+  obj: hierarchical_relationship
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_sub_class_of:
+  subject: sub_class_of
+  predicate: sub_property_of
+  obj: hierarchical_relationship
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_is_instance_of:
+  subject: is_instance_of
   predicate: sub_property_of
   obj: hierarchical_relationship
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
@@ -50,6 +146,48 @@ define_child_to_parent_symmetry:
   subject: child_of
   predicate: inverse_relationship
   obj: parent_of
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_property_subject_is:
+  subject: property_subject_is
+  predicate: sub_property_of
+  obj: symmetric_relationship
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_property_object_is:
+  subject: property_object_is
+  predicate: sub_property_of
+  obj: symmetric_relationship
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_applies_to_class:
+  subject: applies_to_class
+  predicate: sub_property_of
+  obj: symmetric_relationship
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_has_scalar_object:
+  subject: has_scalar_object
+  predicate: sub_property_of
+  obj: value_relationship
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_has_item_object:
+  subject: has_item_object
+  predicate: sub_property_of
+  obj: value_relationship
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_max_uses_per_item:
+  subject: max_uses_per_item
+  predicate: sub_property_of
+  obj: value_relationship
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+mupi_is_scalar:
+  subject: max_uses_per_item
+  predicate: has_scalar_object
+  obj: Value_True
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_peer_of:
