@@ -140,6 +140,16 @@ class ItemsController < ApplicationController
   # * *@item_hash* is a hash that contains additional Item objects
   #   that will be required to render the output page.  It is indexed
   #   with Item.id values.
+  # * *@inverses_map* is a hash indexed by Connection objects which
+  #   contains other Connection objects.  Each time 'show' generates a
+  #   Connection object for one connection that is implied by the
+  #   existence of another connection involving *@item*, it creates an
+  #   entry in this hash.  The new entry is indexed by the new
+  #   Connection object (which has no "id" as it has not been saved to
+  #   the database) and whose value is the Connection object that
+  #   implies the new connection.  This allows the view to create
+  #   links to an implied connection's "source" connection without
+  #   having to go back through the database.
   # * *@connection_list* is an _array_ of _arrays_ of Connection.id
   #   values.  Each array within @connection_list represents a
   #   different logically-similar group of connections, and they are
@@ -221,6 +231,7 @@ class ItemsController < ApplicationController
     used_as_obj  = Connection.all( :conditions =>
       [ "obj_id = ?", @item.id ])
 
+    @inverses_map = {}
     # create Connection objects for any implied connections we want to list
     used_as_obj.each do |connection|
       if inverse_property_id = TrippleNavigation.
@@ -231,6 +242,7 @@ class ItemsController < ApplicationController
           :obj_id => connection.subject_id
         )
         used_as_subj << new_connection
+        @inverses_map[new_connection] = connection
       end
     end
 

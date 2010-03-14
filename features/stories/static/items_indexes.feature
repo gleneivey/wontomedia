@@ -39,6 +39,7 @@ Feature:  Show existing ontology information in app home and index pages
     And there is an existing connection "indivItems0" "parent_of" "indivItems1"
     When I go to the show items page for "indivItems1"
     Then I should see 1 match of "Child Of"
+    And  I should see 1 match of "View source" in "a"
 
 
 # WontoMedia - a wontology web application

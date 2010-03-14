@@ -183,4 +183,23 @@ class ItemsShowViewTest < ActionController::TestCase
       end
     end
   end
+
+  # depends on the follwoing connections in fixtures:
+  #   itemUsedFrequentlyAsSubject successor_of D
+  #                             E successor_of D
+  # to produce implied predecessor_of connections
+  test "items-show page s'h' correct links for original and implied con's" do
+    get_items_show(:D)
+    assert item_hash = assigns(:item_hash)
+
+    [ connections(:nUFAS_successor_of_D),
+      connections(:nE_successor_of_D) ].each do |connection|
+
+      assert_select "a[href=\"#{connection_path(connection)}\"]",
+        { :text => 'Show' }, 'Missing "Show" link for expected connection'
+      assert_select "a[href=\"#{connection_path(connection)}\"]",
+        { :text => 'View source' },
+        'Missing "View source" link for expected connection'
+    end
+  end
 end

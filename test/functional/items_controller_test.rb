@@ -376,6 +376,7 @@ class ItemsControllerTest < ActionController::TestCase
     item = items(:testSubcategory)
     get :show, :id => item.id
 
+    assert inverses_map = assigns(:inverses_map)
     assert con_list = assigns(:connection_list)
     assert con_list.length == 3
 
@@ -391,14 +392,17 @@ class ItemsControllerTest < ActionController::TestCase
     assert connection = con_array[0]
     child_id = Item.find_by_name("child_of").id
     assert connection.predicate_id == child_id
+    implied_connection = connection
 
     con_array = con_list[2]
     assert con_array.length == 1
     assert connection = con_array[0]
     assert connection.predicate_id == Item.find_by_name("parent_of").id
+    source_connection = connection
 
     assert item_hash = assigns(:item_hash)
     assert item_hash[child_id]
+    assert inverses_map[implied_connection] == source_connection
   end
 
   test "should show multiple implied connections" do
@@ -413,6 +417,7 @@ class ItemsControllerTest < ActionController::TestCase
     item = items(:D)
     get :show, :id => item.id
 
+    assert inverses_map = assigns(:inverses_map)
     assert con_list = assigns(:connection_list)
     assert con_list.length == 4
 
@@ -434,6 +439,9 @@ class ItemsControllerTest < ActionController::TestCase
 
     assert item_hash = assigns(:item_hash)
     assert item_hash[pred.id]
+    con_list[1].each do |connection|
+      assert inverses_map[connection]
+    end
   end
 
   test "should get edit item page" do
