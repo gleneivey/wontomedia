@@ -102,11 +102,9 @@
          connection_array = array_of_arrays_of_connections.next
 
          # check ID of first connection's subject item against "this" item's ID
-         break if @connection_hash[connection_array[0]].subject_id != @item.id
+         break if connection_array[0].subject_id != @item.id
 
-         connection_array.each do |connection_id|
-           e = @connection_hash[connection_id]
-
+         connection_array.each do |connection|
            unless list_open_output
              list_open_output = true
 
@@ -124,13 +122,13 @@
                <ul style="list-style-type: none;">
 <%         end
 
-           if last_predicate_id != e.predicate_id
+           if last_predicate_id != connection.predicate_id
              if last_predicate_id %>
                  </ul>
                </li>
 <%           end %>
              <li>
-               <%= item = @item_hash[e.predicate_id]
+               <%= item = @item_hash[connection.predicate_id]
                    link_with_tooltip (h filter_parenthetical item.title ),
                      h( item.name ), item_by_name_path(item.name) %>
                <ul style="list-style-type: circle;">
@@ -138,14 +136,18 @@
 
            <li>
              <div style="float: right; font-size: 80%; margin-right: 6em;">
-               <%  generate_connection_links(e) %>
+               <% if connection.id
+                    generate_connection_links(connection)
+                  else
+                    generate_inverse_link(@inverses_map[connection])
+                  end %>
              </div>
-             <%= item = @item_hash[e.obj_id]
+             <%= item = @item_hash[connection.obj_id]
                  link_with_tooltip (h filter_parenthetical item.title ),
                    h( item.name ), item_by_name_path(item.name) %>
            </li>
 
-<%         last_predicate_id = e.predicate_id
+<%         last_predicate_id = connection.predicate_id
 
          end                       # .each over connection_array
        end                         # while over array-of-connection_array's
@@ -181,17 +183,20 @@
          end %>
 
          <tbody>
-           <% connection_array.each do |connection_id| %>
+           <% connection_array.each do |connection| %>
              <tr>
                <td>
-                 <%= e = @connection_hash[connection_id]
-                     self_string_or_other_link(e.subject_id) %>
+                 <%= self_string_or_other_link(connection.subject_id) %>
                </td><td class="connectioncolumn">
-                 <%= self_string_or_other_link(e.predicate_id) %>
+                 <%= self_string_or_other_link(connection.predicate_id) %>
                </td><td>
-                 <%= self_string_or_other_link(e.obj_id) %>
+                 <%= self_string_or_other_link(connection.obj_id) %>
                </td><td style="font-size: 80%">
-                 <% generate_connection_links(e) %>
+                 <% if connection.id
+                      generate_connection_links(connection)
+                    else
+                      generate_inverse_link(@inverses_map[connection])
+                    end %>
                </td>
              </tr>
            <% end %>

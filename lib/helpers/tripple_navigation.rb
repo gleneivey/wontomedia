@@ -155,4 +155,27 @@ module TrippleNavigation
     end
     return false
   end
+
+  # This method find a property's inverse property (if it exists).  It
+  # returns the inverse property's ID or nil.
+  def self.propertys_inverse( original_property_id )
+    spo_id     = Item.find_by_name("sub_property_of").id
+    inverse_id = Item.find_by_name("inverse_relationship").id
+
+    # Note: We require both "A-to-B" and "B-to-A" connections to be
+    # present in the database to define two properties as the inverse
+    # of each other, so we only need to gather the connections that
+    # refer to original_property as their subject.
+    possible_inverse_defining_connections = Connection.all(
+      :conditions => [ "subject_id = ?", original_property_id ])
+
+    possible_inverse_defining_connections.each do |connection|
+      if TrippleNavigation.check_properties(
+          :does => connection.predicate_id, :inherit_from => inverse_id,
+          :via => spo_id )
+        return connection.obj_id
+      end
+    end
+    nil
+  end
 end

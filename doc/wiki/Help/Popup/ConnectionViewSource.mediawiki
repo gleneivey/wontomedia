@@ -1,0 +1,7 @@
+<!-- Copyright (c)  2010  Glen E. Ivey
+     Permission is granted to copy, distribute and/or modify this document
+     under the terms of the GNU Free Documentation License, Version 1.3;
+     with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+     A copy of the license is in the file COPYING.DOCUMENTATION
+  -->
+Click the '''View source''' link to go to the details page for the connection whose existence ''implies'' the current connection.  For example, if the connection that this link is associated with uses the <tt>parent_of</tt> property as its predicate, then the presence of this link indicates that the shown connection isn't really present in the database, but that a corresponding inverse connection, using <tt>child_of</tt> is present.  Clicking '''View source''' will show the page for the underlying inverse connection, in this case the one using <tt>child_of</tt>.  (Note that the source connection should also be listed farther down on this page, including the normal '''Show''' link.)

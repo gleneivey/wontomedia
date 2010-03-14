@@ -64,4 +64,22 @@ module ConnectionsHelper
       @delete_help_icon_used = true
     end
   end
+
+  # This method appends its output directly to the page being built.
+  # It takes a Connection model instance and creates an HTML link to
+  # that connection.  It should be used as an alternative to
+  # "generate_connection_links()" for those cases where instead of
+  # generating links to the Connection the user is looking at, we're
+  # generating a link to the Connection that _implied_ whatever the
+  # user is looking at.  A popup help icon will be added on the first
+  # call to generate_inverse_link for a particular page.
+  def generate_inverse_link(con)
+    concat(
+      link_with_help_icon({
+        :destination => link_to( 'View source', connection_path(con) ),
+        :already_generated => @viewsource_help_icon_used,
+        :help_alt => 'Help view source',
+        :which_help =>'ConnectionViewSource' }) )
+    @viewsource_help_icon_used = true
+  end
 end

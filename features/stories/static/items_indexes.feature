@@ -34,6 +34,13 @@ Feature:  Show existing ontology information in app home and index pages
     Then I should see 39 matches of "fufubarfu" in "td"
 
 
+  Scenario: Show page for an item lists implied connections
+    Given there are 2 existing individuals like "indivItems"
+    And there is an existing connection "indivItems0" "parent_of" "indivItems1"
+    When I go to the show items page for "indivItems1"
+    Then I should see 1 match of "Child Of"
+    And  I should see 1 match of "View source" in "a"
+
 
 # WontoMedia - a wontology web application
 # Copyright (C) 2010 - Glen E. Ivey
