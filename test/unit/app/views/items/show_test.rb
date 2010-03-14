@@ -106,22 +106,22 @@ class ItemsShowViewTest < ActionController::TestCase
   end
 
   test "item-show page should contain titles & links of each connection's items" do
+    get_items_show(:testIndividual)
     [ items(:one),                          # aQualifiedConnection
       items(:testCategory),
       items(:testSubcategory),              # subcategoryHasValue
       items(:isAssigned)
     ].each do |item|
-      get_items_show(:testIndividual)
       assert_select "body", /#{item.title}/
       assert_select "a[href=?]", item_by_name_path(item.name)
     end
   end
 
   test "item-show page should contain links for connections" do
+    get_items_show(:testIndividual)
     [ connections(:aQualifiedConnection),
       connections(:subcategoryHasValue)
     ].each do |connection|
-      get_items_show(:testIndividual)
       assert_select "a[href=?]", edit_connection_path(connection)
       assert_select "a[href=?]", connection_path(connection)
     end
@@ -181,6 +181,25 @@ class ItemsShowViewTest < ActionController::TestCase
             test_sense )
         end
       end
+    end
+  end
+
+  # depends on the follwoing connections in fixtures:
+  #   itemUsedFrequentlyAsSubject successor_of D
+  #                             E successor_of D
+  # to produce implied predecessor_of connections
+  test "items-show page s'h' correct links for original and implied con's" do
+    get_items_show(:D)
+    assert item_hash = assigns(:item_hash)
+
+    [ connections(:nUFAS_successor_of_D),
+      connections(:nE_successor_of_D) ].each do |connection|
+
+      assert_select "a[href=\"#{connection_path(connection)}\"]",
+        { :text => 'Show' }, 'Missing "Show" link for expected connection'
+      assert_select "a[href=\"#{connection_path(connection)}\"]",
+        { :text => 'View source' },
+        'Missing "View source" link for expected connection'
     end
   end
 end

@@ -104,9 +104,7 @@
          # check ID of first connection's subject item against "this" item's ID
          break if connection_array[0].subject_id != @item.id
 
-         connection_array.each do |connection_id|
-           e = connection_id
-
+         connection_array.each do |connection|
            unless list_open_output
              list_open_output = true
 
@@ -124,13 +122,13 @@
                <ul style="list-style-type: none;">
 <%         end
 
-           if last_predicate_id != e.predicate_id
+           if last_predicate_id != connection.predicate_id
              if last_predicate_id %>
                  </ul>
                </li>
 <%           end %>
              <li>
-               <%= item = @item_hash[e.predicate_id]
+               <%= item = @item_hash[connection.predicate_id]
                    link_with_tooltip (h filter_parenthetical item.title ),
                      h( item.name ), item_by_name_path(item.name) %>
                <ul style="list-style-type: circle;">
@@ -138,16 +136,18 @@
 
            <li>
              <div style="float: right; font-size: 80%; margin-right: 6em;">
-               <% if e.id
-                    generate_connection_links(e)
+               <% if connection.id
+                    generate_connection_links(connection)
+                  else
+                    generate_inverse_link(@inverses_map[connection])
                   end %>
              </div>
-             <%= item = @item_hash[e.obj_id]
+             <%= item = @item_hash[connection.obj_id]
                  link_with_tooltip (h filter_parenthetical item.title ),
                    h( item.name ), item_by_name_path(item.name) %>
            </li>
 
-<%         last_predicate_id = e.predicate_id
+<%         last_predicate_id = connection.predicate_id
 
          end                       # .each over connection_array
        end                         # while over array-of-connection_array's
@@ -194,6 +194,8 @@
                </td><td style="font-size: 80%">
                  <% if connection.id
                       generate_connection_links(connection)
+                    else
+                      generate_inverse_link(@inverses_map[connection])
                     end %>
                </td>
              </tr>
