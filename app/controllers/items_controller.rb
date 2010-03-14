@@ -107,7 +107,7 @@ class ItemsController < ApplicationController
       render :action => (@popup_flag ? "newpop" : "new" )
     else
       if @popup_flag
-        @connection_list = []; @item_hash = {}; @connection_hash = {}
+        @connection_list = []; @item_hash = {};
         flash.now[:notice] = 'Item was successfully created.'
         render :action => "show", :layout => "popup"
       else
@@ -128,6 +128,61 @@ class ItemsController < ApplicationController
   # returned.  When a full web page is generated, information is
   # included about all other Items which are involved in Connections
   # that directly reference the requested Item.
+  #
+  # As for all controller methods, 'show' populates instance variables
+  # for the view to use in generating the page.  However, unlike most
+  # of the other controller methods, the data packaging that the show
+  # method does for the items/show view is relatively extensive and
+  # several instance variables are created:
+  #
+  # * *@item* this variable is populated with a single Item object
+  #   that holds the model for the page being generated
+  # * *@item_hash* is a hash that contains additional Item objects
+  #   that will be required to render the output page.  It is indexed
+  #   with Item.id values.
+  # * *@connection_list* is an _array_ of _arrays_ of Connection.id
+  #   values.  Each array within @connection_list represents a
+  #   different logically-similar group of connections, and they are
+  #   expected (although it is really up to the view) to be rendered
+  #   into the page from top to bottom in the order they occur in the
+  #   array.
+  #   - The first array of Connections inside of @connection_list
+  #     includes all connections that reference *@item* as their
+  #     subject item, _and_ which have a predicate item that inherits
+  #     from value_relationship.  (Assuming that's a non-empty set.)
+  #   - The next some-number-of arrays inside of @connection_list
+  #     contain (some of) the remaining Connections (if any) that
+  #     reference *@item* as their subject.  Connections are grouped
+  #     together based on their references to a common predicate item:
+  #     all of the Connections whose subject is *@item* and which have
+  #     the _same_ value for *predicate_id*.  Based on this definition,
+  #     all of the arrays in this portion of @connection_list will
+  #     have two or more element Connection objects.  The arrays in
+  #     this group are placed into @connection_list in order based on
+  #     the number of Connections in the array:  larger arrays are
+  #     sorted ahead of smaller ones.
+  #   - The next array in @connection_list, assuming there are
+  #     Connection objects for it, contains any Connections that
+  #     reference *@item* as their subject that haven't been included
+  #     in one of the arrays above.  Given the above definitions, the
+  #     view can expect that all of the *predicate_id* values in the
+  #     Connections in this array will be different.
+  #   - The next array in @connection_list contains all of the
+  #     Connection objects whose *object_id* values are equal to
+  #     *@item*.  Like all the other, this array won't be placed into
+  #     @connection_list if it would be empty.  Also, in the event of
+  #     that a Connection references *@item* as both its subject and
+  #     object, that Connection will be included in the appropriate
+  #     one of the preceding arrays.  (In generally, the criteria for
+  #     placing Connections into the individual arrays contained by
+  #     @connection_list are "greedy"; a Connection will be placed
+  #     in only one array, and it will be the earliest-generated array
+  #     for which it qualifies.)  Connections are sorted within this
+  #     array so that ones who share the same *predicate_id* value are
+  #     in adjacent positions.
+  #   - The final array that may be in @connection_list includes all
+  #     of the (remaining) Connections which, given the definitions
+  #     above, all reference *@item* as their predicate.
   def show
     begin
       @item = params[:name].nil? ?
@@ -158,16 +213,12 @@ class ItemsController < ApplicationController
       [ "obj_id = ?", @item.id ])
 
     @item_hash = {}
-    @connection_hash = {}
     [ used_as_subj, used_as_pred, used_as_obj ].each do |connection_array|
       connection_array.each do |connection|
-        unless @connection_hash.has_key? connection.id
-          @connection_hash[connection.id] = connection
-          [ connection.subject, connection.predicate, connection.obj ].
-            each do |item|
-            unless @item_hash.has_key? item.id
-              @item_hash[item.id] = item
-            end
+        [ connection.subject, connection.predicate, connection.obj ].
+          each do |item|
+          unless @item_hash.has_key? item.id
+            @item_hash[item.id] = item
           end
         end
       end
@@ -177,22 +228,19 @@ class ItemsController < ApplicationController
     # @connection_list should be an array of arrays, each internal array is
     # a "section" of the display page, containing .id's of connections
     @connection_list = []
-
     value_id = Item.find_by_name("value_relationship").id
     spo_id   = Item.find_by_name("sub_property_of").id
 
     # first group, all connections *from* this item with value-type predicates
     connections = []
-    connections_to_delete = []
     used_as_subj.each do |connection|
       if TrippleNavigation.check_properties(
           :does => connection.predicate_id, :via => spo_id,
           :inherit_from => value_id )
-        connections << connection.id
-        connections_to_delete << connection
+        connections << connection
       end
     end
-    used_as_subj -= connections_to_delete # done incrementally, breaks iterator
+    used_as_subj -= connections # if done incrementally, breaks iterator
     unless connections.empty?
       @connection_list << connections
     end
@@ -209,7 +257,7 @@ class ItemsController < ApplicationController
       else
         pred_counts[connection.predicate_id] += 1
       end
-      connection_using_pred[connection.predicate_id] = connection.id
+      connection_using_pred[connection.predicate_id] = connection
     end
     subj_connections = pred_counts.keys
     subj_connections.sort! { |a,b| pred_counts[b] <=> pred_counts[a] }
@@ -220,7 +268,7 @@ class ItemsController < ApplicationController
         used_as_subj.each do |connection|
             # lazy, more hashes would eliminate rescan
           if connection.predicate_id == predicate_id
-            connections << connection.id
+            connections << connection
           end
         end
         unless connections.empty?
@@ -238,22 +286,20 @@ class ItemsController < ApplicationController
     end
 
 
-    obj_connections = used_as_obj.map { |connection| connection.id }
-    obj_connections.sort! do |a,b|
-      if @connection_hash[a].predicate_id == @connection_hash[b].predicate_id
-        @connection_hash[a].obj_id <=> @connection_hash[b].obj_id
+    used_as_obj.sort! do |a,b|
+      if a.predicate_id == b.predicate_id
+        a.obj_id <=> b.obj_id
       else
-        @connection_hash[a].predicate_id <=> @connection_hash[b].predicate_id
+        a.predicate_id <=> b.predicate_id
       end
     end
-    unless obj_connections.empty?
-      @connection_list << obj_connections
+    unless used_as_obj.empty?
+      @connection_list << used_as_obj
     end
 
 
-    pred_connections = used_as_pred.map { |connection| connection.id }
-    unless pred_connections.empty?
-      @connection_list << pred_connections
+    unless used_as_pred.empty?
+      @connection_list << used_as_pred
     end
   end
 
