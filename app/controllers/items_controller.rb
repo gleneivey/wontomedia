@@ -136,6 +136,10 @@ class ItemsController < ApplicationController
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
+    if @item.nil?
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
 
     if request.format.json?
       # huge kludge for testability.  Need to ensure that we don't respond
@@ -263,6 +267,10 @@ class ItemsController < ApplicationController
       @item = params[:name].nil? ?
         Item.find(params[:id]) : Item.find_by_name(params[:name])
     rescue
+      render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
+      return
+    end
+    if @item.nil?
       render :file => "#{RAILS_ROOT}/public/404.html", :status => 404
       return
     end
