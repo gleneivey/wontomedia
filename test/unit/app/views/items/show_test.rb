@@ -106,22 +106,22 @@ class ItemsShowViewTest < ActionController::TestCase
   end
 
   test "item-show page should contain titles & links of each connection's items" do
+    get_items_show(:testIndividual)
     [ items(:one),                          # aQualifiedConnection
       items(:testCategory),
       items(:testSubcategory),              # subcategoryHasValue
       items(:isAssigned)
     ].each do |item|
-      get_items_show(:testIndividual)
       assert_select "body", /#{item.title}/
       assert_select "a[href=?]", item_by_name_path(item.name)
     end
   end
 
   test "item-show page should contain links for connections" do
+    get_items_show(:testIndividual)
     [ connections(:aQualifiedConnection),
       connections(:subcategoryHasValue)
     ].each do |connection|
-      get_items_show(:testIndividual)
       assert_select "a[href=?]", edit_connection_path(connection)
       assert_select "a[href=?]", connection_path(connection)
     end
