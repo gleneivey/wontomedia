@@ -119,7 +119,7 @@ class ItemsController < ApplicationController
 
   # GET /items/1
   #
-  # Note that +show+ is capable of rendering in multiple
+  # +show+ is capable of rendering in multiple
   # formats. <tt>/items/1</tt> and <tt>/items/1.html</tt> yield a
   # human-readable page in HTML markup.  <tt>/items/1.json</tt>
   # renders all fields from the specified Item as JSON-format text,
@@ -129,11 +129,11 @@ class ItemsController < ApplicationController
   # included about all other Items which are involved in Connections
   # that directly reference the requested Item.
   #
-  # As for all controller methods, 'show' populates instance variables
+  # As for all controller actions, 'show' populates instance variables
   # for the view to use in generating the page.  However, unlike most
   # of the other controller methods, the data packaging that the show
-  # method does for the items/show view is relatively extensive and
-  # several instance variables are created:
+  # action does for the its view is relatively extensive and several
+  # instance variables are created:
   #
   # * *@item* this variable is populated with a single Item object
   #   that holds the model for the page being generated
@@ -183,6 +183,14 @@ class ItemsController < ApplicationController
   #   - The final array that may be in @connection_list includes all
   #     of the (remaining) Connections which, given the definitions
   #     above, all reference *@item* as their predicate.
+  #
+  # Before connections are packaged and the items necessary for their
+  # display are gathered, the show action will create temporary,
+  # not-saved-to-the-database Connection objects to represent
+  # connections implied by existing connection that have the current
+  # *@item* as their object.  This allows implied connections to be
+  # included in the list of connections-with-@item-as-subject near the
+  # top of the list of *@item*'s connections.
   def show
     begin
       @item = params[:name].nil? ?
@@ -205,6 +213,7 @@ class ItemsController < ApplicationController
       return
     end
 
+    # all of the connections we might want to display
     used_as_subj = Connection.all( :conditions =>
       [ "subject_id = ?", @item.id ])
     used_as_pred = Connection.all( :conditions =>
@@ -212,6 +221,20 @@ class ItemsController < ApplicationController
     used_as_obj  = Connection.all( :conditions =>
       [ "obj_id = ?", @item.id ])
 
+    # create Connection objects for any implied connections we want to list
+    used_as_obj.each do |connection|
+      if inverse_property_id = TrippleNavigation.
+          propertys_inverse( connection.predicate_id )
+        new_connection = Connection.new(
+          :subject_id => connection.obj_id,
+          :predicate_id => inverse_property_id,
+          :obj_id => connection.subject_id
+        )
+        used_as_subj << new_connection
+      end
+    end
+
+    # find all of the Items referenced by the connections the view will list
     @item_hash = {}
     [ used_as_subj, used_as_pred, used_as_obj ].each do |connection_array|
       connection_array.each do |connection|
@@ -223,6 +246,7 @@ class ItemsController < ApplicationController
         end
       end
     end
+
 
       # now that we've got all the connections to display, order and group them
     # @connection_list should be an array of arrays, each internal array is

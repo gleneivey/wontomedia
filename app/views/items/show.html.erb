@@ -138,7 +138,9 @@
 
            <li>
              <div style="float: right; font-size: 80%; margin-right: 6em;">
-               <%  generate_connection_links(e) %>
+               <% if e.id
+                    generate_connection_links(e)
+                  end %>
              </div>
              <%= item = @item_hash[e.obj_id]
                  link_with_tooltip (h filter_parenthetical item.title ),
@@ -190,7 +192,9 @@
                </td><td>
                  <%= self_string_or_other_link(connection.obj_id) %>
                </td><td style="font-size: 80%">
-                 <% generate_connection_links(connection) %>
+                 <% if connection.id
+                      generate_connection_links(connection)
+                    end %>
                </td>
              </tr>
            <% end %>

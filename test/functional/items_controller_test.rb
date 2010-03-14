@@ -360,6 +360,82 @@ class ItemsControllerTest < ActionController::TestCase
       connection_list.flatten, known_nonvalue_subject_connections )
   end
 
+  # fixtures contain the following connections that should imply others:
+  #   testCategory parent_of testSubcategory
+  #   itemUsedFrequentlyAsSubject child_of M
+  #   itemUsedFrequentlyAsSubject successor_of C
+  #   itemUsedFrequentlyAsSubject successor_of D
+  #                             E successor_of D
+  #   itemUsedFrequentlyAsSubject predecessor_of E
+  # all of which can be used to test operations
+  test "should show single implied connection" do
+    # items/show for testSubcategory should have @connection_list =
+    #  [ [ testSubcategory isAssigned testIndividual ], # value property
+    #    [ testSubcategory *child_of* testCategory ],   # single-use pred
+    #      testCategory parent_of testSubcategory ] ]   # non-subj connections
+    item = items(:testSubcategory)
+    get :show, :id => item.id
+
+    assert con_list = assigns(:connection_list)
+    assert con_list.length == 3
+
+    # yes, I could fold these assert blocks into a loop, but keeping
+    # them distinct gives separate source line numbers if an assert fails
+    con_array = con_list[0]
+    assert con_array.length == 1
+    assert connection = con_array[0]
+    assert connection.predicate_id == items(:isAssigned).id
+
+    con_array = con_list[1]
+    assert con_array.length == 1
+    assert connection = con_array[0]
+    child_id = Item.find_by_name("child_of").id
+    assert connection.predicate_id == child_id
+
+    con_array = con_list[2]
+    assert con_array.length == 1
+    assert connection = con_array[0]
+    assert connection.predicate_id == Item.find_by_name("parent_of").id
+
+    assert item_hash = assigns(:item_hash)
+    assert item_hash[child_id]
+  end
+
+  test "should show multiple implied connections" do
+    # items/show for D should have @connection_list =
+    #  [ [ D isAssigned itemUsedFrequentlyAsObject ],   # value property
+    #    [ D *predecessor_of* E,                        # common properties
+    #      D *predecessor_of* itemUsedFrequentlyAsSubject ],
+    #    [ D sub_property_of E                     ],   # @item as subj.
+    #    [ E successor_of D,                            # @item as obj.
+    #      C sub_property_of D,
+    #      itemUsedFrequentlyAsSubject successor_of D ] ]
+    item = items(:D)
+    get :show, :id => item.id
+
+    assert con_list = assigns(:connection_list)
+    assert con_list.length == 4
+
+    # now that we've checked the array-of-arrays length, just assert for
+    # the sub-lengths and connections we expect to have been added
+    assert con_list[0].length == 1
+    assert con_list[1].length == 2
+    assert con_list[2].length == 1
+    assert con_list[3].length == 3
+
+    pred = Item.find_by_name("predecessor_of")
+    known_array = [
+      Connection.new( :subject => item, :predicate => pred,
+        :obj => items(:itemUsedFrequentlyAsSubject) ),
+      Connection.new( :subject => item, :predicate => pred,
+        :obj => items(:E) )
+    ]
+    assert_connections_lists_have_identical_content( known_array, con_list[1] )
+
+    assert item_hash = assigns(:item_hash)
+    assert item_hash[pred.id]
+  end
+
   test "should get edit item page" do
     assert_controller_behavior_with_id :edit
   end

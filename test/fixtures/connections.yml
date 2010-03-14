@@ -159,6 +159,12 @@ nUFAS_successor_of_D:
   obj: D
   flags: 0
 
+nE_successor_of_D:
+  subject: E
+  predicate: successor_of
+  obj: D
+  flags: 0
+
 nUFAS_predecessor_of_E:
   subject: itemUsedFrequentlyAsSubject
   predicate: predecessor_of
