@@ -108,30 +108,53 @@ class AdminController < ApplicationController
     flash[:error] =""
 
     params[:connection_upload][:connectionfile].readlines.each do |n3line|
-      # this is a really, *really* bad N3 parser. Almost certainly won't
-      # handly any but the most trivial input (like what we export :-)
-      if n3line =~ /<#([^>]+)>[^<]+<#([^>]+)>[^<]+<#([^>]+)>[^.]+\./
+      err_str = nil;
+
+          # this is a really, *really* bad N3 parser. Almost certainly won't
+          # handly any but the most trivial input (like what we export :-)
+      # handle connections whose objects are scalar constants
+      if n3line =~ /<#([^>]+)>[^<]+<#([^>]+)>[^"]+"([^"]+)"[^.]+\./
         e = Connection.new(
-          :subject   => Item.find_by_name($1),
-          :predicate => Item.find_by_name($2),
-          :obj       => Item.find_by_name($3),
-          :flags     => 0
+          :subject     => Item.find_by_name($1),
+          :predicate   => Item.find_by_name($2),
+          :scalar_obj  => $3,
+          :kind_of_obj => "scalar",
+          :flags       => 0
+                     )
+        if e.nil?
+          err_str = "Couldn't create connection for #{$1} #{$2} '#{$3}'.\n"
+        else
+          if e.save
+            count += 1
+          else
+            err_str = "Couldn't save connection for #{$1} #{$2} '#{$3}'.\n"
+          end
+        end
+      # handle connections whose objects are Items
+      elsif n3line =~ /<#([^>]+)>[^<]+<#([^>]+)>[^<]+<#([^>]+)>[^.]+\./
+        e = Connection.new(
+          :subject     => Item.find_by_name($1),
+          :predicate   => Item.find_by_name($2),
+          :obj         => Item.find_by_name($3),
+          :kind_of_obj => "item",
+          :flags       => 0
                      )
         if e.nil?
           err_str = "Couldn't create connection for #{$1} #{$2} #{$3}.\n"
-          logger.error(err_str)
-          flash[:error] << err_str
         else
           if e.save
             count += 1
           else
             err_str = "Couldn't save connection for #{$1} #{$2} #{$3}.\n"
-            logger.error(err_str)
-            flash[:error] << err_str
           end
         end
       else
         unparsed += 1
+      end
+
+      if (err_str)
+        logger.error(err_str)
+        flash[:error] << err_str
       end
     end
 
