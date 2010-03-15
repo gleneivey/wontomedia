@@ -52,7 +52,9 @@ ENDOSTRING
     s.extra_rdoc_files = ["README"]
 
     s.files =  FileList["[A-Z]*", "assets/wontomedia-sample.rb",
-      "vendor/plugins/asset_packager/**/*", "doc/*", "doc/scripts/*",
+      "vendor/plugins/asset_packager/**/*",
+      "vendor/plugins/redirect_routing/**/*",
+      "doc/*", "doc/scripts/*",
       "{app,config,bin,db,default-custom,generators,lib,public,script}/**/*"].
         exclude("database.yml", "wontomedia.rb",
             "**/*_packaged.js", "**/*_packaged.css"

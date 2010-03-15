@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{wontomedia}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
@@ -212,7 +212,18 @@ Gem::Specification.new do |s|
      "vendor/plugins/asset_packager/test/assets/stylesheets/header.css",
      "vendor/plugins/asset_packager/test/assets/stylesheets/screen.css",
      "vendor/plugins/asset_packager/test/assets/stylesheets/subdir/bar.css",
-     "vendor/plugins/asset_packager/test/assets/stylesheets/subdir/foo.css"
+     "vendor/plugins/asset_packager/test/assets/stylesheets/subdir/foo.css",
+     "vendor/plugins/redirect_routing/MIT-LICENSE",
+     "vendor/plugins/redirect_routing/README",
+     "vendor/plugins/redirect_routing/Rakefile",
+     "vendor/plugins/redirect_routing/VERSION.yml",
+     "vendor/plugins/redirect_routing/init.rb",
+     "vendor/plugins/redirect_routing/lib/redirect_routing.rb",
+     "vendor/plugins/redirect_routing/lib/redirect_routing/routes.rb",
+     "vendor/plugins/redirect_routing/lib/redirect_routing_controller.rb",
+     "vendor/plugins/redirect_routing/redirect_routing.gemspec",
+     "vendor/plugins/redirect_routing/test/redirect_routing_test.rb",
+     "vendor/plugins/redirect_routing/test/test_helper.rb"
   ]
   s.homepage = %q{http://wontomedia.rubyforge.org}
   s.rdoc_options = ["--charset=UTF-8"]
