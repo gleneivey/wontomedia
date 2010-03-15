@@ -18,6 +18,7 @@
 #++
 
 
+require Rails.root.join( 'lib', 'helpers', 'item_helper')
 require 'yaml'
 
 # There is no model matching this controller.  It is intended to
@@ -117,14 +118,14 @@ class AdminController < ApplicationController
           :flags     => 0
                      )
         if e.nil?
-          err_stry = "Couldn't create connection for #{$1} #{$2} #{$3}.\n"
+          err_str = "Couldn't create connection for #{$1} #{$2} #{$3}.\n"
           logger.error(err_str)
           flash[:error] << err_str
         else
           if e.save
             count += 1
           else
-            err_stry = "Couldn't save connection for #{$1} #{$2} #{$3}.\n"
+            err_str = "Couldn't save connection for #{$1} #{$2} #{$3}.\n"
             logger.error(err_str)
             flash[:error] << err_str
           end

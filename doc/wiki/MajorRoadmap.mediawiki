@@ -15,7 +15,7 @@ Currently, the only way to access existing [[Help:GlossaryAtoO#anchor_Item|items
 ;Topics
 :The items and connections contained in a wontology site will be divided up into a number of different groups, each containing information about a specific subject area or topic.  We refer to the groups as "''topics''".  In addition to each topic containing its own items and connections, topics will be able to contain other topics to allow better organization.  It will be possible to display the list of items or connections for any particular topic (alone, or including all sub-topics), just as it is currently possible to see lists of all the items and connections in the site over all.  When selecting items (to be referenced by a connection), selections will be grouped by topic, with the current and related topics available most easily.
 ;Graphic Display of Relationships
-:Many [http://en.wikipedia.org/wiki/Ontology_editor non-wontology tools] for creating or displaying information stored in an ontology provide a graphical display of items and connections, with some type of icon representing each item, and connecting arrows representing the connections.  WontoMedia will eventually have such a display in place of the current text tables in item information pages.
+:Many [[Wikipedia:Ontology editor|non-wontology tools]] for creating or displaying information stored in an ontology provide a graphical display of items and connections, with some type of icon representing each item, and connecting arrows representing the connections.  WontoMedia will eventually have such a display in place of the current text tables in item information pages.
 ;Search
 :We will integrate Google search so that you can search for items and connections within a wontology by the text of their [[Help:GlossaryPtoZ#anchor_Title|Titles]], [[Help:GlossaryAtoO#anchor_Name|Names]], and/or [[Help:GlossaryAtoO#anchor_Description|Descriptions]].  (For connections, the Titles and Names of the referenced items will be searched.)
 ;Formatting of Descriptions
@@ -54,7 +54,7 @@ The following are several types of OWL-defined relationships for which WontoMedi
 <span id="standard_import_export"></span>
 <h3>Import or Export of Information</h3>
 
-WontoMedia currently has a primitive ability to export and import the full set of items (in [http://en.wikipedia.org/wiki/Yaml YAML format]) and connections (in [http://en.wikipedia.org/wiki/Notation3 N3 format]), but these are intended for backup and restore of a complete wontology by system administrators, and not for regular use.  Planned features for interoperability with other standards-based ontology systems include:
+WontoMedia currently has a primitive ability to export and import the full set of items (in [[Wikipedia:Yaml|YAML format]]) and connections (in [[Wikipedia:Notation3|N3 format]]), but these are intended for backup and restore of a complete wontology by system administrators, and not for regular use.  Planned features for interoperability with other standards-based ontology systems include:
 
 ;XML Data Download/Export
 :WontoMedia will be able to download its content in RDF-standard XML for an entire wontology site, a complete topic or subtopic, or for an individual item.  "Data" items and connections will be separated from any "schema" items/connections the wontology contains based on standards compliance.  Those items and connections that can be expressed purely in RDF, without use of any RDFS or OWL elements are considered "data".

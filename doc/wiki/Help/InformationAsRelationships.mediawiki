@@ -26,7 +26,7 @@ but the ontology as a whole is the composite of all the connections it contains:
 
 [[File:InformationAsRelationships-NetworkMerged.png|center]]
 
-Note that each relationship has a direction (one end is the subject item, and the other is the object item, and not the reverse).  For this reason, the entire network of items and connections makes up what's known as a "[http://en.wikipedia.org/wiki/Directed_graph directed graph]."  In the terminology of directed graphs, things (which are "nodes" in graph theory and Items in a wontology) are linked to each other by arrows ("edges" in graph theory, Connections in a wontology).
+Note that each relationship has a direction (one end is the subject item, and the other is the object item, and not the reverse).  For this reason, the entire network of items and connections makes up what's known as a "[[Wikipedia:Directed graph]]."  In the terminology of directed graphs, things (which are "nodes" in graph theory and Items in a wontology) are linked to each other by arrows ("edges" in graph theory, Connections in a wontology).
 
 The information in an ontology can be "shaped like" any simpler information categorization scheme:
 

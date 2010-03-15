@@ -156,7 +156,7 @@ namespace :test do
         # now some new "umbrella" test tasks
 
   desc "Execute all development tests in test/unit."
-  Rake::TestTask.new(:dev => "db:test:prepare") do |t|
+  Rake::TestTask.new(:devs => "db:test:prepare") do |t|
     t.libs << "test"
     t.pattern = 'test/unit/**/*_test.rb'
     t.verbose = true
@@ -170,16 +170,23 @@ namespace :test do
     ruby File.join( "policy", "ckFilesUtils", "ckCustomizationFilesPresent.rb" )
   end
 
+  # alias
+  task :integrations => :integration
+
   desc "Execute all the tests for Ruby code."
-  task :ruby => [ "test:dev", "test:dbmigrations", "test:functionals",
-    "test:integration", "build", "cucumber:static_ok"]
+  task :ruby_tests => [ "test:devs", "test:dbmigrations", "test:functionals",
+    "test:integrations", "build", "cucumber:static_ok"]
 end # namespace :test
 
 
 
-# redefine Rail's basic test task so that we get a reasonable execution order
+# replace Rail's basic test task so that we get a reasonable execution order
 Rake::Task[:test].clear!
 desc 'Run all unit, functional, integration, and policy checks'
-task :test => [ "test:policies", "asset:packager:build_all", "test:dev",
-                "test:dbmigrations", "test:functionals", "test:javascripts",
-                "test:integration", "build", "cucumber:ok" ]
+task :tests => [ "test:policies", "asset:packager:build_all",
+                    # above two have side effects necessary for setup
+                 "test:devs", "test:dbmigrations", "test:functionals",
+                 "test:javascripts", "test:integrations", "build",
+                 "cucumber:ok" ]
+# alias
+task :test => :tests
