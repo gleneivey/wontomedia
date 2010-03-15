@@ -176,7 +176,7 @@ namespace :test do
   task :integrations => :integration
 
   desc "Execute all the tests for Ruby code."
-  task :ruby_tests => [ "test:devs", "test:dbmigrations", "test:functionals",
+  task :ruby_tests => [ "test:devs", "test:db", "test:functionals",
     "test:integrations", "build", "cucumber:static_ok"]
 end # namespace :test
 
@@ -187,7 +187,7 @@ Rake::Task[:test].clear!
 desc 'Run all unit, functional, integration, and policy checks'
 task :tests => [ "test:policies", "asset:packager:build_all",
                     # above two have side effects necessary for setup
-                 "test:devs", "test:dbmigrations", "test:functionals",
+                 "test:devs", "test:db", "test:functionals",
                  "test:javascripts", "test:integrations", "build",
                  "cucumber:ok" ]
 # alias
