@@ -34,7 +34,11 @@ module ConnectionHelper
     result = ""
     connections.each do |connection|
       result << "<##{connection.subject.name}> <##{connection.predicate.name}> "
-      result << "<##{connection.obj.name}> .\n"
+      if connection.kind_of_obj == Connection::OBJECT_KIND_ITEM
+        result << "<##{connection.obj.name}> .\n"
+      else
+        result << "\"#{connection.scalar_obj}\" .\n"
+      end
     end
     result
   end

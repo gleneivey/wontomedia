@@ -65,10 +65,15 @@
           h( connection.predicate.name ),
           item_by_name_path(connection.predicate.name) )
       -%></td>
-      <td class='firstrow secondrow'><%=
-        link_with_tooltip "#{h filter_parenthetical connection.obj.title}",
-          h( connection.obj.name ), item_by_name_path(connection.obj.name)
-       -%></td>
+      <td class='firstrow secondrow'>
+        <% if connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
+          <%= link_with_tooltip(
+                "#{h filter_parenthetical connection.obj.title}",
+                h( connection.obj.name ),
+                item_by_name_path(connection.obj.name)  )
+          -%>
+        <% end %>
+      </td>
       <td class='firstrow secondrow' style="font-size: 80%">
         <% generate_connection_links(connection) %></td>
 <!--

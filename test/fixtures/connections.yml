@@ -245,3 +245,9 @@ e_isAssigned_nUFAO:
   kind_of_obj: item
   flags: 0
 
+aConnectionToScalar:
+  subject: testProperty
+  predicate: isAssigned
+  scalar_obj: this scalar value is a string
+  kind_of_obj: scalar
+  flags: 0

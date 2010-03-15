@@ -84,7 +84,9 @@ class ConnectionsController < ApplicationController
     # populate these here because I didn't want view causing db queries
     @subject = @connection.subject
     @predicate = @connection.predicate
-    @obj = @connection.obj
+    if @connection.kind_of_obj == Connection::OBJECT_KIND_ITEM
+      @obj = @connection.obj
+    end
     @connection_desc = @connection.connection_desc
   end
 

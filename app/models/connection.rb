@@ -36,6 +36,8 @@ class Connection < ActiveRecord::Base
   # This constant is a bit mask for Item.flags.  A non-zero value
   # indicates that the Item instance should not be user-modifiable.
   DATA_IS_UNALTERABLE = 1
+  OBJECT_KIND_ITEM = 'item'
+  OBJECT_KIND_SCALAR = 'scalar'
 
 
   before_validation :complex_validations
@@ -76,7 +78,7 @@ private
   # checks fail, this method returns +false+ and places the
   # appropriate message(s) in the +errors+ flash.
   def complex_validations() #:doc:
-    if kind_of_obj == 'item'
+    if kind_of_obj == OBJECT_KIND_ITEM
       [ [subject_id, :subject], [predicate_id, :predicate],
         [obj_id, :obj] ].each do |tocheck|
         field, symbol = *tocheck
@@ -208,7 +210,7 @@ private
       end
 
 
-    elsif kind_of_obj == 'scalar'
+    elsif kind_of_obj == OBJECT_KIND_SCALAR
       [ [subject_id, :subject], [predicate_id, :predicate],
         [scalar_obj, :scalar_obj] ].each do |tocheck|
         field, symbol = *tocheck
