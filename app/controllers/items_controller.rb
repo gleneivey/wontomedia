@@ -256,7 +256,7 @@ class ItemsController < ApplicationController
       connection_array.each do |connection|
         [ connection.subject, connection.predicate, connection.obj ].
           each do |item|
-          unless @item_hash.has_key? item.id
+          unless item.nil? or @item_hash.has_key? item.id
             @item_hash[item.id] = item
           end
         end
@@ -327,11 +327,7 @@ class ItemsController < ApplicationController
 
 
     used_as_obj.sort! do |a,b|
-      if a.predicate_id == b.predicate_id
-        a.obj_id <=> b.obj_id
-      else
-        a.predicate_id <=> b.predicate_id
-      end
+      a.predicate_id <=> b.predicate_id
     end
     unless used_as_obj.empty?
       @connection_list << used_as_obj

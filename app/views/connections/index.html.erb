@@ -72,6 +72,8 @@
                 h( connection.obj.name ),
                 item_by_name_path(connection.obj.name)  )
           -%>
+        <% else %>
+          <%= h connection.scalar_obj %>
         <% end %>
       </td>
       <td class='firstrow secondrow' style="font-size: 80%">

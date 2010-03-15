@@ -45,6 +45,12 @@ class ConnectionsIndexViewTest < ActionController::TestCase
       /#{regex_escape FormatHelper.filter_parenthetical Connection.all[1].obj.title}/
   end
 
+  test "should show content of scalar object for known connection" do
+    get :index
+    assert_select "body",
+      /#{regex_escape connections(:aConnectionToScalar).scalar_obj}/
+  end
+
   test "should show Name of self item for known connection" do
     get :index
     e = Connection.first(:conditions => "connection_desc_id IS NOT NULL")

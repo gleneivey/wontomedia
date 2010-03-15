@@ -38,8 +38,21 @@ end
 Given /^there is an existing connection "([^\"]*)" "([^\"]*)" "([^\"]*)"$/ do |
   subject, predicate, obj|
 
-  e = Connection.new(:subject   => Item.find_by_name(subject),
-               :predicate => Item.find_by_name(predicate),
-               :obj       => Item.find_by_name(obj)         )
-  e.save
+  con = Connection.new(
+    :subject   => Item.find_by_name(subject),
+    :predicate => Item.find_by_name(predicate),
+    :obj       => Item.find_by_name(obj),
+    :kind_of_obj => Connection::OBJECT_KIND_ITEM    )
+  con.save
+end
+
+Given /^there is an existing connection "([^\"]*)" "([^\"]*)" '([^\"]*)'$/ do |
+  subject, predicate, scalar|
+
+  con = Connection.new(
+    :subject     => Item.find_by_name(subject),
+    :predicate   => Item.find_by_name(predicate),
+    :scalar_obj  => scalar,
+    :kind_of_obj => Connection::OBJECT_KIND_SCALAR    )
+  con.save
 end

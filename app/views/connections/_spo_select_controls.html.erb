@@ -20,7 +20,7 @@
 
 <script type="text/javascript">
   function sizeDescDiv(name){
-    var h = document.viewport.getHeight() / 6;
+    var h = document.viewport.getHeight() / 8;
     $(name + "_desc").style.height = h + "px";
     var w = $("connection_" + name + "_id").getWidth();
     $(name + "_desc").style.width  = w + "px";
@@ -49,7 +49,7 @@
 </p>
 
 <table>
-  <tr><td style="text-align: right">
+  <tr><td style="text-align: right; font-weight: bold;">
     <%= f.label :subject_id %>
   </td><td>
     <%= select_tag "connection[subject_id]",
@@ -84,7 +84,7 @@
     </div>
     <script type="text/javascript">sizeDescDiv('subject');</script>
   </td></tr>
-  <tr><td style="text-align: right">
+  <tr><td style="text-align: right; font-weight: bold;">
     <%= f.label :predicate_id,"Relates to" %>
   </td><td>
     <%= select_tag "connection[predicate_id]",
@@ -117,8 +117,31 @@
     <script type="text/javascript">sizeDescDiv('predicate');</script>
   </td></tr>
   <tr><td style="text-align: right">
-    <%= f.label :obj_id, "Object" %>
+    <%= popup_help_icon "Help for connection's subject selection",
+                        "Help:Popup/ConnectionObjectSelection" %>
+    <span style="font-weight: bold;"><%= f.label :obj_id, "Object" %></span>
   </td><td>
+    <!-- first radio button and text field for object-is-scalar -->
+    <%=
+        radio_button "connection", "kind_of_obj", "scalar"
+    -%><span style="font-size: 75%;"><%=
+        f.label :kind_of_obj, "Value", :value => 'scalar'
+    -%></span>
+    <%= text_field :connection, :scalar_obj, :size => 30 %>
+    <%= popup_help_icon "Help for connection's object selection",
+                        "Help:Popup/ConnectionObjectScalar" %>
+    <span style="padding-left: 4em; font-weight: bold; font-style: italic;"
+      >or</span>
+
+    <br />
+
+    <!-- then radio button and select control for object-is-item -->
+    <%=
+        radio_button "connection", "kind_of_obj", "item"
+    -%><span style="font-size: 75%;"><%=
+        f.label :kind_of_obj, "Item", :value => 'item'
+    -%></span>
+    <br />
     <%= select_tag "connection[obj_id]",
           options_for_select(
             [[ "- to this object -", "" ],
@@ -132,7 +155,7 @@
           :tabindex=>'30', :style=>'width: 90%;'
      %>
     <%= popup_help_icon "Help for connection's object selection",
-                        "Help:Popup/ConnectionObject" %>
+                        "Help:Popup/ConnectionObjectItem" %>
     <%= image_tag "blank_error_icon.png", :id=>"obj_error_icon", :alt=>"",
                   :size=>"16x16" %>
 

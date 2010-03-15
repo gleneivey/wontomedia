@@ -24,7 +24,7 @@
   if @connection.kind_of_obj == Connection::OBJECT_KIND_ITEM
     @title_text += (h @obj.name)
   else
-    @title_text += "'#{h @scalar_obj}'"
+    @title_text += "'#{h @connection.scalar_obj}'"
   end
 
   # initialize array to define "Glossary Help" box of links:
@@ -73,7 +73,7 @@
       <%= link_to "<b>#{h @obj.title}</b>", item_by_name_path(@obj.name) %>
       &mdash; (<b><%= h @obj.name %></b>)
       <p>
-	<%= h @obj.description %>
+        <%= h @obj.description %>
       </p>
     <% else %>
       <%= h @connection.scalar_obj %>

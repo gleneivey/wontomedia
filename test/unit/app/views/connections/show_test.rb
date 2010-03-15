@@ -81,6 +81,12 @@ class ConnectionsShowViewTest < ActionController::TestCase
       /#{connections(:aQualifiedConnection).obj.description}/
   end
 
+  test "connection-show page should contain connection's scalar object value" do
+    connection = connections(:aConnectionToScalar)
+    get :show, :id => connection.id;
+    assert_select "body", /#{connection.scalar_obj}/
+  end
+
   test "connections show page shouldnt contain status" do
     get_connections_show
     assert_negative_view_contents
