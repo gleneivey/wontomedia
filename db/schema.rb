@@ -9,14 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090605215028) do
+ActiveRecord::Schema.define(:version => 20100315135952) do
 
   create_table "connections", :force => true do |t|
     t.integer "subject_id"
     t.integer "predicate_id"
     t.integer "obj_id"
     t.integer "connection_desc_id"
-    t.integer "flags",        :default => 0, :null => false
+    t.integer "flags",              :default => 0, :null => false
+    t.string  "kind_of_obj"
+    t.string  "scalar_obj"
   end
 
   create_table "items", :force => true do |t|

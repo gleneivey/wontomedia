@@ -38,8 +38,15 @@ class ConnectionsEditViewTest < ActionController::TestCase
         "edit-connection form contains 'select' control for :subject"
       assert_select "select#connection_predicate_id", true,
         "edit-connection form contains 'select' control for :predicate"
+
+      assert_select "input#connection_kind_of_obj_item", true,
+        "connection-new form contains radio-button for item-type object"
+      assert_select "input#connection_kind_of_obj_scalar", true,
+        "connection-new form contains radio-button for scalar-type object"
       assert_select "select#connection_obj_id", true,
         "edit-connection form contains 'select' control for :obj"
+      assert_select "input#connection_scalar_obj", true,
+        "connection-new form contains text-entry control for :scalar_obj value"
     end
   end
 

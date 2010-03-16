@@ -22,24 +22,28 @@ aQualifiedConnection:
   predicate: one
   obj: testCategory
   connection_desc: connection_one
+  kind_of_obj: item
   flags: 0
 
 aParentConnection:
   subject: testCategory
   predicate: parent_of
   obj: testSubcategory
+  kind_of_obj: item
   flags: 0
 
 isAssignedIsAValueProperty:
   subject: isAssigned
   predicate: sub_property_of
   obj: value_relationship
+  kind_of_obj: item
   flags: 0
 
 subcategoryHasValue:
   subject: testSubcategory
   predicate: isAssigned
   obj: testIndividual
+  kind_of_obj: item
   flags: 0
 
 
@@ -53,66 +57,77 @@ aSpoB:
   subject: A
   predicate: sub_property_of
   obj: B
+  kind_of_obj: item
   flags: 0
 
 bSpoC:
   subject: B
   predicate: sub_property_of
   obj: C
+  kind_of_obj: item
   flags: 0
 
 cSpoD:
   subject: C
   predicate: sub_property_of
   obj: D
+  kind_of_obj: item
   flags: 0
 
 dSpoE:
   subject: D
   predicate: sub_property_of
   obj: E
+  kind_of_obj: item
   flags: 0
 
 cSpoM:
   subject: C
   predicate: sub_property_of
   obj: M
+  kind_of_obj: item
   flags: 0
 
 mSpoY:
   subject: M
   predicate: sub_property_of
   obj: Y
+  kind_of_obj: item
   flags: 0
 
 bSpoZ:
   subject: B
   predicate: sub_property_of
   obj: Z
+  kind_of_obj: item
   flags: 0
 
 zSpoY:
   subject: Z
   predicate: sub_property_of
   obj: Y
+  kind_of_obj: item
   flags: 0
 
 ySpoX:
   subject: Y
   predicate: sub_property_of
   obj: X
+  kind_of_obj: item
   flags: 0
 
 fuIRbar:
   subject: fu
   predicate: inverse_relationship
   obj: bar
+  kind_of_obj: item
   flags: 0
 
 snIRafu:
   subject: sn
   predicate: symmetric_relationship
   obj: afu
+  kind_of_obj: item
   flags: 0
 
 
@@ -121,60 +136,70 @@ nUFAS_value_A:
   subject: itemUsedFrequentlyAsSubject
   predicate: value_relationship
   obj: A
+  kind_of_obj: item
   flags: 0
 
 nUFAS_isAssigned_B:
   subject: itemUsedFrequentlyAsSubject
   predicate: isAssigned
   obj: B
+  kind_of_obj: item
   flags: 0
 
 nUFAS_peer_of_X:
   subject: itemUsedFrequentlyAsSubject
   predicate: peer_of
   obj: X
+  kind_of_obj: item
   flags: 0
 
 nUFAS_peer_of_Y:
   subject: itemUsedFrequentlyAsSubject
   predicate: peer_of
   obj: Y
+  kind_of_obj: item
   flags: 0
 
 nUFAS_peer_of_Z:
   subject: itemUsedFrequentlyAsSubject
   predicate: peer_of
   obj: Z
+  kind_of_obj: item
   flags: 0
 
 nUFAS_successor_of_C:
   subject: itemUsedFrequentlyAsSubject
   predicate: successor_of
   obj: C
+  kind_of_obj: item
   flags: 0
 
 nUFAS_successor_of_D:
   subject: itemUsedFrequentlyAsSubject
   predicate: successor_of
   obj: D
+  kind_of_obj: item
   flags: 0
 
 nE_successor_of_D:
   subject: E
   predicate: successor_of
   obj: D
+  kind_of_obj: item
   flags: 0
 
 nUFAS_predecessor_of_E:
   subject: itemUsedFrequentlyAsSubject
   predicate: predecessor_of
   obj: E
+  kind_of_obj: item
   flags: 0
 
 nUFAS_child_of_M:
   subject: itemUsedFrequentlyAsSubject
   predicate: child_of
   obj: M
+  kind_of_obj: item
   flags: 0
 
 
@@ -182,35 +207,54 @@ a_isAssigned_nUFAO:
   subject: A
   predicate: isAssigned
   obj: itemUsedFrequentlyAsObject
+  kind_of_obj: item
   flags: 0
 
 b_isAssigned_nUFAO:
   subject: B
   predicate: isAssigned
   obj: itemUsedFrequentlyAsObject
+  kind_of_obj: item
   flags: 0
 
 c_isAssigned_nUFAO:
   subject: C
   predicate: isAssigned
   obj: itemUsedFrequentlyAsObject
+  kind_of_obj: item
   flags: 0
 
 c_peer_of_nUFAO:
   subject: C
   predicate: peer_of
   obj: itemUsedFrequentlyAsObject
+  kind_of_obj: item
   flags: 0
 
 d_isAssigned_nUFAO:
   subject: D
   predicate: isAssigned
   obj: itemUsedFrequentlyAsObject
+  kind_of_obj: item
   flags: 0
 
 e_isAssigned_nUFAO:
   subject: E
   predicate: isAssigned
   obj: itemUsedFrequentlyAsObject
+  kind_of_obj: item
   flags: 0
 
+aConnectionToScalar:
+  subject: testProperty
+  predicate: isAssigned
+  scalar_obj: this scalar value is a string
+  kind_of_obj: scalar
+  flags: 0
+
+anotherScalarObj:
+  subject: testIndividual
+  predicate: testProperty
+  scalar_obj: 6
+  kind_of_obj: scalar
+  flags: 0

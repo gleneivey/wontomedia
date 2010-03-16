@@ -20,215 +20,250 @@ define_Item_Class:
   subject: Item_Class
   predicate: sub_class_of
   obj: Item_Class
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Property_Item:
   subject: Property_Item
   predicate: sub_class_of
   obj: Item_Class
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Type_Item:
   subject: Type_Item
   predicate: sub_class_of
   obj: Item_Class
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_String_Value:
   subject: String_Value
   predicate: sub_class_of
   obj: Type_Item
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Integer_Value:
   subject: Integer_Value
   predicate: sub_class_of
   obj: Type_Item
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Number_Value:
   subject: Number_Value
   predicate: sub_class_of
   obj: Type_Item
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Boolean_Value:
   subject: Boolean_Value
   predicate: sub_class_of
   obj: Type_Item
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Value_True:
   subject: Value_True
   predicate: is_instance_of
   obj: Boolean_Value
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Value_False:
   subject: Value_False
   predicate: is_instance_of
   obj: Boolean_Value
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_URL_Value:
   subject: URL_Value
   predicate: sub_class_of
   obj: String_Value
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 set_ordered_class:
   subject: ordered_relationship
   predicate: sub_class_of
   obj: Property_Item
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 set_hierarchical_class:
   subject: hierarchical_relationship
   predicate: sub_class_of
   obj: Property_Item
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 set_value_class:
   subject: value_relationship
   predicate: sub_class_of
   obj: Property_Item
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 set_symmetric_class:
   subject: symmetric_relationship
   predicate: sub_class_of
   obj: Property_Item
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_sub_property_of:
   subject: sub_property_of
   predicate: sub_property_of
   obj: hierarchical_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_sub_class_of:
   subject: sub_class_of
   predicate: sub_property_of
   obj: hierarchical_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_is_instance_of:
   subject: is_instance_of
   predicate: sub_property_of
   obj: hierarchical_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_inverse_relationship:
   subject: inverse_relationship
   predicate: sub_property_of
   obj: symmetric_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_parent_of:
   subject: parent_of
   predicate: sub_property_of
   obj: hierarchical_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_child_of:
   subject: child_of
   predicate: sub_property_of
   obj: hierarchical_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_parent_to_child_symmetry:
   subject: parent_of
   predicate: inverse_relationship
   obj: child_of
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_child_to_parent_symmetry:
   subject: child_of
   predicate: inverse_relationship
   obj: parent_of
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_property_subject_is:
   subject: property_subject_is
   predicate: sub_property_of
   obj: symmetric_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_property_object_is:
   subject: property_object_is
   predicate: sub_property_of
   obj: symmetric_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_applies_to_class:
   subject: applies_to_class
   predicate: sub_property_of
   obj: symmetric_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_has_scalar_object:
   subject: has_scalar_object
   predicate: sub_property_of
   obj: value_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_has_item_object:
   subject: has_item_object
   predicate: sub_property_of
   obj: value_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_max_uses_per_item:
   subject: max_uses_per_item
   predicate: sub_property_of
   obj: value_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 mupi_is_scalar:
   subject: max_uses_per_item
   predicate: has_scalar_object
   obj: Value_True
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_peer_of:
   subject: peer_of
   predicate: sub_property_of
   obj: symmetric_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_one_of:
   subject: one_of
   predicate: sub_property_of
   obj: child_of
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_contains:
   subject: contains
   predicate: sub_property_of
   obj: parent_of
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_predecessor_to_successor_symmetry:
   subject: predecessor_of
   predicate: inverse_relationship
   obj: successor_of
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_successor_to_predecessor_symmetry:
   subject: successor_of
   predicate: inverse_relationship
   obj: predecessor_of
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_predecessor_of:
   subject: predecessor_of
   predicate: sub_property_of
   obj: ordered_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_successor_of:
   subject: successor_of
   predicate: sub_property_of
   obj: ordered_relationship
+  kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
-

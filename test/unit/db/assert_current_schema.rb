@@ -35,6 +35,8 @@ module AssertCurrentSchema
         t.column    :subject_id,         :integer
         t.column    :predicate_id,       :integer
         t.column    :obj_id,             :integer
+        t.column    :scalar_obj,         :string
+        t.column    :kind_of_obj,        :string
         t.column    :connection_desc_id, :integer
         t.column    :flags,              :integer, :null => false, :default => 0
       end

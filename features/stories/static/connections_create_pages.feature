@@ -8,6 +8,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "itemFamily0 : itemFamily item number 0" from "Subject"
     And I select "parent_of : Parent Of (basic relationship)" from "Relates to"
+    And I choose "Item"
     And I select "itemFamily1 : itemFamily item number 1" from "Object"
     When I press "Create"
     Then I should see "successfully created"
@@ -20,6 +21,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "newProp0 : newProp item number 0" from "Subject"
     And I select "sub_property_of : SubProperty Of (basic relationship type)" from "Relates to"
+    And I choose "Item"
     And I select "predecessor_of : Predecessor Of (basic relationship)" from "Object"
     When I press "Create"
     Then I should see "successfully created"
@@ -27,12 +29,26 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I should see "sub_property_of"
     And I should see "predecessor_of"
 
+  Scenario: Create new connection with scalar object
+    Given there is 1 existing individual like "someone"
+    And I am on the new connections page
+    And I select "someone0 : someone item number 0" from "Subject"
+    And I select "child_of : Child Of (basic relationship)" from "Relates to"
+    And I choose "Value"
+    And I fill in "connection_scalar_obj" with "someone older"
+    When I press "Create"
+    Then I should see "successfully created"
+    And I should see "someone0"
+    And I should see "child_of"
+    And I should see "someone older"
+
   Scenario: I can't create an connection duplicating an existing one
     Given there are 2 existing individuals like "thing"
     And there is an existing connection "thing0" "contains" "thing1"
     And I am on the new connections page
     And I select "thing0 : thing item number 0" from "Subject"
     And I select "contains : Contains (basic relationship)" from "Relates to"
+    And I choose "Item"
     And I select "thing1 : thing item number 1" from "Object"
     When I press "Create"
     Then I should see "error"
@@ -44,6 +60,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "thing0 : thing item number 0" from "Subject"
     And I select "parent_of : Parent Of (basic relationship)" from "Relates to"
+    And I choose "Item"
     And I select "thing1 : thing item number 1" from "Object"
     When I press "Create"
     Then I should see "error"
@@ -55,6 +72,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "thing1 : thing item number 1" from "Subject"
     And I select "one_of : One Of (basic relationship)" from "Relates to"
+    And I choose "Item"
     And I select "thing0 : thing item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
@@ -66,6 +84,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "myItem0 : myItem item number 0" from "Subject"
     And I select "contains : Contains (basic relationship)" from "Relates to"
+    And I choose "Item"
     And I select "myCategory0 : myCategory item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
@@ -77,6 +96,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "myCategory0 : myCategory item number 0" from "Subject"
     And I select "child_of : Child Of (basic relationship)" from "Relates to"
+    And I choose "Item"
     And I select "myItem0 : myItem item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
@@ -89,6 +109,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "indiv2 : indiv item number 2" from "Subject"
     And I select "predecessor_of : Predecessor Of (basic relationship)" from "Relates to"
+    And I choose "Item"
     And I select "indiv0 : indiv item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
@@ -102,6 +123,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "myItem0 : myItem item number 0" from "Subject"
     And I select "hierarchical_relationship : Hierarchical Relationship (root relationship type)" from "Relates to"
+    And I choose "Item"
     And I select "myItem0 : myItem item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
@@ -112,6 +134,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "myItem0 : myItem item number 0" from "Subject"
     And I select "ordered_relationship : Ordered Relationship (root relationship type)" from "Relates to"
+    And I choose "Item"
     And I select "myItem0 : myItem item number 0" from "Object"
     When I press "Create"
     Then I should see "error"
@@ -122,6 +145,7 @@ Feature:  Create and view new individual connections through non-Ajax pages
     And I am on the new connections page
     And I select "myItem0 : myItem item number 0" from "Subject"
     And I select "one_of : One Of (basic relationship)" from "Relates to"
+    And I choose "Item"
     And I select "myItem0 : myItem item number 0" from "Object"
     When I press "Create"
     Then I should see "error"

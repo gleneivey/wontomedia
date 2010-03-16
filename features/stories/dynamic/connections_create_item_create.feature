@@ -67,6 +67,7 @@ Feature:  Create new items in the process of creating a connection
 
   Scenario: Item created during cancelled connection creation still persists
     Given I am on the new connections page
+    And I choose "Item"
     And I select "- create a new item for this object -" from "Object"
     And I wait for Ajax requests to complete
     And I select "Category" from "item_sti_type"

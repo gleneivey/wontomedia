@@ -36,8 +36,15 @@ class ConnectionsNewViewTest < ActionController::TestCase
 "connection-new form contains 'select' input control for :subject attribute"
       assert_select "select#connection_predicate_id", true,
 "connection-new form contains 'select' input control for :predicate attribute"
+
+      assert_select "input#connection_kind_of_obj_item", true,
+        "connection-new form contains radio-button for item-type object"
+      assert_select "input#connection_kind_of_obj_scalar", true,
+        "connection-new form contains radio-button for scalar-type object"
       assert_select "select#connection_obj_id", true,
         "connection-new form contains 'select' input control for :obj attribute"
+      assert_select "input#connection_scalar_obj", true,
+        "connection-new form contains text-entry control for :scalar_obj value"
     end
   end
 

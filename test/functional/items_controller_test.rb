@@ -280,9 +280,11 @@ class ItemsControllerTest < ActionController::TestCase
           :does         => connection.predicate.id,
           :inherit_from => value_id,
           :via          => spo_id )
-        connection_copy = Connection.new( :subject   => target,
-                              :predicate => connection.predicate,
-                              :obj       => connection.obj          )
+        connection_copy = Connection.new(
+          :subject     => target,
+          :predicate   => connection.predicate,
+          :obj         => connection.obj,
+          :kind_of_obj => connection.kind_of_obj   )
         assert connection_copy.save
         known_value_connections << connection_copy
       end
@@ -293,9 +295,11 @@ class ItemsControllerTest < ActionController::TestCase
     known_nonvalue_subject_connections = []
     Connection.all( :conditions => "subject_id = #{source.id}").
         each do |connection|
-      connection_copy = Connection.new( :subject   => target,
-                            :predicate => connection.predicate,
-                            :obj       => connection.obj            )
+      connection_copy = Connection.new(
+        :subject     => target,
+        :predicate   => connection.predicate,
+        :obj         => connection.obj,
+        :kind_of_obj => connection.kind_of_obj   )
       assert connection_copy.save
 
       if TrippleNavigation.check_properties(
@@ -313,9 +317,11 @@ class ItemsControllerTest < ActionController::TestCase
     known_object_connections = []
     Connection.all( :conditions => "obj_id = #{source.id}" ).
         each do |connection|
-      connection_copy = Connection.new( :subject   => connection.subject,
-                            :predicate => connection.predicate,
-                            :obj       => target            )
+      connection_copy = Connection.new(
+        :subject     => connection.subject,
+        :predicate   => connection.predicate,
+        :obj         => target,
+        :kind_of_obj => connection.kind_of_obj   )
       assert connection_copy.save
       known_object_connections << connection_copy
     end
@@ -325,8 +331,9 @@ class ItemsControllerTest < ActionController::TestCase
     known_predicate_connections = []
     Connection.all( :conditions => "predicate_id = #{source.id}" ).
         each do |connection|
-      connection_copy = Connection.new( :subject => connection.subject,
-        :predicate => target, :obj => connection.obj  )
+      connection_copy = Connection.new(
+        :subject => connection.subject, :predicate => target,
+        :obj => connection.obj, :kind_of_obj => connection.kind_of_obj )
       assert connection_copy.save
       known_predicate_connections << connection_copy
     end
@@ -431,9 +438,10 @@ class ItemsControllerTest < ActionController::TestCase
     pred = Item.find_by_name("predecessor_of")
     known_array = [
       Connection.new( :subject => item, :predicate => pred,
-        :obj => items(:itemUsedFrequentlyAsSubject) ),
+        :obj => items(:itemUsedFrequentlyAsSubject),
+        :kind_of_obj => Connection::OBJECT_KIND_ITEM                      ),
       Connection.new( :subject => item, :predicate => pred,
-        :obj => items(:E) )
+        :obj => items(:E), :kind_of_obj => Connection::OBJECT_KIND_ITEM   )
     ]
     assert_connections_lists_have_identical_content( known_array, con_list[1] )
 

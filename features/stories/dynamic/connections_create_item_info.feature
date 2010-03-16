@@ -26,7 +26,8 @@ Feature:  Verify inputs for creation of new connection dynamically within the pa
     Then I should see "dolor sit aProperty"
     And I should see "Suspendisse 1"
 
-    When I select "anItem2 : anItem item number 2" from "Object"
+    When I choose "Item"
+    And I select "anItem2 : anItem item number 2" from "Object"
     Then I should see "dolor sit anItem"
     And I should see "Suspendisse 2"
 

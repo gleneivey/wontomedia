@@ -65,14 +65,24 @@ When /^I put the focus on the "([^\"]+)" element$/ do |element_name|
 end
 
 
-Then /^the focus is on the "([^\"]+)" element$/ do |element_name|
-  assert selenium.is_element_present(element_name),
-    "No such element as '#{element_name}'."
-  result = selenium.get_eval "" +
-    "window.document.activeElement == " +
-    "window.document.getElementById('#{element_name}');"
-  assert "true" == result,
-    "Element '#{element_name}' doesn't currently have focus."
+Then /^the focus is on (the|a) "([^\"]+)" element$/ do |
+    article, element|
+
+  if article == "the"
+    assert selenium.is_element_present(element),
+      "No such element as '#{element}'."
+  end
+
+  Kernel.sleep(0.1)   # ensure browser finishes procesing JS from last event
+  result = selenium.get_eval "window.document.activeElement.id;"
+
+  if article == "a"
+    assert result =~ Regexp.new(element),
+      "Element '#{result}' currently has focus, doesn't match '#{element}'."
+  else
+    assert result == element,
+      "Element '#{result}' currently has focus instead of '#{element}'."
+  end
 end
 
 
@@ -138,6 +148,23 @@ Then /^"([^\"]+)" is selected from "([^\"]+)"$/ do |expectedText, elemId|
      selElem.options[selElem.selectedIndex].text;")
   assert currentText == expectedText,
     "<select> element '#{elemId}' should have had the option '#{expectedText}' selected, but the selected option was '#{currentText}'"
+end
+
+
+Then /the control "([^\"]+)" is (en|dis)abled/ do |controlId, state|
+  disabledState = selenium.get_eval(
+    "window.document.getElementById('#{controlId}').disabled;" );
+  if    state == "en"
+    assert disabledState == "false",
+      "'#{controlId}' has disabled flag '#{disabledState}', instead of " +
+      "being enabled."
+  elsif state == "dis"
+    assert disabledState == "true",
+      "'#{controlId}' has disabled flag '#{disabledState}', instead of " +
+      "being disabled."
+  else
+    assert false, "Control state must be either 'enabled' or 'disabled'"
+  end
 end
 
 

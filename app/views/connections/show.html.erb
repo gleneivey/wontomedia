@@ -20,8 +20,12 @@
 
 <%
   @title_text = (h @subject.name) + " : " +
-                (h @predicate.name) + " : " +
-                (h @obj.name)
+                (h @predicate.name) + " : "
+  if @connection.kind_of_obj == Connection::OBJECT_KIND_ITEM
+    @title_text += (h @obj.name)
+  else
+    @title_text += "'#{h @connection.scalar_obj}'"
+  end
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
@@ -65,11 +69,15 @@
   <tr><td>
     <b>Object:</b>
   </td><td>
+    <% if @connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
       <%= link_to "<b>#{h @obj.title}</b>", item_by_name_path(@obj.name) %>
       &mdash; (<b><%= h @obj.name %></b>)
-    <p>
-      <%= h @obj.description %>
-    </p>
+      <p>
+        <%= h @obj.description %>
+      </p>
+    <% else %>
+      <%= h @connection.scalar_obj %>
+    <% end %>
   </td></tr>
 </table>
 

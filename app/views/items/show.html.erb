@@ -142,9 +142,13 @@
                     generate_inverse_link(@inverses_map[connection])
                   end %>
              </div>
-             <%= item = @item_hash[connection.obj_id]
-                 link_with_tooltip (h filter_parenthetical item.title ),
-                   h( item.name ), item_by_name_path(item.name) %>
+             <% if connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
+               <%= item = @item_hash[connection.obj_id]
+                   link_with_tooltip (h filter_parenthetical item.title ),
+                     h( item.name ), item_by_name_path(item.name) %>
+             <% else %>
+               <%= h connection.scalar_obj %>
+             <% end %>
            </li>
 
 <%         last_predicate_id = connection.predicate_id
@@ -190,7 +194,11 @@
                </td><td class="connectioncolumn">
                  <%= self_string_or_other_link(connection.predicate_id) %>
                </td><td>
-                 <%= self_string_or_other_link(connection.obj_id) %>
+                 <% if connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
+                   <%= self_string_or_other_link(connection.obj_id) %>
+                 <% else %>
+                   <%= h connection.scalar_obj %>
+                 <% end %>
                </td><td style="font-size: 80%">
                  <% if connection.id
                       generate_connection_links(connection)
