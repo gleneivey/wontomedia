@@ -110,17 +110,29 @@ class ItemsShowViewTest < ActionController::TestCase
     [ items(:one),                          # aQualifiedConnection
       items(:testCategory),
       items(:testSubcategory),              # subcategoryHasValue
-      items(:isAssigned)
+      items(:isAssigned),
+      items(:testProperty)                  # anotherScalarObj
     ].each do |item|
       assert_select "body", /#{item.title}/
       assert_select "a[href=?]", item_by_name_path(item.name)
     end
   end
 
-  test "item-show page should contain links for connections" do
+  test "item-show page should contain links for connections, item objects" do
     get_items_show(:testIndividual)
     [ connections(:aQualifiedConnection),
       connections(:subcategoryHasValue)
+    ].each do |connection|
+      assert_select "a[href=?]", edit_connection_path(connection)
+      assert_select "a[href=?]", connection_path(connection)
+    end
+  end
+
+  test "item-show page should contain links for connections, scalar objects" do
+    get_items_show(:isAssigned)
+    [ connections(:isAssignedIsAValueProperty),
+      connections(:subcategoryHasValue),
+      connections(:aConnectionToScalar)
     ].each do |connection|
       assert_select "a[href=?]", edit_connection_path(connection)
       assert_select "a[href=?]", connection_path(connection)
@@ -201,5 +213,10 @@ class ItemsShowViewTest < ActionController::TestCase
         { :text => 'View source' },
         'Missing "View source" link for expected connection'
     end
+  end
+
+  test "items-show page should contain text of scalar object values" do
+    get_items_show(:testProperty)
+    assert_select "body", /#{connections(:aConnectionToScalar).scalar_obj}/
   end
 end

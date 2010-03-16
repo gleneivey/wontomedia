@@ -251,3 +251,10 @@ aConnectionToScalar:
   scalar_obj: this scalar value is a string
   kind_of_obj: scalar
   flags: 0
+
+anotherScalarObj:
+  subject: testIndividual
+  predicate: testProperty
+  scalar_obj: 6
+  kind_of_obj: scalar
+  flags: 0
