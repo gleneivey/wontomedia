@@ -25,8 +25,12 @@
 
 <%
   @title_text = (h @connection.subject.name) + " : " +
-                (h @connection.predicate.name) + " : " +
-                (h @connection.obj.name)
+                (h @connection.predicate.name) + " : "
+  if @connection.kind_of_obj == Connection::OBJECT_KIND_ITEM
+    @title_text += (h @connection.obj.name)
+  else
+    @title_text += "'#{h @connection.scalar_obj}'"
+  end
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [

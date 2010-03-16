@@ -18,27 +18,32 @@
 %>
 
 
-<script type="text/javascript">
-  function sizeDescDiv(name){
-    var h = document.viewport.getHeight() / 8;
-    $(name + "_desc").style.height = h + "px";
-    var w = $("connection_" + name + "_id").getWidth();
-    $(name + "_desc").style.width  = w + "px";
-  }
-</script>
-<style>
-  div {
-    overflow: auto;
-  }
-  div.desc {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-  }
-  div p {
-    margin-top: 0.5ex;
-  }
-</style>
+<% content_for :head do %>
+  <style>
+    div {
+      overflow: auto;
+    }
+    div.desc {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+    }
+    div p {
+      margin-top: 0.5ex;
+    }
+  </style>
+  <script type="text/javascript">
+    // <![CDATA[
+    function setDescDivsHeights(names){
+      for (var c=0; c < names.length; c++){
+        var descDiv = document.getElementById(names[c] + "_desc");
+        var h = document.viewport.getHeight() / 8;
+        descDiv.style.height = h + "px";
+      }
+    }
+    // ]]>
+  </script>
+<% end %>
 
 
 <p class="directions">
@@ -82,7 +87,7 @@
           <p><%= h connection.subject.description %></p>
       <% end %>
     </div>
-    <script type="text/javascript">sizeDescDiv('subject');</script>
+    <script type="text/javascript">setDescDivsHeights(['subject']);</script>
   </td></tr>
   <tr><td style="text-align: right; font-weight: bold;">
     <%= f.label :predicate_id,"Relates to" %>
@@ -114,20 +119,26 @@
           <p><%= h connection.predicate.description %></p>
       <% end %>
     </div>
-    <script type="text/javascript">sizeDescDiv('predicate');</script>
+    <script type="text/javascript">setDescDivsHeights(['predicate']);</script>
   </td></tr>
-  <tr><td style="text-align: right">
+  <tr><td style="text-align: right;">
     <%= popup_help_icon "Help for connection's subject selection",
                         "Help:Popup/ConnectionObjectSelection" %>
     <span style="font-weight: bold;"><%= f.label :obj_id, "Object" %></span>
+    <div style="text-aight: right; overflow: visible;">
+      <%= image_tag "blank_error_icon.png", :id=>"kind_of_obj_error_icon",
+            :alt=>"", :size=>"16x16",
+            :style=>"position: relative; left: 0.75em;" %>
+    </div>
+
   </td><td>
     <!-- first radio button and text field for object-is-scalar -->
     <%=
-        radio_button "connection", "kind_of_obj", "scalar"
+        radio_button "connection", "kind_of_obj", 'scalar', :tabindex => '30'
     -%><span style="font-size: 75%;"><%=
         f.label :kind_of_obj, "Value", :value => 'scalar'
     -%></span>
-    <%= text_field :connection, :scalar_obj, :size => 30 %>
+    <%= text_field :connection, :scalar_obj, :size => 30, :tabindex => '34' %>
     <%= popup_help_icon "Help for connection's object selection",
                         "Help:Popup/ConnectionObjectScalar" %>
     <span style="padding-left: 4em; font-weight: bold; font-style: italic;"
@@ -137,7 +148,7 @@
 
     <!-- then radio button and select control for object-is-item -->
     <%=
-        radio_button "connection", "kind_of_obj", "item"
+        radio_button "connection", "kind_of_obj", 'item', :tabindex => '30'
     -%><span style="font-size: 75%;"><%=
         f.label :kind_of_obj, "Item", :value => 'item'
     -%></span>
@@ -152,12 +163,12 @@
               end,
             connection.obj.nil? ? "" : connection.obj.id
           ),
-          :tabindex=>'30', :style=>'width: 90%;'
+          :tabindex=>'35', :style=>'width: 90%;'
      %>
     <%= popup_help_icon "Help for connection's object selection",
                         "Help:Popup/ConnectionObjectItem" %>
     <%= image_tag "blank_error_icon.png", :id=>"obj_error_icon", :alt=>"",
-                  :size=>"16x16" %>
+          :size=>"16x16", :style=>"position: relative; bottom: 3.2ex;" %>
 
     <!-- start 'div' differently depending on 'if' -->
       <% if connection.obj.nil? %>
@@ -169,6 +180,6 @@
           <p><%= h connection.obj.description %></p>
       <% end %>
     </div>
-    <script type="text/javascript">sizeDescDiv('obj');</script>
+    <script type="text/javascript">setDescDivsHeights(['obj']);</script>
   </td></tr>
 </table>
