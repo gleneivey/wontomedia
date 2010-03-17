@@ -63,6 +63,14 @@ div#fancybox-outer {
 
 
         /* settings for the basic division of pages into areas and boxes */
+.page-title-text {
+  position: absolute;
+  top: 0;
+  left: 15.5%;
+  height: 8ex;
+  width: 69.7%;
+  overflow: hidden;
+}
 .content {
   padding: 2px;
   background-color: white;
@@ -212,10 +220,10 @@ p + table {   margin-bottom: 1.5em;  }
 
 #block-help {
   float: right;
-  border-width: 1px;
+  border-width: 2px;
   border-color: #e8e8ff;
   border-style: none solid solid;
-  background: #f8f8ff;
+  background: url("/images/transparent_ltblue_background.png") repeat;
   padding: 0 0.3em;
   height: 2.7ex;
   font-size: 200%;
@@ -229,7 +237,7 @@ p + table {   margin-bottom: 1.5em;  }
   z-index: 150;
   font-size: 110%;
   font-weight: bold;
-  background: url("/images/alert_background.png") repeat;
+  background: url("/images/transparent_white_background.png") repeat;
   text-align: center;
 }
 #alert_box_close_link {

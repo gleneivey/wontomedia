@@ -20,7 +20,7 @@
 
 <% content_for :page_body do %>
   <% if @title_text %>
-    <div id="page-title" style="position: absolute; top: 0; left: 15.5%; height: 8ex; width: 69.7%; overflow: hidden;">
+    <div id="page-title" class="page-title-text">
       <h1 style="white-space: nowrap;"><%= @title_text -%></h1>
     </div>
   <% end %>
@@ -49,7 +49,7 @@
         <%= render :partial => "layouts/search_box" %>
       </div>
       <div id="page-top-controls"
-           style="position: absolute; top: 0; right: 16.9%;">
+           style="position: absolute; top: 0; right: 15.6%;">
         <%= render :partial => "layouts/master_help" %>
         <%= render :partial => "layouts/language_select" %>
         <%= render :partial => "layouts/login_controls" %>
