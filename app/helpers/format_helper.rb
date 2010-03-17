@@ -153,12 +153,17 @@ module FormatHelper
   end
 
   def logo_image
+    result = ''
+    if WontoMedia.site_logo_title
+      result += "<div width='99%'>#{WontoMedia.site_logo_title}</div>\n"
+    end
     logo_name = (File.exists?(
       Rails.root.join( 'public', 'images', 'logo.jpg'))) ?
         '/images/logo.jpg' :
         '/images/logo.png'
-    image_tag( logo_name, :alt=>'Logo', :width=>'99%',
+    result += image_tag( logo_name, :alt=>'Logo', :width=>'99%',
       :style=>'margin-bottom: 0.7ex;' )
+    result
   end
 
 
