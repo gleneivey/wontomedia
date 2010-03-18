@@ -127,6 +127,28 @@ Number_Value:
     figures.
 
 
+Date_Value:
+  name: Date_Value
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: A Date (optionally with time, scalar type)
+  description: >-
+    This item represents a particular date (and time).  It is a
+    relatively free-form field, allowingg a mix of letters, numbers,
+    and punctuation to allow easily human-readable dates to be
+    entered.  The date/time can be as accurate as the information you
+    have allows.  Depending on the context, it could be as general as
+    a single year or even a century, or it could be a date and time
+    down to the second:  "March 24, 2010 at 12:15:22pm (Pacific)".
+    But it cannot be ambiguous.  For example, if you spell out the
+    month when entering a birth date, then both "4 January 1955" and
+    "Jan 4, 1955" are acceptable.  However, you should not type
+    something like "1/4/55" because of both the month/day ambiguity
+    (difference between U.S. and European common ordering) and because
+    of the century ambiguity (probably 1955, but what if it was
+    1855?).
+
+
 Boolean_Value:
   name: Boolean_Value
   sti_type: CategoryItem
