@@ -81,6 +81,12 @@ class ItemsControllerTest < ActionController::TestCase
     assert_nil item.description
   end
 
+  test "new-pop form should have list of available classes" do
+    get :newpop
+    assert_not_nil class_list = assigns(:class_list)
+    assert class_list.include? items(:anotherClass)
+  end
+
   test "new-pop form should have type parameter" do
     knownTypeValue = "noun"
     get :newpop, :type => knownTypeValue

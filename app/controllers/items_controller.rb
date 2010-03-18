@@ -84,6 +84,7 @@ class ItemsController < ApplicationController
   # +views+; see their source for additional details.
   def newpop
     @item = Item.new
+    @class_list = all_class_items
     @type = params[:type]
     render :layout => "popup"
   end
