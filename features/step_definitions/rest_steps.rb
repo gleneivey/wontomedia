@@ -62,19 +62,15 @@ When /^I (am on|go to|try to go to) the (\S+) connections page for "(.+)" "(.+)"
 end
 
 # it would be cool to generate a model class from the controller name, but...
-When /^I (am on|go to|try to go to) the (\S+) items page for "([^"]+)"$/ do |fu, action, item|
-  n = Item.first(:conditions => "name = '#{item}'")
+When /^I (am on|go to|try to go to) the (\S+) items page for "([^"]+)"$/ do |fu, action, item_name|
   if action == "show"
-    if n.nil?
-      visit "/w/items/0"
-    else
-      visit "/w/items/#{n.id}"
-    end
+    visit "/#{item_name}"
   else
-    if n.nil?
+    item = Item.first(:conditions => "name = '#{item_name}'")
+    if item.nil?
       visit "/w/items/0/#{action}"
     else
-      visit "/w/items/#{n.id}/#{action}"
+      visit "/w/items/#{item.id}/#{action}"
     end
   end
   if !@browser.nil?

@@ -50,6 +50,12 @@ testCategory:
   sti_type: CategoryItem
   flags: 0
 
+testClass:
+  name: testClass
+  title: testClass
+  sti_type: CategoryItem
+  flags: 0
+
 testProperty:
   name: testProperty
   title: testProperty
@@ -178,5 +184,11 @@ itemUsedFrequentlyAsObject:
 veryBusyItem:
   name: veryBusyItem
   title: veryBusyItem
+  sti_type: CategoryItem
+  flags: 0
+
+anotherClass:
+  name: anotherClass
+  title: anotherClass
   sti_type: CategoryItem
   flags: 0

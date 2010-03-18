@@ -69,6 +69,7 @@ class ItemsController < ApplicationController
   def new
     @this_is_non_information_page = true
     @item = Item.new
+    @class_list = all_class_items
   end
 
   # GET /items/new-pop
@@ -450,5 +451,35 @@ class ItemsController < ApplicationController
     end
 
     render :text => ("<id>" + id.to_s + "</id>\n")
+  end
+
+private
+
+  def all_class_items
+    # Get the special property items "sub_class_of" and
+    # "is_instance_of"; find all of the connections that use them as
+    # predicates; find all of the items that are those connections'
+    # subjects ("s_c_o") or objects (both).  At some point we might
+    # want to allow sub-properties of the two special ones to also
+    # imply that items represent classes.
+
+    class_list = []
+    [ 'sub_class_of', 'is_instance_of' ].each do |property_name|
+      Connection.all( :conditions => [ "predicate_id = ?",
+          Item.find_by_name(property_name).id ]).each do |connection|
+
+        # look at objects of both special properties (assuming con. valid)
+        if connection.kind_of_obj == 'item'
+          class_list << connection.obj
+        end
+
+        #and at subjects of just
+        if property_name == 'sub_class_of'
+          class_list << connection.subject
+        end
+      end
+    end
+
+    class_list.uniq
   end
 end

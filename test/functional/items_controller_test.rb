@@ -61,6 +61,12 @@ class ItemsControllerTest < ActionController::TestCase
     assert_nil item.description
   end
 
+  test "new form should have list of available classes" do
+    get :new
+    assert_not_nil class_list = assigns(:class_list)
+    assert class_list.include? items(:testClass)
+  end
+
   test "should get new-pop" do
     get :newpop
     assert_response :success

@@ -10,7 +10,8 @@ Feature:  Create and view new individual items through non-Ajax pages
     And I fill in "Description" with "The root category in the C topic"
     And I select "Category" from "Type"
     When I press "Create"
-    Then I should see "MyCategory"
+    Then I should see "successfully created"
+    And I should see "MyCategory"
     And I should see "A subcategory"
     And I should see "The root category in the C topic"
 
