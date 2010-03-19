@@ -83,4 +83,70 @@ class Item < ActiveRecord::Base
     # column default specified in the database schema
     self[:flags] or 0
   end
+
+
+  @class_item = nil
+  @class_has_been_set = false
+  after_save :after_save_callback # update class-defining connection after
+                                  # main object saves; rollback still works
+  def class_item
+    if @class_has_been_set
+      @class_item                 # ignore db content if this has been set
+                                  # explicitly.  This will eventually be
+                                  # saved or discarded
+    else
+      iio_item = Item.find_by_name('is_instance_of')
+      class_assignment = Connection.first( :conditions => [
+        "subject_id = ? AND predicate_id = ?", id, iio_item.id ] )
+      if class_assignment.nil? or
+         class_assignment.kind_of_obj != Connection::OBJECT_KIND_ITEM
+        return nil
+      else
+        return class_assignment.obj
+      end
+    end
+  end
+  def class_item_id
+    item = class_item
+    return item.nil? ? nil : item.id
+  end
+  def class_item=( new_class_item )
+    @class_item = new_class_item
+    @class_has_been_set = true
+  end
+  def class_item_id=( new_class_id )
+    @class_item = Item.find_by_id( new_class_id )
+    @class_has_been_set = true
+  end
+
+private
+
+  def after_save_callback
+    if @class_has_been_set
+      iio_item = Item.find_by_name('is_instance_of')
+      class_assignment = Connection.first( :conditions => [
+        "subject_id = ? AND predicate_id = ?", id, iio_item.id ] )
+      if class_assignment && @class_item == class_assignment.obj
+        return true # class-defining connection already in db -> done
+      end
+
+      if class_assignment             # if we're here, current db is different
+        class_assignment.destroy      # so get rid of it
+      end
+
+      begin
+        class_assignment = Connection.new( {
+          :subject_id => id,
+          :predicate_id => iio_item.id,
+          :obj_id => @class_item.id,
+          :kind_of_obj => Connection::OBJECT_KIND_ITEM } )
+        @class_has_been_set = false
+        return class_assignment.save
+      rescue
+        return false
+      end
+    end
+
+    return true
+  end
 end

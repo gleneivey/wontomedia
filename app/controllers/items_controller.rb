@@ -93,6 +93,7 @@ class ItemsController < ApplicationController
   def create
     type_string = params[:item][:sti_type]
     params[:item].delete :sti_type # don't mass-assign protected blah, blah
+
     @item = ItemHelper.new_typed_item(type_string, params[:item])
     @popup_flag = true if params[:popup_flag]
 
@@ -180,7 +181,7 @@ class ItemsController < ApplicationController
   #     view can expect that all of the *predicate_id* values in the
   #     Connections in this array will be different.
   #   - The next array in @connection_list contains all of the
-  #     Connection objects whose *object_id* values are equal to
+  #     Connection objects whose *obj_id* values are equal to
   #     *@item*.  Like all the other, this array won't be placed into
   #     @connection_list if it would be empty.  Also, in the event of
   #     that a Connection references *@item* as both its subject and
@@ -470,7 +471,7 @@ private
           Item.find_by_name(property_name).id ]).each do |connection|
 
         # look at objects of both special properties (assuming con. valid)
-        if connection.kind_of_obj == 'item'
+        if connection.kind_of_obj == Connection::OBJECT_KIND_ITEM
           class_list << connection.obj
         end
 

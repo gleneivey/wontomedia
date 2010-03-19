@@ -95,14 +95,31 @@ class ItemsControllerTest < ActionController::TestCase
     assert_equal type, knownTypeValue
   end
 
-  test "should create item with valid data" do
+  test "should create item with valid data-no class" do
     name = "itemName"
     assert_difference('Item.count') do
-      post :create, :item => { :name => name, :title => "title",
-                               :sti_type => "CategoryItem" }
+      post :create, :item => {
+        :name => name, :title => "title", :sti_type => "CategoryItem" }
     end
     assert_redirected_to item_by_name_path(name)
     assert_not_nil Item.find_by_name(name)
+  end
+
+  test "should create item with valid data and class" do
+    name = "instanceName"
+    class_item = items(:testClass)
+    assert_difference('Item.count') do
+      post :create, :item => {
+        :name => name, :title => "title", :sti_type => "IndividualItem",
+        :class_item_id => class_item.id }
+    end
+    assert_redirected_to item_by_name_path(name)
+    assert_not_nil item = Item.find_by_name(name)
+    assert_not_nil Connection.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      item.id,
+      Item.find_by_name('is_instance_of').id,
+      class_item.id ] )
   end
 
   test "should not create item without a type" do
@@ -184,8 +201,8 @@ class ItemsControllerTest < ActionController::TestCase
   # connections in the items/show page, and the definition of how the
   # arrays are composed is in the RDoc for Items.show.
   test "should correctly group/sort is-subject connections" do
-    n = items(:itemUsedFrequentlyAsSubject)
-    get :show, :id => n.id
+    item = items(:itemUsedFrequentlyAsSubject)
+    get :show, :id => item.id
 
     # given content of test/fixtures/connections.yml,
     #   expect connection_list as follows:
@@ -220,8 +237,8 @@ class ItemsControllerTest < ActionController::TestCase
   end
 
   test "should correctly group is-object connections" do
-    n = items(:itemUsedFrequentlyAsObject)
-    get :show, :id => n.id
+    item = items(:itemUsedFrequentlyAsObject)
+    get :show, :id => item.id
 
     # given content of test/fixtures/connections.yml,
     #   expect connection_list as follows:
@@ -241,8 +258,8 @@ class ItemsControllerTest < ActionController::TestCase
   end
 
   test "should show all predicate connections in last group" do
-    n = Item.find_by_name("sub_property_of")
-    get :show, :id => n.id
+    item = Item.find_by_name("sub_property_of")
+    get :show, :id => item.id
 
     # this time, check built-in "seed" schema.  Lots o' indiv's use sub_prop_of
     # connection_list should look like: [ ... [many connections]]

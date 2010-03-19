@@ -62,6 +62,12 @@ testProperty:
   sti_type: PropertyItem
   flags: 0
 
+testInstance:
+  name: testInstance
+  title: testInstance
+  sti_type: IndividualItem
+  flags: 0
+
 connection_one:
   name: testIndividual.one_of.testCategory
   title: a title
