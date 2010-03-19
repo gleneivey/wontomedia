@@ -69,6 +69,7 @@ class ItemsController < ApplicationController
   def new
     @this_is_non_information_page = true
     @item = Item.new
+    @class_list = all_class_items
   end
 
   # GET /items/new-pop
@@ -83,6 +84,7 @@ class ItemsController < ApplicationController
   # +views+; see their source for additional details.
   def newpop
     @item = Item.new
+    @class_list = all_class_items
     @type = params[:type]
     render :layout => "popup"
   end
@@ -91,6 +93,7 @@ class ItemsController < ApplicationController
   def create
     type_string = params[:item][:sti_type]
     params[:item].delete :sti_type # don't mass-assign protected blah, blah
+
     @item = ItemHelper.new_typed_item(type_string, params[:item])
     @popup_flag = true if params[:popup_flag]
 
@@ -178,7 +181,7 @@ class ItemsController < ApplicationController
   #     view can expect that all of the *predicate_id* values in the
   #     Connections in this array will be different.
   #   - The next array in @connection_list contains all of the
-  #     Connection objects whose *object_id* values are equal to
+  #     Connection objects whose *obj_id* values are equal to
   #     *@item*.  Like all the other, this array won't be placed into
   #     @connection_list if it would be empty.  Also, in the event of
   #     that a Connection references *@item* as both its subject and
@@ -450,5 +453,35 @@ class ItemsController < ApplicationController
     end
 
     render :text => ("<id>" + id.to_s + "</id>\n")
+  end
+
+private
+
+  def all_class_items
+    # Get the special property items "sub_class_of" and
+    # "is_instance_of"; find all of the connections that use them as
+    # predicates; find all of the items that are those connections'
+    # subjects ("s_c_o") or objects (both).  At some point we might
+    # want to allow sub-properties of the two special ones to also
+    # imply that items represent classes.
+
+    class_list = []
+    [ 'sub_class_of', 'is_instance_of' ].each do |property_name|
+      Connection.all( :conditions => [ "predicate_id = ?",
+          Item.find_by_name(property_name).id ]).each do |connection|
+
+        # look at objects of both special properties (assuming con. valid)
+        if connection.kind_of_obj == Connection::OBJECT_KIND_ITEM
+          class_list << connection.obj
+        end
+
+        #and at subjects of just
+        if property_name == 'sub_class_of'
+          class_list << connection.subject
+        end
+      end
+    end
+
+    class_list.uniq
   end
 end

@@ -50,10 +50,22 @@ testCategory:
   sti_type: CategoryItem
   flags: 0
 
+testClass:
+  name: testClass
+  title: testClass
+  sti_type: CategoryItem
+  flags: 0
+
 testProperty:
   name: testProperty
   title: testProperty
   sti_type: PropertyItem
+  flags: 0
+
+testInstance:
+  name: testInstance
+  title: testInstance
+  sti_type: IndividualItem
   flags: 0
 
 connection_one:
@@ -178,5 +190,11 @@ itemUsedFrequentlyAsObject:
 veryBusyItem:
   name: veryBusyItem
   title: veryBusyItem
+  sti_type: CategoryItem
+  flags: 0
+
+anotherClass:
+  name: anotherClass
+  title: anotherClass
   sti_type: CategoryItem
   flags: 0

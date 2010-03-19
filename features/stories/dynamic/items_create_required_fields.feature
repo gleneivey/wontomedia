@@ -26,6 +26,16 @@ Feature:  Verify inputs for creation of new item dynamically within the page
 #       the "recommended" instruction text.
 
 
+  Scenario: Empty form starts focus in tab order after Class selector
+    When I am on the new items page
+    And I pause
+    Then the focus is on the "item_sti_type" element
+
+    When I put the focus on the "item_class" element
+    And I type the "Tab" special key
+    Then the focus is on the "item_sti_type" element
+
+
   Scenario: Empty form incrementally displays flag text/icons
     # new page: focus on Type, all inputs blank, none flagged
     When I am on the new items page

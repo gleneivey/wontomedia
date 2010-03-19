@@ -26,36 +26,93 @@ class ItemTest < ActiveSupport::TestCase
   test "item has name and title properties" do
     name = "nAME.-_:"
     title = "Item's title"
-    n = Item.new(:name => name, :title =>  title)
-    assert n
-    assert_equal name, n.name
-    assert_equal title, n.title
-    assert n.save
+    item = Item.new(:name => name, :title =>  title)
+    assert item
+    assert_equal name, item.name
+    assert_equal title, item.title
+    assert item.save
   end
 
   test "item has description property" do
     description = "description"
-    n = Item.new( :name => "name", :title => "Item's title",
-                  :description => description)
-    assert n
-    assert_equal description, n.description
-    assert n.save
+    item = Item.new( :name => "name", :title => "Item's title",
+                     :description => description )
+    assert item
+    assert_equal description, item.description
+    assert item.save
   end
 
+
+  test "item can set and save class_item property" do
+    class_item = items(:testClass)
+    item = Item.new( :name => "name", :title => "Item's title",
+                     :class_item => class_item )
+    assert item
+    assert_equal class_item, item.class_item
+    assert_equal class_item.id, item.class_item.id
+    assert item.save
+    assert Connection.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      item.id,
+      Item.find_by_name('is_instance_of').id,
+      class_item.id ] )
+  end
+
+  test "modifying item_s class_item property updates connections" do
+    name = 'testInstance'
+    item = items(name.to_sym)
+    test_class = items(:testClass)
+    another_class = items(:anotherClass)
+
+    assert item.class_item_id == test_class.id
+    item.class_item = another_class
+    item.save
+    assert item = Item.find_by_name(name)
+    assert item.class_item_id == another_class.id
+
+    # out with the old
+    assert_nil Connection.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      item.id,
+      Item.find_by_name('is_instance_of').id,
+      test_class.id ] )
+    # in with the new
+    assert Connection.first( :conditions => [
+      "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+      item.id,
+      Item.find_by_name('is_instance_of').id,
+      another_class.id ] )
+  end
+
+  test "clearing item_s class_item property destroys connection" do
+    name = 'testInstance'
+    item = items(name.to_sym)
+
+    item.class_item = nil
+    item.save
+    assert item = Item.find_by_name(name)
+    assert item.class_item_id.nil?
+    assert_nil Connection.first( :conditions => [
+      "subject_id = ? AND predicate_id = ?",
+      item.id, Item.find_by_name('is_instance_of').id ] )
+  end
+
+
+
   test "default value for items flags is 0" do
-    n = Item.new( :name => "fu", :title => "bar")
-    assert n.flags == 0
+    item = Item.new( :name => "fu", :title => "bar")
+    assert item.flags == 0
   end
 
   test "can set item flags on creation" do
     value = 42
-    n = Item.new( :name => "fu", :title => "bar", :flags => value)
-    assert n.flags == value
+    item = Item.new( :name => "fu", :title => "bar", :flags => value)
+    assert item.flags == value
   end
 
   test "flag values of sample builtin items are correct" do
-    n = Item.find_by_name("sub_property_of")
-    assert n.flags == Item::DATA_IS_UNALTERABLE
+    item = Item.find_by_name("sub_property_of")
+    assert item.flags == Item::DATA_IS_UNALTERABLE
   end
 
 

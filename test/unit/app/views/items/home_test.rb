@@ -28,12 +28,12 @@ class ItemsHomeViewTest < ActionController::TestCase
 
   test "should show Title of known item" do
     get :home
-    assert_select "body", /#{items(:one).title}/
+    assert_select "body", /Class of all Items/
   end
 
   test "should show Description of known item" do
     get :home
-    assert_select "body", /#{items(:one).description}/
+    assert_select "body", /This category item is the foundation for the hier/
   end
 
   test "home page shouldnt contain status" do

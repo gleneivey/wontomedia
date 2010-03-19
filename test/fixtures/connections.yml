@@ -258,3 +258,24 @@ anotherScalarObj:
   scalar_obj: 6
   kind_of_obj: scalar
   flags: 0
+
+define_testClass_isclass:
+  subject: testClass
+  predicate: sub_class_of
+  obj: Item_Class
+  kind_of_obj: item
+  flags: 0
+
+define_anotherClass_isclass:
+  subject: anotherClass
+  predicate: sub_class_of
+  obj: Item_Class
+  kind_of_obj: item
+  flags: 0
+
+define_instance:
+  subject: testInstance
+  predicate: is_instance_of
+  obj: testClass
+  kind_of_obj: item
+  flags: 0
