@@ -77,7 +77,7 @@ Feature:  Create and edit individual items with implicit creation of
     When I press "Update"
     Then I should see "successfully updated"
     And I should not see "aClass0"
-    
+
 
   Scenario: Edit an item to add a class
     Given there is 1 existing category like "aClass"
@@ -94,7 +94,6 @@ Feature:  Create and edit individual items with implicit creation of
     Then I should see "anInstance item number 0"
     And I should see "Is an Instance Of"
     And I should see "aClass item number 0"
-    
 
 
 
