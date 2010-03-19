@@ -485,14 +485,23 @@ class ItemsControllerTest < ActionController::TestCase
     assert_controller_behavior_with_id :edit
   end
 
+  test "should get edit item page for item with class" do
+    assert_controller_behavior_with_id :edit, :testInstance
+    assert_not_nil class_list = assigns(:class_list)
+    assert class_list.include? items(:anotherClass)
+  end
+
   test "should update item" do
-    n, h = prep_for_update(:one)
+    item, h = prep_for_update(:testInstance)
     h[:name] = new_name = "two"
+    another_class_id = items(:anotherClass).id
+    h[:class_item_id] = another_class_id
     assert_no_difference('Item.count') do
-      put :update, :id => n.id, :item => h
+      put :update, :id => item.id, :item => h
     end
     assert_redirected_to item_by_name_path(new_name)
-    assert_not_nil Item.find_by_name(new_name)
+    assert_not_nil item = Item.find_by_name(new_name)
+    assert item.class_item.id == another_class_id
   end
 
   test "should not update builtin item" do
@@ -538,20 +547,35 @@ class ItemsControllerTest < ActionController::TestCase
   end
 
   test "should delete item" do
-    n = items(:two)
-    name = n.name
+    item = items(:two)
+    name = item.name
     assert_difference('Item.count', -1) do
-      delete :destroy, :id => n.id
+      delete :destroy, :id => item.id
     end
     assert_redirected_to items_path
     assert_nil Item.find_by_name(name)
+  end
+
+  test "should delete even items with a class" do
+    item = items(:testInstance)
+    name = item.name
+    assert_difference('Item.count', -1) do
+      assert_difference('Connection.count', -1) do
+        delete :destroy, :id => item.id
+      end
+    end
+    assert_redirected_to items_path
+    assert_nil Item.find_by_name(name)
+    assert_nil Connection.first( :conditions => [
+      "subject_id = ? OR predicate_id = ? OR obj_id = ?",
+      item.id, item.id, item.id ] )
   end
 
   test "should not delete builtin item" do
     assert_item_wont_delete(Item.find_by_name("value_relationship"))
   end
 
-  test "should not delete item in use by an connection" do
+  test "should not delete item in use by a connection" do
     assert_item_wont_delete(items(:testIndividual))
   end
 
@@ -570,13 +594,13 @@ class ItemsControllerTest < ActionController::TestCase
 
 
 private
-  def prep_for_update(fixture_name)
-    n = items(fixture_name)
-    return n, ItemHelper.item_to_hash(n)
+  def prep_for_update(fixture_symbol)
+    item = items(fixture_symbol)
+    return item, ItemHelper.item_to_hash(item)
   end
 
-  def assert_controller_behavior_with_id(action)
-    id = items(:one).id
+  def assert_controller_behavior_with_id(action, item_symbol = :one)
+    id = items(item_symbol).id
     get action, :id => id
     assert_response :success
     item = assigns(:item)
@@ -584,13 +608,13 @@ private
     assert_equal id, item.id
   end
 
-  def assert_item_wont_delete(n)
-    name = n.name
+  def assert_item_wont_delete(item)
+    name = item.name
     assert_difference('Item.count', 0) do
-      delete :destroy, :id => n.id
+      delete :destroy, :id => item.id
     end
     assert_redirected_to item_by_name_path(name)
-    assert_not_nil n == Item.find_by_name(name)
+    assert_not_nil item == Item.find_by_name(name)
   end
 
   def assert_connections_lists_have_identical_content(

@@ -102,10 +102,12 @@ class ItemsController < ApplicationController
 'Could not create. Item must have a type of either "Category" or "Individual".'
       @item = Item.new(params[:item]) # keep info already entered
       @item.sti_type = type_string
+      @class_list = all_class_items
       @this_is_non_information_page = true
       render :action => (@popup_flag ? "newpop" : "new" )
     elsif @item.name =~ /[:.]/ || !@item.save
       @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      @class_list = all_class_items
       @this_is_non_information_page = true
       render :action => (@popup_flag ? "newpop" : "new" )
     else
@@ -356,6 +358,7 @@ class ItemsController < ApplicationController
       return
     end
 
+    @class_list = all_class_items
     @this_is_non_information_page = true
   end
 
@@ -383,6 +386,7 @@ class ItemsController < ApplicationController
           params[:item][:name] =~ /[:.]/                     )  ||
         !@item.update_attributes(params[:item])
       @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      @class_list = all_class_items
       @this_is_non_information_page = true
       render :action => "edit"
     else
@@ -403,7 +407,19 @@ class ItemsController < ApplicationController
     if (@item.flags & Item::DATA_IS_UNALTERABLE) != 0
       flash[:error] = 'This Item cannot be altered.'
       redirect_to item_by_name_path(@item.name)
-    elsif !(Connection.all( :conditions =>
+      return
+    end
+
+    class_item = @item.class_item
+    if class_item
+      Connection.first( :conditions =>
+        [ "subject_id = ? AND predicate_id = ? AND obj_id = ?",
+          @item.id,
+          Item.find_by_name('is_instance_of'),
+          class_item.id ] ).destroy
+    end
+
+    if !(Connection.all( :conditions =>
         [ "subject_id = ? OR predicate_id = ? OR obj_id = ?",
           @item.id, @item.id, @item.id ]).empty?)
       flash[:error] = 'This Item is in use by 1+ Connections. ' +

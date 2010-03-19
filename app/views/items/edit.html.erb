@@ -39,8 +39,9 @@
 
 <% form_for(@item, :url => item_path(@item)) do |f| %>
   <%= f.error_messages %>
-  <%= render :partial => "form_fields", :locals => { :f => f } %>
-  <p><%= f.submit "Update", :tabindex => "10" %></p>
+  <%= render :partial => "class_select", :locals => { :f => f } %>
+  <%= render :partial => "form_fields",  :locals => { :f => f } %>
+  <p><%= f.submit "Update", :tabindex => "50" %></p>
 <% end %>
 
 <div class="horizontal-link-list"><ul>

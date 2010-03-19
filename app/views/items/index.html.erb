@@ -62,7 +62,11 @@
     <tr>
       <td colspan="3" class="secondrow" style="padding-left: 2.2em;">
         <span style="font-size: 70%">
-          <%=h ItemHelper::ITEM_SUBTYPES_TO_HUMAN[item.sti_type] %>:</span>
+          <%= ItemHelper::ITEM_SUBTYPES_TO_HUMAN[item.sti_type] %>:
+          <% if item.class_item %>
+            <%=h item.class_item.name %>:
+          <% end %>
+        </span>
         <%=h item.description %></td>
     </tr>
   <% end %>

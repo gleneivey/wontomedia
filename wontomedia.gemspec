@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-03-18}
+  s.date = %q{2010-03-19}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
      "app/views/connections/new.html.erb",
      "app/views/connections/show.html.erb",
      "app/views/items/_active_content.html.erb",
+     "app/views/items/_class_select.html.erb",
      "app/views/items/_content_examples.html.erb",
      "app/views/items/_core_tasks.html.erb",
      "app/views/items/_form_fields.html.erb",

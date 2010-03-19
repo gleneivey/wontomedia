@@ -203,4 +203,32 @@ class ItemTest < ActiveSupport::TestCase
       assert !n.save, "Failed on :#{bad}: character"
     end
   end
+
+
+
+          # class-based interrogators
+  test "is_class returns negative results" do
+    assert items(:testInstance).is_class? == false         # 'nil' doesn't pass
+  end
+
+  test "is_class positively identifies is_instance_of object" do
+    assert items(:impliedClass).is_class?
+  end
+
+  test "is_class positively identifies sub_class_of object" do
+    assert Item.find_by_name('Item_Class').is_class?
+  end
+
+  test "is_class positively identifies sub_class_of subject" do
+    assert items(:testClass).is_class?
+  end
+
+  test "superclass_of returns correct if present" do
+    assert items(:anotherClass).superclass_of.id ==
+      Item.find_by_name('Item_Class').id
+  end
+
+  test "superclass_of returns nil if none" do
+    assert_nil items(:impliedClass).superclass_of
+  end
 end

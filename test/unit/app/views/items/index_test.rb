@@ -56,6 +56,9 @@ class ItemsIndexViewTest < ActionController::TestCase
       else
         # other item types all listed
         assert_select "body", /#{item.name}/
+        if item.class_item
+          assert_select "body", /#{item.class_item.name}:/
+        end
 
         test_sense = (item.flags & Item::DATA_IS_UNALTERABLE) == 0
 

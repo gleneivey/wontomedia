@@ -35,7 +35,7 @@
       select_tag "item[sti_type]",
         options_for_select( selections,
                             @item.sti_type.nil? ? "" : @item.sti_type ),
-        :tabindex => "1"
+        :tabindex => "10"
    %>
   <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
         :alt=>"", :size=>"16x16" %>

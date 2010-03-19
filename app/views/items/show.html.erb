@@ -19,6 +19,7 @@
 
 
 <%
+  require Rails.root.join( 'lib', 'helpers', 'item_helper')
   @title_text = h( filter_parenthetical( @item.title ) )
 
   # initialize array to define "Glossary Help" box of links:
@@ -49,6 +50,9 @@
 
 <% # populate top (title/name/desc) section of page
  %>
+<div id="div-for-type-class"
+  style="float:right; text-align: right; font-size: 80%; font-weight: bold;">
+</div>
 <p style="margin-bottom: 0; font-weight: bold;">
   <%= text_with_tooltip h( @item.title ),
         '&nbsp;<b>Title</b> of this <b>Item</b>&nbsp;', 'item_title' %>
@@ -220,3 +224,15 @@
      end
    end                          # unless @connection_list.empty?
  %>
+
+<script type="text/javascript">
+  content = "<%= ItemHelper::ITEM_SUBTYPES_TO_HUMAN[@item.sti_type] -%>";
+  <% if @item.class_item %>
+    content += "<br /><%=h @item.class_item.name %>";
+  <% elsif superclass_item = @item.superclass_of %>
+    content += "<br />(<%=h superclass_item.name %>)";
+  <% elsif @item.is_class? %>
+    content += "<br />(is a class)";
+  <% end %>
+  $('div-for-type-class').innerHTML = content;
+</script>

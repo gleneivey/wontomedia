@@ -107,6 +107,9 @@ namespace :test do
   end
   Rake::Task['test:units'].comment =
     "Run the model tests in test/unit/app/models"
+
+  # but it's still a stupid naming convention:
+  task :models => :units
 end
 
 
@@ -172,11 +175,12 @@ namespace :test do
     ruby File.join( "policy", "ckFilesUtils", "ckCustomizationFilesPresent.rb" )
   end
 
-  # alias
-  task :integrations => :integration
+  # aliases
+  task :integrations => :integration  # multiple tests -> plural task name
+  task :controllers => :functionals   # Rails naming convention #fail
 
   desc "Execute all the tests for Ruby code."
-  task :ruby_tests => [ "test:devs", "test:db", "test:functionals",
+  task :ruby_tests => [ "test:devs", "test:db", "test:controllers",
     "test:integrations", "build", "cucumber:static_ok"]
 end # namespace :test
 
@@ -184,10 +188,10 @@ end # namespace :test
 
 # replace Rail's basic test task so that we get a reasonable execution order
 Rake::Task[:test].clear!
-desc 'Run all unit, functional, integration, and policy checks'
+desc 'Run all unit, integration, and policy checks'
 task :tests => [ "test:policies", "asset:packager:build_all",
                     # above two have side effects necessary for setup
-                 "test:devs", "test:db", "test:functionals",
+                 "test:devs", "test:db", "test:controllers",
                  "test:javascripts", "test:integrations", "build",
                  "cucumber:ok" ]
 # alias

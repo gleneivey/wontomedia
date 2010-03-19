@@ -119,10 +119,11 @@ module ItemHelper
 
   # Takes an Item object, +n+, and returns a symbol-indexed hash
   # containing each of the Item's data fields.
-  def self.item_to_hash(n)
+  def self.item_to_hash(item)
 # Really ought to be doing this programatically from the schema....
-    { :id => n.id, :name => n.name, :title => n.title, :flags => n.flags,
-      :description => n.description, :sti_type => n.sti_type }
+    { :id => item.id, :name => item.name, :title => item.title,
+      :flags => item.flags, :description => item.description,
+      :sti_type => item.sti_type, :class_item_id => item.class_item_id }
   end
 
 
