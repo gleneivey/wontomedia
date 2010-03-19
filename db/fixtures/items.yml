@@ -81,6 +81,20 @@ Type_Item:
     "String_Value" type.)
 
 
+ItemType_Item:
+  name: ItemType_Item
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Group of items representing possible Item Types (foundation class)
+  description: >-
+    This category item is part of the representation of the system's
+    basic classification scheme for items (Category, Individual,
+    Property) within the database of connections and items itself.
+    Having items representing the available Item Types allows
+    connections to be created that make statements about the types of
+    items that are acceptable as members of a class.
+
+
 String_Value:
   name: String_Value
   sti_type: CategoryItem
@@ -192,6 +206,36 @@ URL_Value:
     the actual web address.
 
 
+Value_ItemType_Category:
+  name: Value_ItemType_Category
+  sti_type: IndividualItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Item Type 'Category' (a constant value)
+  description: >-
+    This item represents the "Category" type of system items.  See
+    the description of ItemType_Item.
+
+
+Value_ItemType_Individual:
+  name: Value_ItemType_Individual
+  sti_type: IndividualItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Item Type 'Individual' (a constant value)
+  description: >-
+    This item represents the "Individual" type of system items.  See
+    the description of ItemType_Item.
+
+
+Value_ItemType_Property:
+  name: Value_ItemType_Property
+  sti_type: IndividualItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Item Type 'Property' (a constant value)
+  description: >-
+    This item represents the "Property" type of system items.  See
+    the description of ItemType_Item.
+
+
 #### Minimal set of types (predicates) for connections
 #### this is WontoMedia's native "schema", and represents the minimal
 #### typing information used by the UI
@@ -253,6 +297,35 @@ applies_to_class:
     create, each time a user makes a new instance item, a list of
     connections (with empty object item references) for the user to
     fill in.
+
+
+class_item_type_is:
+  name: class_item_type_is
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Class' Item-Type is (defining relationship)
+  description: >-
+    This property is used to constrain the type (Individual, Category,
+    or Property) of item that is acceptable for items that are to be
+    instances of the subject class.  For example, assume that
+    ChemicalElement is a class.  It is reasonable to require that all
+    items which are instances of this class be "individual" items,
+    since it is unlikely to be appropriate to represent a single
+    chemical element as a "category".  (What would go into the "Carbon
+    category"?)  So, the connection "ChemicalElement
+    class_item_type_is Value_ItemType_Individual" states that all of
+    ChemicalElement' instance items are (must be Individual-type
+    items).  With this connection in place, the system will only
+    permit the creation of new items whose class is ChemicalElement to
+    be of type Individual.  (Note that this connection is provided to
+    be an aid to data entry and editing, and is not enforced as a
+    completely strict prohibition.  For example, since class
+    membership is represented by the presence of "is_instance_of"
+    connections, like "Carbon is_instance_of ChemicalElement",
+    explicitly editing the connection that establishes an items class
+    after that item is created will circumvent the class/type checking
+    and can produce a wontology containing contradictory
+    statements&mdash<em>caveat editor</em>.)
 
 
 has_scalar_object:
