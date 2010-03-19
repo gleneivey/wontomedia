@@ -30,6 +30,7 @@ The rest of this page lists all of the built-in properties provided by WontoMedi
 Built-in properties alphabetically:
 [[#anchor_applies_to_class|applies_to_class]] &mdash;
 [[#anchor_child_of|child_of]] &mdash;
+[[#anchor_class_item_type_is|class_item_type_is]] &mdash;
 [[#anchor_contains|contains]] &mdash;
 [[#anchor_has_item_object|has_item_object]] &mdash;
 [[#anchor_has_scalar_object|has_scalar_object]] &mdash;
@@ -57,7 +58,7 @@ Built-in properties grouped by use:
 * [[#anchor_symmetric_relationship|symmetric_relationship]], [[#anchor_inverse_relationship|inverse_relationship]], [[#anchor_peer_of|peer_of]]
 * [[#anchor_parent_of|parent_of]], [[#anchor_child_of|child_of]], [[#anchor_contains|contains]], [[#anchor_part_of|part_of]], [[#anchor_one_of|one_of]]
 * [[#anchor_predecessor_of|predecessor_of]], [[#anchor_successor_of|successor_of]]
-* [[#anchor_property_object_is|property_object_is]], [[#anchor_property_subject_is|property_subject_is]], [[#anchor_applies_to_class|applies_to_class]]
+* [[#anchor_property_object_is|property_object_is]], [[#anchor_property_subject_is|property_subject_is]], [[#anchor_applies_to_class|applies_to_class]], [[#anchor_class_item_type_is|class_item_type_is]]
 * [[#anchor_has_item_object|has_item_object]], [[#anchor_has_scalar_object|has_scalar_object]], [[#anchor_max_uses_per_item|max_uses_per_item]]
 
 <span id="anchor_property_subject_is"></span>
@@ -69,6 +70,9 @@ Built-in properties grouped by use:
 <span id="anchor_applies_to_class"></span>
 ;applies_to_class
 :'''Applies to the Class''' This property is used to provide hints about the connections a user will likely create to go with items that are instances of a particular class.  For example, a wontology that is intended to contain a number of items that represent people, might contain a category item named "Person" to represent the class of all the individual person items.  Given that class, the connection "birthDate applies_to_class Person" makes the statement that it is likely (not mandatory) that each item which is_instance_of Person will have at least one connection using the property "birthDate" as a predicate.  The system uses this information to automatically create, each time a user makes a new instance item, a list of connections (with empty object item references) for the user to fill in.
+<span id="anchor_class_item_type_is"></span>
+;class_item_type_is
+:'''Class' Item-Type is''' This property is used to constrain the type (Individual, Category, or Property) of item that is acceptable for items that are to be instances of the subject class.  For example, assume that ChemicalElement is a class.  It is reasonable to require that all items which are instances of this class be "individual" items, since it is unlikely to be appropriate to represent a single chemical element as a "category".  (What would go into the "Carbon category"?)  So, the connection "ChemicalElement class_item_type_is Value_ItemType_Individual" states that all of ChemicalElement' instance items are (must be Individual-type items).  With this connection in place, the system will only permit the creation of new items whose class is ChemicalElement to be of type Individual.  (Note that this connection is provided to be an aid to data entry and editing, and is not enforced as a completely strict prohibition.  For example, since class membership is represented by the presence of "is_instance_of" connections, like "Carbon is_instance_of ChemicalElement", explicitly editing the connection that establishes an items class after that item is created will circumvent the class/type checking and can produce a wontology containing contradictory statements&mdash<em>caveat editor</em>.)
 <span id="anchor_has_scalar_object"></span>
 ;has_scalar_object
 :'''Has a Scalar Value for its Object''' This property is used to define/restrict the permissable choices for the object item of <em>another</em> property.  For example, consider the statement "myRelationship has_scalar_object String_Value". This connection says that the objects of all connections that use "myRelationship" as their predicate should be scalar (single valued) constants, and that String_Value is the acceptable type for those constants. When a connection like this is present, and a new connection is being defined, once a has_scalar_object-property is selected, only a text-entry box (and not an item selector) will be displayed, and its content will be limited to what is acceptable for the type specified by the has_scalar_object relationship's own object item.
