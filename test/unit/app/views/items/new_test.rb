@@ -32,6 +32,8 @@ class ItemsNewViewTest < ActionController::TestCase
         @controller.url_for(:action => :create, :only_path => true) do
       assert_select "form[method=post]", true,
         "new-item form uses POST"
+      assert_select "select#item_class_item_id", true,
+        "new-item form contains 'select' field for :class_item_id attribute"
       assert_select "select#item_sti_type", true,
         "new-item form contains 'select' field for :sti_type attribute"
       assert_select "input#item_name[type=text]", true,

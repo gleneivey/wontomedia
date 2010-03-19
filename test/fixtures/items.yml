@@ -198,3 +198,15 @@ anotherClass:
   title: anotherClass
   sti_type: CategoryItem
   flags: 0
+
+impliedClass:
+  name: impliedClass
+  title: impliedClass
+  sti_type: CategoryItem
+  flags: 0
+
+anotherInstance:
+  name: anotherInstance
+  title: anotherInstance
+  sti_type: CategoryItem
+  flags: 0

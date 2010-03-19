@@ -35,6 +35,8 @@ class ItemsEditViewTest < ActionController::TestCase
 
       assert_select "form[method=post]", true,
         "edit-item form uses POST"
+      assert_select "select##{class_string}_item_class_item_id", true,
+        "edit-item form contains 'select' field for :class_item_id attribute"
       assert_select "input##{class_string}_item_name[type=text]", true,
         "edit-item form contains 'text' field for :name attribute"
       assert_select "input##{class_string}_item_title[type=text]", true,

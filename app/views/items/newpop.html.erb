@@ -32,6 +32,7 @@
    form_for(@item, options) do |f|
  %>
   <%= f.error_messages %>
+  <%= render :partial => "class_select", :locals => { :f => f } %>
   <%= render :partial => "type_select", :locals => { :f => f } %>
   <%= render :partial => "form_fields", :locals => { :f => f } %>
   <%= hidden_field_tag 'popup_flag', 'yes' %>
@@ -39,7 +40,7 @@
   <p id="create_button_container" style="text-align: center">
     <%= button_to_function "Create",
           "if (okToSubmitItemForm()) itemCreatePopup_Submit(this)",
-          :id => "item_submit", :tabindex => "10" %>
+          :id => "item_submit", :tabindex => "50" %>
   </p>
 
   <p style="text-align: center">

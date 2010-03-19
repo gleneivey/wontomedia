@@ -279,3 +279,10 @@ define_instance:
   obj: testClass
   kind_of_obj: item
   flags: 0
+
+define_anotherInstance:
+  subject: anotherInstance
+  predicate: is_instance_of
+  obj: impliedClass
+  kind_of_obj: item
+  flags: 0

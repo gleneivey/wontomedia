@@ -52,6 +52,16 @@ class ItemsShowViewTest < ActionController::TestCase
     assert_select "body", /#{n.description}/
   end
 
+  test "item-show HTML page should contain item-s type" do
+    item = get_items_show(:two)
+    assert_select "body", /#{ItemHelper::ITEM_SUBTYPES_TO_HUMAN[item.sti_type]}/
+  end
+
+  test "item-show HTML page should contain item-s class" do
+    item = get_items_show(:testInstance)
+    assert_select "body", /#{item.class_item.name}/
+  end
+
   test "items show HTML page shouldnt contain status" do
     get_items_show(:one)
     assert_negative_view_contents
@@ -218,5 +228,31 @@ class ItemsShowViewTest < ActionController::TestCase
   test "items-show page should contain text of scalar object values" do
     get_items_show(:testProperty)
     assert_select "body", /#{connections(:aConnectionToScalar).scalar_obj}/
+  end
+
+  test "items-show page lists item type" do
+    get_items_show(:testProperty)
+    assert_select "body", /Property Type/
+  end
+
+  test "items-show for instance items lists class" do
+    get_items_show(:testInstance)
+    # check for two occurrances, since one should be in page's connection list
+    assert_select "body", /testClass.*testClass/
+  end
+
+  test "items-show for subclassed classes lists super-class" do
+    get_items_show(:testClass)
+    # check for two occurrances, since one should be in page's connection list
+    assert @response.body =~ /Item_Class.*Item_Class/
+
+    # the following doesn't work--for some reason the ()'s around the item
+    # name prevent assert_select from seeing it, even though the above can...
+    #assert_select "body", /Item_Class.*Item_Class/
+  end
+
+  test "items-show for anonymous classes notes their use" do
+    get_items_show(:impliedClass)
+    assert_select "body", /\(is a class\)/i
   end
 end

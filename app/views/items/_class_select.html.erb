@@ -1,0 +1,43 @@
+<%
+# WontoMedia - a wontology web application
+# Copyright (C) 2010 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see "http://www.gnu.org/licenses/".
+%>
+
+
+<p class="inputpara">
+  <%= f.label :class_item_id, "Class" %>
+  <%= popup_help_icon "Help for class", "Help:Popup/ItemClass" %>
+  <%=
+      # there ought to be a more idiomatic Rails way to get the right
+      # name/id on this, but I haven't been able to find it....
+      child_class_prefix = ''  # blank for item create
+      if @item.class != Item
+        child_class_prefix =
+          ItemHelper::ITEM_CLASSNAME_TO_SUBTYPE_SHORT[@item.class.to_s] + "_"
+      end
+
+      select_tag "#{child_class_prefix}item[class_item_id]",
+        options_for_select(
+          [ [ "- class of item -", "" ] ] +
+            @class_list.map do |class_item|
+              [ h("#{class_item.name}"), class_item.id ]
+            end,
+          @item.class_item.nil? ? "" : @item.class_item_id
+        ),
+        :tabindex=>'5'
+   %>
+</p><p class="directions">Optional.</p>

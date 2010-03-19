@@ -119,6 +119,26 @@ class Item < ActiveRecord::Base
     @class_has_been_set = true
   end
 
+  def is_class?
+    return( !( Connection.first( :conditions => [
+                 "predicate_id = ? AND obj_id = ?",
+                  Item.find_by_name('is_instance_of').id,
+                  id ] ).nil? )                              or
+            !( Connection.first( :conditions => [
+                 "predicate_id = ? AND (subject_id = ? OR obj_id = ?)",
+                  Item.find_by_name('sub_class_of').id,
+                  id, id ] ).nil? )
+          )
+  end
+
+  def superclass_of
+    defining_connection = Connection.first( :conditions => [
+      "subject_id = ? AND predicate_id = ?",
+      id, Item.find_by_name('sub_class_of').id ] )
+    return defining_connection.obj unless defining_connection.nil?
+    return nil
+  end
+
 private
 
   def after_save_callback

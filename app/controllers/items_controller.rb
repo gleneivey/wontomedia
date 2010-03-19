@@ -102,10 +102,12 @@ class ItemsController < ApplicationController
 'Could not create. Item must have a type of either "Category" or "Individual".'
       @item = Item.new(params[:item]) # keep info already entered
       @item.sti_type = type_string
+      @class_list = all_class_items
       @this_is_non_information_page = true
       render :action => (@popup_flag ? "newpop" : "new" )
     elsif @item.name =~ /[:.]/ || !@item.save
       @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      @class_list = all_class_items
       @this_is_non_information_page = true
       render :action => (@popup_flag ? "newpop" : "new" )
     else
@@ -384,6 +386,7 @@ class ItemsController < ApplicationController
           params[:item][:name] =~ /[:.]/                     )  ||
         !@item.update_attributes(params[:item])
       @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      @class_list = all_class_items
       @this_is_non_information_page = true
       render :action => "edit"
     else

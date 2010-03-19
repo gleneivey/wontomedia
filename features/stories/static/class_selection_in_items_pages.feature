@@ -6,9 +6,9 @@ Feature:  Create and edit individual items with implicit creation of
 
   Scenario: Create a new item with class
     Given there is 1 existing category like "aClass"
-    And there is an existing connection "aClass0" "is_subclass_of" "Item_Class"
+    And there is an existing connection "aClass0" "sub_class_of" "Item_Class"
     And I am on the new items page
-    When I select "aClass0" from "Class"
+    When I select "aClass0" from "item_class_item_id"
     And I select "Individual" from "Type"
     And I fill in "Name" with "myNewItem"
     And I fill in "Title" with "An item that is an instance of 'aClass'"
@@ -28,38 +28,32 @@ Feature:  Create and edit individual items with implicit creation of
 
   Scenario: View an item with class
     Given there is 1 existing category like "aClass"
-    And there is an existing connection "aClass0" "is_subclass_of" "Item_Class"
+    And there is an existing connection "aClass0" "sub_class_of" "Item_Class"
     And there is 1 existing individual like "anInstance"
     And there is an existing connection "anInstance0" "is_instance_of" "aClass0"
     When I go to the show items page for "anInstance0"
-    Then I should see "Class:"
-    And I should see "aClass0"
-
-
-  Scenario: View an item without class
-    And there is 1 existing individual like "notAnInstance"
-    When I go to the show items page for "notAnInstance"
-    Then I should not see "Class:"
+    Then I should see 2 matches of "aClass0"
+      # one class display + 1 in connection list
 
 
   Scenario: View items index including item type and class
     Given there is 1 existing category like "aClass"
-    And there is an existing connection "aClass0" "is_subclass_of" "Item_Class"
+    And there is an existing connection "aClass0" "sub_class_of" "Item_Class"
     And there is 1 existing individual like "anInstance"
     And there is an existing connection "anInstance0" "is_instance_of" "aClass0"
-    When I go to the show items page for "anInstance0"
+    When I go to the index items page
     Then I should see /Individual:\s+aClass0:/
 
 
   Scenario: Edit an item to change its class
     Given there are 2 existing categories like "aClass"
-    And there is an existing connection "aClass0" "is_subclass_of" "Item_Class"
-    And there is an existing connection "aClass1" "is_subclass_of" "Item_Class"
+    And there is an existing connection "aClass0" "sub_class_of" "Item_Class"
+    And there is an existing connection "aClass1" "sub_class_of" "Item_Class"
     And there is 1 existing individual like "anInstance"
     And there is an existing connection "anInstance0" "is_instance_of" "aClass0"
 
     Given I go to the edit items page for "anInstance0"
-    And I select "aClass1" from "Class"
+    And I select "aClass1" from "individual_item_class_item_id"
     When I press "Update"
     Then I should see "successfully updated"
     And I should see "aClass1"
@@ -68,12 +62,12 @@ Feature:  Create and edit individual items with implicit creation of
 
   Scenario: Edit an item to remove its class
     Given there is 1 existing category like "aClass"
-    And there is an existing connection "aClass0" "is_subclass_of" "Item_Class"
+    And there is an existing connection "aClass0" "sub_class_of" "Item_Class"
     And there is 1 existing individual like "anInstance"
     And there is an existing connection "anInstance0" "is_instance_of" "aClass0"
 
     Given I go to the edit items page for "anInstance0"
-    And I select "- class of item -" from "Class"
+    And I select "- class of item -" from "individual_item_class_item_id"
     When I press "Update"
     Then I should see "successfully updated"
     And I should not see "aClass0"
@@ -81,11 +75,11 @@ Feature:  Create and edit individual items with implicit creation of
 
   Scenario: Edit an item to add a class
     Given there is 1 existing category like "aClass"
-    And there is an existing connection "aClass0" "is_subclass_of" "Item_Class"
+    And there is an existing connection "aClass0" "sub_class_of" "Item_Class"
     And there is 1 existing individual like "anInstance"
 
     Given I go to the edit items page for "anInstance0"
-    And I select "aClass0" from "Class"
+    And I select "aClass0" from "individual_item_class_item_id"
     When I press "Update"
     Then I should see "successfully updated"
     And I should see "aClass0"

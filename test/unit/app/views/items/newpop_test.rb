@@ -27,9 +27,12 @@ class ItemsNewpopViewTest < ActionController::TestCase
   end
 
   test "items new-popup form should invoke create" do
-    get :new
+    get :newpop
     assert_select   "form[action=?]",
         @controller.url_for(:action => :create, :only_path => true) do
+      assert_select "select#item_class_item_id", true,
+        "new-popup-item form contains 'select' field for " +
+        ":class_item_id attribute"
       assert_select "select#item_sti_type", true,
         "new-popup-item form contains 'select' control for :sti_type attribute"
       assert_select "input#item_name[type=text]", true,
@@ -42,7 +45,7 @@ class ItemsNewpopViewTest < ActionController::TestCase
   end
 
   test "items new form shouldnt contain status" do
-    get :new
+    get :newpop
     assert_negative_view_contents
   end
 end

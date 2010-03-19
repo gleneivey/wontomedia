@@ -42,6 +42,7 @@
  %>
   <%= f.error_messages %>
   <div style="width: 36%; float: left;">
+    <%= render :partial => "class_select", :locals => { :f => f } %>
     <%= render :partial => "type_select", :locals => { :f => f } %>
     <%= render :partial => "form_fields", :locals => { :f => f } %>
     <script type="text/javascript">
@@ -49,7 +50,7 @@
     </script>
 
     <p id="create_button_container" style="text-align: center">
-      <%= f.submit "Create", :tabindex => "10" %>
+      <%= f.submit "Create", :tabindex => "50" %>
     </p>
 
     <div class="horizontal-link-list"><ul>
