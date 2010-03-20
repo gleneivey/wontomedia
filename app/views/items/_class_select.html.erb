@@ -31,13 +31,7 @@
       end
 
       select_tag "#{child_class_prefix}item[class_item_id]",
-        options_for_select(
-          [ [ "- class of item -", "" ] ] +
-            @class_list.map do |class_item|
-              [ h("#{class_item.name}"), class_item.id ]
-            end,
-          @item.class_item.nil? ? "" : @item.class_item_id
-        ),
+        class_options_list_for( @item ),
         :tabindex=>'5'
    %>
 </p><p class="directions">Optional.</p>

@@ -102,4 +102,47 @@ module ItemsHelper
       end
     end
   end
+
+  # produce an array of all the system's class items suitable for the
+  # "options" argument to select_tag, sorted as follows:
+  # * first:  no-selection option
+  # * 2nd:  +@item+'s currently-selected class, if any
+  # * non-built-in classes, sorted alphabetically
+  # * built-in classes
+  def class_options_list_for(item)
+    option_array = [ [ "- class of item -", "" ] ]
+
+    this_class_item = item.class_item
+    unless this_class_item.nil?
+      option_array.concat [[ h("#{this_class_item.name}"), this_class_item.id ]]
+    end
+
+    groups = @class_list.group_by do |item|
+      if this_class_item && item.id == this_class_item.id
+        :discard
+      elsif (item.flags & Item::DATA_IS_UNALTERABLE) == 0
+        :contributor
+      else
+        :builtin
+      end
+    end
+
+    if groups[:contributor]
+      option_array.concat(
+        groups[:contributor].sort{ |a,b|
+          a.name.upcase <=> b.name.upcase }.map{ |item|
+            [ h("#{item.name}"), item.id ] } )
+      option_array.concat [ [ "  ----", "" ] ]
+    end
+
+    if groups[:builtin]
+      option_array.concat(
+        groups[:builtin].sort{ |a,b|
+          a.name <=> b.name }.map{ |item|
+            [ h("#{item.name}"), item.id ] } )
+    end
+
+    options_for_select( option_array,
+      this_class_item.nil? ? "" : this_class_item.id )
+  end
 end
