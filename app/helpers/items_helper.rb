@@ -132,7 +132,7 @@ module ItemsHelper
         groups[:contributor].sort{ |a,b|
           a.name.upcase <=> b.name.upcase }.map{ |item|
             [ h("#{item.name}"), item.id ] } )
-      option_array.concat [ [ "  ----", "" ] ]
+      option_array.concat [ [ "  ----", "invalid" ] ]
     end
 
     if groups[:builtin]

@@ -16,8 +16,43 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see "http://www.gnu.org/licenses/".
 %>
-<% if @display_unimplemented %>
-  <hr />
-  <p class="unimplemented">[area to list/"invite users to" core
-    wontology tasks: browsing, searching, contributing]</p>
-<% end -%>
+
+<hr />
+<style>
+  #add-class-instances-list ul {
+    font-size: 115%;
+    text-align: center;
+    padding: 0;
+    margin-bottom: 3.5ex;
+  }
+  #add-class-instances-list li {
+    display: inline;
+    line-height: 3.5ex;
+    margin: 0 1em;
+  }
+  #add-class-instances-list span {
+    white-space: nowrap;
+  }
+</style>
+
+<div style="padding-left: 10%;">
+  <div id="add-class-instances-list" style="width: 88.9%;">
+    <ul><%
+      spo_item_id = Item.find_by_name('sub_property_of').id
+      @class_list.select do |class_item|
+            Connection.first( :conditions => [
+              "subject_id = ? AND predicate_id = ?",
+              class_item.id, spo_item_id
+            ] ).nil?
+          end.each do |item| %>
+        <li><span><%=
+          link_to "Add a new <b>#{h filter_parenthetical item.name}</b>",
+            new_item_path + "?class=" + item.name %>
+          <span style="font-size: 80%">(<%=
+            link_to "show current", item_by_name_path(item.name)
+          -%>)</span>
+        </span></li><%
+      end %>
+    </ul>
+  </div>
+</div>

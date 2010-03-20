@@ -32,22 +32,11 @@
 </style>
 
 <div class="subheading">Most Used</div>
-<ul id="class-item-list">
-
-<%
-  iio_item_id = Item.find_by_name('is_instance_of').id
-  counts = {}
-  @class_list.each do |class_item|
-    counts[class_item] = Connection.all( :conditions => [
-      "predicate_id = ? AND obj_id = ?", iio_item_id, class_item.id ] ).length
-  end
-
-  @class_list.sort{|a,b| counts[b] <=> counts[a]}.
-      each do |item| %>
+<ul id="class-item-list"><%
+  @class_list.each do |item| %>
     <li><span>
       <%= link_to "#{h filter_parenthetical item.title}",
             item_by_name_path(item.name) %>
-    </span></li>
-<%  end %>
-
+    </span></li><%
+  end %>
 </ul>

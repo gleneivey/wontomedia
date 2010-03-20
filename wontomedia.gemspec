@@ -49,6 +49,7 @@ Gem::Specification.new do |s|
      "app/views/items/_core_tasks.html.erb",
      "app/views/items/_form_fields.html.erb",
      "app/views/items/_list_outbound_links.html.erb",
+     "app/views/items/_most_populous_classes.html.erb",
      "app/views/items/_screen_select.html.erb",
      "app/views/items/_show_outbound_links.html.erb",
      "app/views/items/_topic_list.html.erb",

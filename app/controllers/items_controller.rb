@@ -503,8 +503,17 @@ private
   end
 
   def contributor_class_items
-    all_class_items.select do |class_item|
+    list = all_class_items.select do |class_item|
       (class_item.flags & Item::DATA_IS_UNALTERABLE) == 0
     end
+
+    iio_item_id = Item.find_by_name('is_instance_of').id
+    counts = {}
+    list.each do |class_item|
+      counts[class_item] = Connection.all( :conditions => [
+        "predicate_id = ? AND obj_id = ?", iio_item_id, class_item.id ] ).length
+    end
+
+    list.sort{|a,b| counts[b] <=> counts[a]}
   end
 end
