@@ -52,10 +52,45 @@ class ItemsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "new form should have fresh item object" do
+  test "new form without params should have fresh item object" do
     get :new
-    item = assigns(:item)
-    assert_not_nil item
+    assert_not_nil item = assigns(:item)
+    assert_nil item.class_item_id
+    assert_nil item.sti_type
+    assert_nil item.name
+    assert_nil item.title
+    assert_nil item.description
+  end
+
+  test "new form with class param should set class" do
+    target_class_id = items(:anotherClass).id
+    get :new, :class_item => target_class_id
+    assert_not_nil item = assigns(:item)
+    assert item.class_item_id == target_class_id
+    assert_nil item.sti_type
+    assert_nil item.name
+    assert_nil item.title
+    assert_nil item.description
+  end
+
+  test "new form with class that specifies type should set both" do
+    target_class_id = items(:testClass).id
+    get :new, :class_item => target_class_id
+    assert_not_nil item = assigns(:item)
+    assert item.class_item_id == target_class_id
+    assert item.sti_type == 'IndividualItem'
+    assert_nil item.name
+    assert_nil item.title
+    assert_nil item.description
+  end
+
+  test "new form with class and type params should set both" do
+    target_class_id = items(:anotherClass).id
+    target_type = 'CategoryItem'
+    get :new, :class_item => target_class_id, :sti_type => target_type
+    assert_not_nil item = assigns(:item)
+    assert item.class_item_id == target_class_id
+    assert item.sti_type == target_type
     assert_nil item.name
     assert_nil item.title
     assert_nil item.description
@@ -89,10 +124,8 @@ class ItemsControllerTest < ActionController::TestCase
 
   test "new-pop form should have type parameter" do
     knownTypeValue = "noun"
-    get :newpop, :type => knownTypeValue
-    type = assigns(:type)
-    assert_not_nil type
-    assert_equal type, knownTypeValue
+    get :newpop, :popup_type => knownTypeValue
+    assert assigns(:popup_type) == knownTypeValue
   end
 
   test "should create item with valid data-no class" do

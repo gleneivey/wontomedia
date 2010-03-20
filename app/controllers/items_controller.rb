@@ -69,6 +69,7 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
+    setup_for_new
     setup_for_form
   end
 
@@ -84,7 +85,8 @@ class ItemsController < ApplicationController
   # +views+; see their source for additional details.
   def newpop
     @item = Item.new
-    @type = params[:type]
+    @popup_type = params[:popup_type]
+    setup_for_new
     setup_for_form
     render :layout => "popup"
   end
@@ -521,12 +523,8 @@ private
         class_item.id, citi_item_id ] )
 
       unless connection.nil?
-        class_to_item_map[class_item] = case connection.obj.name
-          when 'Value_ItemType_Category'   then 'CategoryItem'
-          when 'Value_ItemType_Individual' then 'IndividualItem'
-          when 'Value_ItemType_Property'   then 'PropertyItem'
-          else ''
-          end
+        class_to_item_map[class_item] =
+          ItemHelper.sti_type_for_ItemType( connection.obj.name )
       end
     end
 
@@ -537,5 +535,30 @@ private
     @class_list = all_class_items
     @class_to_item_map = map_of_item_types_for_class_items @class_list
     @this_is_non_information_page = true
+  end
+
+  def setup_for_new
+    if params[:class_item]
+      id = params[:class_item]
+      class_item = Item.find_by_id(id)
+      if class_item
+        @item.class_item_id = id
+
+        if params[:sti_type].nil?   # probably no class_item_type_is to find
+          citi_item_id = Item.find_by_name('class_item_type_is').id
+          connection = Connection.first( :conditions => [
+            "subject_id = ? AND predicate_id = ?",
+            class_item.id, citi_item_id ] )
+          unless connection.nil?
+            @item.sti_type =
+              ItemHelper.sti_type_for_ItemType( connection.obj.name )
+          end
+        end
+      end
+    end
+
+    if params[:sti_type]
+      @item.sti_type = params[:sti_type]
+    end
   end
 end

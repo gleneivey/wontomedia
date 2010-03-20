@@ -20,14 +20,14 @@ var itemSelectElementHavingNewItemAdded = null;
 var nounVerbCodeOfNewItemBeingAdded = "";
 var priorValueOfSelectElementHavingNewItemAdded = "";
 
-function itemCreatePopup(selectElem, itemType, priorValue){
+function itemCreatePopup(selectElem, popupType, priorValue){
   itemSelectElementHavingNewItemAdded = selectElem;
-  nounVerbCodeOfNewItemBeingAdded = itemType;
+  nounVerbCodeOfNewItemBeingAdded = popupType;
   priorValueOfSelectElementHavingNewItemAdded = priorValue;
 
   var l = window.location;
   var newpop = l.protocol + "//" + l.hostname + ":" + l.port +
-               "/w/items/new-pop?type=" + itemType;
+               "/w/items/new-pop?popup_type=" + popupType;
   Modalbox.show(newpop, {
     title: "Create a new item",
     height: itemCreatePopup_Height(),

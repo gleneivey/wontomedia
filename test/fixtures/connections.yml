@@ -286,3 +286,10 @@ define_anotherInstance:
   obj: impliedClass
   kind_of_obj: item
   flags: 0
+
+define_testClass_type:
+  subject: testClass
+  predicate: class_item_type_is
+  obj: Value_ItemType_Individual
+  kind_of_obj: item
+  flags: 0

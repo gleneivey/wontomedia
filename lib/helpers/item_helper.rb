@@ -126,6 +126,18 @@ module ItemHelper
       :sti_type => item.sti_type, :class_item_id => item.class_item_id }
   end
 
+  # Map from an Item.name of a built-in item representing an item type
+  # (e.g., is_instance_of ItemType_Item) to the matching internal
+  # Item.sti_type string
+  def self.sti_type_for_ItemType( type_item_name )
+    case type_item_name
+      when 'Value_ItemType_Category'   then 'CategoryItem'
+      when 'Value_ItemType_Individual' then 'IndividualItem'
+      when 'Value_ItemType_Property'   then 'PropertyItem'
+      else ''
+      end
+  end
+
 
   # This method is equivalent to Rails' Item.all(), except that it
   # only finds/returns "noun"-type items (Category and Individual

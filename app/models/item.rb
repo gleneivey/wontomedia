@@ -115,7 +115,7 @@ class Item < ActiveRecord::Base
     @class_has_been_set = true
   end
   def class_item_id=( new_class_id )
-    @class_item = Item.find_by_id( new_class_id )
+    @class_item = new_class_id.nil? ? nil : Item.find_by_id( new_class_id )
     @class_has_been_set = true
   end
 
