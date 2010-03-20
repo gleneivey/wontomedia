@@ -33,6 +33,7 @@ class ItemsController < ApplicationController
   # GET /
   def home
     @nouns = ItemHelper.nouns
+    @class_list = all_class_items
     render :layout => "home"
   end
 
