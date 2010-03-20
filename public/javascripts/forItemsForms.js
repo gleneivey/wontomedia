@@ -37,6 +37,7 @@ var indexDescription = 3;
 var maxLengths = [ 0, 255, 80, 65535 ];
 
     // globals w/ defaults, real values figured in plumbEvent...()
+var thereIsAClassControl = false;
 var thereIsATypeControl = false;
 var originalItemName = "";
 var controlNamePrefix = "";
@@ -80,12 +81,20 @@ function plumbEventHandlersToItemCreationElements(customizationSelector){
     originalItemName = $(controlNamePrefix + 'item_name').value;
   }
 
+  thereIsAClassControl = ($(controlNamePrefix + 'item_class_item_id') != null);
+
 
   itemSubmit = $(controlNamePrefix + 'item_submit');
   if (thereIsATypeControl){
     var ck = $(controlNamePrefix + 'item_sti_type').value;
     if (ck != null && ck != "")
       itemFormErrors['item_sti_type'] = false;
+  }
+
+
+  if (thereIsAClassControl && thereIsATypeControl){
+    $(controlNamePrefix + 'item_class_item_id').
+      observe('change', classSelectOnchange);
   }
 
 
@@ -483,6 +492,26 @@ function okToSubmitItemForm(){
 
   return !errors;
 }
+
+
+function classSelectOnchange(){
+  var class_ctrl = $(controlNamePrefix + 'item_class_item_id');
+  var type_ctrl  = $('item_sti_type');
+  var class_val = class_ctrl.value;
+
+  type_ctrl.disabled = false;
+  if ( class_val.search( /^[0-9]+$/ ) == -1 )
+    return;
+  else {
+    var new_type = class_to_type['id' + class_val];
+    if (typeof new_type == 'undefined')
+      return;
+
+    type_ctrl.value = new_type;
+    type_ctrl.disabled = true;
+  }
+}
+
 
 // function to highlight help text based on Type <select> element state
 function typeSelectOnchange(){

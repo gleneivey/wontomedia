@@ -178,4 +178,20 @@ module FormatHelper
     page_name +
     WontoMedia.site_content_url_postfix
   end
+
+  def ruby_hash_to_javascript( js_name, ruby_hash, prefix = 'id' )
+    has_started = false
+    js  = "<script type='text/javascript'>\n"
+    js += "  #{js_name} = {\n"
+
+    ruby_hash.keys.each do |class_item|
+      js += ",\n" if has_started
+      has_started = true
+      js += "  #{prefix}#{class_item.id}: '#{ruby_hash[class_item]}'"
+    end
+
+    js += "\n"
+    js += "  };\n"
+    js +  "</script>"
+  end
 end

@@ -111,6 +111,7 @@
     </dd></dl>
   </div>
 <% end %>  <!-- of form_for -->
+<%= ruby_hash_to_javascript 'class_to_type', @class_to_item_map %>
 
 <% content_for :first_bottom_page_js do %>
   <script type="text/javascript">

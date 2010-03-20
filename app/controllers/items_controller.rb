@@ -68,9 +68,8 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    @this_is_non_information_page = true
     @item = Item.new
-    @class_list = all_class_items
+    setup_for_form
   end
 
   # GET /items/new-pop
@@ -85,8 +84,8 @@ class ItemsController < ApplicationController
   # +views+; see their source for additional details.
   def newpop
     @item = Item.new
-    @class_list = all_class_items
     @type = params[:type]
+    setup_for_form
     render :layout => "popup"
   end
 
@@ -103,13 +102,11 @@ class ItemsController < ApplicationController
 'Could not create. Item must have a type of either "Category" or "Individual".'
       @item = Item.new(params[:item]) # keep info already entered
       @item.sti_type = type_string
-      @class_list = all_class_items
-      @this_is_non_information_page = true
+      setup_for_form
       render :action => (@popup_flag ? "newpop" : "new" )
     elsif @item.name =~ /[:.]/ || !@item.save
       @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
-      @class_list = all_class_items
-      @this_is_non_information_page = true
+      setup_for_form
       render :action => (@popup_flag ? "newpop" : "new" )
     else
       if @popup_flag
@@ -359,8 +356,7 @@ class ItemsController < ApplicationController
       return
     end
 
-    @class_list = all_class_items
-    @this_is_non_information_page = true
+    setup_for_form
   end
 
   # PUT /items/1
@@ -387,8 +383,7 @@ class ItemsController < ApplicationController
           params[:item][:name] =~ /[:.]/                     )  ||
         !@item.update_attributes(params[:item])
       @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
-      @class_list = all_class_items
-      @this_is_non_information_page = true
+      setup_for_form
       render :action => "edit"
     else
       flash[:notice] = 'Item was successfully updated.'
@@ -515,5 +510,32 @@ private
     end
 
     list.sort{|a,b| counts[b] <=> counts[a]}
+  end
+
+  def map_of_item_types_for_class_items( class_items )
+    citi_item_id = Item.find_by_name('class_item_type_is').id
+    class_to_item_map = {}
+    class_items.each do |class_item|
+      connection = Connection.first( :conditions => [
+        "subject_id = ? AND predicate_id = ?",
+        class_item.id, citi_item_id ] )
+
+      unless connection.nil?
+        class_to_item_map[class_item] = case connection.obj.name
+          when 'Value_ItemType_Category'   then 'CategoryItem'
+          when 'Value_ItemType_Individual' then 'IndividualItem'
+          when 'Value_ItemType_Property'   then 'PropertyItem'
+          else ''
+          end
+      end
+    end
+
+    class_to_item_map
+  end
+
+  def setup_for_form
+    @class_list = all_class_items
+    @class_to_item_map = map_of_item_types_for_class_items @class_list
+    @this_is_non_information_page = true
   end
 end

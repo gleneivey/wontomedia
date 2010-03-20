@@ -48,6 +48,7 @@
                          'itemCreatePopup_Cancel()' %>
   </p>
 <% end %>  <!-- of form_for -->
+<%= ruby_hash_to_javascript 'class_to_type', @class_to_item_map %>
 
 
 <!-- forItemsForms.js should have already been loaded by page that
