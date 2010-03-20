@@ -26,19 +26,17 @@
   dynamic_only = "--exclude=static    features "
 %>
 
-default:            <%= uber_common + dynamic %>
-                       <%= tags_common + " " +
-                           tags_rake + " --tags ~@not_for_selenium" %>
-                       --format pretty                               features
 
-selenium:           <%= common      + dynamic %>
-                       <%= tags_common + " " +
-                           tags_rake + " --tags ~@not_for_selenium" %>
-                                                                     features
+manual:
+ <%= uber_common + dynamic %> <%= tags_common + " --tags ~@not_for_selenium" %> --format pretty
 
-manual:             <%= uber_common + dynamic %>
-                       <%= tags_common + " --tags ~@not_for_selenium" %>
-                       --format pretty
+default:
+ <%= uber_common + dynamic %> <%= tags_common + " " + tags_rake +
+     " --tags ~@not_for_selenium" %> --format pretty features
+
+selenium:
+ <%= common      + dynamic %> <%= tags_common + " " + tags_rake +
+     " --tags ~@not_for_selenium" %> features
 
 
   # profiles to be used from rake

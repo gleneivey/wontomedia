@@ -89,21 +89,21 @@ define_URL_Value:
 define_Value_ItemType_Category:
   subject: Value_ItemType_Category
   predicate: is_instance_of
-  obj: ItemType_Type
+  obj: ItemType_Item
   kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Value_ItemType_Individual:
   subject: Value_ItemType_Individual
   predicate: is_instance_of
-  obj: ItemType_Type
+  obj: ItemType_Item
   kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_Value_ItemType_Property:
   subject: Value_ItemType_Property
   predicate: is_instance_of
-  obj: ItemType_Type
+  obj: ItemType_Item
   kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 

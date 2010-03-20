@@ -36,14 +36,12 @@ begin
     Cucumber::Rake::Task.new({:static_ok => 'db:test:prepare'},
         'Run non-Selenium features that should pass') do |t|
       t.binary = vendored_cucumber_binary
-      t.fork = false
       t.profile = "static_acceptance"
     end
 
     Cucumber::Rake::Task.new({:dynamic_ok => 'db:test:prepare'},
         'Run need-Selenium-to-test features that should pass') do |t|
       t.binary = vendored_cucumber_binary
-      t.fork = false
       t.profile = "dynamic_acceptance"
     end
 
