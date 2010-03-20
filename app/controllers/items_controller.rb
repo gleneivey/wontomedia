@@ -33,7 +33,7 @@ class ItemsController < ApplicationController
   # GET /
   def home
     @nouns = ItemHelper.nouns
-    @class_list = all_class_items
+    @class_list = contributor_class_items
     render :layout => "home"
   end
 
@@ -500,5 +500,11 @@ private
     end
 
     class_list.uniq
+  end
+
+  def contributor_class_items
+    all_class_items.select do |class_item|
+      (class_item.flags & Item::DATA_IS_UNALTERABLE) == 0
+    end
   end
 end
