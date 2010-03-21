@@ -16,7 +16,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-class AddUpdatedAtColumns < ActiveRecord::Migration
+class AddTimestampColumns < ActiveRecord::Migration
   def self.up
     add_column :items, :created_at, :datetime
     add_column :items, :updated_at, :datetime
