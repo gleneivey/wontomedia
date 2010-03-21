@@ -39,7 +39,8 @@
 
 <% form_for(@item, :url => item_path(@item)) do |f| %>
   <%= f.error_messages %>
-  <%= render :partial => "class_select", :locals => { :f => f } %>
+  <%= render :partial => "class_select",
+        :locals => { :f => f, :show_class_control => true } %>
   <%= render :partial => "form_fields",  :locals => { :f => f } %>
   <p><%= f.submit "Update", :tabindex => "50" %></p>
 <% end %>
@@ -50,6 +51,9 @@
   <li><%= link_to 'Cancel,&nbsp;show&nbsp;item&nbsp;list', items_path,
             :rel => 'nofollow' -%></li>
 </ul></div>
+
+
+<%= ruby_hash_to_javascript 'class_to_type', @class_to_item_map %>
 
 <% content_for :first_bottom_page_js do %>
   <script type="text/javascript">

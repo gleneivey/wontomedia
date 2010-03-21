@@ -86,6 +86,27 @@ define_URL_Value:
   kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
+define_Value_ItemType_Category:
+  subject: Value_ItemType_Category
+  predicate: is_instance_of
+  obj: ItemType_Item
+  kind_of_obj: item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Value_ItemType_Individual:
+  subject: Value_ItemType_Individual
+  predicate: is_instance_of
+  obj: ItemType_Item
+  kind_of_obj: item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_Value_ItemType_Property:
+  subject: Value_ItemType_Property
+  predicate: is_instance_of
+  obj: ItemType_Item
+  kind_of_obj: item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
 set_ordered_class:
   subject: ordered_relationship
   predicate: sub_class_of
@@ -173,21 +194,28 @@ define_child_to_parent_symmetry:
 define_property_subject_is:
   subject: property_subject_is
   predicate: sub_property_of
-  obj: symmetric_relationship
+  obj: value_relationship
   kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_property_object_is:
   subject: property_object_is
   predicate: sub_property_of
-  obj: symmetric_relationship
+  obj: value_relationship
   kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_applies_to_class:
   subject: applies_to_class
   predicate: sub_property_of
-  obj: symmetric_relationship
+  obj: value_relationship
+  kind_of_obj: item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_class_item_type_is:
+  subject: applies_to_class
+  predicate: sub_property_of
+  obj: value_relationship
   kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 

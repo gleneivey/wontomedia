@@ -33,6 +33,7 @@ class ItemsController < ApplicationController
   # GET /
   def home
     @nouns = ItemHelper.nouns
+    @class_list = contributor_class_items
     render :layout => "home"
   end
 
@@ -67,9 +68,9 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    @this_is_non_information_page = true
     @item = Item.new
-    @class_list = all_class_items
+    setup_for_new
+    setup_for_form
   end
 
   # GET /items/new-pop
@@ -84,31 +85,31 @@ class ItemsController < ApplicationController
   # +views+; see their source for additional details.
   def newpop
     @item = Item.new
-    @class_list = all_class_items
-    @type = params[:type]
+    @popup_type = params[:popup_type]
+    setup_for_new
+    setup_for_form
     render :layout => "popup"
   end
 
   # POST /items
   def create
     type_string = params[:item][:sti_type]
+    if type_string.nil?
+      recover_from_create_failure(
+        'Could not create. Item must have "Type" filled in.' )
+    end
     params[:item].delete :sti_type # don't mass-assign protected blah, blah
 
     @item = ItemHelper.new_typed_item(type_string, params[:item])
     @popup_flag = true if params[:popup_flag]
 
     if @item.nil?
-      flash.now[:error] =
-'Could not create. Item must have a type of either "Category" or "Individual".'
-      @item = Item.new(params[:item]) # keep info already entered
-      @item.sti_type = type_string
-      @class_list = all_class_items
-      @this_is_non_information_page = true
+      recover_from_create_failure 'Could not create.', type_string
       render :action => (@popup_flag ? "newpop" : "new" )
     elsif @item.name =~ /[:.]/ || !@item.save
-      @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
-      @class_list = all_class_items
-      @this_is_non_information_page = true
+      recover_from_create_failure '' do
+        @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      end
       render :action => (@popup_flag ? "newpop" : "new" )
     else
       if @popup_flag
@@ -358,8 +359,7 @@ class ItemsController < ApplicationController
       return
     end
 
-    @class_list = all_class_items
-    @this_is_non_information_page = true
+    setup_for_form
   end
 
   # PUT /items/1
@@ -386,8 +386,7 @@ class ItemsController < ApplicationController
           params[:item][:name] =~ /[:.]/                     )  ||
         !@item.update_attributes(params[:item])
       @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
-      @class_list = all_class_items
-      @this_is_non_information_page = true
+      setup_for_form
       render :action => "edit"
     else
       flash[:notice] = 'Item was successfully updated.'
@@ -499,5 +498,76 @@ private
     end
 
     class_list.uniq
+  end
+
+  def contributor_class_items
+    list = all_class_items.select do |class_item|
+      (class_item.flags & Item::DATA_IS_UNALTERABLE) == 0
+    end
+
+    iio_item_id = Item.find_by_name('is_instance_of').id
+    counts = {}
+    list.each do |class_item|
+      counts[class_item] = Connection.all( :conditions => [
+        "predicate_id = ? AND obj_id = ?", iio_item_id, class_item.id ] ).length
+    end
+
+    list.sort{|a,b| counts[b] <=> counts[a]}
+  end
+
+  def map_of_item_types_for_class_items( class_items )
+    citi_item_id = Item.find_by_name('class_item_type_is').id
+    class_to_item_map = {}
+    class_items.each do |class_item|
+      connection = Connection.first( :conditions => [
+        "subject_id = ? AND predicate_id = ?",
+        class_item.id, citi_item_id ] )
+
+      unless connection.nil?
+        class_to_item_map[class_item] =
+          ItemHelper.sti_type_for_ItemType( connection.obj.name )
+      end
+    end
+
+    class_to_item_map
+  end
+
+  def setup_for_form
+    @class_list = all_class_items
+    @class_to_item_map = map_of_item_types_for_class_items @class_list
+    @this_is_non_information_page = true
+  end
+
+  def setup_for_new
+    if params[:class_item]
+      id = params[:class_item]
+      class_item = Item.find_by_id(id)
+      if class_item
+        @item.class_item_id = id
+
+        if params[:sti_type].nil?   # probably no class_item_type_is to find
+          citi_item_id = Item.find_by_name('class_item_type_is').id
+          connection = Connection.first( :conditions => [
+            "subject_id = ? AND predicate_id = ?",
+            class_item.id, citi_item_id ] )
+          unless connection.nil?
+            @item.sti_type =
+              ItemHelper.sti_type_for_ItemType( connection.obj.name )
+          end
+        end
+      end
+    end
+
+    if params[:sti_type]
+      @item.sti_type = params[:sti_type]
+    end
+  end
+
+  def recover_from_create_failure( message_string, type_string = nil )
+    flash.now[:error] = message_string
+    @item = Item.new(params[:item]) # keep info already entered
+    @item.sti_type = type_string unless type_string.nil?
+    yield if block_given?
+    setup_for_form
   end
 end

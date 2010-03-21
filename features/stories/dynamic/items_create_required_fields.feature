@@ -31,7 +31,7 @@ Feature:  Verify inputs for creation of new item dynamically within the page
     And I pause
     Then the focus is on the "item_sti_type" element
 
-    When I put the focus on the "item_class" element
+    When I put the focus on the "item_class_item_id" element
     And I type the "Tab" special key
     Then the focus is on the "item_sti_type" element
 

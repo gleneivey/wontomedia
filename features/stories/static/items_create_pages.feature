@@ -26,10 +26,10 @@ Feature:  Create and view new individual items through non-Ajax pages
     Then I should see "error"
     And I fill in "Name" with "bad too"
     When I press "Create"
-    Then I should see "error"
+    Then I should see "Could not create"
     And I fill in "Name" with "BAD>bad"
     When I press "Create"
-    Then I should see "error"
+    Then I should see "Could not create"
 
 
   Scenario: I can't enter two items with same name
