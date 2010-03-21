@@ -23,7 +23,7 @@
     displaying the complete set of non-Property items.]</p>
 <% end %>
 
-<div class="subheading">Recently Added Items</div>
+<h2 class="subheading">Recently Added</h2>
 <style>
   .item-title {
     font-size: 120%;
@@ -37,20 +37,23 @@
   }
 </style>
 
-<% nouns_listed = 0
-   @nouns.each do |item| %>
-     <p class="item-title">
-       <%= link_to "#{h filter_parenthetical item.title}",
-             item_by_name_path(item.name) %>
-     </p>
-     <p class="item-desc">
-       <% desc = h item.description
-          if desc.length > 180
-            desc = desc[0,180] + '&hellip;'
-          end
-       %>
-       <%= desc %>
-     </p>
-
-<%   break if (nouns_listed += 1) >= 20
-   end %>
+<%  # TODO: if the controller made another list just for this, then it
+    # could have the database apply the filter/sort/limit, but I don't
+    # know if doing this here is slower or faster, so here for now:
+  @nouns.reject {|item| (item.flags & Item::DATA_IS_UNALTERABLE) != 0}.
+      sort {|a,b|
+        (b.updated_at or b.created_at) <=> (a.updated_at or a.created_at) }.
+      first(20).each do |item| %>
+    <p class="item-title">
+      <%= link_to "#{h filter_parenthetical item.title}",
+            item_by_name_path(item.name) %>
+    </p>
+    <p class="item-desc">
+      <% desc = h item.description
+         if desc.length > 180
+           desc = desc[0,180] + '&hellip;'
+         end
+      %>
+      <%= desc %>
+    </p><%
+  end %>

@@ -9,24 +9,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100315135952) do
+ActiveRecord::Schema.define(:version => 20100321042343) do
 
   create_table "connections", :force => true do |t|
-    t.integer "subject_id"
-    t.integer "predicate_id"
-    t.integer "obj_id"
-    t.integer "connection_desc_id"
-    t.integer "flags",              :default => 0, :null => false
-    t.string  "kind_of_obj"
-    t.string  "scalar_obj"
+    t.integer  "subject_id"
+    t.integer  "predicate_id"
+    t.integer  "obj_id"
+    t.integer  "connection_desc_id"
+    t.integer  "flags",              :default => 0, :null => false
+    t.string   "kind_of_obj"
+    t.string   "scalar_obj"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "items", :force => true do |t|
-    t.string  "name"
-    t.string  "title"
-    t.text    "description"
-    t.string  "sti_type"
-    t.integer "flags",       :default => 0, :null => false
+    t.string   "name"
+    t.string   "title"
+    t.text     "description"
+    t.string   "sti_type"
+    t.integer  "flags",       :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
