@@ -53,6 +53,8 @@ function itemCreatePopup_Submit(buttonElement){
     postUrl = l.protocol + "//" + l.hostname + ":" + l.port +
       buttonElement.form.action;
 
+  if (thereIsATypeControl)      // disabled controls aren't "successful"
+    $('item_sti_type').disabled = false;
   Modalbox.show(postUrl, {
     title: "Create a new item",
     height: itemCreatePopup_Height(),

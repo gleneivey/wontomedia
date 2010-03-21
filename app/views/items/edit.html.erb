@@ -38,7 +38,8 @@
 
 <% form_for(@item, :url => item_path(@item)) do |f| %>
   <%= f.error_messages %>
-  <%= render :partial => "class_select", :locals => { :f => f } %>
+  <%= render :partial => "class_select",
+        :locals => { :f => f, :show_class_control => true } %>
   <%= render :partial => "form_fields",  :locals => { :f => f } %>
   <p><%= f.submit "Update", :tabindex => "50" %></p>
 <% end %>

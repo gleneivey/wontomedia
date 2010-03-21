@@ -22,10 +22,6 @@ var nameAjaxStart = 400;  // to avoid unnecessary server traffic,
 
 
 
-// package of code to implement required-inputs-can't-be-empty checks
-//   (for items/new page)
-
-
     // define fields subject to check, order they occur in form
 var requiredItemElements = [ "sti_type", "title", "name", "description",
   "submit" ];
@@ -60,7 +56,6 @@ var ajaxRequestInProgress = null;
 
 
 function plumbEventHandlersToItemCreationElements(customizationSelector){
-  thereIsATypeControl = ($('item_sti_type') != null);
   for (var c=0; c < requiredItemElements.length-2; c++)
     itemFormErrors["item_" + requiredItemElements[c]] =
       creatingNewItem ? -1 : false;
@@ -81,7 +76,15 @@ function plumbEventHandlersToItemCreationElements(customizationSelector){
     originalItemName = $(controlNamePrefix + 'item_name').value;
   }
 
-  thereIsAClassControl = ($(controlNamePrefix + 'item_class_item_id') != null);
+
+  var testing = $('item_sti_type');
+  if (testing != null && testing.type != "hidden")
+    thereIsATypeControl = true;
+  else
+    itemFormErrors['item_sti_type'] = false
+
+  testing = $(controlNamePrefix + 'item_class_item_id')
+  thereIsAClassControl = testing != null && testing.type != "hidden";
 
 
   itemSubmit = $(controlNamePrefix + 'item_submit');
@@ -231,6 +234,9 @@ function plumbEventHandlersToItemCreationElements(customizationSelector){
       function(ev){
         if (!okToSubmitItemForm())
           ev.stop();
+        else
+          if (thereIsATypeControl)
+            $('item_sti_type').disabled = false;
       }
     );
   }

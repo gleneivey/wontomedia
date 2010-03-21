@@ -94,21 +94,22 @@ class ItemsController < ApplicationController
   # POST /items
   def create
     type_string = params[:item][:sti_type]
+    if type_string.nil?
+      recover_from_create_failure(
+        'Could not create. Item must have "Type" filled in.' )
+    end
     params[:item].delete :sti_type # don't mass-assign protected blah, blah
 
     @item = ItemHelper.new_typed_item(type_string, params[:item])
     @popup_flag = true if params[:popup_flag]
 
     if @item.nil?
-      flash.now[:error] =
-'Could not create. Item must have a type of either "Category" or "Individual".'
-      @item = Item.new(params[:item]) # keep info already entered
-      @item.sti_type = type_string
-      setup_for_form
+      recover_from_create_failure 'Could not create.', type_string
       render :action => (@popup_flag ? "newpop" : "new" )
     elsif @item.name =~ /[:.]/ || !@item.save
-      @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
-      setup_for_form
+      recover_from_create_failure '' do
+        @item.errors.add :name, "cannot contain a period (.) or a colon (:)."
+      end
       render :action => (@popup_flag ? "newpop" : "new" )
     else
       if @popup_flag
@@ -560,5 +561,13 @@ private
     if params[:sti_type]
       @item.sti_type = params[:sti_type]
     end
+  end
+
+  def recover_from_create_failure( message_string, type_string = nil )
+    flash.now[:error] = message_string
+    @item = Item.new(params[:item]) # keep info already entered
+    @item.sti_type = type_string unless type_string.nil?
+    yield if block_given?
+    setup_for_form
   end
 end

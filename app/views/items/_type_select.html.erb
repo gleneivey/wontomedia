@@ -18,30 +18,32 @@
 %>
 
 
-<p class="inputpara">
-  <%= f.label :sti_type, "Type" %>
-  <%= popup_help_icon "Help for type", "Help:Popup/ItemType" %>
-  <%= if @popup_type == "verb"
-        selections = [ [ "Property",      "PropertyItem" ] ]
-        @item.sti_type = "PropertyItem"
-      else
-        selections = [
-          [ "- type of item -",          "" ],
-          [ "Category",      "CategoryItem" ],
-          [ "Individual",  "IndividualItem" ],
-          [ "Property",      "PropertyItem" ] ]
-      end
+<% if @item.sti_type.nil? %>
+  <p class="inputpara">
+    <%= f.label :sti_type, "Type" %>
+    <%= popup_help_icon "Help for type", "Help:Popup/ItemType" %>
+    <%= if @popup_type == "verb"
+          selections = [ [ "Property",      "PropertyItem" ] ]
+          @item.sti_type = "PropertyItem"
+        else
+          selections = [
+            [ "- type of item -",          "" ],
+            [ "Category",      "CategoryItem" ],
+            [ "Individual",  "IndividualItem" ],
+            [ "Property",      "PropertyItem" ] ]
+        end
 
-      select_tag "item[sti_type]",
-        options_for_select( selections,
-                            @item.sti_type.nil? ? "" : @item.sti_type ),
-        :tabindex => "10"
-   %>
-  <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
-        :alt=>"", :size=>"16x16" %>
-</p><p class="directions">
-  <span id="sti_type_required">Selection of a type is required.</span>
-</p>
-<script type="text/javascript">
-  $('item_sti_type').focus();
-</script>
+        select_tag "item[sti_type]",
+          options_for_select( selections,
+                              @item.sti_type.nil? ? "" : @item.sti_type ),
+          :tabindex => "110"
+     %>
+    <%= image_tag "blank_error_icon.png", :id=>"sti_type_error_icon",
+          :alt=>"", :size=>"16x16" %>
+  </p><p class="directions">
+    <span id="sti_type_required">Selection of a type is required.</span>
+  </p>
+<% else %>
+  <%= hidden_field_tag 'item_sti_type', @item.sti_type,
+        :name => 'item[sti_type]' %>
+<% end %>
