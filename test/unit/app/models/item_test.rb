@@ -231,4 +231,12 @@ class ItemTest < ActiveSupport::TestCase
   test "superclass_of returns nil if none" do
     assert_nil items(:impliedClass).superclass_of
   end
+
+  test "instance_of returns class item if present" do
+    assert items(:testInstance).instance_of == items(:testClass)
+  end
+
+  test "instance_of returns nil if item is not an instance" do
+    assert items(:testIndividual).instance_of == nil
+  end
 end

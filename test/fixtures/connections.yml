@@ -293,3 +293,11 @@ define_testClass_type:
   obj: Value_ItemType_Individual
   kind_of_obj: item
   flags: 0
+
+property_for_testClass:
+  subject: testProperty
+  predicate: applies_to_class
+  obj: testClass
+  kind_of_obj: item
+  flags: 0
+

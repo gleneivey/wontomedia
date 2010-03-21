@@ -287,6 +287,23 @@ class ItemsController < ApplicationController
       end
     end
     used_as_subj -= connections # if done incrementally, breaks iterator
+
+    if class_item = @item.instance_of
+      applies_connections = Connection.all( :conditions => [
+        "predicate_id = ? AND obj_id = ?",
+        Item.find_by_name('applies_to_class').id, class_item.id ] )
+      if applies_connections
+        applies_connections.each do |connection|
+          pred_id = connection.subject.id
+          unless @item_hash[pred_id]
+            @item_hash[pred_id] = connection.subject
+          end
+          connections << Connection.new({
+            :subject_id => @item.id, :predicate_id => pred_id })
+        end
+      end
+    end
+
     unless connections.empty?
       @connection_list << connections
     end

@@ -198,11 +198,13 @@
              <div style="float: right; font-size: 80%; margin-right: 6em;">
                <% if connection.id
                     generate_connection_links(connection)
-                  else
+                  elsif connection.kind_of_obj
                     generate_inverse_link(@inverses_map[connection])
                   end %>
              </div>
-             <% if connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
+             <% if connection.kind_of_obj == nil %>
+               no object
+             <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
                <%= item = @item_hash[connection.obj_id]
                    link_with_tooltip (h filter_parenthetical item.title ),
                      h( item.name ), item_by_name_path(item.name) %>

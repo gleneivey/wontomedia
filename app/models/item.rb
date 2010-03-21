@@ -139,6 +139,14 @@ class Item < ActiveRecord::Base
     return nil
   end
 
+  def instance_of
+    connection = Connection.first( :conditions => [
+      "subject_id = ? AND predicate_id = ?",
+      id, Item.find_by_name('is_instance_of').id ] )
+    return nil if connection == nil
+    return connection.obj
+  end
+
 private
 
   def after_save_callback

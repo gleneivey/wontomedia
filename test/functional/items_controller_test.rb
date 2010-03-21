@@ -227,6 +227,25 @@ class ItemsControllerTest < ActionController::TestCase
     assert array_of_value_connections.include?( connection )
   end
 
+  # relevant fixture content:
+  #   testInstance is_instance_of testClass
+  #   testProperty applies_to_class testClass
+  #   [but nothing like: testInstance testProperty ____]
+  test "first group should include add connection element for class" do
+    item = items(:testInstance)
+    property = items(:testProperty)
+    get :show, :id => item.id
+
+    assert assigns(:item_hash)[property.id]
+    assert connection_group = assigns(:connection_list)[0]
+    assert assigns(:item_hash)[property.id]
+    assert_not_nil connection_group.find do |connection|
+      connection.subject_id == item.id &&
+        connection.predicate_id == property.id &&
+        connection.obj_id == nil
+    end
+  end
+
   # The next several tests confirm that the controller's 'show' method
   # correctly populates the @connection_list array-of-arrays that
   # contains references for all of the edges that reference the page's
