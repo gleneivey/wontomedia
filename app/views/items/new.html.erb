@@ -25,7 +25,12 @@
 
 <%
   require Rails.root.join( 'lib', 'helpers', 'item_helper')
-  @title_text = 'Make a new item'
+  show_class_control = @item.class_item_id.nil?
+  if show_class_control
+    @title_text = 'Make a new item'
+  else
+    @title_text = 'Enter a new ' + @item.class_item.name
+  end
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
@@ -42,8 +47,7 @@
  %>
   <%= f.error_messages %>
   <% if @item.sti_type.nil? %><div style="width: 36%; float: left;"><% end %>
-    <%= show_class_control = @item.class_item_id.nil?
-        render :partial => "class_select",
+    <%= render :partial => "class_select",
           :locals => { :f => f, :show_class_control => show_class_control } %>
     <%= render :partial => "type_select", :locals => { :f => f } %>
     <%= render :partial => "form_fields", :locals => { :f => f } %>
