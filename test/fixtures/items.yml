@@ -208,5 +208,6 @@ impliedClass:
 anotherInstance:
   name: anotherInstance
   title: anotherInstance
+  description: This category item is also an instance of a class.
   sti_type: CategoryItem
   flags: 0
