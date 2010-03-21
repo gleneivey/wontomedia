@@ -75,6 +75,14 @@
 
 
 
+<% if @item.is_class? %>
+  <div style="text-align: center;">
+    <%= link_to "Add a new <b>#{h @item.name}</b>",
+          new_item_path + "?class_item=" + @item.id.to_s %>
+  </div>
+<% end %>
+
+
 <% # links to global pages/actions
  %>
 <p style="clear: right">
@@ -83,9 +91,57 @@
   <% end %>
 </p>
 
+
+<style>
+.instance-list {
+  padding-left: 0;
+}
+.instance-list li {
+  color: #ffff60;
+  margin-right: 1.5em;
+  display: inline;
+}
+.instance-list li:before {
+  display: marker;
+  content: ">>";
+}
+.instance-list li span {
+  color: black;
+}
+</style>
+
+<% if @item.is_class? %>
+  <h2 class="subheading"><%= h filter_parenthetical @item.title -%></h2>
+  <ul class='instance-list'>
+    <%
+      # we know that all the connections where this item is the object are
+      # located in the last array within @connection_list.  Search through
+      # it for all of the connections where 'is_instance_of' is the predicate
+
+      iio_item_id = nil
+      @connection_list[-1].each do |maybe_iio_connection|
+        unless iio_item_id
+          if @item_hash[maybe_iio_connection.predicate_id].
+              name == 'is_instance_of'
+            iio_item_id = maybe_iio_connection.predicate_id
+          end
+        end
+
+        if iio_item_id == maybe_iio_connection.predicate_id %>
+          <li><span>
+            <%= item = @item_hash[maybe_iio_connection.subject_id]
+                link_to (h item.name), item_by_name_path(item.name) %>
+          </span></li>
+        <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+
+<h3 class="subheading">This Class' Relationships</h3>
+
 <% # populate bottom (connections referencing this item) section of page
    unless @connection_list.empty? %>
-
 
   <% # track things to do only once:
      list_open_output = false
@@ -120,7 +176,7 @@
                </div>
 <%           end  %>
 
-             <ul>
+             <ul style="padding-left: 0;">
                <%= text_with_tooltip (h filter_parenthetical @item.title),
                      (h @item.name) %>
                <ul style="list-style-type: none;">

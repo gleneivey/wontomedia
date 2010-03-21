@@ -46,7 +46,7 @@
             ] ).nil?
           end.each do |item| %>
         <li><span><%=
-          link_to "Add a new <b>#{h filter_parenthetical item.name}</b>",
+          link_to "Add a new <b>#{h item.name}</b>",
             new_item_path + "?class_item=" + item.id.to_s %>
           <span style="font-size: 80%">(<%=
             link_to "show current", item_by_name_path(item.name)

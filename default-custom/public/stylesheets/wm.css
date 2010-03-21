@@ -97,12 +97,21 @@ div#fancybox-outer {
 .headline:first-child {
   margin-top: 0;
 }
-.subheading {
+
+h2.subheading {
   font-size: 150%;
+}
+h3.subheading {
+  font-size: 120%;
+  text-decoration: underline;
+}
+.subheading {
   font-weight: bold;
   color: #b0b0ff;
+  margin-top: 0;
   margin-bottom: 1.3ex;
 }
+
 .fine-print {
   font-size: 60%;
   color: #040460;

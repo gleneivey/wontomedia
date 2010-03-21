@@ -23,17 +23,23 @@
   <meta name="googlebot" content="noindex" />
 <% end %>
 
-<% require Rails.root.join( 'lib', 'helpers', 'item_helper') %>
+<%
+  require Rails.root.join( 'lib', 'helpers', 'item_helper')
 
+  show_class_control = @item.class_item_id.nil?
+  if show_class_control %>
+    <h1>Make a new item</h1>
+  <% else %>
+    <h1>Enger a new <%= @item.class_item.name -%></h1>
+  <% end
+ %>
 
-<h1>Make a new item</h1>
 
 <% options = @item.sti_type.nil? ? {} : { :url => items_path() }
    form_for(@item, options) do |f|
  %>
   <%= f.error_messages %>
-  <%= show_class_control = @item.class_item_id.nil?
-      render :partial => "class_select",
+  <%= render :partial => "class_select",
         :locals => { :f => f, :show_class_control => show_class_control } %>
   <%= render :partial => "type_select", :locals => { :f => f } %>
   <%= render :partial => "form_fields", :locals => { :f => f } %>
