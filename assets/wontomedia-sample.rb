@@ -21,6 +21,8 @@ require "ostruct"
 WontoMedia = OpenStruct.new({
   :site_title => "",                           # last element in page <title>
   :site_tagline => "",                         # top of home page
+  # this is optional, if you don't use it, don't define the constant
+#  :site_logo_title => "this is displayed above the logo",
 
     # change these if you use a local wiki, but will work to use public
   :help_url_prefix  => "http://wiki.wontology.org/wiki/help.php?title=",

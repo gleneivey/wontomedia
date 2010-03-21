@@ -60,7 +60,7 @@ Note that there are Debian packages for <tt>rubygems</tt> and several other piec
 Given the dependencies above are in place, the commands
 
  sudo apt-get install libopenssl-ruby
- sudo gem1.8 install rails
+ sudo gem1.8 install rake rails
 
 will install the rails framework that WontoMedia uses, and its dependency.  <tt>libopenssl-ruby</tt> is used by Rails for encryption services and secure network connections.  (RubyGems no longer creates a revisionless alias command <tt>gem</tt>; the "1.8" references the Ruby version it uses.)
 

@@ -141,6 +141,28 @@ Number_Value:
     figures.
 
 
+Date_Value:
+  name: Date_Value
+  sti_type: CategoryItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: A Date (optionally with time, scalar type)
+  description: >-
+    This item represents a particular date (and time).  It is a
+    relatively free-form field, allowingg a mix of letters, numbers,
+    and punctuation to allow easily human-readable dates to be
+    entered.  The date/time can be as accurate as the information you
+    have allows.  Depending on the context, it could be as general as
+    a single year or even a century, or it could be a date and time
+    down to the second:  "March 24, 2010 at 12:15:22pm (Pacific)".
+    But it cannot be ambiguous.  For example, if you spell out the
+    month when entering a birth date, then both "4 January 1955" and
+    "Jan 4, 1955" are acceptable.  However, you should not type
+    something like "1/4/55" because of both the month/day ambiguity
+    (difference between U.S. and European common ordering) and because
+    of the century ambiguity (probably 1955, but what if it was
+    1855?).
+
+
 Boolean_Value:
   name: Boolean_Value
   sti_type: CategoryItem
@@ -438,7 +460,43 @@ one_of:
     'Contains' are approximate opposites of each other.  However,
     making a 'One Of' relationship between two items will not
     automatically cause the symmetric 'Contains' relationship to be
-    created.
+    created/assumed.
+
+
+part_of:
+  name: part_of
+  sti_type: PropertyItem
+  flags: <%= Item::DATA_IS_UNALTERABLE %>
+  title: Part Of (basic relationship)
+  description: >-
+    A relationship of this type between two items is hierarchical.
+    This relationship states that the subject (left-hand side) of the
+    relationship ("A" in the relationship "A is Part-Of B", and like
+    "SoftwareTesting" in "SoftwareTesting is Part-Of ComputerSoftware"
+    in a categorization of engineering disciplines) is assumed to be
+    more specific/narrow than, and contained within, what corresponds
+    to the object of the relationship ("B" and "ComputerSoftware").
+    When showing a graph of connections between items, the system will
+    attempt to indicate 'Part-Of' relationships as primarily vertical,
+    with the object-item drawn nearer "the root" of the graph and the
+    subject-item toward "the leaves".
+
+    'Part Of' is most appropriate for showing relationships that would
+    be indicated by complete inclusion when drawing a Ven Diagram.
+    That is, if drawing a Ven Diagram of how categories relate to each
+    other, the category corresponding to the subject item of this
+    relationship would be drawn entirely within the category
+    corresponding to the object item.  In this way, it is more
+    restrictive than the 'One Of' relationship, which indicates
+    membership without implying complete overlap.
+
+    'Part Of' is the opposite of 'Contains'.  Creating a relationship
+    that states one category is 'Part Of' another is exactly the same
+    as creating a 'Contains' relationship with the subject and object
+    reversed, and the system will list the relationship between them
+    using both relationship names.  'Part Of' is itself a child of
+    'Child Of'.  (And 'Child Of' is the opposite of 'Parent Of', and
+    finally 'Contains' is a child of 'Parent Of'.)
 
 
 contains:
@@ -462,13 +520,14 @@ contains:
     are better indicated with 'Parent Of', as in "vehicle Contains
     spacecraft" (assuming, of course, that both are categories).
 
-    'Contains' is actually Child-Of 'Parent Of'.  'Parent Of' and
-    'Child Of' are opposites of each other, and 'One Of' is a child of
-    'Child Of'.  But this does not make 'Contains' and 'Child Of'
-    opposites of each other, though an approximation of opposite-ness
-    could be inferred.  The system will not automatically cause a
-    'Child Of' relationship to be created when a 'Contains'
-    relationship is.
+    'Contains' is the opposite of 'Part Of'.  Creating a relationship
+    that states one category 'Contains' another is exactly the same as
+    creating a 'Part Of' relationship with the subject and object
+    revesed, and the system will list the relationship between them
+    using both relationship names.'Contains' is also Child-Of 'Parent
+    Of'.  (And 'Parent Of' and 'Child Of' are opposites of each other,
+    and 'One Of' is another child of 'Child Of'.  But this does not
+    make 'Contains' and 'Child Of' opposites of each other.)
 
 
 parent_of:

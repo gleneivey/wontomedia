@@ -28,6 +28,8 @@ module AssertCurrentSchema
         t.column    :description,     :text
         t.column    :sti_type,        :string
         t.column    :flags,           :integer, :null => false, :default => 0
+        t.column    :created_at,      :datetime
+        t.column    :updated_at,      :datetime
       end
 
       s.table "connections" do |t|
@@ -39,6 +41,8 @@ module AssertCurrentSchema
         t.column    :kind_of_obj,        :string
         t.column    :connection_desc_id, :integer
         t.column    :flags,              :integer, :null => false, :default => 0
+        t.column    :created_at,         :datetime
+        t.column    :updated_at,         :datetime
       end
     end
   end

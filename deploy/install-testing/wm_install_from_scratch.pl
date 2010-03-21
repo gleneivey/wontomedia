@@ -18,7 +18,7 @@ sub DoASystemCommand {
 
 
         # first Ruby itself
-DoASystemCommand( "apt-get -y $aptLoadOptions install ruby rdoc ri rake" );
+DoASystemCommand( "apt-get -y $aptLoadOptions install ruby rdoc ri" );
 $rubyVersion = `ruby --version`;
 if ($rubyVersion !~ /^ruby\s+1\.8\.([0-9]+)/i){
     die "Ruby version must be at least 1.8.7.  The version installed by default by your package manager reported a different version (below).  You will likely have to install manually.\n    $rubyVersion";
@@ -53,7 +53,8 @@ if (defined $testGemSource &&
 else {
     DoASystemCommand( "gem1.8 sources --add http://gems.github.com/" );
 }
-        # install Rails gem
+        # install Rake and Rails
+DoASystemCommand( "gem1.8 install rake" );
 DoASystemCommand( "gem1.8 install $railsVersion rails" );
 
 

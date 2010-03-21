@@ -14,10 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
-   inkscape:export-filename="/home/gei/Repos/Mainlines/wontomedia/public/images/alert_background.png"
+   inkscape:export-filename="/home/gei/Repos/Mainlines/wontomedia/public/images/transparent_ltblue_background.png"
    inkscape:export-xdpi="108"
    inkscape:export-ydpi="108"
-   sodipodi:docname="alert_background.svg">
+   sodipodi:docname="transparent_ltblue_background.svg">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -35,9 +35,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="4.5002347"
-     inkscape:cy="1042.839"
+     inkscape:zoom="22.4"
+     inkscape:cx="13.035949"
+     inkscape:cy="1011.0348"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -63,13 +63,13 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="opacity:0.88;fill:#ffffff;fill-opacity:1;stroke:none"
+       style="opacity:0.88000000000000000;fill:#f8f8ff;fill-opacity:1;stroke:none"
        id="rect2816"
        width="2"
        height="2"
        x="18.687822"
        y="39.199486"
-       inkscape:export-filename="/home/gei/Repos/Mainlines/wontomedia/public/images/alert_background.png"
+       inkscape:export-filename="/home/gei/Repos/Mainlines/wontomedia/public/images/transparent_white_background.png"
        inkscape:export-xdpi="108"
        inkscape:export-ydpi="108" />
   </g>

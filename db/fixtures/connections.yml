@@ -261,11 +261,29 @@ define_one_of:
   kind_of_obj: item
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
+define_part_of:
+  subject: part_of
+  predicate: sub_property_of
+  obj: child_of
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
 define_contains:
   subject: contains
   predicate: sub_property_of
   obj: parent_of
   kind_of_obj: item
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_part_of_to_contains_symmetry:
+  subject: part_of
+  predicate: inverse_relationship
+  obj: contains
+  flags: <%= Connection::DATA_IS_UNALTERABLE %>
+
+define_contains_to_part_of_symmetry:
+  subject: contains
+  predicate: inverse_relationship
+  obj: part_of
   flags: <%= Connection::DATA_IS_UNALTERABLE %>
 
 define_predecessor_to_successor_symmetry:

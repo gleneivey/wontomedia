@@ -16,16 +16,18 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require File.join( File.dirname(__FILE__), '..', 'test_helper' )
+class AddTimestampColumns < ActiveRecord::Migration
+  def self.up
+    add_column :items, :created_at, :datetime
+    add_column :items, :updated_at, :datetime
+    add_column :connections, :created_at, :datetime
+    add_column :connections, :updated_at, :datetime
+  end
 
-class ItemsDataTest < ActiveSupport::TestCase
-  test "items seed data present" do
-    [ 'peer_of', 'one_of', 'contains', 'parent_of', 'child_of',
-      'sub_class_of', 'is_instance_of', 'class_item_type_is',
-      'Value_ItemType_Category', 'Value_ItemType_Individual',
-      'inverse_relationship', 'sub_property_of', 'symmetric_relationship',
-      'value_relationship', 'hierarchical_relationship'].each do |name|
-      assert Item.find_by_name(name)
-    end
+  def self.down
+    remove_column :items, :created_at
+    remove_column :items, :updated_at
+    remove_column :connections, :created_at
+    remove_column :connections, :updated_at
   end
 end

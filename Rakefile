@@ -180,7 +180,7 @@ namespace :test do
   task :controllers => :functionals   # Rails naming convention #fail
 
   desc "Execute all the tests for Ruby code."
-  task :ruby_tests => [ "test:devs", "test:dbmigrations", "test:controllers",
+  task :ruby_tests => [ "test:devs", "test:db", "test:controllers",
     "test:integrations", "build", "cucumber:static_ok"]
 end # namespace :test
 
@@ -191,7 +191,7 @@ Rake::Task[:test].clear!
 desc 'Run all unit, integration, and policy checks'
 task :tests => [ "test:policies", "asset:packager:build_all",
                     # above two have side effects necessary for setup
-                 "test:devs", "test:dbmigrations", "test:controllers",
+                 "test:devs", "test:db", "test:controllers",
                  "test:javascripts", "test:integrations", "build",
                  "cucumber:ok" ]
 # alias

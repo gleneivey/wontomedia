@@ -31,6 +31,7 @@
   else
     @title_text += "'#{h @connection.scalar_obj}'"
   end
+  @window_title_addendum = " (Edit)"
 
   # initialize array to define "Glossary Help" box of links:
   @glossary_help_entries = [
