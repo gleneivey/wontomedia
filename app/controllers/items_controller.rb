@@ -249,7 +249,8 @@ class ItemsController < ApplicationController
         new_connection = Connection.new(
           :subject_id => connection.obj_id,
           :predicate_id => inverse_property_id,
-          :obj_id => connection.subject_id
+          :obj_id => connection.subject_id,
+          :kind_of_obj => Connection::OBJECT_KIND_ITEM
         )
         used_as_subj << new_connection
         @inverses_map[new_connection] = connection

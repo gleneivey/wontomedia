@@ -118,7 +118,7 @@ class AdminController < ApplicationController
           :subject     => Item.find_by_name($1),
           :predicate   => Item.find_by_name($2),
           :scalar_obj  => $3,
-          :kind_of_obj => "scalar",
+          :kind_of_obj => Connection::OBJECT_KIND_SCALAR,
           :flags       => 0
                      )
         if e.nil?
@@ -136,7 +136,7 @@ class AdminController < ApplicationController
           :subject     => Item.find_by_name($1),
           :predicate   => Item.find_by_name($2),
           :obj         => Item.find_by_name($3),
-          :kind_of_obj => "item",
+          :kind_of_obj => Connection::OBJECT_KIND_ITEM,
           :flags       => 0
                      )
         if e.nil?
