@@ -259,6 +259,7 @@ class ItemsController < ApplicationController
     end
 
     # add blank-object connections to serve as basis for connection "quick add"
+    @intances_of_type_item_classes = {}
     if class_item = @item.instance_of
       find_applied_properties( class_item ).each do |property_item|
         if connection = Connection.first( :conditions =>
@@ -266,6 +267,7 @@ class ItemsController < ApplicationController
             property_item.id, Item.find_by_name('has_scalar_object').id ])
           new_kind = Connection::OBJECT_KIND_SCALAR
           new_type_item = connection.obj
+
         elsif Connection.first( :conditions =>
             [ "subject_id = ? AND predicate_id = ?",
             property_item.id, Item.find_by_name('has_item_object').id ])
@@ -273,7 +275,21 @@ class ItemsController < ApplicationController
           new_type_item = connection = Connection.first( :conditions =>
             [ "subject_id = ? AND predicate_id = ?",
             property_item.id, Item.find_by_name('property_object_is').id ])
-          new_type_item = connection.obj unless connection.nil?
+
+          unless connection.nil?
+            new_type_item = connection.obj
+
+            unless @intances_of_type_item_classes[new_type_item]
+              @intances_of_type_item_classes[new_type_item] =
+                Connection.all( :conditions => [
+                  "predicate_id = ? AND obj_id = ?",
+                  Item.find_by_name('is_instance_of').id,
+                  new_type_item.id ]).
+                map do |connection|
+                  connection.subject
+                end
+            end
+          end
         else
           new_type_item = new_kind = nil
         end

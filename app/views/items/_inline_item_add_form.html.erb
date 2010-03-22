@@ -33,8 +33,8 @@
             ] +
               items.map do |item|
                 [ h("#{item.name} : #{item.title}"), item.id ]
-              end, ""
-          )
+              end, "" ),
+          :style => 'width: 62%;'
      %>
 
      <%= f.submit "Add", :style => 'width: 3em;' %>

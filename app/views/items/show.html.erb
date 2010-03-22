@@ -155,7 +155,6 @@
      @add_item_help_icon_used = false
 
      array_of_arrays_of_connections = @connection_list.to_enum
-all_items = Item.all
 
 
      # first, put all connections w/ current item-is-subject into indented list
@@ -210,18 +209,19 @@ all_items = Item.all
                     connection.scalar_obj.nil? %>
                <%= render :partial => "inline_scalar_add_form",
                      :locals => { :con => connection } %>
+
              <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM &&
                     connection.obj_id.nil? %>
-               <%=
-items= all_items
+               <%= items = @intances_of_type_item_classes[connection.type_item]
+                   items = Item.all unless !items.nil?
                    render :partial => "inline_item_add_form",
-                     :locals => {
-                       :con => connection,
-                       :items => items } %>
+                     :locals => { :con => connection, :items => items } %>
+
              <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
                <%= item = @item_hash[connection.obj_id]
                    link_with_tooltip (h filter_parenthetical item.title ),
                      h( item.name ), item_by_name_path(item.name) %>
+
              <% else %>
                <%= h connection.scalar_obj %>
              <% end %>
