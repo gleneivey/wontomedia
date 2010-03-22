@@ -227,6 +227,25 @@ class ItemsControllerTest < ActionController::TestCase
     assert array_of_value_connections.include?( connection )
   end
 
+  # relevant fixture content:
+  #   testInstance is_instance_of testClass
+  #   testProperty applies_to_class testClass
+  #   [but nothing like: testInstance testProperty ____]
+  test "first group should include add connection element for class" do
+    item = items(:testInstance)
+    property = items(:testProperty)
+    get :show, :id => item.id
+
+    assert assigns(:item_hash)[property.id]
+    assert connection_group = assigns(:connection_list)[0]
+    assert assigns(:item_hash)[property.id]
+    assert_not_nil connection_group.find do |connection|
+      connection.subject_id == item.id &&
+        connection.predicate_id == property.id &&
+        connection.obj_id == nil
+    end
+  end
+
   # The next several tests confirm that the controller's 'show' method
   # correctly populates the @connection_list array-of-arrays that
   # contains references for all of the edges that reference the page's
@@ -237,36 +256,17 @@ class ItemsControllerTest < ActionController::TestCase
     item = items(:itemUsedFrequentlyAsSubject)
     get :show, :id => item.id
 
-    # given content of test/fixtures/connections.yml,
-    #   expect connection_list as follows:
-    #     [[2 value connections], [3 peer_of connections],
-    #      [2 successor_of connections], [2 random]]
-    assert connection_list = assigns(:connection_list)
-    assert connection_list.length == 4
-    value_connection_array,
-      peer_connection_array,
-      successor_connection_array,
-      random_connection_array = *connection_list
-
-    assert value_connection_array.length == 2
-    assert value_connection_array.include?( connections(:nUFAS_value_A) )
-    assert value_connection_array.include?( connections(:nUFAS_isAssigned_B) )
-
-    assert peer_connection_array.length == 3
-    assert peer_connection_array.include?( connections(:nUFAS_peer_of_X) )
-    assert peer_connection_array.include?( connections(:nUFAS_peer_of_Y) )
-    assert peer_connection_array.include?( connections(:nUFAS_peer_of_Z) )
-
-    assert successor_connection_array.length == 2
-    assert successor_connection_array.include?(
-      connections(:nUFAS_successor_of_C) )
-    assert successor_connection_array.include?(
-      connections(:nUFAS_successor_of_D) )
-
-    assert random_connection_array.length == 2
-    assert random_connection_array.include?(
-      connections(:nUFAS_predecessor_of_E) )
-    assert random_connection_array.include?( connections(:nUFAS_child_of_M) )
+    assert is_subj_connections = assigns(:connection_list)[0]
+    assert is_subj_connections.length >= 9
+    assert is_subj_connections.include?( connections(:nUFAS_value_A) )
+    assert is_subj_connections.include?( connections(:nUFAS_isAssigned_B) )
+    assert is_subj_connections.include?( connections(:nUFAS_peer_of_X) )
+    assert is_subj_connections.include?( connections(:nUFAS_peer_of_Y) )
+    assert is_subj_connections.include?( connections(:nUFAS_peer_of_Z) )
+    assert is_subj_connections.include?( connections(:nUFAS_successor_of_C) )
+    assert is_subj_connections.include?( connections(:nUFAS_successor_of_D) )
+    assert is_subj_connections.include?( connections(:nUFAS_predecessor_of_E) )
+    assert is_subj_connections.include?( connections(:nUFAS_child_of_M) )
   end
 
   test "should correctly group is-object connections" do
@@ -333,47 +333,6 @@ class ItemsControllerTest < ActionController::TestCase
     spo_id = Item.find_by_name("sub_property_of").id
     value_id = Item.find_by_name("value_relationship").id
 
-    # connections from 'should show first connection for item with value' test
-    source = items(:testSubcategory)
-    known_value_connections = []
-    Connection.all( :conditions => "subject_id = #{source.id}").
-        each do |connection|
-      if TrippleNavigation.check_properties(
-          :does         => connection.predicate.id,
-          :inherit_from => value_id,
-          :via          => spo_id )
-        connection_copy = Connection.new(
-          :subject     => target,
-          :predicate   => connection.predicate,
-          :obj         => connection.obj,
-          :kind_of_obj => connection.kind_of_obj   )
-        connection_copy.save  # fails for duplicating what's in fixture, but OK
-        known_value_connections << connection_copy
-      end
-    end
-
-    # connections from 'should correctly group/sort is-subject connections' test
-    source = items(:itemUsedFrequentlyAsSubject)
-    known_nonvalue_subject_connections = []
-    Connection.all( :conditions => "subject_id = #{source.id}").
-        each do |connection|
-      connection_copy = Connection.new(
-        :subject     => target,
-        :predicate   => connection.predicate,
-        :obj         => connection.obj,
-        :kind_of_obj => connection.kind_of_obj   )
-      connection_copy.save  # fails for duplicating what's in fixture, but OK
-
-      if TrippleNavigation.check_properties(
-          :does         => connection.predicate.id,
-          :inherit_from => value_id,
-          :via          => spo_id )
-        known_value_connections << connection_copy
-     else
-        known_nonvalue_subject_connections << connection_copy
-      end
-    end
-
     # connections from 'should correctly group is-object connections' test
     source = items(:itemUsedFrequentlyAsObject)
     known_object_connections = []
@@ -402,14 +361,9 @@ class ItemsControllerTest < ActionController::TestCase
 
         # now, execute the "show" action
     get :show, :id => target.id
+    assert connection_list = assigns(:connection_list)
 
         # and perform checks
-    assert connection_list = assigns(:connection_list)
-    # value connections come first
-    connections = connection_list.delete_at(0)
-    assert_connections_lists_have_identical_content(
-      connections, known_value_connections )
-
     # predicate connections come last
     connections = connection_list.delete_at(-1)
     assert_connections_lists_have_identical_content(
@@ -420,13 +374,10 @@ class ItemsControllerTest < ActionController::TestCase
     assert_connections_lists_have_identical_content(
       connections, known_object_connections )
 
-    # and all thats left should be groups of non-value is-subject connections
-    assert connection_list.length    == 3 # constants from preceding test
-    assert connection_list[0].length == 3
-    assert connection_list[1].length == 2
-    assert connection_list[2].length == 2
-    assert_connections_lists_have_identical_content(
-      connection_list.flatten, known_nonvalue_subject_connections )
+    # subject connections came first
+    connections = connection_list.delete_at(0)
+    assert_connection_list_contains_another( connections,
+      Connection.all( :conditions => "subject_id = #{target.id}") )
   end
 
   # fixtures contain the following connections that should imply others:
@@ -439,35 +390,30 @@ class ItemsControllerTest < ActionController::TestCase
   # all of which can be used to test operations
   test "should show single implied connection" do
     # items/show for testSubcategory should have @connection_list =
-    #  [ [ testSubcategory isAssigned testIndividual ], # value property
-    #    [ testSubcategory *child_of* testCategory ],   # single-use pred
-    #      testCategory parent_of testSubcategory ] ]   # non-subj connections
+    #  [ [ testSubcategory isAssigned testIndividual,   # value property
+    #      testSubcategory *child_of* testCategory   ], # single-use pred
+    #    [ testCategory parent_of testSubcategory ] ]   # non-subj connections
     item = items(:testSubcategory)
     get :show, :id => item.id
 
     assert inverses_map = assigns(:inverses_map)
     assert con_list = assigns(:connection_list)
-    assert con_list.length == 3
+    assert con_list.length == 2
 
     # yes, I could fold these assert blocks into a loop, but keeping
     # them distinct gives separate source line numbers if an assert fails
     con_array = con_list[0]
-    assert con_array.length == 1
-    assert connection = con_array[0]
-    assert connection.predicate_id == items(:isAssigned).id
+    assert con_array.length == 2
+    assert con_array[0].predicate_id == items(:isAssigned).id
+
+    child_id = Item.find_by_name("child_of").id
+    implied_connection = con_array[1]
+    assert implied_connection.predicate_id == child_id
 
     con_array = con_list[1]
     assert con_array.length == 1
-    assert connection = con_array[0]
-    child_id = Item.find_by_name("child_of").id
-    assert connection.predicate_id == child_id
-    implied_connection = connection
-
-    con_array = con_list[2]
-    assert con_array.length == 1
-    assert connection = con_array[0]
-    assert connection.predicate_id == Item.find_by_name("parent_of").id
-    source_connection = connection
+    assert source_connection = con_array[0]
+    assert source_connection.predicate_id == Item.find_by_name("parent_of").id
 
     assert item_hash = assigns(:item_hash)
     assert item_hash[child_id]
@@ -476,26 +422,23 @@ class ItemsControllerTest < ActionController::TestCase
 
   test "should show multiple implied connections" do
     # items/show for D should have @connection_list =
-    #  [ [ D isAssigned itemUsedFrequentlyAsObject ],   # value property
-    #    [ D *predecessor_of* E,                        # common properties
-    #      D *predecessor_of* itemUsedFrequentlyAsSubject ],
-    #    [ D sub_property_of E                     ],   # @item as subj.
+    #  [ [ D isAssigned itemUsedFrequentlyAsObject,     # value property
+    #      D *predecessor_of* E,                        # common properties
+    #      D *predecessor_of* itemUsedFrequentlyAsSubject,
+    #      D sub_property_of E                     ],   # @item as subj.
     #    [ E successor_of D,                            # @item as obj.
     #      C sub_property_of D,
     #      itemUsedFrequentlyAsSubject successor_of D ] ]
     item = items(:D)
     get :show, :id => item.id
 
-    assert inverses_map = assigns(:inverses_map)
     assert con_list = assigns(:connection_list)
-    assert con_list.length == 4
+    assert con_list.length == 2
 
     # now that we've checked the array-of-arrays length, just assert for
     # the sub-lengths and connections we expect to have been added
-    assert con_list[0].length == 1
-    assert con_list[1].length == 2
-    assert con_list[2].length == 1
-    assert con_list[3].length == 3
+    assert con_list[0].length == 4
+    assert con_list[1].length == 3
 
     pred = Item.find_by_name("predecessor_of")
     known_array = [
@@ -505,11 +448,13 @@ class ItemsControllerTest < ActionController::TestCase
       Connection.new( :subject => item, :predicate => pred,
         :obj => items(:E), :kind_of_obj => Connection::OBJECT_KIND_ITEM   )
     ]
-    assert_connections_lists_have_identical_content( known_array, con_list[1] )
+    assert_connection_list_contains_another( con_list[0], known_array )
 
     assert item_hash = assigns(:item_hash)
     assert item_hash[pred.id]
-    con_list[1].each do |connection|
+
+    assert inverses_map = assigns(:inverses_map)
+    con_list[0].select{|con| con.predicate_id == pred.id }.each do |connection|
       assert inverses_map[connection]
     end
   end
@@ -662,6 +607,21 @@ private
             connection.obj_id       == possible_match.obj_id
           found_match = true
           another_set.delete possible_match
+          break;
+        end
+      end
+      assert found_match
+    end
+  end
+
+  def assert_connection_list_contains_another( superset, subset )
+    subset.each do |connection|
+      found_match = false
+      superset.each do |possible_match|
+        if  connection.subject_id   == possible_match.subject_id and
+            connection.predicate_id == possible_match.predicate_id and
+            connection.obj_id       == possible_match.obj_id
+          found_match = true
           break;
         end
       end

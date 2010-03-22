@@ -151,6 +151,8 @@
      @show_help_icon_used = false
      @edit_help_icon_used = false
      @delete_help_icon_used = false
+     @add_scalar_help_icon_used = false
+     @add_item_help_icon_used = false
 
      array_of_arrays_of_connections = @connection_list.to_enum
 
@@ -198,14 +200,28 @@
              <div style="float: right; font-size: 80%; margin-right: 6em;">
                <% if connection.id
                     generate_connection_links(connection)
-                  else
+                  elsif connection.obj_id
                     generate_inverse_link(@inverses_map[connection])
                   end %>
              </div>
-             <% if connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
+
+             <% if connection.kind_of_obj == Connection::OBJECT_KIND_SCALAR &&
+                    connection.scalar_obj.nil? %>
+               <%= render :partial => "inline_scalar_add_form",
+                     :locals => { :con => connection } %>
+
+             <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM &&
+                    connection.obj_id.nil? %>
+               <%= items = @intances_of_type_item_classes[connection.type_item]
+                   items = Item.all unless !items.nil?
+                   render :partial => "inline_item_add_form",
+                     :locals => { :con => connection, :items => items } %>
+
+             <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
                <%= item = @item_hash[connection.obj_id]
                    link_with_tooltip (h filter_parenthetical item.title ),
                      h( item.name ), item_by_name_path(item.name) %>
+
              <% else %>
                <%= h connection.scalar_obj %>
              <% end %>
@@ -292,3 +308,10 @@
   <% end %>
   $('div-for-type-class').innerHTML = content;
 </script>
+
+<% content_for :first_bottom_page_js do %>
+  <script type="text/javascript">
+    inAnItemsForm = false;        // meant to indicate items/new or items/edit
+    creatingNewItem = true;
+  </script>
+<% end %>

@@ -20,14 +20,19 @@ var itemSelectElementHavingNewItemAdded = null;
 var nounVerbCodeOfNewItemBeingAdded = "";
 var priorValueOfSelectElementHavingNewItemAdded = "";
 
-function itemCreatePopup(selectElem, popupType, priorValue){
+function itemCreatePopup(selectElem, priorValue, popupType, popupClass){
   itemSelectElementHavingNewItemAdded = selectElem;
   nounVerbCodeOfNewItemBeingAdded = popupType;
   priorValueOfSelectElementHavingNewItemAdded = priorValue;
 
   var l = window.location;
   var newpop = l.protocol + "//" + l.hostname + ":" + l.port +
-               "/w/items/new-pop?popup_type=" + popupType;
+      "/w/items/new-pop?";
+  if (popupType)
+    newpop += "popup_type=" + popupType;
+  else if (popupClass)
+    newpop += "class_item=" + popupClass;
+
   Modalbox.show(newpop, {
     title: "Create a new item",
     height: itemCreatePopup_Height(),

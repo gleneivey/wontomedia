@@ -103,7 +103,7 @@ function createIdOnchangeHandler(thisName){
         else if (thisElem.value == "-1"){
           divToBlank(thisName);
           var popupType = (thisName == "predicate") ? "verb" : "noun";
-          itemCreatePopup(thisElem, popupType, lastLast);
+          itemCreatePopup(thisElem, lastLast, popupType, null);
         }
         else {
           clearError(thisName);

@@ -26,6 +26,7 @@
 # starts.  It can be deleted, this file reloaded, and then ItemHelper
 # references will work normally.  Go figure. -- gei 2010/2/24
 require Rails.root.join( 'lib', 'helpers', 'item_helper')
+require Rails.root.join( 'lib', 'helpers', 'connection_helper')
 require 'yaml'
 
 # See also the matching model Item
@@ -249,12 +250,56 @@ class ItemsController < ApplicationController
         new_connection = Connection.new(
           :subject_id => connection.obj_id,
           :predicate_id => inverse_property_id,
-          :obj_id => connection.subject_id
+          :obj_id => connection.subject_id,
+          :kind_of_obj => Connection::OBJECT_KIND_ITEM
         )
         used_as_subj << new_connection
         @inverses_map[new_connection] = connection
       end
     end
+
+    # add blank-object connections to serve as basis for connection "quick add"
+    @intances_of_type_item_classes = {}
+    if class_item = @item.instance_of
+      find_applied_properties( class_item ).each do |property_item|
+        if connection = Connection.first( :conditions =>
+            [ "subject_id = ? AND predicate_id = ?",
+            property_item.id, Item.find_by_name('has_scalar_object').id ])
+          new_kind = Connection::OBJECT_KIND_SCALAR
+          new_type_item = connection.obj
+
+        elsif Connection.first( :conditions =>
+            [ "subject_id = ? AND predicate_id = ?",
+            property_item.id, Item.find_by_name('has_item_object').id ])
+          new_kind = Connection::OBJECT_KIND_ITEM
+          new_type_item = connection = Connection.first( :conditions =>
+            [ "subject_id = ? AND predicate_id = ?",
+            property_item.id, Item.find_by_name('property_object_is').id ])
+
+          unless connection.nil?
+            new_type_item = connection.obj
+
+            unless @intances_of_type_item_classes[new_type_item]
+              @intances_of_type_item_classes[new_type_item] =
+                Connection.all( :conditions => [
+                  "predicate_id = ? AND obj_id = ?",
+                  Item.find_by_name('is_instance_of').id,
+                  new_type_item.id ]).
+                map do |connection|
+                  connection.subject
+                end
+            end
+          end
+        else
+          new_type_item = new_kind = nil
+        end
+
+        used_as_subj << Connection.new({ :subject_id => @item.id,
+          :predicate_id => property_item.id, :kind_of_obj => new_kind,
+          :type_item => new_type_item })
+      end
+    end
+
 
     # find all of the Items referenced by the connections the view will list
     @item_hash = {}
@@ -277,61 +322,26 @@ class ItemsController < ApplicationController
     value_id = Item.find_by_name("value_relationship").id
     spo_id   = Item.find_by_name("sub_property_of").id
 
-    # first group, all connections *from* this item with value-type predicates
-    connections = []
-    used_as_subj.each do |connection|
-      if TrippleNavigation.check_properties(
-          :does => connection.predicate_id, :via => spo_id,
-          :inherit_from => value_id )
-        connections << connection
-      end
-    end
-    used_as_subj -= connections # if done incrementally, breaks iterator
+      # first group, all connections *from* this item
+    # start with explicit connections
+    connections = used_as_subj
+    # sort and add as a group to array-of-arrays for view
     unless connections.empty?
-      @connection_list << connections
-    end
-
-
-    # next N groups: 1 group for connections *from* this item with >1 of
-    #   same pred.
-    #figure out which predicates occur >1, how many they occur, sort & group
-    pred_counts = {}
-    connection_using_pred = {}
-    used_as_subj.each do |connection|
-      if pred_counts[connection.predicate_id].nil?
-        pred_counts[connection.predicate_id] = 1
-      else
-        pred_counts[connection.predicate_id] += 1
-      end
-      connection_using_pred[connection.predicate_id] = connection
-    end
-    subj_connections = pred_counts.keys
-    subj_connections.sort! { |a,b| pred_counts[b] <=> pred_counts[a] }
-    array_of_singles = []
-    subj_connections.each do |predicate_id|
-      if pred_counts[predicate_id] > 1
-        connections = []
-        used_as_subj.each do |connection|
-            # lazy, more hashes would eliminate rescan
-          if connection.predicate_id == predicate_id
-            connections << connection
-          end
+      count_hash = {}
+      connections.each do |con|
+        if count_hash[con.predicate_id].nil?
+          count_hash[con.predicate_id] = 0
         end
-        unless connections.empty?
-          @connection_list << connections
-        end
-      else
-        array_of_singles << connection_using_pred[predicate_id]
+        count_hash[con.predicate_id] += 1
       end
+
+      @connection_list << ( connections.sort do |a,b|
+          ConnectionHelper.compare( a, b, count_hash )
+        end )
     end
 
-    # last group of connections *from* current item:
-    #   all connections w/ used-once pred's
-    unless array_of_singles.empty?
-      @connection_list << array_of_singles
-    end
 
-
+      # next groups
     used_as_obj.sort! do |a,b|
       a.predicate_id <=> b.predicate_id
     end
@@ -569,5 +579,25 @@ private
     @item.sti_type = type_string unless type_string.nil?
     yield if block_given?
     setup_for_form
+  end
+
+  def find_applied_properties( class_item )
+    recursive_find_applied_properties(
+      class_item, Item.find_by_name('applies_to_class') ).flatten
+  end
+  def recursive_find_applied_properties( class_item, joining_prop )
+    con_array = Connection.all( :conditions => [
+      "predicate_id = ? AND obj_id = ?",
+      joining_prop.id, class_item.id ] )
+    return [] if con_array.nil?
+    con_array.map do |connection|
+      item = connection.subject
+      if item.sti_type == ItemHelper::ITEM_PROPERTY_CLASS_NAME
+        item
+      else # prop is_instance_of prop-class; prop-class applied_to_class 'us'
+        recursive_find_applied_properties( item,
+          Item.find_by_name('is_instance_of') )
+      end
+    end
   end
 end

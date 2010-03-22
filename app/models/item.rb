@@ -43,7 +43,9 @@ class Item < ActiveRecord::Base
   DATA_IS_UNALTERABLE = 1
 
 
+  # support sub-classes for Individual, Category, Property, Qualified
   self.inheritance_column = "sti_type"
+
 
     # name
   validates_presence_of   :name, :message => "Item's name cannot be blank."
@@ -137,6 +139,14 @@ class Item < ActiveRecord::Base
       id, Item.find_by_name('sub_class_of').id ] )
     return defining_connection.obj unless defining_connection.nil?
     return nil
+  end
+
+  def instance_of
+    connection = Connection.first( :conditions => [
+      "subject_id = ? AND predicate_id = ?",
+      id, Item.find_by_name('is_instance_of').id ] )
+    return nil if connection == nil
+    return connection.obj
   end
 
 private
