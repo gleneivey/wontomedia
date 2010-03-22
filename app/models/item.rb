@@ -43,7 +43,9 @@ class Item < ActiveRecord::Base
   DATA_IS_UNALTERABLE = 1
 
 
+  # support sub-classes for Individual, Category, Property, Qualified
   self.inheritance_column = "sti_type"
+
 
     # name
   validates_presence_of   :name, :message => "Item's name cannot be blank."

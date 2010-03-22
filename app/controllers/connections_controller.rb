@@ -63,7 +63,11 @@ class ConnectionsController < ApplicationController
 
     if @connection.save
       flash[:notice] = 'Connection was successfully created.'
-      redirect_to(@connection)
+      if params[:goto]
+        redirect_to('/' + params[:goto])
+      else
+        redirect_to(@connection)
+      end
     else
       populate_for_new_update
       @this_is_non_information_page = true

@@ -151,6 +151,8 @@
      @show_help_icon_used = false
      @edit_help_icon_used = false
      @delete_help_icon_used = false
+     @add_scalar_help_icon_used = false
+     @add_item_help_icon_used = false
 
      array_of_arrays_of_connections = @connection_list.to_enum
 
@@ -205,10 +207,12 @@
 
              <% if connection.kind_of_obj == Connection::OBJECT_KIND_SCALAR &&
                     connection.scalar_obj.nil? %>
-               no scalar object
+               <%= render :partial => "inline_scalar_add_form",
+                     :locals => { :con => connection } %>
              <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM &&
                     connection.obj_id.nil? %>
-               no item object
+               <%= render :partial => "inline_item_add_form",
+                     :locals => { :con => connection } %>
              <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
                <%= item = @item_hash[connection.obj_id]
                    link_with_tooltip (h filter_parenthetical item.title ),

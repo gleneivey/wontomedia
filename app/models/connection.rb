@@ -40,6 +40,12 @@ class Connection < ActiveRecord::Base
   OBJECT_KIND_SCALAR = 'scalar'
 
 
+  # convenience attribute allows item representing a connection's object's
+  # type (if specified by a relationship somewhere in the database) to
+  # be attached to the connection once it has been looked up once
+  attr_accessor :type_item
+
+
   before_validation :complex_validations
 #  validates_presence_of :subject, :predicate
 #explicitly do the equivalent of the above in complex_validations because

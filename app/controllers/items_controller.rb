@@ -261,20 +261,26 @@ class ItemsController < ApplicationController
     # add blank-object connections to serve as basis for connection "quick add"
     if class_item = @item.instance_of
       find_applied_properties( class_item ).each do |property_item|
-        if Connection.first( :conditions =>
+        if connection = Connection.first( :conditions =>
             [ "subject_id = ? AND predicate_id = ?",
             property_item.id, Item.find_by_name('has_scalar_object').id ])
           new_kind = Connection::OBJECT_KIND_SCALAR
+          new_type_item = connection.obj
         elsif Connection.first( :conditions =>
             [ "subject_id = ? AND predicate_id = ?",
             property_item.id, Item.find_by_name('has_item_object').id ])
           new_kind = Connection::OBJECT_KIND_ITEM
+          new_type_item = connection = Connection.first( :conditions =>
+            [ "subject_id = ? AND predicate_id = ?",
+            property_item.id, Item.find_by_name('property_object_is').id ])
+          new_type_item = connection.obj unless connection.nil?
         else
-          new_kind = nil
+          new_type_item = new_kind = nil
         end
 
         used_as_subj << Connection.new({ :subject_id => @item.id,
-          :predicate_id => property_item.id, :kind_of_obj => new_kind })
+          :predicate_id => property_item.id, :kind_of_obj => new_kind,
+          :type_item => new_type_item })
       end
     end
 
