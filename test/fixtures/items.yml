@@ -62,6 +62,12 @@ testProperty:
   sti_type: PropertyItem
   flags: 0
 
+testValueProperty:
+  name: testValueProperty
+  title: testValueProperty
+  sti_type: PropertyItem
+  flags: 0
+
 testInstance:
   name: testInstance
   title: testInstance
@@ -210,4 +216,68 @@ anotherInstance:
   title: anotherInstance
   description: This category item is also an instance of a class.
   sti_type: CategoryItem
+  flags: 0
+
+
+###########################################################################
+## connections for testing ConnectionHelper.compare (sort order)
+
+sortItem1:
+  name: sortItem1
+  title: item #1 for connection comparison/sort order tests
+  description: >-
+    Description same as title: item #1 for connection comparison/sort
+    order tests
+  sti_type: IndividualItem
+  flags: 0
+
+sortItem2:
+  name: sortItem2
+  title: item #2 for connection comparison/sort order tests
+  description: >-
+    Description same as title: item #2 for connection comparison/sort
+    order tests
+  sti_type: IndividualItem
+  flags: 0
+
+sortItem3:
+  name: sortItem3
+  title: item #3 for connection comparison/sort order tests
+  description: >-
+    Description same as title: item #3 for connection comparison/sort
+    order tests
+  sti_type: IndividualItem
+  flags: 0
+
+sortClassItem:
+  name: sortClassItem
+  title: a class for connection comparison/sort order tests
+  description: >-
+    Description same as title: a class for connection comparison/sort
+    order tests
+  sti_type: CategoryItem
+  flags: 0
+
+sortPropertyX:
+  name: sortPropertyX
+  title: sortPropertyX
+  sti_type: PropertyItem
+  flags: 0
+
+sortPropertyY:
+  name: sortPropertyY
+  title: sortPropertyY
+  sti_type: PropertyItem
+  flags: 0
+
+sortProperty1:
+  name: sortProperty1
+  title: sortProperty1
+  sti_type: PropertyItem
+  flags: 0
+
+sortProperty4:
+  name: sortProperty4
+  title: sortProperty4
+  sti_type: PropertyItem
   flags: 0

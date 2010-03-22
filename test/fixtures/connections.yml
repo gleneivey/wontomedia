@@ -301,3 +301,90 @@ property_for_testClass:
   kind_of_obj: item
   flags: 0
 
+
+###########################################################################
+## connections for testing ConnectionHelper.compare (sort order)
+
+sortable_with_builtin_pred:
+  subject: sortItem1
+  predicate: class_item_type_is
+  obj: sortClassItem
+  kind_of_obj: item
+  flags: 0
+
+sortable_with_contributor_pred_builtin_obj:
+  subject: sortItem1
+  predicate: testProperty
+  obj: Item_Class
+  kind_of_obj: item
+  flags: 0
+
+sortable_with_contributor_pred_and_obj:
+  subject: sortItem1
+  predicate: testProperty
+  obj: sortClassItem
+  kind_of_obj: item
+  flags: 0
+
+sortable_with_contributor_pred_value_obj:
+  subject: sortItem1
+  predicate: testValueProperty
+  scalar_obj: 42
+  kind_of_obj: scalar
+  flags: 0
+
+max_for_sortProperty1:
+  subject: sortProperty1
+  predicate: max_uses_per_item
+  scalar_obj: 1
+  kind_of_obj: scalar
+  flags: 0
+
+max_for_sortProperty4:
+  subject: sortProperty4
+  predicate: max_uses_per_item
+  scalar_obj: 4
+  kind_of_obj: scalar
+  flags: 0
+
+sortable_sortX:
+  subject: sortItem1
+  predicate: sortPropertyX
+  obj: sortItem2
+  kind_of_obj: item
+  flags: 0
+
+sortable_sortX3:
+  subject: sortItem1
+  predicate: sortPropertyX
+  obj: sortItem3
+  kind_of_obj: item
+  flags: 0
+
+sortable_sortY:
+  subject: sortItem1
+  predicate: sortPropertyY
+  obj: sortItem1
+  kind_of_obj: item
+  flags: 0
+
+sortable_sort1:
+  subject: sortItem1
+  predicate: sortProperty1
+  obj: sortItem2
+  kind_of_obj: item
+  flags: 0
+
+sortable_sort4:
+  subject: sortItem1
+  predicate: sortProperty4
+  obj: sortItem2
+  kind_of_obj: item
+  flags: 0
+
+define_testValueProperty:
+  subject: testValueProperty
+  predicate: has_scalar_object
+  obj: Integer_Value
+  kind_of_obj: item
+  flags: 0
