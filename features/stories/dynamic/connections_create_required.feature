@@ -39,6 +39,7 @@ Feature:  Verify inputs for creation of new connection dynamically within the pa
 
     # focus from Subject to Predicate
     When I type the "Tab" special key
+    And I pause
     Then the focus is on the "connection_predicate_id" element
     And the element "subject_required" has the format "font-weight=bold"
     And the element "predicate_required" has the format "font-weight=400"
