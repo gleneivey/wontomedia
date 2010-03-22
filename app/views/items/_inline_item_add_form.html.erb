@@ -34,7 +34,8 @@
               items.map do |item|
                 [ h("#{item.name} : #{item.title}"), item.id ]
               end, "" ),
-          :style => 'width: 62%;'
+          :style => 'width: 62%;', :onfocus => 'selectOnfocusHandler(this);',
+          :onchange => "selectOnchangeHandler(this, '#{con.type_item.id}');"
      %>
 
      <%= f.submit "Add", :style => 'width: 3em;' %>

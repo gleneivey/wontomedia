@@ -30,7 +30,7 @@
   if show_class_control %>
     <h1>Make a new item</h1>
   <% else %>
-    <h1>Enger a new <%= @item.class_item.name -%></h1>
+    <h1>Enter a new <%= @item.class_item.name -%></h1>
   <% end
  %>
 
@@ -63,6 +63,11 @@
      popped us up.  Call function to wire library functions to the form
      elements we've just loaded. -->
 <script type="text/javascript">
+  <% if @item.sti_type.nil? %>
+    $('item_sti_type').focus();
+  <% else %>
+    $('item_title').focus();
+  <% end %>
   genNameFromTitleOk = true;
   plumbEventHandlersToItemCreationElements("submitViaModalbox");
 </script>

@@ -308,3 +308,10 @@
   <% end %>
   $('div-for-type-class').innerHTML = content;
 </script>
+
+<% content_for :first_bottom_page_js do %>
+  <script type="text/javascript">
+    inAnItemsForm = false;        // meant to indicate items/new or items/edit
+    creatingNewItem = true;
+  </script>
+<% end %>

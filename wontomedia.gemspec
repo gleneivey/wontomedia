@@ -150,6 +150,7 @@ Gem::Specification.new do |s|
      "public/javascripts/fancybox.js",
      "public/javascripts/forConnectionsForms.js",
      "public/javascripts/forItemsForms.js",
+     "public/javascripts/forItemsShow.js",
      "public/javascripts/itemCreatePopup.js",
      "public/javascripts/itemTitleToName.js",
      "public/javascripts/jquery.js",

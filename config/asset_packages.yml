@@ -36,6 +36,7 @@ javascripts:
   - itemCreatePopup
   - itemTitleToName
   - forItemsForms
+  - forItemsShow
   - event.simulate
   - modalbox
 stylesheets:
