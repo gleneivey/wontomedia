@@ -97,7 +97,7 @@
   padding-left: 0;
 }
 .instance-list li {
-  color: #ffff60;
+  color: #f4f420;
   margin-right: 1.5em;
   display: inline;
 }
@@ -107,35 +107,40 @@
 }
 .instance-list li span {
   color: black;
+  white-space: nowrap;
 }
 </style>
 
 <% if @item.is_class? %>
+<div style='margin-bottom: 5ex;'>
   <h2 class="subheading"><%= h filter_parenthetical @item.title -%></h2>
-  <ul class='instance-list'>
+  <ul class='instance-list' style='font-size: 115%;'>
     <%
       # we know that all the connections where this item is the object are
       # located in the last array within @connection_list.  Search through
       # it for all of the connections where 'is_instance_of' is the predicate
 
       iio_item_id = nil
-      @connection_list[-1].each do |maybe_iio_connection|
-        unless iio_item_id
-          if @item_hash[maybe_iio_connection.predicate_id].
-              name == 'is_instance_of'
-            iio_item_id = maybe_iio_connection.predicate_id
-          end
-        end
+      @connection_list[-1].select do |maybe_iio_connection|
+	  unless iio_item_id
+	    if @item_hash[maybe_iio_connection.predicate_id].
+		name == 'is_instance_of'
+	      iio_item_id = maybe_iio_connection.predicate_id
+	    end
+	  end
 
-        if iio_item_id == maybe_iio_connection.predicate_id %>
+	  iio_item_id == maybe_iio_connection.predicate_id
+        end.
+        map{|connection| @item_hash[connection.subject_id] }.
+        sort{|a,b| last_word(filter_parenthetical(a.title)) <=>
+                   last_word(filter_parenthetical(b.title))      }.
+        each do |item| %>
           <li><span>
-            <%= item = @item_hash[maybe_iio_connection.subject_id]
-                link_to (h item.name), item_by_name_path(item.name) %>
+            <%= link_to (h filter_parenthetical item.title), item_by_name_path(item.name) %>
           </span></li>
-        <% end %>
-    <% end %>
+     <% end %>
   </ul>
-<% end %>
+</div><% end %>
 
 
 <h3 class="subheading">This Class' Relationships</h3>
