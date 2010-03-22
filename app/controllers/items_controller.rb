@@ -258,6 +258,27 @@ class ItemsController < ApplicationController
       end
     end
 
+    # add blank-object connections to serve as basis for connection "quick add"
+    if class_item = @item.instance_of
+      find_applied_properties( class_item ).each do |property_item|
+        if Connection.first( :conditions =>
+            [ "subject_id = ? AND predicate_id = ?",
+            property_item.id, Item.find_by_name('has_scalar_object').id ])
+          new_kind = Connection::OBJECT_KIND_SCALAR
+        elsif Connection.first( :conditions =>
+            [ "subject_id = ? AND predicate_id = ?",
+            property_item.id, Item.find_by_name('has_item_object').id ])
+          new_kind = Connection::OBJECT_KIND_ITEM
+        else
+          new_kind = nil
+        end
+
+        used_as_subj << Connection.new({ :subject_id => @item.id,
+          :predicate_id => property_item.id, :kind_of_obj => new_kind })
+      end
+    end
+
+
     # find all of the Items referenced by the connections the view will list
     @item_hash = {}
     [ used_as_subj, used_as_pred, used_as_obj ].each do |connection_array|
@@ -282,24 +303,6 @@ class ItemsController < ApplicationController
       # first group, all connections *from* this item
     # start with explicit connections
     connections = used_as_subj
-
-    # add connecctions not in db implied by inverse of others
-    if class_item = @item.instance_of
-      applies_connections = Connection.all( :conditions => [
-        "predicate_id = ? AND obj_id = ?",
-        Item.find_by_name('applies_to_class').id, class_item.id ] )
-      if applies_connections
-        applies_connections.each do |connection|
-          pred_id = connection.subject.id
-          unless @item_hash[pred_id]
-            @item_hash[pred_id] = connection.subject
-          end
-          connections << Connection.new({
-            :subject_id => @item.id, :predicate_id => pred_id })
-        end
-      end
-    end
-
     # sort and add as a group to array-of-arrays for view
     unless connections.empty?
       count_hash = {}
@@ -554,5 +557,25 @@ private
     @item.sti_type = type_string unless type_string.nil?
     yield if block_given?
     setup_for_form
+  end
+
+  def find_applied_properties( class_item )
+    recursive_find_applied_properties(
+      class_item, Item.find_by_name('applies_to_class') ).flatten
+  end
+  def recursive_find_applied_properties( class_item, joining_prop )
+    con_array = Connection.all( :conditions => [
+      "predicate_id = ? AND obj_id = ?",
+      joining_prop.id, class_item.id ] )
+    return [] if con_array.nil?
+    con_array.map do |connection|
+      item = connection.subject
+      if item.sti_type == ItemHelper::ITEM_PROPERTY_CLASS_NAME
+        item
+      else # prop is_instance_of prop-class; prop-class applied_to_class 'us'
+        recursive_find_applied_properties( item,
+          Item.find_by_name('is_instance_of') )
+      end
+    end
   end
 end
