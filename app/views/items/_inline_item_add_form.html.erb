@@ -18,4 +18,30 @@
 %>
 
 
-add item object
+
+<% form_for( con, :url => connections_path+"?goto=#{@item.name}" ) do |f|
+     @connection = con  # yes, fibbing to Rails, so shoot me....
+     %>
+     <%= hidden_field :connection, :subject_id %>
+     <%= hidden_field :connection, :predicate_id %>
+     <%= hidden_field :connection, :kind_of_obj %>
+
+    <%= select_tag "connection[obj_id]",
+          options_for_select(
+            [[ "- to this item -", "" ],
+             [ "- create a new item -", "-1" ],
+            ] +
+              items.map do |item|
+                [ h("#{item.name} : #{item.title}"), item.id ]
+              end, ""
+          )
+     %>
+
+     <%= f.submit "Add", :style => 'width: 3em;' %>
+     <% unless @add_item_help_icon_used %>
+       <%= popup_help_icon "Help for item-value add",
+             "Help:Popup/InlineAddItem" %>
+     <% end
+        @add_item_help_icon_used = true
+      %>
+<% end %>

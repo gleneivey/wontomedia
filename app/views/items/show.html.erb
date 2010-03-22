@@ -155,6 +155,7 @@
      @add_item_help_icon_used = false
 
      array_of_arrays_of_connections = @connection_list.to_enum
+all_items = Item.all
 
 
      # first, put all connections w/ current item-is-subject into indented list
@@ -211,8 +212,12 @@
                      :locals => { :con => connection } %>
              <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM &&
                     connection.obj_id.nil? %>
-               <%= render :partial => "inline_item_add_form",
-                     :locals => { :con => connection } %>
+               <%=
+items= all_items
+                   render :partial => "inline_item_add_form",
+                     :locals => {
+                       :con => connection,
+                       :items => items } %>
              <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
                <%= item = @item_hash[connection.obj_id]
                    link_with_tooltip (h filter_parenthetical item.title ),
