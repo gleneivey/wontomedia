@@ -26,6 +26,7 @@
 # starts.  It can be deleted, this file reloaded, and then ItemHelper
 # references will work normally.  Go figure. -- gei 2010/2/24
 require Rails.root.join( 'lib', 'helpers', 'item_helper')
+require Rails.root.join( 'lib', 'helpers', 'connection_helper')
 require 'yaml'
 
 # See also the matching model Item
@@ -278,17 +279,11 @@ class ItemsController < ApplicationController
     value_id = Item.find_by_name("value_relationship").id
     spo_id   = Item.find_by_name("sub_property_of").id
 
-    # first group, all connections *from* this item with value-type predicates
-    connections = []
-    used_as_subj.each do |connection|
-      if TrippleNavigation.check_properties(
-          :does => connection.predicate_id, :via => spo_id,
-          :inherit_from => value_id )
-        connections << connection
-      end
-    end
-    used_as_subj -= connections # if done incrementally, breaks iterator
+      # first group, all connections *from* this item
+    # start with explicit connections
+    connections = used_as_subj
 
+    # add connecctions not in db implied by inverse of others
     if class_item = @item.instance_of
       applies_connections = Connection.all( :conditions => [
         "predicate_id = ? AND obj_id = ?",
@@ -305,51 +300,23 @@ class ItemsController < ApplicationController
       end
     end
 
+    # sort and add as a group to array-of-arrays for view
     unless connections.empty?
-      @connection_list << connections
-    end
-
-
-    # next N groups: 1 group for connections *from* this item with >1 of
-    #   same pred.
-    #figure out which predicates occur >1, how many they occur, sort & group
-    pred_counts = {}
-    connection_using_pred = {}
-    used_as_subj.each do |connection|
-      if pred_counts[connection.predicate_id].nil?
-        pred_counts[connection.predicate_id] = 1
-      else
-        pred_counts[connection.predicate_id] += 1
-      end
-      connection_using_pred[connection.predicate_id] = connection
-    end
-    subj_connections = pred_counts.keys
-    subj_connections.sort! { |a,b| pred_counts[b] <=> pred_counts[a] }
-    array_of_singles = []
-    subj_connections.each do |predicate_id|
-      if pred_counts[predicate_id] > 1
-        connections = []
-        used_as_subj.each do |connection|
-            # lazy, more hashes would eliminate rescan
-          if connection.predicate_id == predicate_id
-            connections << connection
-          end
+      count_hash = {}
+      connections.each do |con|
+        if count_hash[con.predicate_id].nil?
+          count_hash[con.predicate_id] = 0
         end
-        unless connections.empty?
-          @connection_list << connections
-        end
-      else
-        array_of_singles << connection_using_pred[predicate_id]
+        count_hash[con.predicate_id] += 1
       end
+
+      @connection_list << ( connections.sort do |a,b|
+          ConnectionHelper.compare( a, b, count_hash )
+        end )
     end
 
-    # last group of connections *from* current item:
-    #   all connections w/ used-once pred's
-    unless array_of_singles.empty?
-      @connection_list << array_of_singles
-    end
 
-
+      # next groups
     used_as_obj.sort! do |a,b|
       a.predicate_id <=> b.predicate_id
     end

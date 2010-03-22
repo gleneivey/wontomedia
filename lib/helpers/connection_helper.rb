@@ -55,29 +55,30 @@ module ConnectionHelper
     if a.kind_of_obj && b.kind_of_obj && a.kind_of_obj != b.kind_of_obj
       return a.kind_of_obj == Connection::OBJECT_KIND_ITEM ? 1 : -1
     end
-    # connection with blank object intended to be a scalar
-    a_kind = Connection.first( :conditions => [
-        "subject_id = ? AND predicate_id = ?", a.predicate_id,
-        Item.find_by_name('has_scalar_object') ])
-    b_kind = Connection.first( :conditions => [
-        "subject_id = ? AND predicate_id = ?", b.predicate_id,
-        Item.find_by_name('has_scalar_object') ])
-    if a_kind != b_kind
-      return a_kind.nil? ? 1 : -1
+    if a.kind_of_obj.nil? || b.kind_of_obj.nil?
+      # connection with blank object intended to be a scalar
+      a_kind = Connection.first( :conditions => [
+          "subject_id = ? AND predicate_id = ?", a.predicate_id,
+          Item.find_by_name('has_scalar_object') ])
+      b_kind = Connection.first( :conditions => [
+          "subject_id = ? AND predicate_id = ?", b.predicate_id,
+          Item.find_by_name('has_scalar_object') ])
+      if a_kind != b_kind
+        return a_kind.nil? ? 1 : -1
+      end
     end
 
     # relationships w/ predicates constrained by max_uses_per_item:
     #   sort lower maximums closer to top of list.  Sort unconstrained
     #   predicates as "infinite maximum"
+    max_uses = Item.find_by_name('max_uses_per_item')
     a_max = Connection.first( :conditions => [
-      "subject_id = ? AND predicate_id = ?", a.predicate_id,
-      Item.find_by_name('max_uses_per_item') ])
+      "subject_id = ? AND predicate_id = ?", a.predicate_id, max_uses.id ])
     unless a_max.nil?
       a_max = a_max.scalar_obj.nil? ? nil : a_max.scalar_obj.to_i
     end
     b_max = Connection.first( :conditions => [
-      "subject_id = ? AND predicate_id = ?", b.predicate_id,
-      Item.find_by_name('max_uses_per_item') ])
+      "subject_id = ? AND predicate_id = ?", b.predicate_id, max_uses.id ])
     unless b_max.nil?
       b_max = b_max.scalar_obj.nil? ? nil : b_max.scalar_obj.to_i
     end

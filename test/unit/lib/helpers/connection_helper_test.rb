@@ -60,9 +60,9 @@ class ConnectionHelperTest < ActiveSupport::TestCase
     assert ConnectionHelper.compare( blank_obj, blank_obj ) == 0
   end
 
-  # sortPropertyX
-  # sortProperty1  (sortPropery1 max_uses_per_item '1')
-  # sortProperty4  (sortPropery1 max_uses_per_item '4')
+  # sortable_sortX sortPropertyX
+  # sortable_sort1 sortProperty1  (sortPropery1 max_uses_per_item '1')
+  # sortable_sort4 sortProperty4  (sortPropery1 max_uses_per_item '4')
   test "connection compare_property maximums" do
     assert ConnectionHelper.compare(
       connections(:sortable_sortX), connections(:sortable_sort1) ) > 0
