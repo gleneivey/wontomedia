@@ -199,7 +199,9 @@ class ItemsShowViewTest < ActionController::TestCase
             test_sense )
           # delete link present/absent
           assert_select(
-            "a[href=\"#{connection_path(connection)}\"][onclick*=\"delete\"]",
+            "a[href=\"#{connection_path(connection)}\?"+
+              "goto=#{item_by_name_path(item.name)}\"]"+
+              "[onclick*=\"delete\"]",
             test_sense )
         end
       end
