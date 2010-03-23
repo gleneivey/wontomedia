@@ -228,7 +228,10 @@
                      h( item.name ), item_by_name_path(item.name) %>
 
              <% else %>
-               <%= h connection.scalar_obj %>
+               <%= @properties_of_url_type[connection.predicate_id]          ?
+                   link_to( h(connection.scalar_obj), connection.scalar_obj)   :
+                   h(connection.scalar_obj)
+                %>
              <% end %>
            </li>
 

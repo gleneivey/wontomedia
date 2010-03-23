@@ -364,11 +364,17 @@ class ItemsController < ApplicationController
     unless used_as_obj.empty?
       @connection_list << used_as_obj
     end
-
-
     unless used_as_pred.empty?
       @connection_list << used_as_pred
     end
+
+
+    @properties_of_url_type = {}
+    Connection.all( :conditions => [
+        "predicate_id = ? AND obj_id = ?",
+        Item.find_by_name('has_scalar_object').id,
+        Item.find_by_name('URL_Value').id
+      ]).each {|con| @properties_of_url_type[con.subject_id] = true }
   end
 
   # GET /items/1/edit
