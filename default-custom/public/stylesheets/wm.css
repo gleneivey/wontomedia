@@ -168,7 +168,11 @@ hr {
   padding-left: 1em;
   text-indent: -1em;
 }
-
+.floating-links {
+  float: right;
+  font-size: 80%;
+  margin-right: 6em;
+}
 
         /* set apart stuff that is in development */
 .unimplemented {

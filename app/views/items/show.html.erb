@@ -122,14 +122,14 @@
 
       iio_item_id = nil
       @connection_list[-1].select do |maybe_iio_connection|
-	  unless iio_item_id
-	    if @item_hash[maybe_iio_connection.predicate_id].
-		name == 'is_instance_of'
-	      iio_item_id = maybe_iio_connection.predicate_id
-	    end
-	  end
+          unless iio_item_id
+            if @item_hash[maybe_iio_connection.predicate_id].
+                name == 'is_instance_of'
+              iio_item_id = maybe_iio_connection.predicate_id
+            end
+          end
 
-	  iio_item_id == maybe_iio_connection.predicate_id
+          iio_item_id == maybe_iio_connection.predicate_id
         end.
         map{|connection| @item_hash[connection.subject_id] }.
         sort{|a,b| last_word(filter_parenthetical(a.title)) <=>
@@ -158,6 +158,8 @@
      @delete_help_icon_used = false
      @add_scalar_help_icon_used = false
      @add_item_help_icon_used = false
+     item_counter = 0
+
 
      array_of_arrays_of_connections = @connection_list.to_enum
 
@@ -199,12 +201,15 @@
                    link_with_tooltip (h filter_parenthetical item.title ),
                      h( item.name ), item_by_name_path(item.name) %>
                <ul style="list-style-type: circle;">
-<%         end %>
+<%         end
 
-           <li>
-             <div style="float: right; font-size: 80%; margin-right: 6em;">
+
+           item_counter += 1
+ %>        <li id='object-item-<%= item_counter -%>' >
+             <div class="floating-links">
                <% if connection.id
-                    generate_connection_links(connection)
+                    generate_connection_links(connection,
+                      item_by_name_path(@item.name) )
                   elsif connection.obj_id
                     generate_inverse_link(@inverses_map[connection])
                   end %>
@@ -213,14 +218,17 @@
              <% if connection.kind_of_obj == Connection::OBJECT_KIND_SCALAR &&
                     connection.scalar_obj.nil? %>
                <%= render :partial => "inline_scalar_add_form",
-                     :locals => { :con => connection } %>
+                     :layout => "inline_add_popopen",
+                     :locals => { :con => connection, :id => item_counter } %>
 
              <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM &&
                     connection.obj_id.nil? %>
                <%= items = @intances_of_type_item_classes[connection.type_item]
                    items = Item.all unless !items.nil?
                    render :partial => "inline_item_add_form",
-                     :locals => { :con => connection, :items => items } %>
+                     :layout => "inline_add_popopen",
+                     :locals => { :con => connection, :items => items,
+                       :id => item_counter } %>
 
              <% elsif connection.kind_of_obj == Connection::OBJECT_KIND_ITEM %>
                <%= item = @item_hash[connection.obj_id]
@@ -285,7 +293,8 @@
                  <% end %>
                </td><td style="font-size: 80%">
                  <% if connection.id
-                      generate_connection_links(connection)
+                      generate_connection_links(connection,
+                        item_by_name_path(@item.name) )
                     else
                       generate_inverse_link(@inverses_map[connection])
                     end %>
