@@ -34,7 +34,7 @@ module ConnectionsHelper
   # the first occurrance of that link in the current view.  An instance
   # variable is created within the current view object to flag the
   # generation of each type of link.
-  def generate_connection_links(con)
+  def generate_connection_links(con, after_delete = nil)
     concat(
       link_with_help_icon({
         :destination => link_to( 'Show', connection_path(con) ),
@@ -53,10 +53,11 @@ module ConnectionsHelper
           :which_help => 'ConnectionEdit' }) )
       @edit_help_icon_used = true
 
+      goto_param = after_delete ? '?goto='+after_delete : ''
       concat(
         link_with_help_icon({
           :destination => link_to(
-            'Delete', connection_path(con), :rel => 'nofollow',
+            'Delete', connection_path(con)+goto_param, :rel => 'nofollow',
             :confirm => 'Are you sure?', :method => :delete ),
           :already_generated => @delete_help_icon_used,
           :help_alt => 'Help delete connection',

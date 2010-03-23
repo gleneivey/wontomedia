@@ -145,4 +145,36 @@ module ItemsHelper
     options_for_select( option_array,
       this_class_item.nil? ? "" : this_class_item.id )
   end
+
+  def link_to_item_by_name(name, text=nil)
+    init_name_to_item_hash unless defined? @items_by_name
+
+    item = @items_by_name[name]
+    if item
+      return link_to( (text ? text : h(item.title)),
+        item_by_name_path(item.name) )
+    else
+      return '<i>[missing]</i>'
+    end
+  end
+
+  def link_to_create_instance_of(name, text=nil)
+    init_name_to_item_hash unless defined? @items_by_name
+
+    item = @items_by_name[name]
+    if item
+      return link_to(
+        text ? text : "Add a new <b>#{h name}</b>",
+        new_item_path + "?class_item=" + item.id.to_s )
+    else
+      return '<i>[missing]</i>'
+    end
+  end
+
+  def init_name_to_item_hash
+    @items_by_name = {}
+    @nouns.each do |item|
+      @items_by_name[item.name] = item
+    end
+  end
 end

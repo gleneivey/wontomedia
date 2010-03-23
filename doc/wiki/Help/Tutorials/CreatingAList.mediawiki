@@ -4,7 +4,7 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-In a [[Help:GlossaryPtoZ#anchcor_Wontology|wontology]] information is represented as a collection of [[Help:GlossaryAtoO#anchor_Item|items]] (see the tutorial "[[Help:Tutorials/CreatingAnItem|Creating a item]]") and [[Help:GlossaryAtoO#anchor_Connection|connections]] (see the tutorial "[[Help:Tutorials/Creating a Connection|Creating a connection]]").
+In a [[Help:GlossaryPtoZ#anchcor_Wontology|wontology]] information is represented as a collection of [[Help:GlossaryAtoO#anchor_Item|items]] (see the tutorial "[[Help:Tutorials/CreatingAnItem|Creating an item]]") and [[Help:GlossaryAtoO#anchor_Connection|connections]] (see the tutorial "[[Help:Tutorials/Creating a Connection|Creating a connection]]").
 
 This tutorial describes the creation of a simple unordered list.  You can make a list in an [[Help:GlossaryAtoO#anchor_Ontology|ontology]] ordered, but that requires the creation of more connections ([[Help:GlossaryPtoZ#anchor_Relationship|relationships]]) between the list entries than will be shown here, and typically will use [[Help:GlossaryPtoZ#anchor_Property|properties]] from the [[Help:GlossaryPtoZ#anchor_RDF|RDF]] standard (rdf:Seq, rdf:List, rdf:fist, rdf:rest, rdf:_1, rdfs:member).  These properties are not yet provided as a built-in part of [[Help:GlossaryPtoZ#anchor_WontoMedia|WontoMedia]], as described in the [[Major Roadmap|planned features page]].
 

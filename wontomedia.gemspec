@@ -48,6 +48,7 @@ Gem::Specification.new do |s|
      "app/views/items/_content_examples.html.erb",
      "app/views/items/_core_tasks.html.erb",
      "app/views/items/_form_fields.html.erb",
+     "app/views/items/_inline_add_popopen.html.erb",
      "app/views/items/_inline_item_add_form.html.erb",
      "app/views/items/_inline_scalar_add_form.html.erb",
      "app/views/items/_list_outbound_links.html.erb",

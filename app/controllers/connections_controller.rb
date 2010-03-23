@@ -143,7 +143,7 @@ class ConnectionsController < ApplicationController
       redirect_to connection_path(@connection)
     else
       @connection.destroy
-      redirect_to connections_url
+      redirect_to( params[:goto] ? params[:goto] : connections_url )
     end
   end
 

@@ -38,6 +38,11 @@ module FormatHelper
     title_out
   end
 
+  def last_word(text)
+    text =~ /([^\s]+)$/
+    $1
+  end
+
   # This method is used to wrap long strings that don't contain spaces
   # (which would allow the browser to wrap them), such as an
   # <tt>Item.name</tt> string.  The +len+ parameter is a length in
