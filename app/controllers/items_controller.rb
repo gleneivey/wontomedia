@@ -261,7 +261,23 @@ class ItemsController < ApplicationController
     # add blank-object connections to serve as basis for connection "quick add"
     @intances_of_type_item_classes = {}
     if class_item = @item.instance_of
-      find_applied_properties( class_item ).each do |property_item|
+      find_applied_properties( class_item ).select do |property_item|
+        if (max_connection = Connection.first( :conditions => [
+              "subject_id = ? AND predicate_id = ?",
+              property_item.id, Item.find_by_name('max_uses_per_item').id ])) &&
+            max_connection.kind_of_obj == Connection::OBJECT_KIND_SCALAR      &&
+            (max = max_connection.scalar_obj.to_i) > 0
+
+          count = Connection.all(
+              :conditions => [ "subject_id = ? AND predicate_id = ?",
+              @item.id, property_item.id ]).
+            length
+
+          count < max
+        else
+          true
+        end
+      end.each do |property_item|
         if connection = Connection.first( :conditions =>
             [ "subject_id = ? AND predicate_id = ?",
             property_item.id, Item.find_by_name('has_scalar_object').id ])
