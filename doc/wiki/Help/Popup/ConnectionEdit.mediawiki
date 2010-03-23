@@ -4,4 +4,4 @@
      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
      A copy of the license is in the file COPYING.DOCUMENTATION
   -->
-Click the '''Edit...''' link to go to the <tt>Edit</tt> page for that particular connection.  An connection's <tt>Edit</tt> page allows the items which the connection references to be changed, or a new item for the connection to reference to be created.
+Click the '''Edit...''' link to go to the <tt>Edit</tt> page for that particular connection.  A connection's <tt>Edit</tt> page allows the items which the connection references to be changed, or a new item for the connection to reference to be created.
