@@ -23,6 +23,7 @@ ActionController::Routing::Routes.draw do |map|
     :permanent => true
 
   # more specific routes that override...
+  map.sitemap '/sitemap.xml', :controller => :admin, :action => :sitemap
   map.items_lookup '/items/lookup', :controller => :items, :action => :lookup,
     :path_prefix => '/w'
   map.itemCreatePopup '/items/new-pop', :controller => :items,

@@ -171,4 +171,51 @@ class AdminController < ApplicationController
     @search_query = params[:q].sub( /\+/, ' ')
     render :layout => "search"
   end
+
+  def sitemap
+    result_text = <<PLAIN_XML
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>#{root_url}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.25</priority>
+  </url>
+  <url>
+    <loc>#{items_url}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>#{connections_url}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.35</priority>
+  </url>
+PLAIN_XML
+
+    Item.all.each do |item|
+      result_text += "  <url>\n"
+      result_text += "    <loc>#{item_by_name_url(item.name)}</loc>\n"
+      result_text += "    <lastmod>#{item.updated_at.to_s(:db)}</lastmod>\n"
+      result_text += "    <changefreq>monthly</changefreq>\n"
+      priority = (item.flags & Item::DATA_IS_UNALTERABLE)==0 ? '1.0' : '0.1'
+      result_text += "    <priority>#{priority}</priority>\n"
+      result_text += "  </url>\n"
+    end
+
+    Connection.all.each do |connection|
+      result_text += "  <url>\n"
+      result_text += "    <loc>#{connection_url(connection)}</loc>\n"
+      result_text += "    <lastmod>" +
+        "#{connection.updated_at.to_s(:db)}</lastmod>\n"
+      result_text += "    <changefreq>monthly</changefreq>\n"
+      priority = (connection.flags & Connection::DATA_IS_UNALTERABLE)==0 ?
+        '0.5' : '0.1'
+      result_text += "    <priority>#{priority}</priority>\n"
+      result_text += "  </url>\n"
+    end
+
+    result_text += "</urlset>\n"
+    render :text => result_text
+  end
 end
