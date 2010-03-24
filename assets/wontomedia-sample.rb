@@ -31,6 +31,12 @@ WontoMedia = OpenStruct.new({
     "http://wiki.wontology.org/wiki/help.php?title=Wontology:",
   :site_content_url_postfix => '',
 
+  :search => OpenStruct.new({
+#    :google_site_search => true,              # flag indicating kind of search
+#    :publisher_id => "partner-pub-2447626445162341",
+#    :search_engine => "pcrhs4-9v0t",
+  }),
+
   :ads => OpenStruct.new({
 #    :amazon => OpenStruct.new({
 #              # the color scheme of Amazon ads is controlled from JS constants

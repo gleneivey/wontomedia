@@ -67,7 +67,7 @@ function plumbEventHandlersToItemCreationElements(customizationSelector){
     var newItemId;
     for (var c=0; c < arrayOfForms.length; c++){
       newItemId = arrayOfForms[c].id;
-      var mtch = newItemId.match(/item$/);
+      var mtch = newItemId.match(/item/);
       if (mtch != null)
         break;
     }
