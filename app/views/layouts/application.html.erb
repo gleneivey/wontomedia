@@ -44,8 +44,8 @@
 
   <div id="float-left" style="float: left; width: 14.4%;">
     <div id="container-absolutes">
-      <div id="block-search"
-           style="width: 19%; position: absolute; top: 0; right: 0;">
+      <div id="block-search-container"
+           style="width: 15%; position: absolute; top: 0; right: 0;">
         <%= render :partial => "layouts/search_box" %>
       </div>
       <div id="page-top-controls"
@@ -55,8 +55,10 @@
         <%= render :partial => "layouts/login_controls" %>
       </div>
     </div>
-    <div id="column-left">
-      <%= link_to( logo_image, root_url ) %>
+    <div id="column-left" style="text-align: center;">
+      <%= link_to logo_image, root_url %>
+      <%= link_to 'Home', root_url,
+            :style => 'position: relative; bottom: 1.2ex;' %>
       <%= allpages_alert %>
       <%= render :partial => "layouts/amazon_ads" %>
     </div>

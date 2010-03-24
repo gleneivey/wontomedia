@@ -69,7 +69,7 @@ div#fancybox-outer {
   top: 0;
   left: 15.5%;
   height: 8ex;
-  width: 69.7%;
+  width: 84.5%
   overflow: hidden;
 }
 .content {
@@ -230,6 +230,27 @@ p + table {   margin-bottom: 1.5em;  }
 .wrapper {
   color: #ffff00;
   letter-spacing: -0.3em;
+}
+
+#block-search {
+  border-width: 2px;
+  border-color: #e8e8ff;
+  border-style: none none solid solid;
+  background: url("/images/transparent_ltblue_background.png") repeat;
+  height: 5.8ex;
+}
+
+#block-search input[type=text] {
+  width: 98.5%;
+  border: solid 1px #b0b0ff;
+}
+#block-search input[type=submit] {
+  border: solid 1px #b0b0ff;
+  background: #e8e8ff;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 0;
+  margin: 2px 0 0 3px;
 }
 
 #block-help {
