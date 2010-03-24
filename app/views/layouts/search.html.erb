@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<%
+# WontoMedia - a wontology web application
+# Copyright (C) 2010 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see "http://www.gnu.org/licenses/".
+%>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <% if @title_text %>
+      <title><%= @title_text +
+                   (@window_title_addendum.nil? ? '' : @window_title_addendum) +
+                   " &mdash; " + WontoMedia.site_title -%></title>
+    <% else %>
+      <title><%= WontoMedia.site_title -%></title>
+    <% end %>
+    <%= stylesheet_link_merged :base %>
+    <%= yield :head %>
+  </head>
+  <body style="margin-top: 0">
+    <div id="tag-line" class="page-title-text">
+      <h1>
+        Search Results:
+        <span style="font-size: 80%; text-decoration: underline;">
+          <%= @search_query -%></span>
+      </h1>
+    </div>
+
+    <div id="float-center-right"
+         style="float: right; width: 85%; margin-top: 8ex;">
+      <div id="column-content">
+
+        <%= render :partial => "layouts/status_msgs" %>
+        <%= yield(:page_body) or yield %>
+
+      </div>
+    </div>
+
+    <div id="float-left" style="float: left; width: 14.4%;">
+      <div id="container-absolutes">
+        <div id="block-search-container"
+             style="width: 15%; position: absolute; top: 0; right: 0;">
+          <%= render :partial => "layouts/search_box" %>
+        </div>
+        <div id="page-top-controls"
+             style="position: absolute; top: 0; right: 15.6%;">
+          <%= render :partial => "layouts/master_help" %>
+          <%= render :partial => "layouts/language_select" %>
+          <%= render :partial => "layouts/login_controls" %>
+        </div>
+      </div>
+      <div id="column-left">
+        <%= link_to( logo_image, root_url ) %>
+        <%= link_to 'Home', root_url,
+              :style => 'position: relative; bottom: 1.2ex;' %>
+        <%= allpages_alert %>
+        <%= yield( :left_column ) %>
+      </div>
+    </div>
+
+    <%= render :partial => "layouts/footer" %>
+  </body>
+</html>

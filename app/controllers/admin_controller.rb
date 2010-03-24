@@ -165,4 +165,10 @@ class AdminController < ApplicationController
     end
     redirect_to :action => 'index'
   end
+
+  def search
+    @title_text = 'Search Results'
+    @search_query = params[:q].sub( /\+/, ' ')
+    render :layout => "search"
+  end
 end

@@ -39,6 +39,7 @@ ActionController::Routing::Routes.draw do |map|
     :action => 'item_up'
   map.admin_connection_up '/w/admin/connection_up', :controller => 'admin',
     :action => 'connection_up'
+  map.search        '/w/search', :controller => 'admin', :action => 'search'
 
   # pretty URLs for items (match against all the "/w/" paths first)
   map.item_by_name '/:name', :controller => :items, :action => 'show',

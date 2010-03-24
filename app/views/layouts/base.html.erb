@@ -57,19 +57,7 @@
   <body style="margin-top: 0">
     <div id="whole-page">
       <%= yield(:page_body) or yield %>
-
-      <div id="block-footer" style="width: 100%; clear: both">
-        <p class="fine-print">
-          Copyright &copy; 2010, Glen E. Ivey &mdash;
-          Powered by <%= link_to 'WontoMedia',
-            'http://wontomedia.rubyforge.org/' %>
-          &mdash; Software and page templates licensed under
-          <%= link_to 'GNU AGPL v3',
-            'http://www.gnu.org/licenses/agpl-3.0.html' %>
-          &mdash; Page content licensed under <%= link_to 'GNU FDL v1.3',
-            'http://www.gnu.org/licenses/fdl-1.3.html' %>
-        </p>
-      </div>
+      <%= render :partial => "layouts/footer" %>
     </div>
     <%= yield(:first_bottom_page_js) %>
     <%= javascript_include_merged :bottomJS %>
