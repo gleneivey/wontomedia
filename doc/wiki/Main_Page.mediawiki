@@ -45,6 +45,7 @@ For reference, the tools we use are as follows (all [http://www.fsf.org/about/wh
 * the [http://www.rubygems.org/ Gems] Ruby software packaging and distribution system (v1.3.5)
 * [http://rubyforge.org/projects/wontomedia/ RubyForge], the open-source Ruby project hosting site, which hosts our [http://wontomedia.rubyforge.org/ project web site]
 * [https://github.com/gleneivey/wontomedia/tree GitHub], the public Git repository web site
+* [https://www.pivotaltracker.com/projects/9280 Pivotal Tracker], the agile work planning/tracking tool
 * various Ruby and web-based automated-testing tools, including:
 ** [http://cukes.info/ Cucumber] for our automated acceptance testing framework (v0.6.2)
 *** [http://github.com/brynary/webrat/tree/master Webrat] for browser simulation for acceptance testing of Rails-based code (v0.5.3)
