@@ -260,7 +260,9 @@ p + table {   margin-bottom: 1.5em;  }
   border-style: none solid solid;
   background: url("/images/transparent_ltblue_background.png") repeat;
   padding: 0 0.3em;
-  height: 2.7ex;
+  height: 5.8ex;
+}
+#block-help span {
   font-size: 200%;
 }
 
