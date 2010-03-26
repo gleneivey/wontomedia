@@ -82,6 +82,9 @@ function itemCreatePopup_Cancel(){
 }
 
 function itemCreatePopup_MakeSelection(){
+    // close Modalbox
+  Modalbox.hide();
+
   if (!($('MB_content').innerHTML.match(
       /Item\s+was\s+successfully\s+created/i))){
     itemSelectElementHavingNewItemAdded.value =
@@ -108,6 +111,28 @@ function itemCreatePopup_MakeSelection(){
 
     // make new item the selection in the operation-originating <select> control
   itemSelectElementHavingNewItemAdded.value = idNo;
+
+  // kludge for Safari:  WebKit (as-of Safari 4.0.4 3/2010) doesn't redisplay
+  // a <select> control when it's value is manipulated from JavaScript, even
+  // though the form will sumit correctly.  So, to force a redisplay, we
+  // remove the DOM node for the alread-set select control from the page, and
+  // then put it back.  Complexity arises from the fact it isn't the only
+  // element in its container; final "appendChild" is backup in case the
+  // complexity fails somehow.
+  var ourSelectControl = itemSelectElementHavingNewItemAdded;
+  var parent = ourSelectControl.parentNode;
+  var ourFollowingSibling = null;
+  for (var c=0; c < parent.childNodes.length; c++)
+    if (parent.childNodes[c] == ourSelectControl){
+      ourFollowingSibling = parent.childNodes[c+1]
+      break;
+    }
+  parent.removeChild(ourSelectControl);
+  if (ourFollowingSibling)
+    parent.insertBefore(ourSelectControl, ourFollowingSibling);
+  else
+    parent.appendChild(ourSelectControl);
+
   itemSelectElementHavingNewItemAdded.simulate('change');
   // Note: we're being lazy.  Just setting the value will cause an Ajax
   //    fetch to the server for the item's description.  However, we've
@@ -115,8 +140,5 @@ function itemCreatePopup_MakeSelection(){
   //    interrogating for idNo, name, and title.  However, supressing this
   //    fetch would take several lines of code and establish a tight linkage
   //    between here and the on-change logic for <select> elements.
-
-    // close Modalbox
-  Modalbox.hide();
 }
 
