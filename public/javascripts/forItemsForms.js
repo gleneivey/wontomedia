@@ -145,7 +145,7 @@ function plumbEventHandlersToItemCreationElements(customizationSelector){
     checkFieldLength(b, indexTitle);
     maybeClearIcon('title');
     if (creatingNewItem){
-      var emptyToNotEmpty = generateFromTitle(b, c);
+      var emptyToNotEmpty = generateFromTitle(b, c, checkName);
       if (emptyToNotEmpty){
         itemFormErrors["item_name"] = false;
         $('name_required').className = "";

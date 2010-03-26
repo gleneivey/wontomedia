@@ -23,7 +23,7 @@
 //   the function 'getCurrentType()'
 
 
-function generateFromTitle(titleInputElem, nameInputElem){
+function generateFromTitle(titleInputElem, nameInputElem, checkNameFn){
   var result = false;
   if (genNameFromTitleOk && titleInputElem.value != null){
     if (nameInputElem.value == null ||
@@ -32,6 +32,7 @@ function generateFromTitle(titleInputElem, nameInputElem){
 
     nameInputElem.value = genNameValue(titleInputElem.value);
     clearNameUniquenessIndicators();
+    checkNameFn();
   }
   return result;
 }
