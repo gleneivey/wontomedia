@@ -32,7 +32,8 @@ function generateFromTitle(titleInputElem, nameInputElem, checkNameFn){
 
     nameInputElem.value = genNameValue(titleInputElem.value);
     clearNameUniquenessIndicators();
-    checkNameFn();
+    if (checkNameFn)
+      checkNameFn();
   }
   return result;
 }

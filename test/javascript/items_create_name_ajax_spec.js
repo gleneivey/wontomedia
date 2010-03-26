@@ -103,7 +103,6 @@ Screw.Unit(function(){
       it( "performs check after item.Title set, item_title.blur()", function(){
         E('item_sti_type').value = "IndividualItem";
         changeNamedFieldToValue('item_title', "another new item");
-        E('item_description').focus();
 
         checkBeforeWorking();
         checkWorkingStart();
@@ -121,8 +120,6 @@ Screw.Unit(function(){
 
         // start entering a Title, which will auto-generate a Name
         changeFieldToValue(title, "start of title");
-        // focus on Name field will trigger uniqueness check
-        name.focus();
         checkBeforeWorking();
         checkWorkingStart();
         waitForAjax();
@@ -142,7 +139,7 @@ Screw.Unit(function(){
 
       function checkBeforeWorking(){
         // wait until just before the check should start, verify no activity
-        sleep(ajaxStartsAfter - timeMargin);
+        sleep(ajaxStartsAfter - (2*timeMargin));
         expectIndicatorsForNocheck();
       }
 
