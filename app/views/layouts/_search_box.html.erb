@@ -22,22 +22,29 @@
     if WontoMedia.search.google_site_search  and
           WontoMedia.search.publisher_id        and
           WontoMedia.search.search_engine           %>
-      <div id="block-search">
-        <form action="/w/search" id="cse-search-box">
-          <div>
-            <input type="hidden" name="cx"
-              value="<%=
-                WontoMedia.search.publisher_id + ':' +
-                WontoMedia.search.search_engine -%>" />
-            <input type="hidden" name="cof" value="FORID:10" />
-            <input type="hidden" name="ie" value="ISO-8859-1" />
-            <input type="text" name="q" size="20" />
-            <input type="submit" name="sa" value="Search" />
-          </div>
-        </form>
-        <script type="text/javascript"
-          src="http://www.google.com/cse/brand?form=cse-search-box&amp;lang=en"
-        ></script>
+      <div id="block-search"></div>
+      <script>
+        addToDivsToMove('block-search');
+      </script>
+
+      <% content_for :last_bottom_page_js do %>
+        <div id="block-search-content" style="display: none;">
+          <form action="/w/search" id="cse-search-box">
+            <div>
+              <input type="hidden" name="cx"
+                value="<%=
+                  WontoMedia.search.publisher_id + ':' +
+                  WontoMedia.search.search_engine -%>" />
+              <input type="hidden" name="cof" value="FORID:10" />
+              <input type="hidden" name="ie" value="ISO-8859-1" />
+              <input type="text" name="q" size="20" />
+              <input type="submit" name="sa" value="Search" />
+            </div>
+          </form>
+          <script type="text/javascript"
+            src="http://www.google.com/cse/brand?form=cse-search-box&amp;lang=en"
+          ></script>
       </div>
-<%  end
-   end %>
+    <% end %>
+  <% end %>
+<% end %>
