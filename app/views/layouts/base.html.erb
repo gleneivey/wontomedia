@@ -51,6 +51,16 @@
     <% else %>
       <%= javascript_include_merged :top %>
     <% end %>
+    <% unless RAILS_ENV == 'test'
+         if WontoMedia.analytics and
+            WontoMedia.analytics.google and
+            WontoMedia.analytics.google.profile_id %>
+           <script type="text/javascript">
+             window.google_analytics_uacct =
+               "<%= WontoMedia.analytics.google.profile_id -%>";
+           </script>
+<%       end
+       end %>
 
     <%= yield :head %>
   </head>
