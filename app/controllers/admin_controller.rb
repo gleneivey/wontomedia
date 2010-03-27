@@ -196,7 +196,7 @@ PLAIN_XML
     Item.all.each do |item|
       result_text += "  <url>\n"
       result_text += "    <loc>#{item_by_name_url(item.name)}</loc>\n"
-      result_text += "    <lastmod>#{item.updated_at.to_s(:db)}</lastmod>\n"
+      result_text += "    <lastmod>#{item.updated_at.to_s(:w3c) }</lastmod>\n"
       result_text += "    <changefreq>monthly</changefreq>\n"
       priority = (item.flags & Item::DATA_IS_UNALTERABLE)==0 ? '1.0' : '0.1'
       result_text += "    <priority>#{priority}</priority>\n"
@@ -207,7 +207,7 @@ PLAIN_XML
       result_text += "  <url>\n"
       result_text += "    <loc>#{connection_url(connection)}</loc>\n"
       result_text += "    <lastmod>" +
-        "#{connection.updated_at.to_s(:db)}</lastmod>\n"
+        "#{connection.updated_at.to_s(:w3c)}</lastmod>\n"
       result_text += "    <changefreq>monthly</changefreq>\n"
       priority = (connection.flags & Connection::DATA_IS_UNALTERABLE)==0 ?
         '0.5' : '0.1'
