@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-03-23}
+  s.date = %q{2010-03-26}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -240,6 +240,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://wontomedia.rubyforge.org}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
+  s.required_ruby_version = Gem::Requirement.new("~> 1.8.7")
   s.rubyforge_project = %q{wontomedia}
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{WontoMedia is a Ruby-on-Rails web app for community creation of an information classification scheme}
@@ -249,11 +250,14 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rails>, ["~> 2.2"])
+      s.add_runtime_dependency(%q<rake>, ["~> 0.8.7"])
+      s.add_runtime_dependency(%q<rails>, ["~> 2.3.5"])
     else
-      s.add_dependency(%q<rails>, ["~> 2.2"])
+      s.add_dependency(%q<rake>, ["~> 0.8.7"])
+      s.add_dependency(%q<rails>, ["~> 2.3.5"])
     end
   else
-    s.add_dependency(%q<rails>, ["~> 2.2"])
+    s.add_dependency(%q<rake>, ["~> 0.8.7"])
+    s.add_dependency(%q<rails>, ["~> 2.3.5"])
   end
 end
