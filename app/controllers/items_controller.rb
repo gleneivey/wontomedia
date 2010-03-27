@@ -102,7 +102,7 @@ class ItemsController < ApplicationController
     params[:item].delete :sti_type # don't mass-assign protected blah, blah
 
     @item = ItemHelper.new_typed_item(type_string, params[:item])
-    @example = Item.last()
+    @example = get_an_example_of @item
     @popup_flag = true if params[:popup_flag]
 
     if @item.nil?
@@ -565,8 +565,27 @@ private
     class_to_item_map
   end
 
+  def get_an_example_of( proto_item )
+    if proto_item && proto_item.class_item_id
+      connections_to_instances = Connection.all( :conditions => [
+        "(flags & #{Connection::DATA_IS_UNALTERABLE}) = 0 AND " +
+          "predicate_id = ? AND obj_id = ?",
+        Item.find_by_name('is_instance_of'), proto_item.class_item_id ] )
+
+      # TODO: replace with .choice when we migrate to Ruby 1.9
+      len = connections_to_instances.length
+      connection = connections_to_instances[ rand(len) ]
+      if connection
+        return Item.find_by_id connection.subject_id
+      end
+    end
+
+    return Item.last( :conditions => [
+      "(flags & #{Item::DATA_IS_UNALTERABLE}) = 0" ])
+  end
+
   def setup_for_form
-    @example = Item.last()
+    @example = get_an_example_of @item
     @class_list = all_class_items
     @class_to_item_map = map_of_item_types_for_class_items @class_list
     @this_is_non_information_page = true
