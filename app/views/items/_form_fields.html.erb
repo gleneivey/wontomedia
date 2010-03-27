@@ -18,11 +18,15 @@
 %>
 
 
-<p class="inputpara">
-  <%= f.label :title %>
+<p class="inputpara" style="position: relative;">
+  <span style="font-size: 120%; font-weight: bold;"><%=
+    f.label :title -%></span>
   <%= popup_help_icon "Help for title", "Help:Popup/ItemTitle" %>
   <%= image_tag "blank_error_icon.png", :id=>"title_error_icon", :alt=>"",
         :size=>"16x16" -%>
+  <span style="position: absolute; left: 10em; top: 0.3ex; height: 1ex; white-space: nowrap;">
+    <i>for example:</i>"<%= h @example.title -%>"
+  </span>
   <br />
   <%= f.text_field :title, :tabindex => "120", :style => "width: 75%;" %>
 </p><p class="directions">
@@ -34,13 +38,16 @@
   in small spaces.
 </p>
 
-<p class="inputpara">
-  <%= f.label :name %>
+<p class="inputpara" style="position: relative;">
+  <span style="font-size: 120%; font-weight: bold;"><%= f.label :name %></span>
   <%= popup_help_icon "Help for name", "Help:Popup/ItemName" %>
   <%= image_tag "blank_error_icon.png", :id=>"name_error_icon", :alt=>"",
         :size=>"16x16" %>
   <%= image_tag "blank_status_icon.png", :id=>"name_status_icon", :alt=>"",
         :size=>"32x16" %>
+  <span style="position: absolute; left: 10em; top: 0.3ex;">
+    <i>for example:</i>"<%= h @example.name -%>"
+  </span>
   <br />
   <%= f.text_field :name, :tabindex => "130", :style => "width: 55%;" %>
 </p><p class="directions">
@@ -54,7 +61,8 @@
 </p>
 
 <p class="inputpara">
-  <%= f.label :description %>
+  <span style="font-size: 120%; font-weight: bold;"><%=
+    f.label :description -%></span>
   <%= popup_help_icon "Help for description", "Help:Popup/ItemDescription" %>
   <%= image_tag "blank_error_icon.png", :id=>"description_error_icon", :alt=>"",
         :size=>"16x16" %>
