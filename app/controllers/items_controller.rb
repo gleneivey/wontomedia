@@ -102,6 +102,7 @@ class ItemsController < ApplicationController
     params[:item].delete :sti_type # don't mass-assign protected blah, blah
 
     @item = ItemHelper.new_typed_item(type_string, params[:item])
+    @example = Item.last()
     @popup_flag = true if params[:popup_flag]
 
     if @item.nil?
@@ -565,6 +566,7 @@ private
   end
 
   def setup_for_form
+    @example = Item.last()
     @class_list = all_class_items
     @class_to_item_map = map_of_item_types_for_class_items @class_list
     @this_is_non_information_page = true
