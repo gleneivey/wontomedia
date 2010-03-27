@@ -580,8 +580,9 @@ private
       end
     end
 
-    return Item.last( :conditions => [
+    item = Item.last( :conditions => [
       "(flags & #{Item::DATA_IS_UNALTERABLE}) = 0" ])
+    return item ? item : Item.last()   # make sure an empty install still works
   end
 
   def setup_for_form
