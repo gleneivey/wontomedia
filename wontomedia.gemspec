@@ -121,6 +121,7 @@ Gem::Specification.new do |s|
      "doc/README.markdown",
      "doc/README_FOR_APP",
      "doc/customization.markdown",
+     "doc/gemlist.txt",
      "doc/scripts/rake-customize.markdown",
      "lib/helpers/connection_helper.rb",
      "lib/helpers/item_helper.rb",
