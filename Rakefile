@@ -72,7 +72,11 @@ ENDOSTRING
     #     log pkg tmp
     # aren't included because developers are expected to pull from Git
 
-    s.add_dependency 'rails', '~>2.2'
+    s.required_ruby_version = '~>1.8.7'
+    s.add_dependency 'rake',  '~>0.8.7'
+    s.add_dependency 'rails', '~>2.3.5'
+    # can't run w/o a database interface gem, but don't want to specify
+    # a 'mysql' dependency in case we're being used with something else
   end
 
   task :build => :gemspec    # don't build a gem from a stale spec
