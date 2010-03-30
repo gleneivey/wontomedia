@@ -34,13 +34,35 @@ require 'webrat/core/matchers'
 ActionController::Base.allow_rescue = false
 
 
+
+## Load fixture data.  Only used by features that require complicated
+## enough pre-existing data structures that it would be distracting to
+## initialize them in each Scenario or in a Feature Background.
+## CONVENTION IS THAT:  (1) each .feature file uses its own set of
+## fixture data, that doesn't overlap or connect with data generated
+## in/used by other features, (2) the start of each such block is
+## marked in the fixture YAML files with a comment containing the name
+## of the .feature file, and (3) each feature contains a comment
+## reminding the reader of the existence of the fixtures files.
+
+fixtures_folder = File.join(RAILS_ROOT, 'features', 'fixtures')
+fixtures = Dir[File.join(fixtures_folder, '*.yml')].map do |f|
+  File.basename(f, '.yml')
+end
+Fixtures.reset_cache
+Fixtures.create_fixtures(fixtures_folder, fixtures)
+
+
+
 ######## really local stuff
 
 $KCODE = "u"
 
 require File.join( File.dirname(__FILE__), '..', '..', 'test', 'seed_helper' )
-require File.join( File.dirname(__FILE__), 'style_info' )
 load_wontomedia_app_seed_data
+
+require File.join( File.dirname(__FILE__), 'style_info' )
+
 
 
 ######## Cucumber doesn't have a switch to prevent use of DatabaseCleaner,

@@ -1,0 +1,102 @@
+# WontoMedia - a wontology web application
+# Copyright (C) 2010 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see <http://www.gnu.org/licenses/>.
+
+
+# "connection" schema: subject, predicate, kind_of_obj, obj, scalar_obj, flags
+#   also Rails-maintained created_at, updated_at which we ignore here
+
+
+
+###########################################################################
+#### fixtures for 'items_show_connection_create.feature'
+
+define_Ford:
+  subject: Ford
+  predicate: is_instance_of
+  obj: AutomobileMake
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+define_Toyota:
+  subject: Toyota
+  predicate: is_instance_of
+  obj: AutomobileMake
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+define_Fiesta:
+  subject: Fiesta
+  predicate: is_instance_of
+  obj: AutomobileModel
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+define_mBI:
+  subject: manufacturingBeganIn
+  predicate: applies_to_class
+  obj: AutomobileModel
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+schema_mBI:
+  subject: manufacturingBeganIn
+  predicate: has_scalar_object
+  obj: Date_Value
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+max_mBI:
+  subject: manufacturingBeganIn
+  predicate: max_uses_per_item
+  scalar_obj: 1
+  kind_of_obj: scalar
+  flags: <%= Connection::FIXTURE_DATA %>
+
+define_mEI:
+  subject: manufacturingEndedIn
+  predicate: applies_to_class
+  obj: AutomobileModel
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+schema_mEI:
+  subject: manufacturingEndedIn
+  predicate: has_scalar_object
+  obj: Date_Value
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+max_mEI:
+  subject: manufacturingEndedIn
+  predicate: max_uses_per_item
+  scalar_obj: 1
+  kind_of_obj: scalar
+  flags: <%= Connection::FIXTURE_DATA %>
+
+define_mI:
+  subject: makeIs
+  predicate: applies_to_class
+  obj: AutomobileModel
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+schema_mI:
+  subject: makeIs
+  predicate: has_item_object
+  obj: Value_True
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>

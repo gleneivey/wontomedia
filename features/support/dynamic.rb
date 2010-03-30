@@ -26,6 +26,16 @@ Webrat.configure do |config|
   config.application_environment = :test
   config.selenium_browser_startup_timeout = 40
 end
+
+# we can't use transactional fixtures because Rails and Cucumber have
+# separate database connections, so data we create here ("Given...")
+# is invisible to the app under test if it is hidden in a fixture.
+# The preferred Cucumber solution to this problem is to use the
+# DatabaseCleaner gem, but it unconditionally nukes everything, and
+# we want to preserve seed and fixture data between execution of
+# Scenarios.  So, we've got a custom bit of database-emptying code
+# (used here for "dynamic" [e.g., Selenium] tests only) in the
+# Cucumber "Before" hook defined below.
 Cucumber::Rails::World.use_transactional_fixtures = false
 
 
@@ -37,11 +47,13 @@ browser = Selenium::SeleniumDriver.new("localhost", 4444, "*firefox",
 
 
 Before do
+  # clean up data created in last Scenario run (if any)
   c = ActiveRecord::Base.connection
-  flag = Item::DATA_IS_UNALTERABLE
-  c.execute( "DELETE FROM items WHERE (items.flags & #{flag}) = 0" )
-  flag = Connection::DATA_IS_UNALTERABLE
-  c.execute( "DELETE FROM connections WHERE (connections.flags & #{flag}) = 0" )
+  flags = Item::DATA_IS_UNALTERABLE | Item::FIXTURE_DATA
+  c.execute( "DELETE FROM items WHERE (items.flags & #{flags}) = 0" )
+  flags = Connection::DATA_IS_UNALTERABLE | Connection::FIXTURE_DATA
+  c.execute(
+    "DELETE FROM connections WHERE (connections.flags & #{flags}) = 0" )
 
   @browser = browser
   @browser.start rescue nil

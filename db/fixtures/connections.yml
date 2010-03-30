@@ -16,6 +16,11 @@
 # see <http://www.gnu.org/licenses/>.
 
 
+# "connection" schema: subject, predicate, kind_of_obj, obj, scalar_obj, flags
+#   also Rails-maintained created_at, updated_at which we ignore here
+
+
+
 define_Item_Class:
   subject: Item_Class
   predicate: sub_class_of

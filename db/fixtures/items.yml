@@ -16,7 +16,8 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-# "item" schema: name, sti_type, title, description
+# "item" schema: name, sti_type, title, description, flags
+#   also Rails-maintained created_at, updated_at which we ignore here
 
 
 #### Category items at the root of the built-in schema:
