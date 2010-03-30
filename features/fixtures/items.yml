@@ -1,0 +1,88 @@
+# WontoMedia - a wontology web application
+# Copyright (C) 2010 - Glen E. Ivey
+#    www.wontology.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License version
+# 3 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program in the file COPYING and/or LICENSE.  If not,
+# see <http://www.gnu.org/licenses/>.
+
+
+# "item" schema: name, sti_type, title, description, flags
+#   also Rails-maintained created_at, updated_at which we ignore here
+
+
+###########################################################################
+#### fixtures for 'items_show_connection_create.feature'
+#### theme: automobiles
+
+AutomobileMake:
+  name: AutomobileMake
+  sti_type: CategoryItem
+  flags: <%= Item::FIXTURE_DATA %>
+  title: Automobile Make
+  description: >-
+    A particular automotive "make", usually the name of the manufacturing
+    company.
+
+Ford:
+  name: Ford
+  sti_type: CategoryItem
+  flags: <%= Item::FIXTURE_DATA %>
+  title: Ford Motor Company
+  description: The Ford Motor Company, an automotive "make".
+
+Toyota:
+  name: Toyota
+  sti_type: CategoryItem
+  flags: <%= Item::FIXTURE_DATA %>
+  title: Toyota Motor Corporation
+  description: The Toyota Motor Corporation, an automotive "make".
+
+AutomobileModel:
+  name: AutomobileModel
+  sti_type: CategoryItem
+  flags: <%= Item::FIXTURE_DATA %>
+  title: Automobile Model
+  description: A particular automotive model, independent of model year
+
+Fiesta:
+  name: Fiesta
+  sti_type: CategoryItem
+  flags: <%= Item::FIXTURE_DATA %>
+  title: Fiesta subcompact
+  description: >-
+    The Ford Fiesta is a front wheel drive subcompact/supermini car
+    manufactured and marketed by the Ford Motor Company and built in
+    Europe, Brazil, Argentina, Mexico, Venezuela, China, India and
+    South Africa. The model is marketed worldwide, including Japan,
+    Australasia and the Americas.
+
+manufacturingBeganIn:
+  name: manufacturingBeganIn
+  sti_type: PropertyItem
+  flags: <%= Item::FIXTURE_DATA %>
+  title: Manufacturing began in
+  description: The first "model year" in which a car model was produced.
+
+manufacturingEndedIn:
+  name: manufacturingEndedIn
+  sti_type: PropertyItem
+  flags: <%= Item::FIXTURE_DATA %>
+  title: Manufacturing ended in
+  description: The last "model year" in which a car model was produced.
+
+makeIs:
+  name: makeIs
+  sti_type: PropertyItem
+  flags: <%= Item::FIXTURE_DATA %>
+  title: Make is
+  description: The "make" (manufacturer) of a car model.

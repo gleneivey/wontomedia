@@ -36,6 +36,8 @@ class Connection < ActiveRecord::Base
   # This constant is a bit mask for Item.flags.  A non-zero value
   # indicates that the Item instance should not be user-modifiable.
   DATA_IS_UNALTERABLE = 1
+  FIXTURE_DATA        = 2
+
   OBJECT_KIND_ITEM = 'item'
   OBJECT_KIND_SCALAR = 'scalar'
 
