@@ -19,13 +19,14 @@ Feature:  Create new connections from within a "show item" page
   @wip
   Scenario: Fresh show page contains add links, but no edit controls
     When I go to the show items page for "Fiesta"
-    Then I should see "Fiesta subcompact"
-    And I should see "manufactured and marketed by the Ford"
+    Then I should not see an Add-new link for "Manufacturing began in"
+    And I should see an Add-new link for "Manufacturing ended in"
+    And I should see an Add-new link for "Make is"
+    And there should not be a displayed select tag
+    And there should not be a displayed text input
 
 
-
-# (1) help icons on all forms; no way to predict which will
-# display. (2) Each "Add" button inactive until matching control gets
+# (2) Each "Add" button inactive until matching control gets
 # value. (3) When one control is non-empty, disable other controls and
 # "Add new" links are disabled. (4) Reduce margin between
 # per-connection links and right edge.

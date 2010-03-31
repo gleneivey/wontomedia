@@ -16,18 +16,24 @@
 // see <http://www.gnu.org/licenses/>.
 
 
-function selectOnfocusHandler(ctrl){
-  ctrl.lastValue = ctrl.value;
-}
+// return "true" if at least one element matching the selector has
+// style.display!=none and all ancestor elements are style.display!=none
+function isDisplayedMatchOfSelector(selector_string){
+  elements = jQuery(selector_string);
 
-function selectOnchangeHandler(ctrl, class_item_id){
-  if (ctrl.value == "-1"){
-    itemCreatePopup(ctrl, ctrl.lastValue, null, class_item_id);
+   perElementLoop:
+  for (var c=0; c < elements.length; c++){
+
+    var lastE = null;
+    for (var e=elements[c]; e != null && e != lastE; e = e.parentNode){
+      if (e.style.display == 'none')
+        continue perElementLoop;
+      lastE = e;
+    }
+
+    // all != 'none', so we're done
+    return true;
   }
-}
 
-function showInlineConnectionAdd(idStr){
-  $('inline-add-'  + idStr + '-link').style.display = 'none';
-  $('inline-add-'  + idStr + '-form').style.display = 'block';
-  $('object-item-' + idStr          ).style.listStyleType = 'circle';
+  return false;
 }
