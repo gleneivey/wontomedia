@@ -182,3 +182,12 @@ When /^a debug alert "([^\"]+)"$/ do |alert_text|
 end
 
 
+Then /^there should(.*)be a displayed (.+) input$/ do |test_sense, input_type|
+  assert_selenium_whether_displayed(test_sense, "input[type=#{input_type}]")
+end
+
+
+Then /^there should(.*)be a displayed (.+) tag$/ do |test_sense, tag_name|
+  assert_selenium_whether_displayed(test_sense, "#{tag_name}")
+end
+

@@ -27,3 +27,16 @@ def item_id_substitute(selector)
   selector
 end
 
+def assert_selenium_whether_displayed(test_sense, selector)
+  # depends on page template including test-only JavaScript when appropriate;
+  # a small cheat, but too much code to be the argument to 'get_eval'
+  result = selenium.get_eval "window.isDisplayedMatchOfSelector('#{selector}');"
+
+  if     test_sense == " "
+    assert result == 'true'
+  elsif test_sense == " not "
+    assert result == 'false'
+  else
+    assert false, "Bad step string."
+  end
+end
