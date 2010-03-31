@@ -19,8 +19,9 @@ Feature:  Create new connections from within a "show item" page
   @wip
   Scenario: Fresh show page contains add links, but no edit controls
     When I go to the show items page for "Fiesta"
-    Then I should see "Fiesta subcompact"
-    And I should see "manufactured and marketed by the Ford"
+    Then I should not see an Add-new link for "Manufacturing began in"
+    Then I should see an Add-new link for "Manufacturing ended in"
+    Then I should see an Add-new link for "Make is"
 
 
 

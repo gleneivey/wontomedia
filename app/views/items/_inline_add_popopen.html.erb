@@ -19,11 +19,7 @@
 
 <div id='inline-add-<%= id -%>-link'>
   <div style='font-size: 70%;'>
-    <%= link_to_function 'Add new',
-          "$('inline-add-#{id}-link').style.display = 'none'; " +
-          "$('inline-add-#{id}-form').style.display = 'block';" +
-          "$('object-item-#{id}').style.listStyleType = 'circle';"
-     %>
+    <%= link_to_function 'Add new', "showInlineConnectionAdd('#{id}');" %>
     <script type='text/javascript'>
       $('object-item-<%= id -%>').style.listStyleType = 'none';
     </script>

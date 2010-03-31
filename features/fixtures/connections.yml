@@ -100,3 +100,17 @@ schema_mI:
   obj: Value_True
   kind_of_obj: item
   flags: <%= Connection::FIXTURE_DATA %>
+
+mI_obj:
+  subject: makeIs
+  predicate: property_object_is
+  obj: AutomobileMake
+  kind_of_obj: item
+  flags: <%= Connection::FIXTURE_DATA %>
+
+fiesta_mBI:
+  subject: Fiesta
+  predicate: manufacturingBeganIn
+  scalar_obj: 1976
+  kind_of_obj: scalar
+  flags: <%= Connection::FIXTURE_DATA %>

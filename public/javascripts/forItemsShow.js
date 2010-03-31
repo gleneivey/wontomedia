@@ -20,8 +20,14 @@ function selectOnfocusHandler(ctrl){
   ctrl.lastValue = ctrl.value;
 }
 
-function selectOnchangeHandler(ctrl, class_item_name){
+function selectOnchangeHandler(ctrl, class_item_id){
   if (ctrl.value == "-1"){
-    itemCreatePopup(ctrl, ctrl.lastValue, null, class_item_name);
+    itemCreatePopup(ctrl, ctrl.lastValue, null, class_item_id);
   }
+}
+
+function showInlineConnectionAdd(idStr){
+  $('inline-add-'  + idStr + '-link').style.display = 'none';
+  $('inline-add-'  + idStr + '-form').style.display = 'block';
+  $('object-item-' + idStr          ).style.listStyleType = 'circle';
 }
