@@ -84,8 +84,14 @@ When /^(?:|I )press "([^\"]*)"$/ do |button|
   end
 end
 
-When /^(?:|I )follow "([^\"]*)"$/ do |link|
-  click_link(link)
+When /^(?:|I )(follow|click) "([^\"]*)"$/ do |fu, link|
+  parts = link.split(/\|/)
+  if parts.length > 1
+    click_link_within(parts[0], parts[1])
+  else
+    click_link(link)
+  end
+
   if !@browser.nil?
     Kernel.sleep(1.5)
   end

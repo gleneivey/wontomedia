@@ -26,7 +26,7 @@ function isDisplayedMatchOfSelector(selector_string){
 
     var lastE = null;
     for (var e=elements[c]; e != null && e != lastE; e = e.parentNode){
-      if (e.style.display == 'none')
+      if (e.style && e.style.display == 'none')
         continue perElementLoop;
       lastE = e;
     }

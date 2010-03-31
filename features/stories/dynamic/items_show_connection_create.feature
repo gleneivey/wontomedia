@@ -16,14 +16,32 @@ Feature:  Create new connections from within a "show item" page
 ######
 
 
-  @wip
   Scenario: Fresh show page contains add links, but no edit controls
     When I go to the show items page for "Fiesta"
     Then I should not see an Add-new link for "Manufacturing began in"
-    And I should see an Add-new link for "Manufacturing ended in"
-    And I should see an Add-new link for "Make is"
+    And I should see an enabled Add-new link for "Manufacturing ended in"
+    And I should see an enabled Add-new link for "Make is"
     And there should not be a displayed select tag
     And there should not be a displayed text input
+
+
+  # expected connection sequence numbers given fixture data:
+  #   1) 'Manufacturing began in' "1976"
+  #   2) 'Manufacturing ended in' Add-new
+  #   3) 'Make is' Add-new
+  #   4) is_instance_of 'Automobile Model'
+  @wip
+  Scenario: Add-new links open associated controls
+    Given I am on the show items page for "Fiesta"
+      # (below) I'd rather have used an xpath and matches(@id, "2"), but...
+    When I follow "Add new" within "#inline-add-2-link"
+    Then there should be a displayed text input
+    And there should not be a displayed select tag
+
+    When I follow "Add new" within "#inline-add-3-link"
+    Then there should be a displayed text input
+    And there should be a displayed select tag
+
 
 
 # (2) Each "Add" button inactive until matching control gets
