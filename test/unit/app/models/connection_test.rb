@@ -92,7 +92,7 @@ class EgdeTest < ActiveSupport::TestCase
     connection = Connection.new(
       :subject => items(:testContainer),
       :predicate => Item.find_by_name("contains"),
-      :scalar_obj => ' 	 ',
+      :scalar_obj => " \t ",
       :kind_of_obj => "scalar" )
     assert !connection.save
   end
