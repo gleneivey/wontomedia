@@ -25,7 +25,7 @@
 
 
 
-Then /^I should(.*)see an Add-new link for "(.+)"$/ do |test_sense, title_text|
+Then /^I should(.*)see an?( enabled | disabled | )Add-new link for "(.+)"$/ do |test_sense, link_status, title_text|
 
   # We're going to check for a link whose text content matches "Add
   # new", that is a child of a node whose text content matches
@@ -49,6 +49,10 @@ Then /^I should(.*)see an Add-new link for "(.+)"$/ do |test_sense, title_text|
 
   if     test_sense == " "
     assert_have_xpath xpath
+    if link_status != ' '
+      assert selenium.get_eval( "window.jQuery('#{xpath}').disabled;" ) =~
+        (link_status == ' disabled ' ? /^true$/ : /^(false|null)$/ )
+    end
   elsif test_sense == " not "
     assert_have_no_xpath xpath
   else
