@@ -71,6 +71,32 @@ class EgdeTest < ActiveSupport::TestCase
     end
   end
 
+  test "scalar object cant be nil" do
+    connection = Connection.new(
+      :subject => items(:testContainer),
+      :predicate => Item.find_by_name("contains"),
+      :kind_of_obj => "scalar" )
+    assert !connection.save
+  end
+
+  test "scalar object cant be empty" do
+    connection = Connection.new(
+      :subject => items(:testContainer),
+      :predicate => Item.find_by_name("contains"),
+      :scalar_obj => '',
+      :kind_of_obj => "scalar" )
+    assert !connection.save
+  end
+
+  test "scalar object cant be blank" do
+    connection = Connection.new(
+      :subject => items(:testContainer),
+      :predicate => Item.find_by_name("contains"),
+      :scalar_obj => ' 	 ',
+      :kind_of_obj => "scalar" )
+    assert !connection.save
+  end
+
   test "new connection cant duplicate existing" do
     e = Connection.new(
       :subject=> items(:testIndividual), :predicate => items(:one),
