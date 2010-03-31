@@ -26,11 +26,7 @@
      <%= hidden_field :connection, :kind_of_obj %>
      <%= text_field :connection, :scalar_obj, :size => 40 %>
      <%= f.submit "Add", :style => 'width: 3em;' %>
-     <% unless @add_scalar_help_icon_used %>
-       <%= popup_help_icon "Help for scalar-value add",
-             "Help:Popup/InlineAddScalar" %>
-     <% end
-        @add_scalar_help_icon_used = true
-      %>
+     <%= popup_help_icon "Help for scalar-value add",
+           "Help:Popup/InlineAddScalar" %>
      <%= h filter_parenthetical con.type_item.title %>
 <% end %>

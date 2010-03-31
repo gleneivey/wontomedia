@@ -38,10 +38,6 @@
      %>
 
      <%= f.submit "Add", :style => 'width: 3em;' %>
-     <% unless @add_item_help_icon_used %>
-       <%= popup_help_icon "Help for item-value add",
-             "Help:Popup/InlineAddItem" %>
-     <% end
-        @add_item_help_icon_used = true
-      %>
+     <%= popup_help_icon "Help for item-value add",
+           "Help:Popup/InlineAddItem" %>
 <% end %>
