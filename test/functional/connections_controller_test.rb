@@ -245,6 +245,19 @@ class ConnectionsControllerTest < ActionController::TestCase
     assert_select "body", /Scalar obj can't be blank/
   end
 
+  test "should not create a connection if scalar object is blank" do
+    s_id = items(:testIndividual).id
+    p_id = items(:testProperty).id
+
+    assert_no_difference('Connection.count') do
+      post :create, :connection => { :subject_id => s_id, :predicate_id => p_id,
+        :scalar_obj => '  ', :kind_of_obj => Connection::OBJECT_KIND_SCALAR }
+    end
+    assert_response :success
+    assert_template "connections/new"
+    assert_select "body", /Scalar obj can't be blank/
+  end
+
   test "show connection should populate data--item objectn" do
     id = connections(:aQualifiedConnection).id
     get :show, :id => id
