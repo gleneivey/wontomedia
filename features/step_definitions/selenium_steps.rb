@@ -153,7 +153,7 @@ end
 
 Then /the control "([^\"]+)" is (en|dis)abled/ do |controlId, state|
   disabledState = selenium.get_eval(
-    "window.document.getElementById('#{controlId}').disabled;" );
+    "window.jQuery('#{controlId}')[0].disabled;" );
   if    state == "en"
     assert disabledState == "false",
       "'#{controlId}' has disabled flag '#{disabledState}', instead of " +

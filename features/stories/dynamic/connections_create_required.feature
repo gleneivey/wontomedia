@@ -61,8 +61,8 @@ Feature:  Verify inputs for creation of new connection dynamically within the pa
     And the image "kind_of_obj_error_icon" is "blank_error_icon"
     And the image "obj_error_icon" is "blank_error_icon"
     # also, the object controls should be (have been) disabled at this point
-    And the control "connection_obj_id" is disabled
-    And the control "connection_scalar_obj" is disabled
+    And the control "#connection_obj_id" is disabled
+    And the control "#connection_scalar_obj" is disabled
     And the element "connection_submit" has the format "background-color=$inactive_button_color;"
 
     # focus from first to second Radio Button
@@ -75,8 +75,8 @@ Feature:  Verify inputs for creation of new connection dynamically within the pa
     And the image "predicate_error_icon" is "error_error_icon"
     And the image "kind_of_obj_error_icon" is "blank_error_icon"
     And the image "obj_error_icon" is "blank_error_icon"
-    And the control "connection_obj_id" is disabled
-    And the control "connection_scalar_obj" is disabled
+    And the control "#connection_obj_id" is disabled
+    And the control "#connection_scalar_obj" is disabled
     And the element "connection_submit" has the format "background-color=$inactive_button_color;"
 
     # focus from second Radio Button to Create button
@@ -89,8 +89,8 @@ Feature:  Verify inputs for creation of new connection dynamically within the pa
     And the image "predicate_error_icon" is "error_error_icon"
     And the image "kind_of_obj_error_icon" is "error_error_icon"
     And the image "obj_error_icon" is "error_error_icon"
-    And the control "connection_obj_id" is disabled
-    And the control "connection_scalar_obj" is disabled
+    And the control "#connection_obj_id" is disabled
+    And the control "#connection_scalar_obj" is disabled
     And the element "connection_submit" has the format "background-color=$inactive_button_color;"
 
 
@@ -129,8 +129,8 @@ Feature:  Verify inputs for creation of new connection dynamically within the pa
     And the image "kind_of_obj_error_icon" is "blank_error_icon"
     And the image "obj_error_icon" is "blank_error_icon"
     # also, the object controls should be (have been) disabled at this point
-    And the control "connection_obj_id" is disabled
-    And the control "connection_scalar_obj" is disabled
+    And the control "#connection_obj_id" is disabled
+    And the control "#connection_scalar_obj" is disabled
     And the element "connection_submit" has the format "background-color=$inactive_button_color;"
 
     # focus from first to second Radio Button
@@ -143,15 +143,15 @@ Feature:  Verify inputs for creation of new connection dynamically within the pa
     And the image "predicate_error_icon" is "error_error_icon"
     And the image "kind_of_obj_error_icon" is "blank_error_icon"
     And the image "obj_error_icon" is "blank_error_icon"
-    And the control "connection_obj_id" is disabled
-    And the control "connection_scalar_obj" is disabled
+    And the control "#connection_obj_id" is disabled
+    And the control "#connection_scalar_obj" is disabled
     And the element "connection_submit" has the format "background-color=$inactive_button_color;"
 
     # select a radio button -> enables Item-object control
     When I choose "Item"
-    Then the control "connection_obj_id" is enabled
+    Then the control "#connection_obj_id" is enabled
     # and this should all be unchanged
-    And the control "connection_scalar_obj" is disabled
+    And the control "#connection_scalar_obj" is disabled
     And the element "subject_required" has the format "font-weight=bold"
     And the element "predicate_required" has the format "font-weight=bold"
     And the element "obj_required" has the format "font-weight=400"
