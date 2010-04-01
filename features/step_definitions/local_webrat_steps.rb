@@ -47,3 +47,8 @@ Then /^there should not be an element "([^\"]+)"$/ do |selector|
   assert_have_no_selector(selector)
 end
 
+
+When /^(?:|I )(follow|click) "([^\"]*)" within "([^\"]*)"$/ do |
+    fu, link, parent|
+  click_link_within(parent, link)
+end

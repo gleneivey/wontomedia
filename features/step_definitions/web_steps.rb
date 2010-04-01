@@ -13,6 +13,7 @@
 #When /^(?:|I )press "([^\"]*)"$/ do |button|
 #When /^(?:|I )follow "([^\"]*)"$/ do |link|
 #When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
+#When /^(?:|I )follow "([^\"]*)" within "([^\"]*)"$/ do |link, parent|
 
 
 require 'uri'
@@ -21,10 +22,6 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "pat
 # Commonly used webrat steps
 # http://github.com/brynary/webrat
 
-
-When /^(?:|I )follow "([^\"]*)" within "([^\"]*)"$/ do |link, parent|
-  click_link_within(parent, link)
-end
 
 When /^(?:|I )fill in "([^\"]*)" for "([^\"]*)"$/ do |value, field|
   fill_in(field, :with => value)

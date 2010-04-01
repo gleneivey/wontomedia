@@ -30,7 +30,6 @@ Feature:  Create new connections from within a "show item" page
   #   2) 'Manufacturing ended in' Add-new
   #   3) 'Make is' Add-new
   #   4) is_instance_of 'Automobile Model'
-  @wip
   Scenario: Add-new links open associated controls
     Given I am on the show items page for "Fiesta"
       # (below) I'd rather have used an xpath and matches(@id, "2"), but...
@@ -43,15 +42,31 @@ Feature:  Create new connections from within a "show item" page
     And there should be a displayed select tag
 
 
+  Scenario: Create a new scalar-valued connection
+    Given I am on the show items page for "Fiesta"
+    And I click "Add new" within "#inline-add-2-link"
+    When I fill in "connection_scalar_obj" with "not yet"
+      # (below) depends on a RAILS_ENV='test' kludge in the inline partials
+    And I press "2"
+    Then I should see "not yet"
+    And I should not see an Add-new link for "Manufacturing ended in"
+    And I should see an enabled Add-new link for "Make is"
+
+
+  Scenario: Create a new item-valued connection
+    Given I am on the show items page for "Fiesta"
+    And I click "Add new" within "#inline-add-3-link"
+    When I select "Ford : Ford Motor Company" from "connection_obj_id"
+    And I press "3"
+    Then I should see "Ford Motor Company"
+    And I should not see an Add-new link for "Make is"
+    And I should see an enabled Add-new link for "Manufacturing ended in"
+
+
 
 # (2) Each "Add" button inactive until matching control gets
 # value. (3) When one control is non-empty, disable other controls and
-# "Add new" links are disabled. (4) Reduce margin between
-# per-connection links and right edge.
-
-
-
-
+# "Add new" links are disabled.
 
 
 # WontoMedia - a wontology web application

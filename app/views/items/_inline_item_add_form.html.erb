@@ -37,7 +37,9 @@
           :onchange => "selectOnchangeHandler(this, '#{con.type_item.id}');"
      %>
 
-     <%= f.submit "Add", :style => 'width: 3em;' %>
+     <%= button_label = "Add"
+         if RAILS_ENV=='test' then button_label += "   #{id}" end
+         f.submit button_label, :style => 'width: 2.75em;' %>
      <%= popup_help_icon "Help for item-value add",
            "Help:Popup/InlineAddItem" %>
 <% end %>
