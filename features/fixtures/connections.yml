@@ -101,6 +101,13 @@ schema_mI:
   kind_of_obj: item
   flags: <%= Connection::FIXTURE_DATA %>
 
+max_mI:
+  subject: makeIs
+  predicate: max_uses_per_item
+  scalar_obj: 1
+  kind_of_obj: scalar
+  flags: <%= Connection::FIXTURE_DATA %>
+
 mI_obj:
   subject: makeIs
   predicate: property_object_is

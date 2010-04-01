@@ -25,7 +25,9 @@
      <%= hidden_field :connection, :predicate_id %>
      <%= hidden_field :connection, :kind_of_obj %>
      <%= text_field :connection, :scalar_obj, :size => 40 %>
-     <%= f.submit "Add", :style => 'width: 3em;' %>
+     <%= button_label = "Add"
+         if RAILS_ENV=='test' then button_label += "   #{id}" end
+         f.submit button_label, :style => 'width: 2.75em;' %>
      <%= popup_help_icon "Help for scalar-value add",
            "Help:Popup/InlineAddScalar" %>
      <%= h filter_parenthetical con.type_item.title %>
