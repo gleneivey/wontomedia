@@ -18,21 +18,20 @@
 
 // return "true" if at least one element matching the selector has
 // style.display!=none and all ancestor elements are style.display!=none
-function isDisplayedMatchOfSelector(selector_string){
-  elements = jQuery(selector_string);
+function isDisplayedMatchOfSelector(element_generating_js_expression){
+  elements = eval(element_generating_js_expression);
+  if (elements.length < 1)
+    return "JS failure: jQuery couldn't find elements for " + selector_string;
 
    perElementLoop:
   for (var c=0; c < elements.length; c++){
-
     var lastE = null;
     for (var e=elements[c]; e != null && e != lastE; e = e.parentNode){
       if (e.style && e.style.display == 'none')
         continue perElementLoop;
       lastE = e;
     }
-
-    // all != 'none', so we're done
-    return true;
+    return true;    // all != 'none', so we're done
   }
 
   return false;

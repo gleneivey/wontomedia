@@ -151,17 +151,17 @@ Then /^"([^\"]+)" is selected from "([^\"]+)"$/ do |expectedText, elemId|
 end
 
 
-Then /the control "([^\"]+)" is (en|dis)abled/ do |controlId, state|
+Then /the control "([^\"]+)" is (en|dis)abled/ do |control_selector, state|
   disabledState = selenium.get_eval(
-    "window.jQuery('#{controlId}')[0].disabled;" );
+    "window.$$('#{control_selector}')[0].disabled;" );
   if    state == "en"
     assert disabledState == "false",
-      "'#{controlId}' has disabled flag '#{disabledState}', instead of " +
-      "being enabled."
+      "'#{control_selector}' has disabled flag '#{disabledState}', " +
+      "instead of being enabled."
   elsif state == "dis"
     assert disabledState == "true",
-      "'#{controlId}' has disabled flag '#{disabledState}', instead of " +
-      "being disabled."
+      "'#{control_selector}' has disabled flag '#{disabledState}', " +
+      "instead of being disabled."
   else
     assert false, "Control state must be either 'enabled' or 'disabled'"
   end
@@ -183,11 +183,13 @@ end
 
 
 Then /^there should(.*)be a displayed (.+) input$/ do |test_sense, input_type|
-  assert_selenium_whether_displayed(test_sense, "input[type=#{input_type}]")
+  assert_selenium_whether_displayed(test_sense,
+    "window.jQuery('input[type=#{input_type}]')" )
 end
 
 
 Then /^there should(.*)be a displayed (.+) tag$/ do |test_sense, tag_name|
-  assert_selenium_whether_displayed(test_sense, "#{tag_name}")
+  assert_selenium_whether_displayed(test_sense,
+    "window.jQuery('#{tag_name}')" )
 end
 

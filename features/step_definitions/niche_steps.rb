@@ -25,7 +25,7 @@
 
 
 
-Then /^I should(.*)see an?( enabled | disabled | )Add-new link for "(.+)"$/ do |test_sense, link_status, title_text|
+Then /^there should(.*)be an?( enabled | invisible | )Add-new link for "(.+)"$/ do |test_sense, link_status, title_text|
 
   # We're going to check for a link whose text content matches "Add
   # new", that is a child of a node whose text content matches
@@ -43,18 +43,33 @@ Then /^I should(.*)see an?( enabled | disabled | )Add-new link for "(.+)"$/ do |
   # but Selenium asks the browser to evaluate an XPath, and FF3.0 doesn't
   # implement matches(), so here's a more brittle, less-general version
   # built on 'contains()'.
-  xpath = %Q<//*[contains(text(), "#{title_text}")]/> +
-    %Q<ancestor::li//a[contains(text(), "Add new")][@href="#"]> +
+  xpath = %Q<//*[contains(text(),"#{title_text}")]/> +
+    %Q<ancestor::li//a[text()="Add new"][@href="#"]> +
       %Q<[contains(@onclick, "showInlineConnectionAdd")]>
+
+  # And then the same thing again, except as a snipet of jQuery-using
+  # JavaScript source.  This should select the same anchor elements as
+  # the above, but is less specific since we're only trying to find
+  # them, rather than assert that they're correct.
+  jq_expression = <<JAVASCRIPT_SOURCE_SELECTING_DOM_ELEMENTS
+    window.jQuery('li').has('*:contains(\\"#{title_text}\\")').
+      find('a:contains(\\"Add new\\")')
+JAVASCRIPT_SOURCE_SELECTING_DOM_ELEMENTS
+  jq_expression.gsub!(/\s+/m, ' ')
 
   if     test_sense == " "
     assert_have_xpath xpath
-    if link_status != ' '
-      assert selenium.get_eval( "window.jQuery('#{xpath}').disabled;" ) =~
-        (link_status == ' disabled ' ? /^true$/ : /^(false|null)$/ )
+
+    assert_selenium_whether_displayed(
+      (link_status == ' invisible ') ? ' not ' : ' ',
+      jq_expression )
+    if link_status == ' enabled '
+      assert selenium.get_eval( "#{jq_expression}[0].disabled;" ) =~
+        /^(false)|(null)$/
     end
   elsif test_sense == " not "
     assert_have_no_xpath xpath
+    # if the anchor doesn't exist, other checks are N/A
   else
     assert false, "Bad step string."
   end

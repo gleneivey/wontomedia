@@ -34,12 +34,14 @@
                 [ h("#{item.name} : #{item.title}"), item.id ]
               end, "" ),
           :style => 'width: 62%;', :onfocus => 'selectOnfocusHandler(this);',
-          :onchange => "selectOnchangeHandler(this, '#{con.type_item.id}');"
+          :onchange => "selectOnchangeHandler(this, '#{con.type_item.id}');",
+          :class => 'inline-add'
      %>
 
      <%= button_label = "Add"
          if RAILS_ENV=='test' then button_label += "   #{id}" end
-         f.submit button_label, :style => 'width: 2.75em;' %>
+         f.submit button_label, :style => 'width: 2.75em;',
+           :disabled => 'disabled' %>
      <%= popup_help_icon "Help for item-value add",
            "Help:Popup/InlineAddItem" %>
 <% end %>

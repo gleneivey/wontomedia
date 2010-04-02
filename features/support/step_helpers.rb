@@ -27,10 +27,12 @@ def item_id_substitute(selector)
   selector
 end
 
-def assert_selenium_whether_displayed(test_sense, selector)
+# test_sense must be one of the strings ' ' and ' not ' (note spaces).
+def assert_selenium_whether_displayed(test_sense, element_finding_js_source)
   # depends on page template including test-only JavaScript when appropriate;
   # a small cheat, but too much code to be the argument to 'get_eval'
-  result = selenium.get_eval "window.isDisplayedMatchOfSelector('#{selector}');"
+  result = selenium.get_eval(
+    "window.isDisplayedMatchOfSelector(\"#{element_finding_js_source}\");" )
 
   if     test_sense == " "
     assert result == 'true'
