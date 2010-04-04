@@ -59,9 +59,23 @@ The layout of the JavaScript spec directories looks like this (assuming you crea
 * screw.css: stylesheet for Screw.Unit output when running specs in-browser
 
 ### Why We Need Fixtures
-Blue Ridge relies on the convention that each spec file will have a similarly named HTML file in the `fixtures` directory.  We create one fixture per spec file so that env.js has a base DOM to emulate when running specs from the command line and so that we have an HTML launch-pad to run our specs in-browser.  
+Blue Ridge relies on the convention that each spec file will have a similarly named HTML file in the `fixtures` directory.  "generate javascript_spec" creates one fixture per spec file so that env.js has a base DOM to emulate when running specs from the command line and so that we have an HTML launch-pad to run our specs in-browser.
 
 If you want to have specific HTML for a suite of specs, put it in the HTML fixture for that suite.  If you want to run a specific suite of tests in Firefox or Internet Explorer, open the HTML fixture file with the same name and Screw.Unit automatically runs the specs associated with the fixture.
+
+If you want to share a single fixture file between several tests, this can be accomplished by manipulating our spec-file to fixture-file naming convention.  For a one-to-one relationship between specs and fixtures, when Blue Ridge is asked to execute "specFile_spec.js", it will look for the fixture "fixtures/specFile.html".  That it, it replaces "_spec.js" at the end of the file name with ".html" and looks for it in the fixtures directory.  If it doesn't find this file, it iteratively looks for shorter and shorter fixture file names, dividing the file name at underscores.  So, for example, when executing the test "common_fixture_using_file_4_spec.js", Blue Ridge will look in the fixtures directory for (in order):
+
+    common_fixtures_using_file_4.html
+    common_fixtures_using_file.html
+    common_fixtures_using.html
+    common_fixtures.html
+    common.html
+
+And will use the first one of these fixtures it finds.  If no fixture can be found based on the name of the spec file, Blue Ridge will use the file "fixture.html" (in the "javascripts" directory, not the underlying "fixtures" subdirectory).
+
+When a fixture file has a one-to-one relationship with a spec file, the test suite can be run by loading the fixture file into a web browser.  For a fixture file that is shared between multiple specs, the name of the specific test to be run (without the trailing "_spec.js", the same as is used with "rake ... TEST=", above) should be appended to the URL following a question mark.  For example:
+
+    file://a-project-path/common_fixtures.html?common_fixtures_using_file_4
 
 Example Using jQuery
 ---------------------------------------

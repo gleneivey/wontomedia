@@ -35,14 +35,14 @@ namespace :js do
   desc "Open the JavaScript fixtures to ease running in-browser tests."
   task :fixtures do
     js_spec_dir = BlueRidge.find_javascript_spec_dir || (raise error_message_for_missing_spec_dir)
-    fixture_dir = "#{js_spec_dir}/fixtures"
-    
+    fixture_path = BlueRidge.generateSpecIndexFile(js_spec_dir)
+
     if PLATFORM[/darwin/]
-      system("open #{fixture_dir}")
+      system("open #{fixture_path}")
     elsif PLATFORM[/linux/]
-      system("firefox #{fixture_dir}")
+      system("firefox #{fixture_path}")
     else
-      puts "You can run your in-browser fixtures from #{fixture_dir}."
+      puts "You can run your in-browser fixtures from #{fixture_path}."
     end
   end
   

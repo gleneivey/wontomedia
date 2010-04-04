@@ -47,12 +47,31 @@ BlueRidge.Browser = {
     document.writeln(message + " <br/>");
   },
 
-  currentFile: function(){
+  currentLocation: function(){
     return window.location.toString();
   },
-  
+
+  currentFile: function(){
+    return this.currentLocation().replace(/\?[^?]*$/, "");
+  },
+
+  currentParameter: function(){
+    var l = this.currentLocation();
+    if (l.indexOf("?") == -1)
+      return "";
+    return this.currentLocation().replace(/^[^?]*\?/, "");
+  },
+
   deriveSpecNameFromCurrentFile: function(){
-    return this.currentFile().match(/^.*fixtures\/(.*?)\.html/)[1] + "_spec.js";
+    var spec = this.currentParameter();
+    if (spec == "")
+      return this.currentFile().match(/^.*fixtures\/(.*?)\.html/)[1] +
+               "_spec.js";
+
+    var workingPath = this.currentFile();
+    workingPath = workingPath.replace(/[^/]+$/, "");
+    workingPath = workingPath.replace(/fixtures\//, "");
+    return workingPath + spec + "_spec.js";
   },
   
   calculateDepth: function(){
