@@ -18,15 +18,10 @@
 #++
 
 
-#### I've got no idea why this 'require' is necessary.  Without it, all
-# the unit tests pass, but the ItemHelper.nouns call below fails when
-# run in production.  Even more odd, if run in 'development' (so that
-# each Ruby file is reloaded at each request, this 'require' only has
-# to be present for the _first_ request serviced after the server
-# starts.  It can be deleted, this file reloaded, and then ItemHelper
-# references will work normally.  Go figure. -- gei 2010/2/24
-require Rails.root.join( 'lib', 'helpers', 'item_helper')
-require Rails.root.join( 'lib', 'helpers', 'connection_helper')
+ActiveSupport::Dependencies.require_or_load Rails.root.join(
+  'lib', 'helpers', 'item_helper')
+ActiveSupport::Dependencies.require_or_load Rails.root.join(
+  'lib', 'helpers', 'connection_helper')
 require 'yaml'
 
 # See also the matching model Item

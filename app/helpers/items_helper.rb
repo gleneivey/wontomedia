@@ -18,7 +18,8 @@
 #++
 
 
-require Rails.root.join( 'app', 'helpers', 'format_helper' )
+ActiveSupport::Dependencies.require_or_load Rails.root.join(
+  'app', 'helpers', 'format_helper' )
 include(FormatHelper)
 
 # Helpers for app/views/items/* pages

@@ -18,7 +18,8 @@
 #++
 
 
-require Rails.root.join( 'lib', 'helpers', 'item_helper')
+ActiveSupport::Dependencies.require_or_load Rails.root.join(
+  'lib', 'helpers', 'item_helper')
 require 'yaml'
 
 # There is no model matching this controller.  It is intended to
