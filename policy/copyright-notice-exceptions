@@ -38,9 +38,6 @@ db/migrate/2009*.rb
     #  "lock" directive contains git commit # of acceptable version
 !lock            4b45222d3f846a9bac9c1317657799862f13a1ba
 config/database-sample-mysql.yml
-config/environments/development.rb
-config/environments/production.rb
-config/environments/test.rb
 config/initializers/inflections.rb
 config/initializers/mime_types.rb
 config/initializers/new_rails_defaults.rb

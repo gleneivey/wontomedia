@@ -172,11 +172,9 @@ module FormatHelper
   end
 
 
-  ALERT_CONTENT_NAME = 'dynamic_alert_content'
-  ALERT_CONTENT_PATH = Rails.root.join(
-    'app', 'views', 'layouts', '_' + ALERT_CONTENT_NAME + '.html' )
   def allpages_alert
-    if File.exists? ALERT_CONTENT_PATH
+    if File.exists? Rails.root.join(
+        'app', 'views', 'layouts', '_dynamic_alert_content.html' )
       render :partial => File.join( 'layouts', 'dynamic_alert_framework' )
     else
       ''

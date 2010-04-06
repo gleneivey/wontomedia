@@ -48,7 +48,9 @@
   <div id="alert_box_close_link">
     <%= link_to_function "X", "dynamic_alert_show_link();" %>
   </div>
-  <%= open(FormatHelper::ALERT_CONTENT_PATH).read %>
+  <%= open( Rails.root.join(
+          'app', 'views', 'layouts', '_dynamic_alert_content.html' )
+        ).read %>
 </div>
 
 <script>
