@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-#$testGemSource= "http://10.201.2.100:8808/";
+#$testGemSource= "http://10.201.2.104:8808/";
 #$aptLoadOptions= "--no-download";
 
     # Note, when this changes, DUPLICATE in wm_purge_to_scratch.pl
