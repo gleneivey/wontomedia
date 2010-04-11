@@ -225,6 +225,9 @@ private
         if field.nil?
           errors.add symbol, "can't be blank."
           return false
+        elsif field =~ /^\s*$/
+          errors.add symbol, "can't be blank."
+          return false
         end
       end
 
