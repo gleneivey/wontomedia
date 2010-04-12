@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-#$testGemSource= "http://10.201.2.100:8808/";
+#$testGemSource= "http://10.201.2.104:8808/";
 #$aptLoadOptions= "--no-download";
 
     # Note, when this changes, DUPLICATE in wm_purge_to_scratch.pl
@@ -48,7 +48,7 @@ DoASystemCommand( "apt-get -y $aptLoadOptions install libopenssl-ruby" );
 if (defined $testGemSource &&
     $testGemSource ne ""){
     DoASystemCommand( "gem1.8 sources --add $testGemSource" );
-    DoASystemCommand( "gem1.8 sources --remove http://gems.rubyforge.org/" );
+    DoASystemCommand( "gem1.8 sources --remove http://rubyforge.org/" );
 }
 else {
     DoASystemCommand( "gem1.8 sources --add http://gems.github.com/" );

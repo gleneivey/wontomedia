@@ -18,7 +18,9 @@
 #++
 
 
-require Rails.root.join( 'lib', 'helpers', 'connection_helper')
+ActiveSupport::Dependencies.require_or_load Rails.root.join(
+  'lib', 'helpers', 'connection_helper')
+
 
 # See also the matching model Connection
 class ConnectionsController < ApplicationController

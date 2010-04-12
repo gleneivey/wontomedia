@@ -18,8 +18,10 @@
 #++
 
 
-require Rails.root.join( 'lib', 'helpers', 'item_helper')
-require Rails.root.join( 'lib', 'helpers', 'tripple_navigation')
+ActiveSupport::Dependencies.require_or_load Rails.root.join(
+  'lib', 'helpers', 'item_helper')
+ActiveSupport::Dependencies.require_or_load Rails.root.join(
+  'lib', 'helpers', 'tripple_navigation')
 
 # Model for the representation of "connections" (which are used to
 # make statements about the relationships between "item") in

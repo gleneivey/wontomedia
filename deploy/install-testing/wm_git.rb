@@ -18,7 +18,7 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-#test_git_source = "git://10.201.2.100/~gei/Repos/Mainlines/wontomedia/"
+#test_git_source = "git://10.201.2.104/~gei/Repos/Mainlines/wontomedia/"
 ### Note:  below is a GitHub "public" clone URL, which means you won't
 ### be able to push any changes you make back to GitHub.  Better would be
 ### to get permission to commit and use the "Your Clone URL", or to
