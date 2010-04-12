@@ -48,7 +48,7 @@ DoASystemCommand( "apt-get -y $aptLoadOptions install libopenssl-ruby" );
 if (defined $testGemSource &&
     $testGemSource ne ""){
     DoASystemCommand( "gem1.8 sources --add $testGemSource" );
-    DoASystemCommand( "gem1.8 sources --remove http://gems.rubyforge.org/" );
+    DoASystemCommand( "gem1.8 sources --remove http://rubyforge.org/" );
 }
 else {
     DoASystemCommand( "gem1.8 sources --add http://gems.github.com/" );
