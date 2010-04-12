@@ -251,7 +251,7 @@ your local WontoMedia development area, you can do the following:
     cd [your development area]/wontomedia
     rake build
     cd pkg
-    ../deploy/install-testing/serve_gem
+    ../deploy/install-testing/serve_gem.sh
 
 The script will install your just-built WontoMedia gem into the
 isolated gem repository created by `preload_gem_cache`, start a gem
