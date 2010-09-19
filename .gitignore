@@ -1,3 +1,4 @@
+.bundle
 config/database.yml
 config/initializers/wontomedia.rb
 app/views/layouts/_dynamic_alert_content.html

@@ -3,10 +3,12 @@
   # NOTE: file name target of '!source' directive cannot contain spaces
 !source .gitignore
 .git
+Gemfile.lock
 
 
     # files that don't match our extension-determines-header-format conventions
 !treat Rakefile                                      !as .rb
+!treat Gemfile                                       !as .rb
 !treat policy/ckFilesUtils/Rakefile                  !as .rb
 !treat .autotest                                     !as .rb
 
@@ -43,11 +45,12 @@ config/initializers/mime_types.rb
 config/initializers/new_rails_defaults.rb
 config/locales/en.yml
 public/dispatch.rb
-!lock            d6865e2d0348cf0bcd928eec0c8aac98dbc6fbbd
-config/boot.rb
 !lock            651adf6bc0e0700e310dca8cc99069cb7261d5b9
 script
 !unlock
+
+#!lock            d6865e2d0348cf0bcd928eec0c8aac98dbc6fbbd
+config/boot.rb
 
     # unmodified (and never to be modified) third-party components we include
     #  "lock" directive contains git commit # of acceptable version
