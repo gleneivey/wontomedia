@@ -10,7 +10,7 @@ This page provides detailed instructions for installing [[WontoMedia]] on your s
 
 == Supported Platforms ==
 
-The platform on which WontoMedia depends (the [http://ruby-lang.org/ Ruby] programming language and the [http://rubyonrails.org/ Ruby-on-Rails] web application framework) are available on and support a wide variety of platforms, operating systems, web servers, and database packages.  However, currently our ''testing'' of WontoMedia is limited to a single system configuration.  It is likely that you can successfully install and run WontoMedia on configurations other than what we've used to test, and we will try to support you in this, but at this point we cannot make any guarantees.  If you do install WontoMedia on a different system configuration, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list], whether you have problems or success.
+The software environment WontoMedia is designed for (the [http://ruby-lang.org/ Ruby] programming language with the [http://rubyonrails.org/ Ruby-on-Rails] web application framework) is available on and support a wide variety of platforms, operating systems, web servers, and database packages.  However, currently our ''testing'' of WontoMedia is limited to a single system configuration.  It is likely that you can successfully install and run WontoMedia on configurations other than what we've used to test, and we will try to support you in this, but at this point we cannot make any guarantees.  If you do install WontoMedia on a different system configuration, please let us know on our [http://rubyforge.org/forum/?group_id=7903 forum] or [http://rubyforge.org/mail/?group_id=7903 email list], whether you have problems or success.
 
 Note that the mechanism we use to support installation-specific customization of WontoMedia's operation and appearance depends on symbolic links in the file system.  Do not attempt WontoMedia development except on an operating system and within a file system that supports symbolic links.  It is also strongly recommended that you do not install and run WontoMedia in an environment that doesn't support symbolic links (although it might be possible with sufficient investment of manual labor upon each WontoMedia install and upgrade).
 
@@ -18,9 +18,9 @@ Note that the mechanism we use to support installation-specific customization of
 
 WontoMedia has been developed and tested on the following system configuration:
 
-* the [http://www.ubuntu.com/ Ubuntu] distribution of the [http://www.gnu.org/gnu/linux-and-gnu.html GNU]/[[Wikipedia:Linux|Linux]]/[http://www.debian.org/ Debian] operating system, 9.04 [https://wiki.ubuntu.com/JauntyJackalope Jaunty Jackalope] release ([http://www.ubuntu.com/getubuntu/download from here]).  (Although it is likely to run on any Linux, Windows, or Mac OS system that supports Ruby 1.8, provided a version of Windows supporting symbolic links to files is used.)
+* the [http://www.ubuntu.com/ Ubuntu] distribution of the [http://www.gnu.org/gnu/linux-and-gnu.html GNU]/[[Wikipedia:Linux|Linux]]/[http://www.debian.org/ Debian] operating system, 10.10 [https://wiki.ubuntu.com/MaverickMeerkat Maverick Meerkat] release ([http://www.ubuntu.com/getubuntu/download from here]).  (Although it is likely to run on any Linux, Windows, or Mac OS system that supports Ruby 1.8, provided a version of Windows supporting symbolic links to files is used.)
 * [http://rubyonrails.org/ Ruby-on-Rails] version 2.3.5.
-* [http://www.mysql.com/ MySQL] version 5.0, specifically the <tt>5.051a-3ubuntu5.4</tt> package
+* [http://www.mysql.com/ MySQL] version 5.1, specifically the <tt>5.1.49-1ubuntu8.1</tt> package
 
 === WontoMedia on Commercial Hosting Providers ===
 
@@ -28,7 +28,7 @@ WontoMedia has been installed and tested on shared servers at [http://www.a2host
 
 == Installation Steps ==
 
-This section is divided up into sets of steps for each major subsystem on which WontoMedia depends.  If you're confident that your system already provides a dependency, you can skip the steps in that section. On a Linux system, most of the commands have to be executed "as root". This is accomplished by the <tt>sudo</tt> prefix shown on those commands which must be executed as root.
+This section is divided up into sets of steps for each major subsystem on which WontoMedia depends.  If you're confident that your system already provides a dependency, you can skip the steps in that section. On a Linux system, most of the commands have to be executed "as root".  This is accomplished by the <tt>sudo</tt> prefix shown on those commands which must be executed as root.
 
 === Ruby Language Interpreter ===
 
@@ -38,20 +38,27 @@ WontoMedia is written in the Ruby programming language.  For it to run on your s
 
  sudo apt-get install ruby rdoc ri
 
-If Ruby is already installed, this command will not do any harm.  Or, you can use whatever package-management tool you normally use on your system.
+If this version of Ruby is already installed, then this command will not do any harm.  Or, you can use whatever package-management tool you normally use on your system.
 
 '''If you are using another platform''', or the above doesn't work for you, the [http://www.ruby-lang.org/en/downloads/ Ruby language download page] contains the definitive instructions for installing Ruby on other versions of Linux, Windows, and Mac OS X.
 
 === [http://docs.rubygems.org/ RubyGems] Package Manager ===
 
-Most Ruby-language software, including WontoMedia, is distributed in packages called "gems."  In order to install gems, the package-management software must be installed first.  Start by [http://rubyforge.org/frs/?group_id=126 downloading] the most recent version of RubyGems.  If you download the <tt>.tgz</tt> version of the file, the commands for installing RubyGems locally on your system are:
+Most Ruby-language software, including WontoMedia, is distributed in packages called "gems."  In order to install a gem, the package-management software must be installed first.  Depending on your system and Ruby installation, you may already have gems.  Try executing the commands
+
+  gem --version
+  gem1.8 --version
+
+If you already have gems installed, at least one of these commands will execute without error, and print the gems' version number you have.  If this happens you can move on to the next section.  If both commands fail to execute, then you must install RubyGems:
+
+Start by [http://rubyforge.org/frs/?group_id=126 downloading] the most recent version of RubyGems.  If you download the <tt>.tgz</tt> version of the file, the commands for installing RubyGems locally on your system are:
 
  cd ''[a directory where you want to unpack the temporary RubyGems files]''
  tar -xzf ''[path to the rubygems file you downloaded]''
  cd rubygems-''[version number]''
  sudo ruby setup.rb
 
-After which you can remove the directory created by <tt>tar</tt>.
+After which you can remove the directory created by <tt>tar</tt>.  The ''sudo'' in the final command may not be necessary depending on your configuration.
 
 Note that there are Debian packages for <tt>rubygems</tt> and several other pieces of Ruby software.  The versions for these tend to lag behind the most recent available as gems, and it can be quite difficult to manage dependencies with some packages installed via <tt>apt</tt> and others via RubyGems.  We will eventually support installation of WontoMedia from a tarball via <tt>setup.rb</tt> (allowing a Debian-compliant WontoMedia <tt>.deb</tt> package to be created), but until then, we recommend installing WontoMedia and all of its dependencies as gems, and not through the Debian packager.
 
@@ -60,13 +67,13 @@ Note that there are Debian packages for <tt>rubygems</tt> and several other piec
 Given the dependencies above are in place, the commands
 
  sudo apt-get install libopenssl-ruby
- sudo gem1.8 install rake rails
+ sudo gem1.8 install rake rails bundler
 
-will install the rails framework that WontoMedia uses, and its dependency.  <tt>libopenssl-ruby</tt> is used by Rails for encryption services and secure network connections.  (RubyGems no longer creates a revisionless alias command <tt>gem</tt>; the "1.8" references the Ruby version it uses.)
+will install the Rails framework that WontoMedia uses, Rails' dependencies, and WontoMedia's run-time gem dependencies.  <tt>libopenssl-ruby</tt> is used by Rails for encryption services and secure network connections.  (RubyGems no longer creates a revisionless alias command <tt>gem</tt>; the "1.8" references the Ruby version it uses.)
 
 === System Database ===
 
-WontoMedia uses Rails' built-in data management, which in turn requires a SQL database system. [http://wiki.rubyonrails.org/#database_support According to Rails' documentation], the MySQL, PostgreSQL, SQLite, DB2, MS SQL Server, Oracle, and Sybase databases are supported by Ruby on Rails. WontoMedia has been developed to be independent of the particular database used, but to date it has been deployed and tested only with MySQL.  The following instructions are specific to MySQL.
+WontoMedia uses Rails' built-in data management, which in turn requires a SQL database system for storage. [http://wiki.rubyonrails.org/#database_support According to Rails' documentation], the MySQL, PostgreSQL, SQLite, DB2, MS SQL Server, Oracle, and Sybase databases are supported by Ruby on Rails. WontoMedia has been developed to be independent of the particular database used, but to date it has been deployed and tested only with MySQL.  The following instructions are specific to MySQL.
 
 ==== Installing a Database ====
 
@@ -75,11 +82,11 @@ For MySQL, '''if you are using a Debian-based Linux system''', the command for i
  sudo apt-get install mysql-server mysql-client libmysqlclient15-dev ruby1.8-dev
  sudo gem1.8 install mysql
 
-Depending on your system settings, you may be asked for configuration information during this command.  If MySQL is already installed, these commands will not do any harm.  Or, you can use whatever package-management tool you normally use on your system.
+Depending on your system settings, you may be asked for configuration information during this command.  If the same version of MySQL is already installed, these commands will not do any harm.  Or, you can use whatever package-management tool you normally use on your system.
 
-For MySQL '''on another platform''', or if the above doesn't work for you, the [http://dev.mysql.com/downloads/mysql/ MySQL download pages] contain instructions for installing MySQL on other versions of Linux, Windows, and Mac OS X.  Note that, to date, WontoMedia has been tested with [http://dev.mysql.com/downloads/mysql/5.0.html#downloads MySQL 5.0] only.
+For MySQL '''on another platform''', or if the above doesn't work for you, the [http://dev.mysql.com/downloads/mysql/ MySQL download pages] contain instructions for installing MySQL on other versions of Linux, Windows, and Mac OS X.  Note that, to date, WontoMedia has been tested with [http://dev.mysql.com/downloads/mysql/5.0.html#downloads MySQL 5.0] and [http://dev.mysql.com/downloads/mysql/5.1.html#downloads MySQL 5.1].  It is currently regression-tested against 5.1 only.
 
-For a '''database other than MySQL''', you should install using your system's package manager or according to the package's website.  Rails may be capable of direct connection to the database you've chosen, or you may need an additional gem for interfacing, like the <tt>mysql</tt> gem above.  If there is a missing gem, it should become clear when you attempt to start WontoMedia, below.
+For a '''database other than MySQL''', you should install using your system's package manager or according to the database's website.  Rails may be capable of direct connection to the database you've chosen, or you may need an additional gem for interfacing, like the <tt>mysql</tt> gem above.  If there is a missing gem, it should become clear when you attempt to start WontoMedia, below.
 
 ==== Configuring Your Database ====
 
@@ -90,13 +97,13 @@ Whether you had to install MySQL or it was already present, a database must be c
  '''mysql>''' GRANT ALL PRIVILEGES ON ''[db-name-for-wontomedia]''.* TO ''[new-user-name]''@''localhost'' IDENTIFIED BY ''[users-password]'';
  '''mysql>''' quit;
 
-If you are using a different operating system, the initial <tt>mysql</tt> command could be different.  If a different database, then the SQL statements (the middle two lines) might work for you, but you should verify with the documentation for you database.
+If you are using a different operating system, the initial <tt>mysql</tt> command could be different.  If a different database, then the SQL statements (the middle two lines) might work for you, but you should verify with the documentation for your database.
 
 === WontoMedia Itself ===
 
 ==== WontoMedia gem ====
 
-Install WontoMedia as a gem.  Execute the command
+Install WontoMedia as a gem.  Execute the command:
 
  sudo gem1.8 install wontomedia
 
@@ -123,7 +130,7 @@ which contains the correct content for installing with a MySQL database, except 
   password: '''replace-bad-passwd'''
   socket: /var/run/mysqld/mysqld.sock
 
-In the <tt>config</tt> directory, copy the file <tt>database-mysql.yml</tt> to <tt>database.yml</tt>.  Then edit <tt>database.yml</tt> to change the place-holders <tt>wontomedia_production</tt>, <tt>wontomedia-user</tt>, and <tt>replace-bad-passwd</tt> to the correct values for your database. (You may need to be logged in as root in order to copy and/or edit the files.)
+In the <tt>config</tt> directory, copy the file <tt>database-mysql.yml</tt> to <tt>database.yml</tt>.  Then edit <tt>database.yml</tt> to change the place-holders <tt>wontomedia_production</tt>, <tt>wontomedia-user</tt>, and <tt>replace-bad-passwd</tt> to the correct values for your database. (You may need to be logged in as root in order to create and/or edit this file.)
 
 Once <tt>database.yml</tt> is in place, the database must be initialized with the correct tables for WontoMedia.  This is accomplished by executing the commands:
 

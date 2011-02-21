@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2010-09-18}
+  s.date = %q{2011-02-20}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -255,14 +255,50 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rake>, ["~> 0.8.7"])
-      s.add_runtime_dependency(%q<rails>, ["~> 2.3.5"])
+      s.add_runtime_dependency(%q<rake>, ["= 0.8.7"])
+      s.add_runtime_dependency(%q<rails>, ["= 2.3.5"])
+      s.add_development_dependency(%q<mysql>, [">= 0"])
+      s.add_development_dependency(%q<bundler>, [">= 0"])
+      s.add_development_dependency(%q<mongrel>, [">= 0"])
+      s.add_development_dependency(%q<rspec-rails>, [">= 0"])
+      s.add_development_dependency(%q<webrat>, [">= 0"])
+      s.add_development_dependency(%q<cucumber-rails>, [">= 0"])
+      s.add_development_dependency(%q<database_cleaner>, [">= 0"])
+      s.add_development_dependency(%q<selenium-client>, [">= 0"])
+      s.add_development_dependency(%q<technicalpickles-jeweler>, [">= 0"])
+      s.add_development_dependency(%q<gemcutter>, [">= 0"])
+      s.add_development_dependency(%q<ZenTest>, [">= 0"])
+      s.add_development_dependency(%q<migration_test_helper>, [">= 0"])
     else
-      s.add_dependency(%q<rake>, ["~> 0.8.7"])
-      s.add_dependency(%q<rails>, ["~> 2.3.5"])
+      s.add_dependency(%q<rake>, ["= 0.8.7"])
+      s.add_dependency(%q<rails>, ["= 2.3.5"])
+      s.add_dependency(%q<mysql>, [">= 0"])
+      s.add_dependency(%q<bundler>, [">= 0"])
+      s.add_dependency(%q<mongrel>, [">= 0"])
+      s.add_dependency(%q<rspec-rails>, [">= 0"])
+      s.add_dependency(%q<webrat>, [">= 0"])
+      s.add_dependency(%q<cucumber-rails>, [">= 0"])
+      s.add_dependency(%q<database_cleaner>, [">= 0"])
+      s.add_dependency(%q<selenium-client>, [">= 0"])
+      s.add_dependency(%q<technicalpickles-jeweler>, [">= 0"])
+      s.add_dependency(%q<gemcutter>, [">= 0"])
+      s.add_dependency(%q<ZenTest>, [">= 0"])
+      s.add_dependency(%q<migration_test_helper>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rake>, ["~> 0.8.7"])
-    s.add_dependency(%q<rails>, ["~> 2.3.5"])
+    s.add_dependency(%q<rake>, ["= 0.8.7"])
+    s.add_dependency(%q<rails>, ["= 2.3.5"])
+    s.add_dependency(%q<mysql>, [">= 0"])
+    s.add_dependency(%q<bundler>, [">= 0"])
+    s.add_dependency(%q<mongrel>, [">= 0"])
+    s.add_dependency(%q<rspec-rails>, [">= 0"])
+    s.add_dependency(%q<webrat>, [">= 0"])
+    s.add_dependency(%q<cucumber-rails>, [">= 0"])
+    s.add_dependency(%q<database_cleaner>, [">= 0"])
+    s.add_dependency(%q<selenium-client>, [">= 0"])
+    s.add_dependency(%q<technicalpickles-jeweler>, [">= 0"])
+    s.add_dependency(%q<gemcutter>, [">= 0"])
+    s.add_dependency(%q<ZenTest>, [">= 0"])
+    s.add_dependency(%q<migration_test_helper>, [">= 0"])
   end
 end

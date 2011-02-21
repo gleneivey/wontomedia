@@ -49,6 +49,7 @@ if (defined $testGemSource &&
     $testGemSource ne ""){
     DoASystemCommand( "gem1.8 sources --add $testGemSource" );
     DoASystemCommand( "gem1.8 sources --remove http://rubyforge.org/" );
+    DoASystemCommand( "gem1.8 sources --remove http://rubygems.org/" );
 }
 else {
     DoASystemCommand( "gem1.8 sources --add http://gems.github.com/" );

@@ -18,23 +18,4 @@
 
 source :rubygems
 source "http://gems.github.com"
-
-gem "rake"
-gem "rails", "2.3.5"
-gem "mysql"
-
-group :developtment do
-  gem "mongrel"
-  gem "nokogiri"
-  gem "rspec", :require => "spec"
-  gem "rspec-rails"
-  gem "webrat"
-  gem "cucumber"
-  gem "cucumber-rails"
-  gem "database_cleaner"
-  gem "selenium-client"
-  gem "rubyforge"
-  gem "technicalpickles-jeweler", :require => "jeweler"
-  gem "ZenTest"
-  gem "migration_test_helper"
-end
+gemspec

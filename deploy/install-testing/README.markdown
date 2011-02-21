@@ -7,13 +7,13 @@ Intro
 
 This directory contains scripts (shell, Perl, and Ruby) used for
 testing the installation of WontoMedia on a clean/minimal Linux
-system.  They have been used on Ubuntu 9.04, and are written assuming
-the presence of the Debian package manager `apt-get`.  The scripts
-whose names begin "wm_*" are intended to be executed on the test
-target (the system being installed on), with the other scripts being
-run on your development system (where your WontoMedia Git repository
-is located) to allow the target to install from your local development
-version of WontoMedia.
+system.  They have been used on Ubuntu 9.04 through 10.10, and are
+written assuming the presence of the Debian package manager `apt-get`.
+The scripts whose names begin "wm_*" are intended to be executed on
+the test target (the system being installed on), with the other
+scripts being run on your development system (where your WontoMedia
+Git repository is located) to allow the target to install from your
+local development version of WontoMedia.
 
 Note that the wm_* scripts can *also* be used for the initial
 installation and configuration of your development system.  Their
@@ -35,19 +35,19 @@ Installation Test Scripts
 There are five wm_* scripts:
 
  * One for installing WontoMedia runtime dependencies and the
-WontoMedia gem.  This script expects to be run as root, and automates
-and tests all of steps in the `InstallFromScratch` page, and is the
-only script necessary to get a local WontoMedia installation running,
-it ends by launching a local WontoMedia instance available at
+WontoMedia web application through a gem.  This script:
+     * expects to be run as root,
+     * automates and tests all of the steps in the `InstallFromScratch` page,
+     * is the only script necessary to get a local WontoMedia installation
+running,
+     * and it ends by launching a local WontoMedia instance available at
 `localhost:3000`.
-
  * Three for transitioning from a production/execution environment
 based on WontoMedia installed from a gem to a development
 configuration based on WontoMedia installed into a local Git
 repository.
-
  * One for reversing all of the steps in the other scripts, returning
-the the system to its "clean" configuration.  Note that this
+the system to its "clean" configuration.  Note that this
 unconditionally uninstalls WontoMedia and *all* of its dependencies.
 So, if you are using these scripts on your daily-use system, this
 script might break dependencies of other software you use and is not
@@ -60,17 +60,17 @@ MySQL.  If you want to use a different database server, wm_developer
 might still be of use to you.
 
 The following sections describe each script in the order they are
-intended to be executed
+intended to be executed.
 
 
-wm_install_from_scratch.pl
---------------------------
+wm\_install\_from\_scratch.pl
+-----------------------------
 
 This script expects to be run as root.
 
-It installs Ruby, RubyGems, MySQL, and the gems necessary to run
-WontoMedia.  For testing purposes, it also creates a database and user
-within MySQL, and creates a matching `database.yml` in the
+It installs Ruby, RubyGems, Bundler, MySQL, and the gems necessary to
+run WontoMedia.  For testing purposes, it also creates a database and
+user within MySQL, and creates a matching `database.yml` in the
 `gems/wontomedia/config` directory.  For a production installation,
 you will likely want to modify or remove these database entities.
 
@@ -94,9 +94,9 @@ wm_ungem
 
 This script expects to be run as root.
 
-on completion of `wm_install_from_scratch.pl`, WontoMedia will have
-been installed by RubyGems, likely in a system directory and with
-files modifiable only by root.  While this could be a resonable
+On completion of `wm_install_from_scratch.pl`, WontoMedia will have
+been installed by RubyGems, likely in a system directory and possibly
+with files modifiable only by root.  While this could be a resonable
 installation for a server system, it is not desirable for anyone
 performing development on WontoMedia.
 
@@ -110,7 +110,7 @@ wm_git
 
 This script should be run while logged into the user account from
 which you will do development, and from the directory *within which*
-you want you WontoMedia Git repository created.
+you want your WontoMedia Git repository created.
 
 This script will create a new Git repository containing the WontoMedia
 source, by default using the "public clone" URL for an active
@@ -149,8 +149,8 @@ dependencies of WontoMedia's automated tests and that are used by
 other WontoMedia developers.
 
 
-wm_purge_to_scratch.pl
-----------------------
+wm\_purge\_to\_scratch.pl
+-------------------------
 
 This script expects to be run as root.
 
@@ -167,12 +167,10 @@ four scripts, this script:
  * uninstalls all known packages that `apt-get` and `gem` installs
 implicitly because packages explicitly installed by the other scripts
 depend on them.
-
  * will completely remove your WontoMedia Git repository (assuming it
 is executed from within the same directory where you ran `wm_git`),
 causing you to lose any source changes you have not pushed or pulled
 into another repository.
-
  * remove your entire MySQL installation, including all database
 files.  This means you will lose not only any content you have created
 within your WontoMedia `development` database, but also any other
@@ -180,7 +178,7 @@ within your WontoMedia `development` database, but also any other
 system.
 
 In addition, both this script and `wm_install_from_scrach.pl` directly
-manipulate the Debian packaging systems configuration file for storing
+manipulate the Debian packaging system's configuration file for storing
 default password values obtained by package installation scripts.
 (This is done so that the install script can install MySQL with a
 known root user password and without requiring an operator to interact
@@ -211,7 +209,7 @@ WontoMedia transitions to supporting the new Rails.)
 
 Unmodified, the scripts will install from "normal" public sources,
 which is appropriate if you are actually setting up a new system.  If,
-however, you are using them to thest the WontoMedia installation
+however, you are using them to test the WontoMedia installation
 process, especially following changes to your local version of
 WontoMedia, then this is likely not desirable.
 
@@ -238,36 +236,37 @@ executed while logged in to your development user account.
 First is `preload_gem_cache`.  This script will populate an isolated
 gem repository in the directory /home/gem-testing (which you must
 pre-create).  This is separate from the default repository normally
-used by the `gem` command, and will not interfere with the
+used by the `gem` command (either the system repository or the one
+maintained by RVM if you use that), and will not interfere with the
 configuration of tool and gem versions that you regularly use.  The
 isolated set of gems this creates will be served, along with your
 locally-created WontoMedia gem, to your target installation test
 system, allowing you to avoid repeated download of dependency gems
-from RubyForge, GitHub, etc.
+from RubyGems, GitHub, etc.
 
 The second script is `serve_gem`.  When you have completed a change in
 your local WontoMedia development area, you can do the following:
 
     cd [your development area]/wontomedia
     rake build
-    cd pkg
-    ../deploy/install-testing/serve_gem.sh
+    deploy/install-testing/serve_gem.sh
 
-The script will install your just-built WontoMedia gem into the
-isolated gem repository created by `preload_gem_cache`, start a gem
-server process serving from that repository, and start a (very
-liberal) Git server process.  When you're done with installation
-testing on your target system, type Control-C to kill the gem server,
-and the script will conclude by *uninstalling* the WontoMedia gem from
-the test repository.  Note that the Git server remains running and
-must be terminated manually if desired.
+The script will install your just-built WontoMedia gem (in the 'pkg'
+directory) into the isolated gem repository created by
+`preload_gem_cache`, start a gem server process serving from that
+repository, and start a (very liberal) Git server process.  When
+you're done with installation testing on your target system, type
+Control-C to kill the gem server, and the script will conclude by
+*uninstalling* the WontoMedia gem from the test repository.  Note that
+the Git server remains running and must be terminated manually if
+desired.
 
 
 `Apt-get` with `--no-download`
 ------------------------------
 
 The script variables to stop `apt-get` from downloading new copies of
-Debian packages does not interfere with package manager's attempt to
+Debian packages do not interfere with package manager's attempt to
 read from original install media (CDs, DVDs, etc.) if that is where
 the most recent version of a package is.  By default, `apt-get` will
 not keep a copy of a non-network package file in its local cache
