@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2011-02-20}
+  s.date = %q{2011-02-21}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -96,6 +96,7 @@ Gem::Specification.new do |s|
      "config/initializers/extensions.rb",
      "config/initializers/inflections.rb",
      "config/initializers/mime_types.rb",
+     "config/initializers/mongrel.rb",
      "config/initializers/new_rails_defaults.rb",
      "config/locales/en.yml",
      "config/preinitializer.rb",
@@ -129,6 +130,7 @@ Gem::Specification.new do |s|
      "lib/helpers/connection_helper.rb",
      "lib/helpers/item_helper.rb",
      "lib/helpers/tripple_navigation.rb",
+     "lib/tasks/asset_packager_tasks.rake",
      "lib/tasks/cucumber.rake",
      "lib/tasks/customize.rake",
      "lib/tasks/db.rake",
@@ -212,7 +214,6 @@ Gem::Specification.new do |s|
      "vendor/plugins/asset_packager/lib/jsmin.rb",
      "vendor/plugins/asset_packager/lib/synthesis/asset_package.rb",
      "vendor/plugins/asset_packager/lib/synthesis/asset_package_helper.rb",
-     "vendor/plugins/asset_packager/tasks/asset_packager_tasks.rake",
      "vendor/plugins/asset_packager/test/asset_package_helper_development_test.rb",
      "vendor/plugins/asset_packager/test/asset_package_helper_production_test.rb",
      "vendor/plugins/asset_packager/test/asset_packager_test.rb",
@@ -256,11 +257,11 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rake>, ["= 0.8.7"])
-      s.add_runtime_dependency(%q<rails>, ["= 2.3.5"])
+      s.add_runtime_dependency(%q<rails>, ["= 2.3.11"])
       s.add_development_dependency(%q<mysql>, [">= 0"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
       s.add_development_dependency(%q<mongrel>, [">= 0"])
-      s.add_development_dependency(%q<rspec-rails>, [">= 0"])
+      s.add_development_dependency(%q<rspec-rails>, ["= 1.3.3"])
       s.add_development_dependency(%q<webrat>, [">= 0"])
       s.add_development_dependency(%q<cucumber-rails>, [">= 0"])
       s.add_development_dependency(%q<database_cleaner>, [">= 0"])
@@ -271,11 +272,11 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<migration_test_helper>, [">= 0"])
     else
       s.add_dependency(%q<rake>, ["= 0.8.7"])
-      s.add_dependency(%q<rails>, ["= 2.3.5"])
+      s.add_dependency(%q<rails>, ["= 2.3.11"])
       s.add_dependency(%q<mysql>, [">= 0"])
       s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<mongrel>, [">= 0"])
-      s.add_dependency(%q<rspec-rails>, [">= 0"])
+      s.add_dependency(%q<rspec-rails>, ["= 1.3.3"])
       s.add_dependency(%q<webrat>, [">= 0"])
       s.add_dependency(%q<cucumber-rails>, [">= 0"])
       s.add_dependency(%q<database_cleaner>, [">= 0"])
@@ -287,11 +288,11 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<rake>, ["= 0.8.7"])
-    s.add_dependency(%q<rails>, ["= 2.3.5"])
+    s.add_dependency(%q<rails>, ["= 2.3.11"])
     s.add_dependency(%q<mysql>, [">= 0"])
     s.add_dependency(%q<bundler>, [">= 0"])
     s.add_dependency(%q<mongrel>, [">= 0"])
-    s.add_dependency(%q<rspec-rails>, [">= 0"])
+    s.add_dependency(%q<rspec-rails>, ["= 1.3.3"])
     s.add_dependency(%q<webrat>, [">= 0"])
     s.add_dependency(%q<cucumber-rails>, [">= 0"])
     s.add_dependency(%q<database_cleaner>, [">= 0"])

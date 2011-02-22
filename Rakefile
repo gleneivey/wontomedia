@@ -95,7 +95,7 @@ ENDOSTRING
 
     s.required_ruby_version = '~>1.8.7'
     s.add_dependency 'rake', '=0.8.7'
-    s.add_dependency 'rails', '=2.3.5'
+    s.add_dependency 'rails', '=2.3.11'
 
     # can't run w/o a database interface gem, but don't want to specify
     # a 'mysql' dependency in case we're being used with something else
@@ -103,13 +103,12 @@ ENDOSTRING
 
     s.add_development_dependency 'bundler'
     s.add_development_dependency 'mongrel'
-    s.add_development_dependency 'rspec-rails'       # gets rspec
+    s.add_development_dependency 'rspec-rails', '=1.3.3'     # gets rspec
     s.add_development_dependency 'webrat'
-    s.add_development_dependency 'cucumber-rails'    # gets cucumber, nokogiri
+    s.add_development_dependency 'cucumber-rails'            # gets cucumber, nokogiri
     s.add_development_dependency 'database_cleaner'
     s.add_development_dependency 'selenium-client'
-    s.add_development_dependency 'technicalpickles-jeweler'
-                                                     # gets rubyforge
+    s.add_development_dependency 'technicalpickles-jeweler'  # gets rubyforge
     s.add_development_dependency 'gemcutter'
     s.add_development_dependency 'ZenTest'
     s.add_development_dependency 'migration_test_helper'

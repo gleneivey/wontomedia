@@ -26,6 +26,8 @@ config/environments/cucumber.rb
 features/support/paths.rb
 features/support/env.rb
 features/step_definitions/web_steps.rb
+lib/tasks/asset_packager_tasks.rake
+config/initializers/mongrel.rb
 
     # repeatedly auto-generated from other files
 db/schema.rb

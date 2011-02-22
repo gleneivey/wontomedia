@@ -26,7 +26,7 @@ Rails::Initializer.run do |config|
   config.frameworks -= [ :action_mailer ]
   config.time_zone = 'UTC'
   config.action_controller.session = {
-    :session_key => '_wontomedia_session',
+    :key => '_wontomedia_session',
     :secret      => '1f59de398da7f80aca3f4a943eae6e8f5759efe7ec9e7690c57a4f485012f4f487ccf4530d4885a70fb20f51801306ddc50688b00bb3616da44303238cb15a64'
   }
 end
