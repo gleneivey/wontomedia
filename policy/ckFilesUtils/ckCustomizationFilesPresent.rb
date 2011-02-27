@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
 # WontoMedia - a wontology web application
-# Copyright (C) 2010 - Glen E. Ivey
+# Copyright (C) 2011 - Glen E. Ivey
 #    www.wontology.com
 #
 # This program is free software: you can redistribute it and/or modify
