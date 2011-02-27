@@ -1,4 +1,5 @@
 "README" file for general-documentation directory of the WontoMedia package
+
 Copyright (C) 2010 - Glen E. Ivey
   (see the end of this file for copyright/licensing information)
 
@@ -12,7 +13,7 @@ documentation.  The files and sub-directories here are as follows:
    `rake` tasks that are part of the WontoMedia project.
 
  * __wiki__:  This directory contains the source documents (raw
-   MediaWiki markup) for the content of wiki.wontology.org.  In
+   MediaWiki markup) for the content of `wiki.wontology.org`.  In
    addition to providing a local and cannonical set of documentation
    for WontoMedia's internals, the content of `wiki/Help` can be used
    to seed your own local MediaWiki installation if you'd rather use

@@ -9,13 +9,13 @@ This directory contains scripts (shell, Perl, and Ruby) used for
 testing the installation of WontoMedia on a clean/minimal Linux
 system.  They have been used on Ubuntu 9.04 through 10.10, and are
 written assuming the presence of the Debian package manager `apt-get`.
-The scripts whose names begin "wm_*" are intended to be executed on
+The scripts whose names begin `wm_*` are intended to be executed on
 the test target (the system being installed on), with the other
 scripts being run on your development system (where your WontoMedia
 Git repository is located) to allow the target to install from your
 local development version of WontoMedia.
 
-Note that the wm_* scripts can *also* be used for the initial
+Note that the `wm_*` scripts can *also* be used for the initial
 installation and configuration of your development system.  Their
 structure follows the instructions in
 
@@ -32,7 +32,7 @@ instructions are upgraded.
 Installation Test Scripts
 =========================
 
-There are five wm_* scripts:
+There are five `wm_*` scripts:
 
  * One for installing WontoMedia runtime dependencies and the
 WontoMedia web application through a gem.  This script:
@@ -42,10 +42,12 @@ WontoMedia web application through a gem.  This script:
 running,
      * and it ends by launching a local WontoMedia instance available at
 `localhost:3000`.
+
  * Three for transitioning from a production/execution environment
 based on WontoMedia installed from a gem to a development
 configuration based on WontoMedia installed into a local Git
 repository.
+
  * One for reversing all of the steps in the other scripts, returning
 the system to its "clean" configuration.  Note that this
 unconditionally uninstalls WontoMedia and *all* of its dependencies.
@@ -55,9 +57,9 @@ suggested.  However, it is appropriate for hosts used to
 regression-test the WontoMedia install process itself, to ensure that
 the system does not acquire new dependencies unnoticed.
 
-Note that all of these scripts expect WontoMedia to be run with
-MySQL.  If you want to use a different database server, wm_developer
-might still be of use to you.
+Note that all of these scripts expect WontoMedia to be run with MySQL.
+If you want to use a different database server, `wm_developer` might
+still be of use to you.
 
 The following sections describe each script in the order they are
 intended to be executed.
@@ -81,7 +83,7 @@ problem and reinstall.
 
 On successful completion, the install script will launch WontoMedia
 using the standard Rails `script/server` command.  This will start
-WontoMedia on port 3000, using the "development" database
+WontoMedia on port 3000, using the `development` database
 configuration, and any installed web server for which Rails has a
 default configuration.  (The install script does not install a web
 server, so if using it on a clean system, the Ruby built-in server
@@ -234,7 +236,7 @@ system as a server for installing to other systems.  Both should be
 executed while logged in to your development user account.
 
 First is `preload_gem_cache`.  This script will populate an isolated
-gem repository in the directory /home/gem-testing (which you must
+gem repository in the directory `/home/gem-testing` (which you must
 pre-create).  This is separate from the default repository normally
 used by the `gem` command (either the system repository or the one
 maintained by RVM if you use that), and will not interfere with the
@@ -251,7 +253,7 @@ your local WontoMedia development area, you can do the following:
     rake build
     deploy/install-testing/serve_gem.sh
 
-The script will install your just-built WontoMedia gem (in the 'pkg'
+The script will install your just-built WontoMedia gem (in the `pkg`
 directory) into the isolated gem repository created by
 `preload_gem_cache`, start a gem server process serving from that
 repository, and start a (very liberal) Git server process.  When

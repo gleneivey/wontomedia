@@ -12,9 +12,9 @@ control repositories) from the core of the WontoMedia web application.
 
 As many directories as desired can be specified on the command line
 (one minimum).  The directory name list must be enclosed in square
-brackets, and placed immediately after the task name "customize" (no
+brackets, and placed immediately after the task name `customize` (no
 space).  Each directory is separated from the next by a colon (like a
-UNIX PATH).  Recall that rake always operates relative to the top
+UNIX `PATH`).  Recall that rake always operates relative to the top
 directory of your project, regardless of your working directory when
 you execute the rake command.  Therefore, any relative paths you
 include are evaluated relative to the root of the wontomedia
@@ -24,16 +24,16 @@ Depending on your shell and the content of your directory names, you
 may need to include quotation marks or escape characters in the
 command line you type in order for rake to receive a command line
 formatted as shown.  In particular, the entire parameterized task,
-from the task name ("customize") through the closing square-bracket
+from the task name (`customize`) through the closing square-bracket
 must be parsed by the shell and passed to rake as a single
 command-line argument.
 
-As an example of the "customize" task's operation, the command
+As an example of the `customize` task's operation, the command
 
     rake customize[~/myWontology]
 
 will recursively find all files and directories under your
-"myWontology" directory, and make it appear as though they've been
+`myWontology` directory, and make it appear as though they've been
 copied into your WontoMedia directory (in which the rake command was
 executed).  Assuming the following directory structure/content:
 
@@ -41,7 +41,7 @@ executed).  Assuming the following directory structure/content:
 
 this rake task will do the equivalent of:
 
-    ln -s ~/myWontology/app/views/items/_home_introductory_text.html.erb [wontomedia-root]/app/views/items
+    ln -s ~/myWontology/app/views/items/_home_introductory_text.html.erb $RAILS_ROOT/app/views/items
 
 However, the rake task uses absolute paths, so it will have to be
 re-executed if you later move either the WontoMedia directory or one
@@ -65,11 +65,11 @@ WontoMedia directory:
     rake customize[default-custom:~/myWontology]
 
 will first create links to the minimum set of required customization
-files under the "default-custom" directory, and then create links to
-the files in your "myWontology" directory.  Your myWontology could
+files under the `default-custom` directory, and then create links to
+the files in your `myWontology` directory.  Your `myWontology` could
 then contain as little as a single file (with the correct,
 Rails-matching relative path) that replaced only a single link
-pointing into the default-custom directory.
+pointing into the `default-custom` directory.
 
 ----------------------------------------------------------------
 

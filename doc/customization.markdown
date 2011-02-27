@@ -35,7 +35,7 @@ We have reconciled these conflicting needs as follows:
    used as-is to get a new WontoMedia installation going, is located
    in:
 
-    wontomedia/default-custom
+        wontomedia/default-custom
 
  * a rake task is provided that will create symbolic links to all
    files found under all customization directories from the matching
@@ -44,10 +44,10 @@ We have reconciled these conflicting needs as follows:
    control purposes) to appear "inside" where Rails expects them
    during execution.
 
- * a script is executed by rake (first step in "rake test:policies")
+ * a script is executed by rake (first step in `"rake test:policies"`)
    that finds all symbolic links in the project directory, and
-   replaces the file $GIT_DIR/info/exclude with a list of them.  In a
-   different type of project, where keeping symbolic links under
+   replaces the file `$GIT_DIR/info/exclude` with a list of them.  In
+   a different type of project, where keeping symbolic links under
    version control was important, this would be a problem.  However,
    we have chosen the convention that symbolic links will be used in
    the WontoMedia directory structure only for installation
@@ -56,22 +56,22 @@ We have reconciled these conflicting needs as follows:
    configuration of cusomization files from being incorporated into
    any updates to WontoMedia.
 
-   The "exclude" file is used, rather than .gitignore, so that an
+   The "exclude" file is used, rather than `.gitignore`, so that an
    individual site's extensions can include files above and beyond the
    minimal set of entry points that the WontoMedia core expects.  If
-   .gitignore were used, then people would still have to manually
+   `.gitignore` were used, then people would still have to manually
    prevent customization files they added to their system from being
    listed in Git commits they share with others.
 
- * a script is executed by rake (run as part of "rake test:policies")
-   that recurses through the "default-custom" directory and fails that
-   a symbolic link exists in the application directory hierarchy for
-   each file under default-custom.  In this way, the content of
-   default-custom not only provides a sample of customization files,
-   but serves as the definition for all of the files referenced from
-   portions of the core application.
+ * a script is executed by `rake` (run as part of `"rake
+   test:policies"`) that recurses through the `default-custom`
+   directory and fails that a symbolic link exists in the application
+   directory hierarchy for each file under `default-custom`.  In this
+   way, the content of `default-custom` not only provides a sample of
+   customization files, but serves as the definition for all of the
+   files referenced from portions of the core application.
 
-The "customize" rake task is documented in
+The `customize` rake task is documented in
 
     wontomedia/doc/script/rake-customize.markdown
 
