@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
-  s.date = %q{2011-02-26}
+  s.date = %q{2011-02-28}
   s.description = %q{      WontoMedia is a Ruby-on-Rails web app for community creation of
       an information classification scheme.  WontoMedia is free
       software (licensed under the AGPL v3), and is being developed by
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     "COPYING",
      "COPYING.DOCUMENTATION",
+     "Capfile",
      "Gemfile",
      "Gemfile.lock",
      "LICENSE",
@@ -88,6 +89,7 @@ Gem::Specification.new do |s|
      "config/cucumber.yml",
      "config/database-mysql-development.yml",
      "config/database-mysql.yml",
+     "config/deploy.rb",
      "config/environment.rb",
      "config/environments/cucumber.rb",
      "config/environments/development.rb",
@@ -259,6 +261,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<rails>, ["= 2.3.11"])
       s.add_development_dependency(%q<mysql>, [">= 0"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
+      s.add_development_dependency(%q<capistrano>, [">= 0"])
       s.add_development_dependency(%q<mongrel>, [">= 0"])
       s.add_development_dependency(%q<rspec-rails>, ["= 1.3.3"])
       s.add_development_dependency(%q<webrat>, [">= 0"])
@@ -274,6 +277,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rails>, ["= 2.3.11"])
       s.add_dependency(%q<mysql>, [">= 0"])
       s.add_dependency(%q<bundler>, [">= 0"])
+      s.add_dependency(%q<capistrano>, [">= 0"])
       s.add_dependency(%q<mongrel>, [">= 0"])
       s.add_dependency(%q<rspec-rails>, ["= 1.3.3"])
       s.add_dependency(%q<webrat>, [">= 0"])
@@ -290,6 +294,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rails>, ["= 2.3.11"])
     s.add_dependency(%q<mysql>, [">= 0"])
     s.add_dependency(%q<bundler>, [">= 0"])
+    s.add_dependency(%q<capistrano>, [">= 0"])
     s.add_dependency(%q<mongrel>, [">= 0"])
     s.add_dependency(%q<rspec-rails>, ["= 1.3.3"])
     s.add_dependency(%q<webrat>, [">= 0"])

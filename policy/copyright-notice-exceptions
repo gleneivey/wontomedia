@@ -53,6 +53,8 @@ public/dispatch.rb
 config/boot.rb
 !lock            651adf6bc0e0700e310dca8cc99069cb7261d5b9
 script
+!lock            c9c273b6159826b6652ea94b3dcfa64eb2dd128f
+Capfile
 !unlock
 
 

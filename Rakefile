@@ -102,6 +102,7 @@ ENDOSTRING
     s.add_development_dependency 'mysql'
 
     s.add_development_dependency 'bundler'
+    s.add_development_dependency 'capistrano'
     s.add_development_dependency 'mongrel'
     s.add_development_dependency 'rspec-rails', '=1.3.3'     # gets rspec
     s.add_development_dependency 'webrat'
