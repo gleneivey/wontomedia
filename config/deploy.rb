@@ -24,36 +24,49 @@
   ####       https://github.com/gleneivey/wontology.org
   ####       https://github.com/gleneivey/staging.wontology.org
 
-set :application, "demo.wontology.org"
+set :application, 'demo.wontology.org'
 set :deploy_to, "/home/glenivey/#{application}"
-set :repository,  "git://github.com/gleneivey/wontomedia.git"
+set :repository,  'git://github.com/gleneivey/wontomedia.git'
 
-load File.join File.dirname(__FILE__), "deploy_on_a2hosting.rb"
+load File.join File.dirname(__FILE__), 'deploy_on_a2hosting.rb'
 
 set :bundle_flags, ''
 require 'bundler/capistrano'
 
 set :scm, :git
-set :branch, "master"
+set :branch, 'master'
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 
-role :app, "wontology.org"
-role :web, "wontology.org", deploy => false
-role :db,  "wontology.org", :primary => true
+role :app, 'wontology.org'
+role :web, 'wontology.org', deploy => false
+role :db,  'wontology.org', :primary => true
 
 
 
-after "deploy:symlink", "deploy:link:database_yml"
+set :apps_config_root, '/home/glenivey/SiteConfigs'
+set :app_customization, 'default-custom'
+before 'deploy:symlink', 'deploy:link:customize'
+after  'deploy:symlink', 'deploy:link:database_yml'
 
 
 namespace :deploy do
   namespace :link do
 
-    desc "link to production database.yml"
+    desc 'create links to fill in customizations'
+    task :customize, :roles => [ :app, :db ] do
+      do_rake "customize[#{app_customization}]"
+    end
+
+    desc 'link to production database.yml'
     task :database_yml, :roles => [ :app, :db ] do
       run "ln -sf #{File.join apps_config_root, application+'-database.yml'} " +
                  "#{File.join release_path, 'config', 'database.yml'}"
     end
   end
+end
+
+
+def do_rake(task)
+  run "cd #{deploy_to}/current && RAILS_ENV=production #{rake} #{task}"
 end

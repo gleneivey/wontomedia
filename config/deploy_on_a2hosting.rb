@@ -18,7 +18,6 @@
 
 ssh_options[:port] = 7822
 set :use_sudo, false
-set :apps_config_root, "/home/glenivey/SiteConfigs"
 set :user, "glenivey"
 
 

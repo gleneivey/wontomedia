@@ -22,7 +22,8 @@ begin
   require 'jeweler'
   have_jeweler = true
 rescue LoadError
-  puts <<-MESSAGE
+  unless ENV['NO_RAKE_WARN'].present?
+    puts <<-MESSAGE
 
 WARNING: Missing development dependency(ies):
   'Jeweler', and/or 'rubygems' are not available.
@@ -33,7 +34,8 @@ Install an individual missing gem with:
 
 Or install all of Wontomedia's development dependencies with:
     'bundle install'
-MESSAGE
+    MESSAGE
+  end
 end
 
 
