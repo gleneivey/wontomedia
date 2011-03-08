@@ -16,9 +16,6 @@
 # see <http://www.gnu.org/licenses/>.
 
 
-require 'bundler/capistrano'
-
-
   #### NOTE: this deployment configuration is intended to deploy an
   ####   "uncustomized" instance of WontoMedia to our "demo"
   ####   environment on A2 Hosting.  For a more realistic example of
@@ -28,10 +25,13 @@ require 'bundler/capistrano'
   ####       https://github.com/gleneivey/staging.wontology.org
 
 set :application, "demo.wontology.org"
-set :deploy_to, "/home/glenivey/demo.wontology.org"
+set :deploy_to, "/home/glenivey/#{application}"
 set :repository,  "git://github.com/gleneivey/wontomedia.git"
 
 load File.join File.dirname(__FILE__), "deploy_on_a2hosting.rb"
+
+set :bundle_flags, ''
+require 'bundler/capistrano'
 
 set :scm, :git
 set :branch, "master"

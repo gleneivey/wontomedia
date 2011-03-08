@@ -96,10 +96,7 @@ ENDOSTRING
     s.required_ruby_version = '~>1.8.7'
     s.add_dependency 'rake', '=0.8.7'
     s.add_dependency 'rails', '=2.3.11'
-
-    # can't run w/o a database interface gem, but don't want to specify
-    # a 'mysql' dependency in case we're being used with something else
-    s.add_development_dependency 'mysql'
+    s.add_dependency 'mysql', '=2.8.1'
 
     s.add_development_dependency 'bundler'
     s.add_development_dependency 'capistrano'
