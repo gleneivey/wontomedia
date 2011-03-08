@@ -55,6 +55,7 @@ namespace :deploy do
 
     desc 'create links to fill in customizations'
     task :customize, :roles => [ :app, :db ] do
+      run "ln -sf #{File.join shared_path, 'log'} #{File.join release_path, 'log'}"
       do_rake "customize[#{app_customization}]"
     end
 

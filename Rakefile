@@ -22,7 +22,7 @@ begin
   require 'jeweler'
   have_jeweler = true
 rescue LoadError
-  unless ENV['NO_RAKE_WARN'].present?
+  unless ENV['NO_RAKE_WARN']
     puts <<-MESSAGE
 
 WARNING: Missing development dependency(ies):

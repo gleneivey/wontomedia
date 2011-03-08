@@ -171,6 +171,8 @@ begin   # don't force Blue Ridge dependency on non-developers
   end
 
 rescue LoadError
-  puts "WARNING: Missing development dependency.  'Blue Ridge', 'Webrat', or a dependency not available. To install, see 'http://wiki.wontology.org/SettingUpYourDevelopmentEnvironment'"
+  unless ENV['NO_RAKE_WARN']
+    puts "WARNING: Missing development dependency.  'Blue Ridge', 'Webrat', or a dependency not available. To install, see 'http://wiki.wontology.org/SettingUpYourDevelopmentEnvironment'"
+  end
 end
 
