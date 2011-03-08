@@ -19,10 +19,16 @@
 require 'bundler/capistrano'
 
 
-  #### NOTE: this configuration is for test deploys to wontology.org; will be replaced with
-  ####   parameterized recipies for different sites on different hosting providers
-set :application, "wontology.org"
-set :deploy_to, "/home/glenivey/wontology.org"
+  #### NOTE: this deployment configuration is intended to deploy an
+  ####   "uncustomized" instance of WontoMedia to our "demo"
+  ####   environment on A2 Hosting.  For a more realistic example of
+  ####   how to deploy WontoMedia to host a production web site, see
+  ####   the Git repositories at:
+  ####       https://github.com/gleneivey/wontology.org
+  ####       https://github.com/gleneivey/staging.wontology.org
+
+set :application, "demo.wontology.org"
+set :deploy_to, "/home/glenivey/demo.wontology.org"
 set :repository,  "git://github.com/gleneivey/wontomedia.git"
 
 load File.join File.dirname(__FILE__), "deploy_on_a2hosting.rb"
