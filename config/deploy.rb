@@ -55,19 +55,18 @@ namespace :deploy do
 
     desc 'create links to fill in customizations'
     task :customize, :roles => [ :app, :db ] do
-      run "ln -sf #{File.join shared_path, 'log'} #{File.join release_path, 'log'}"
       do_rake "customize[#{app_customization}]"
     end
 
     desc 'link to production database.yml'
     task :database_yml, :roles => [ :app, :db ] do
-      run "ln -sf #{File.join apps_config_root, application+'-database.yml'} " +
+      run "ln -s #{File.join apps_config_root, application+'-database.yml'} " +
                  "#{File.join release_path, 'config', 'database.yml'}"
     end
   end
 end
 
 
-def do_rake(task)
-  run "cd #{deploy_to}/current && RAILS_ENV=production #{rake} #{task}"
+def do_rake(task, path = nil)
+  run "cd #{path || release_path} && RAILS_ENV=production #{rake} #{task}"
 end
