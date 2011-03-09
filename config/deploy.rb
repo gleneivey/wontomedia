@@ -64,6 +64,18 @@ namespace :deploy do
                  "#{File.join release_path, 'config', 'database.yml'}"
     end
   end
+
+  namespace:db do
+    desc 'repopulate database with seed data'
+    task :seed, :roles => :db do
+      do_rake "db:reseed"
+    end
+
+    desc 'reload (demo) database with fixture data'
+    task :fixtures, :roles => :db do
+      do_rake "db:fixtures:load"
+    end
+  end
 end
 
 
