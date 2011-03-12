@@ -98,11 +98,13 @@ ENDOSTRING
     s.required_ruby_version = '~>1.8.7'
     s.add_dependency 'rake', '=0.8.7'
     s.add_dependency 'rails', '=2.3.11'
+
+      # eventually move to an optional group for people who don't deploy this way
     s.add_dependency 'mysql', '=2.8.1'
+    s.add_dependency 'mongrel'
 
     s.add_development_dependency 'bundler'
     s.add_development_dependency 'capistrano'
-    s.add_development_dependency 'mongrel'
     s.add_development_dependency 'rspec-rails', '=1.3.3'     # gets rspec
     s.add_development_dependency 'webrat'
     s.add_development_dependency 'cucumber-rails'            # gets cucumber, nokogiri

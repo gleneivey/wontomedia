@@ -24,11 +24,11 @@ set :user, "glenivey"
 ## based on samples at http://wiki.a2hosting.com/index.php/Capistrano
 desc "Stop the app server"
 task :stop_app, :roles => :app do
-  send(run_method, "cd #{current_path} && mongrel_rails stop")
+  run "cd #{current_path} && bundle exec mongrel_rails stop"
 end
 
 desc "Start the app server"
 task :start_app, :roles => :app do
-  send(run_method, "cd #{current_path} && " +
-       "mongrel_rails start -d -p #{app_port} -e #{app_env} < /dev/null >& /dev/null")
+  run "cd #{current_path} && " +
+      "bundle exec mongrel_rails start -d -p 12035 -e production -P log/mongrel.pid < /dev/null >& /dev/null"
 end
