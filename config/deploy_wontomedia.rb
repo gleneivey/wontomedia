@@ -29,13 +29,13 @@ namespace :deploy do
 
     desc 'create links to fill in customizations'
     task :customize, :roles => [ :app, :db ] do
-      do_rake "customize[#{app_customization}]"
+      do_rake "customize[#{app_customization}]", app_to_customize
     end
 
     desc 'link to production database.yml'
     task :database_yml, :roles => [ :app, :db ] do
       run "ln -s #{File.join apps_config_root, application+'-database.yml'} " +
-                 "#{File.join release_path, 'config', 'database.yml'}"
+                "#{File.join app_to_customize, 'config', 'database.yml'}"
     end
   end
 end
