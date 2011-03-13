@@ -15,39 +15,31 @@
 # along with this program in the file COPYING and/or LICENSE.  If not,
 # see <http://www.gnu.org/licenses/>.
 
+set :scm, :git
+set :branch, 'master'
+set :deploy_via, :remote_cache
+set :git_enable_submodules, 1
 
-set :deploy_to,        "/home/glenivey/#{application}"
-set :apps_config_root, '/home/glenivey/SiteConfigs'
-set :bundle_flags, ''
-
-ssh_options[:port] = 7822
-set :use_sudo, false
-set :user, "glenivey"
+before 'deploy:symlink', 'deploy:link:customize'
+after  'deploy:symlink', 'deploy:link:database_yml'
 
 
 namespace :deploy do
-  desc "Start the app servers"
-  task :start, :roles => :app do
-    a2_mongrel_start
-  end
+  namespace :link do
 
-  desc "Stop the app servers"
-  task :stop, :roles => :app do
-    a2_mongrel_stop
-  end
+    desc 'create links to fill in customizations'
+    task :customize, :roles => [ :app, :db ] do
+      do_rake "customize[#{app_customization}]"
+    end
 
-  desc "Restart the app servers"
-  task :restart, :roles => :app do
-    a2_mongrel_stop
-    a2_mongrel_start
+    desc 'link to production database.yml'
+    task :database_yml, :roles => [ :app, :db ] do
+      run "ln -s #{File.join apps_config_root, application+'-database.yml'} " +
+                 "#{File.join release_path, 'config', 'database.yml'}"
+    end
   end
 end
 
-def a2_mongrel_start
-  run "cd #{current_path} && " +
-      "bundle exec mongrel_rails start -d -p 12035 -e production -P log/mongrel.pid < /dev/null >& /dev/null"
-end
-
-def a2_mongrel_stop
-  run "cd #{current_path} && bundle exec mongrel_rails stop"
+def do_rake(task, path = nil)
+  run "cd #{path || release_path} && RAILS_ENV=production #{rake} #{task}"
 end
