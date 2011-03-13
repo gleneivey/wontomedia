@@ -30,7 +30,7 @@ namespace :deploy do
     desc 'create links to fill in customizations'
     task :customize, :roles => [ :app, :db ] do
       bundle_dir = File.join app_to_customize, '.bundle'
-      run "if [ ! -e #{bundle_dir}]; then " +
+      run "if [ ! -e #{bundle_dir} ]; then " +
           "  mkdir -p #{bundle_dir};      " +
           "  ln -s #{File.join release_path, '.bundle', 'config'} #{File.join bundle_dir, 'config'};" +
           "fi"
