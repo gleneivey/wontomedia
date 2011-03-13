@@ -24,9 +24,9 @@
   ####       https://github.com/gleneivey/wontology.org
   ####       https://github.com/gleneivey/staging.wontology.org
 
-set :application, 'demo.wontology.org'
-set :deploy_to, "/home/glenivey/#{application}"
-set :repository,  'git://github.com/gleneivey/wontomedia.git'
+set :application, "demo.wontology.org"
+set :deploy_to,   "/home/glenivey/#{application}"
+set :repository,  "git://github.com/gleneivey/wontomedia.git"
 
 load File.join File.dirname(__FILE__), 'deploy_on_a2hosting.rb'
 
@@ -44,8 +44,8 @@ role :db,  'wontology.org', :primary => true
 
 
 
-set :apps_config_root, '/home/glenivey/SiteConfigs'
-set :app_customization, 'default-custom'
+set :apps_config_root,   '/home/glenivey/SiteConfigs'
+set :app_customization,  'default-custom'
 before 'deploy:symlink', 'deploy:link:customize'
 after  'deploy:symlink', 'deploy:link:database_yml'
 
@@ -66,17 +66,27 @@ namespace :deploy do
   end
 
   namespace:db do
+    desc 'empties database and reloads w/ seeds,fixtures -- use in demo environment only'
+    task :reload, :roles => :db, :except => { :primary => false } do
+      do_fixtures_load
+      do_seed
+    end
+
     desc 'repopulate database with seed data'
-    task :seed, :roles => :db do
-      do_rake "db:reseed", current_path
+    task :seed, :roles => :db, :except => { :primary => false } do
+      do_seed
     end
 
     desc 'reload (demo) database with fixture data'
-    task :fixtures, :roles => :db do
-      do_rake "db:fixtures:load", current_path
+    task :fixtures, :roles => :db, :except => { :primary => false } do
+      do_fixtures_load
     end
   end
 end
+
+
+def do_fixtures_load; do_rake "db:fixtures:load", current_path; end
+def do_seed; do_rake "db:reseed", current_path; end
 
 
 def do_rake(task, path = nil)

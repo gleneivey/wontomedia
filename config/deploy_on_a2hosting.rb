@@ -21,14 +21,15 @@ set :use_sudo, false
 set :user, "glenivey"
 
 
-## based on samples at http://wiki.a2hosting.com/index.php/Capistrano
-desc "Stop the app server"
-task :stop_app, :roles => :app do
-  run "cd #{current_path} && bundle exec mongrel_rails stop"
-end
+namespace :deploy do
+  desc "Start the app servers"
+  task :start, :roles => :app do
+    run "cd #{current_path} && " +
+        "bundle exec mongrel_rails start -d -p 12035 -e production -P log/mongrel.pid < /dev/null >& /dev/null"
+  end
 
-desc "Start the app server"
-task :start_app, :roles => :app do
-  run "cd #{current_path} && " +
-      "bundle exec mongrel_rails start -d -p 12035 -e production -P log/mongrel.pid < /dev/null >& /dev/null"
+  desc "Stop the app servers"
+  task :stop, :roles => :app do
+    run "cd #{current_path} && bundle exec mongrel_rails stop"
+  end
 end
