@@ -24,12 +24,26 @@ set :user, "glenivey"
 namespace :deploy do
   desc "Start the app servers"
   task :start, :roles => :app do
-    run "cd #{current_path} && " +
-        "bundle exec mongrel_rails start -d -p 12035 -e production -P log/mongrel.pid < /dev/null >& /dev/null"
+    a2_mongrel_start
   end
 
   desc "Stop the app servers"
   task :stop, :roles => :app do
-    run "cd #{current_path} && bundle exec mongrel_rails stop"
+    a2_mongrel_stop
   end
+
+  desc "Restart the app servers"
+  task :restart, :roles => :app do
+    a2_mongrel_stop
+    a2_mongrel_start
+  end
+end
+
+def a2_mongrel_start
+  run "cd #{current_path} && " +
+      "bundle exec mongrel_rails start -d -p 12035 -e production -P log/mongrel.pid < /dev/null >& /dev/null"
+end
+
+def a2_mongrel_stop
+  run "cd #{current_path} && bundle exec mongrel_rails stop"
 end
