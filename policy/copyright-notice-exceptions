@@ -76,6 +76,7 @@ COPYING.DOCUMENTATION
 *.svg
 *.png
 *.jpg
+*.xcf
 
     # not worth hassle of license notice
 public/robots.txt
