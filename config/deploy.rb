@@ -36,8 +36,9 @@ role :web, 'wontology.org', :deploy => false
 role :db,  'wontology.org', :primary => true
 
 set :app_to_customize,   release_path
+set :app_to_run,         current_path
 set :app_customization,  File.join( release_path, 'default-custom' )
-
+set :a2_port,            12035
 
 namespace :deploy do
   namespace:db do
