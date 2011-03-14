@@ -1,7 +1,0 @@
-User-agent: *
-Disallow: /w/admin
-Disallow: /w/items.yaml
-Disallow: /w/connections.n3
-Disallow: /w/items/*
-Disallow: /w/connections/new
-Disallow: /*/edit
