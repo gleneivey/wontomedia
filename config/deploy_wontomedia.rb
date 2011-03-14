@@ -20,20 +20,29 @@ set :branch, 'master'
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 
+before 'deploy:symlink', 'deploy:link:submodule'
 before 'deploy:symlink', 'deploy:link:customize'
-after  'deploy:symlink', 'deploy:link:database_yml'
+before 'deploy:symlink', 'deploy:link:database_yml'
 
 
 namespace :deploy do
   namespace :link do
-
-    desc 'create links to fill in customizations'
-    task :customize, :roles => [ :app, :db ] do
+    desc 'create links to allow wontomedia to execute as a git submodule'
+    task :submodule, :roles => [ :app, :db ] do
       bundle_dir = File.join app_to_customize, '.bundle'
       run "if [ ! -e #{bundle_dir} ]; then " +
           "  mkdir -p #{bundle_dir};      " +
           "  ln -s #{File.join release_path, '.bundle', 'config'} #{File.join bundle_dir, 'config'};" +
           "fi"
+
+      log_dir = File.join app_to_customize, 'log'
+      run "if [ ! -e #{log_dir} ]; then " +
+          "  ln -s #{File.join shared_path, 'log'} #{log_dir};" +
+          "fi"
+    end
+
+    desc 'create links to fill in customizations'
+    task :customize, :roles => [ :app, :db ] do
       do_rake "customize[#{app_customization}]", app_to_customize
     end
 
