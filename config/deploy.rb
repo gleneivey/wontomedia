@@ -40,26 +40,3 @@ set :app_to_run,         current_path
 set :app_customization,  File.join( release_path, 'default-custom' )
 set :a2_port,            12035
 
-namespace :deploy do
-  namespace:db do
-    desc 'empties database and reloads w/ seeds,fixtures -- use in demo environment only'
-    task :reload, :roles => :db, :except => { :primary => false } do
-      do_fixtures_load
-      do_seed
-    end
-
-    desc 'repopulate database with seed data'
-    task :seed, :roles => :db, :except => { :primary => false } do
-      do_seed
-    end
-
-    desc 'reload (demo) database with fixture data'
-    task :fixtures, :roles => :db, :except => { :primary => false } do
-      do_fixtures_load
-    end
-  end
-end
-
-
-def do_fixtures_load; do_rake "db:fixtures:load", current_path; end
-def do_seed; do_rake "db:reseed", current_path; end
