@@ -27,7 +27,7 @@ before 'deploy:symlink', 'deploy:link:database_yml'
 
 namespace :deploy do
   namespace :link do
-    desc 'create links to allow wontomedia to execute as a git submodule'
+    desc 'create links/dirs to allow wontomedia to execute outside the cap deploy directory'
     task :submodule, :roles => [ :app, :db ] do
       bundle_dir = File.join app_to_customize, '.bundle'
       run "if [ ! -e #{bundle_dir} ]; then " +
@@ -39,6 +39,8 @@ namespace :deploy do
       run "if [ ! -e #{log_dir} ]; then " +
           "  ln -s #{File.join shared_path, 'log'} #{log_dir};" +
           "fi"
+
+      run "mkdir -p #{File.join app_to_customize, 'tmp'}"
     end
 
     desc 'create links to fill in customizations'
