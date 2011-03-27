@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    wontomedia (1.0.2)
+    wontomedia (1.0.3)
       mongrel
       mysql (= 2.8.1)
       rails (= 2.3.11)
