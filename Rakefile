@@ -79,11 +79,9 @@ ENDOSTRING
       "vendor/plugins/redirect_routing/**/*",
       "doc/*", "doc/scripts/*",
       "{app,config,bin,db,default-custom,generators,lib,public,script}/**/*"].
-        exclude("database.yml", "wontomedia.rb",
-            "**/*_packaged.js", "**/*_packaged.css"
-          ) do |maybe_exclude|
-	    File.symlink?( maybe_exclude )
-	  end
+          exclude("database.yml", "**/*_packaged.js", "**/*_packaged.css") do |maybe_exclude|
+            File.symlink?( maybe_exclude )
+          end
     s.test_files = []
     # Note: 1) Explicitly add any other non-testing packages under 'vendor'
     # 2) Exclude all of our symbolic links
