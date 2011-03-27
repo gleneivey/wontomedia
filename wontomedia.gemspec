@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{wontomedia}
-  s.version = "1.0.4"
+  s.version = "1.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Glen E. Ivey"]
@@ -244,7 +244,8 @@ Gem::Specification.new do |s|
      "vendor/plugins/redirect_routing/lib/redirect_routing_controller.rb",
      "vendor/plugins/redirect_routing/redirect_routing.gemspec",
      "vendor/plugins/redirect_routing/test/redirect_routing_test.rb",
-     "vendor/plugins/redirect_routing/test/test_helper.rb"
+     "vendor/plugins/redirect_routing/test/test_helper.rb",
+     "wontomedia.gemspec"
   ]
   s.homepage = %q{http://wontomedia.rubyforge.org}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -267,6 +268,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<capistrano>, [">= 0"])
       s.add_development_dependency(%q<rspec-rails>, ["= 1.3.3"])
       s.add_development_dependency(%q<webrat>, [">= 0"])
+      s.add_development_dependency(%q<cucumber>, ["= 0.10.0"])
       s.add_development_dependency(%q<cucumber-rails>, [">= 0"])
       s.add_development_dependency(%q<database_cleaner>, [">= 0"])
       s.add_development_dependency(%q<selenium-client>, [">= 0"])
@@ -283,6 +285,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<capistrano>, [">= 0"])
       s.add_dependency(%q<rspec-rails>, ["= 1.3.3"])
       s.add_dependency(%q<webrat>, [">= 0"])
+      s.add_dependency(%q<cucumber>, ["= 0.10.0"])
       s.add_dependency(%q<cucumber-rails>, [">= 0"])
       s.add_dependency(%q<database_cleaner>, [">= 0"])
       s.add_dependency(%q<selenium-client>, [">= 0"])
@@ -300,6 +303,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<capistrano>, [">= 0"])
     s.add_dependency(%q<rspec-rails>, ["= 1.3.3"])
     s.add_dependency(%q<webrat>, [">= 0"])
+    s.add_dependency(%q<cucumber>, ["= 0.10.0"])
     s.add_dependency(%q<cucumber-rails>, [">= 0"])
     s.add_dependency(%q<database_cleaner>, [">= 0"])
     s.add_dependency(%q<selenium-client>, [">= 0"])

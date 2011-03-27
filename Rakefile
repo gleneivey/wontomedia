@@ -77,6 +77,7 @@ ENDOSTRING
     s.files =  FileList["[A-Z]*", "assets/wontomedia-sample.rb",
       "vendor/plugins/asset_packager/**/*",
       "vendor/plugins/redirect_routing/**/*",
+      "wontomedia.gemspec",
       "doc/*", "doc/scripts/*",
       "{app,config,bin,db,default-custom,generators,lib,public,script}/**/*"].
           exclude("database.yml", "**/*_packaged.js", "**/*_packaged.css") do |maybe_exclude|
@@ -105,6 +106,7 @@ ENDOSTRING
     s.add_development_dependency 'capistrano'
     s.add_development_dependency 'rspec-rails', '=1.3.3'     # gets rspec
     s.add_development_dependency 'webrat'
+    s.add_development_dependency 'cucumber', '=0.10.0'
     s.add_development_dependency 'cucumber-rails'            # gets cucumber, nokogiri
     s.add_development_dependency 'database_cleaner'
     s.add_development_dependency 'selenium-client'
