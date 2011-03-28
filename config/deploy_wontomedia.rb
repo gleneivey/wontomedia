@@ -77,8 +77,8 @@ namespace :deploy do
 end
 
 
-def do_fixtures_load; do_rake "db:fixtures:load", current_path; end
-def do_seed; do_rake "db:reseed", current_path; end
+def do_fixtures_load; do_rake "db:fixtures:load", app_to_run; end
+def do_seed; do_rake "db:reseed", app_to_run; end
 
 def do_rake(task, path = nil)
   run "cd #{path || release_path} && RAILS_ENV=production #{rake} #{task}"
