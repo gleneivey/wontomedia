@@ -1,0 +1,6 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^demo.wontology.org$ [OR]
+RewriteCond %{HTTP_HOST} ^www.demo.wontology.org$
+RewriteRule ^(.*)$ "http\:\/\/127\.0\.0\.1\:12035\/$1" [P,L]
+
