@@ -4,6 +4,7 @@
 !source .gitignore
 .git
 Gemfile.lock
+.htaccess
 
 
     # files that don't match our extension-determines-header-format conventions
