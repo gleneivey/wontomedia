@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    wontomedia (1.0.6)
+    wontomedia (1.0.7)
       mongrel
       mysql (= 2.8.1)
       rails (= 2.3.11)
@@ -26,8 +26,8 @@ GEM
     capistrano (2.5.20)
       highline
       highline
-      net-scp (>= 1.0.0)
       net-scp
+      net-scp (>= 1.0.0)
       net-sftp
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
