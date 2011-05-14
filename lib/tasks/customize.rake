@@ -38,7 +38,7 @@ task :customize, :path_list do |t, args|
   paths = args[:path_list].split(':')
   paths.each do |p|
     path = File.expand_path(p)
-    Dir[ File.join( path, "**", "*" ) ].each do |from_p|
+    ( Dir[ File.join( path, "**", "*" ) ] + Dir[ File.join( path, "**", ".*" ) ] ).each do |from_p|
       if File.file?( from_p )
         from_absolute = File.expand_path(from_p)
         from_path = File.dirname( from_absolute )
