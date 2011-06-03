@@ -190,15 +190,6 @@
 
            item_counter += 1
  %>        <li id='object-item-<%= item_counter -%>' >
-             <div class="floating-links">
-               <% if connection.id
-                    generate_connection_links(connection,
-                      item_by_name_path(@item.name) )
-                  elsif connection.obj_id
-                    generate_inverse_link(@inverses_map[connection])
-                  end %>
-             </div>
-
              <% if connection.kind_of_obj == Connection::OBJECT_KIND_SCALAR &&
                     connection.scalar_obj.nil? %>
                <%= render :partial => "inline_scalar_add_form",
@@ -225,6 +216,16 @@
                    h(connection.scalar_obj)
                 %>
              <% end %>
+
+             <br />
+             <span class="link-set">
+               <% if connection.id
+                    generate_connection_links(connection,
+                      item_by_name_path(@item.name) )
+                  elsif connection.obj_id
+                    generate_inverse_link(@inverses_map[connection])
+                  end %>
+             </span>
            </li>
 
 <%         last_predicate_id = connection.predicate_id

@@ -55,7 +55,10 @@
       <td class='firstrow secondrow'><%=
         link_with_tooltip "#{h filter_parenthetical connection.subject.title}",
           h( connection.subject.name ),
-          item_by_name_path(connection.subject.name) -%></td>
+          item_by_name_path(connection.subject.name) -%>
+        <br />
+        <span class="link-set"><% generate_connection_links(connection) %></span>
+      </td>
       <td class='firstrow secondrow'><%=
         link_with_tooltip(
           "#{h filter_parenthetical connection.predicate.title}",
@@ -73,8 +76,6 @@
           <%= h connection.scalar_obj %>
         <% end %>
       </td>
-      <td class='firstrow secondrow' style="font-size: 80%">
-        <% generate_connection_links(connection) %></td>
 <!--
       <td><%= unless connection.connection_desc.nil?
                 link_to "#{h connection.connection_desc.name}",

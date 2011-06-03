@@ -172,6 +172,13 @@ hr {
   font-size: 80%;
   margin-right: 6em;
 }
+.link-set {
+  font-size: 70%;
+  margin-left: 0.8em;
+}
+.link-set a {
+  margin-left: 0.4em;
+}
 
         /* set apart stuff that is in development */
 .unimplemented {
