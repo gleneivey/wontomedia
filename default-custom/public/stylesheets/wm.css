@@ -220,6 +220,14 @@ p.unimplemented {
   left: 2em;
 }
 
+.title-annotation {
+  font-size: 80%;
+  color: #ccc;
+}
+
+.upper-right-popup-help {
+  float: right;
+}
 
         /* "universal special cases" .... or something like that */
 p {           margin-top:      0;    }

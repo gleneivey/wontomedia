@@ -19,52 +19,45 @@
 
 <div class="noncontent vertical-link-list"
   style="width: 19.5%; float:right; display: inline; position: relative; top: -1.5ex;">
+  <div class="upper-right-popup-help">
+    <%= popup_help_icon "Help item actions", "Help:Popup/ItemActions" -%>
+  </div>
   <ul>
     <% if (@item.flags & Item::DATA_IS_UNALTERABLE) == 0 %>
       <li>
         <%= link_to 'Edit this item', edit_item_by_name_path(@item.name),
-              :rel => 'nofollow' -%><%=
-            popup_help_icon "Help edit items", "Help:Popup/ItemEdit" -%>
+              :rel => 'nofollow' -%>
       </li>
 
       <li>
         <% if @connection_list.empty? %>
           <%= link_to 'Delete this item', item_path(@item),
                 :rel => 'nofollow', :confirm => 'Are you sure?',
-                :method => :delete -%><%=
-              popup_help_icon "Help delete items", "Help:Popup/ItemDelete" -%>
+                :method => :delete -%>
         <% else %>
           <span class="inactiveLink">
             <%= link_to_function "Can't delete this item",
-                  "cantDeleteItem_Popup()" -%><%=
-                popup_help_icon "Help with can't-be-deleted items",
-                  "Help:Popup/ItemCantDelete" -%>
+                  "cantDeleteItem_Popup()" -%>
           </span>
         <% end %>
       </li>
     <% end %>
 
     <li>
-      <%= link_to 'Show item list', items_path -%><%=
-          popup_help_icon "Help, item list", "Help:Popup/ShowItems" -%>
+      <%= link_to 'Show item list', items_path -%>
     </li>
 
     <li>
-      <%= link_to 'Add a new item', new_item_path, :rel => 'nofollow' -%><%=
-          popup_help_icon "Help, create item", "Help:Popup/ItemAdd" -%>
+      <%= link_to 'Add a new item', new_item_path, :rel => 'nofollow' -%>
     </li>
 
     <li>
-      <%= link_to 'Show connection list', connections_path -%><%=
-          popup_help_icon "Help, connection list",
-            "Help:Popup/ShowConnections" -%>
+      <%= link_to 'Show connection list', connections_path -%>
     </li>
 
     <li>
       <%= link_to 'Add a new connection', new_connection_path,
-            :rel => 'nofollow' -%><%=
-          popup_help_icon "Help, create connection",
-            "Help:Popup/ConnectionAdd" -%>
+            :rel => 'nofollow' -%>
     </li>
   </ul>
 </div>

@@ -35,34 +35,20 @@ module ConnectionsHelper
   # variable is created within the current view object to flag the
   # generation of each type of link.
   def generate_connection_links(con, after_delete = nil)
-    concat(
-      link_with_help_icon({
-        :destination => link_to( 'Show', connection_path(con) ),
-        :already_generated => @show_help_icon_used,
-        :help_alt => 'Help show connection',
-        :which_help => 'ConnectionShow' }) )
-    @show_help_icon_used = true
-
+    concat(link_to( 'Show', connection_path(con) ))
+    concat " "
     if (con.flags & Connection::DATA_IS_UNALTERABLE) == 0
-      concat(
-        link_with_help_icon({
-          :destination => link_to(
-            'Edit&hellip;', edit_connection_path(con), :rel => 'nofollow' ),
-          :already_generated => @edit_help_icon_used,
-          :help_alt => 'Help edit connection',
-          :which_help => 'ConnectionEdit' }) )
-      @edit_help_icon_used = true
+      concat(link_to( 'Edit&hellip;', edit_connection_path(con), :rel => 'nofollow' ))
+      concat " "
 
       goto_param = after_delete ? '?goto='+after_delete : ''
-      concat(
-        link_with_help_icon({
-          :destination => link_to(
-            'Delete', connection_path(con)+goto_param, :rel => 'nofollow',
-            :confirm => 'Are you sure?', :method => :delete ),
-          :already_generated => @delete_help_icon_used,
-          :help_alt => 'Help delete connection',
-          :which_help =>'ConnectionDelete' }) )
-      @delete_help_icon_used = true
+      concat(link_to( 'Delete', connection_path(con)+goto_param, :rel => 'nofollow',
+                      :confirm => 'Are you sure?', :method => :delete ))
+    end
+
+    unless @connection_actions_help_icon_used
+      concat( popup_help_icon 'Help connection actions', 'Help:Popup/ConnectionActions' )
+      @connection_actions_help_icon_used = true
     end
   end
 

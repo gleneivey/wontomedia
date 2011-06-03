@@ -49,6 +49,12 @@ module ItemsHelper
   # <tt>app/views/items/show</tt> view.
   def output_table_open
     header_style = 'display: block; position: relative;'
+    popup = ''
+    unless @popup_flag
+      popup = popup_help_icon "Help, connections referencing a item",
+                              "Help:Popup/HeaderItemConnectionTable"
+    end
+
     concat(tag 'table', nil, true)  # generate an "open" table tag
     concat(content_tag( 'thead',
       content_tag( 'tr',
@@ -57,7 +63,7 @@ module ItemsHelper
           content_tag( 'span', '<em>is</em> or <em>has</em>',
             :style => "#{header_style} left: -3em;" )) +
         content_tag( 'th',
-          content_tag( 'span', '<em>to</em> or <em>with</em>',
+          content_tag( 'span', '<em>to</em> or <em>with</em>' + popup,
             :style => "#{header_style} left: -1em;" ))
       )
     ))

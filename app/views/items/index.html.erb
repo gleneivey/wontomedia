@@ -46,8 +46,7 @@
 </div>
 
 <table class="tight-table index-table" style="clear: both;">
-  <% @edit_help_icon_used = false
-     @delete_help_icon_used = false
+  <% @connection_actions_help_icon_used = false
 
      @items.each do |item| %>
     <% content_tag :tr, :id => h(item.name) do %>
