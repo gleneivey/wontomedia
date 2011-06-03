@@ -217,7 +217,6 @@
                 %>
              <% end %>
 
-             <br />
              <span class="link-set">
                <% if connection.id
                     generate_connection_links(connection,
@@ -259,6 +258,15 @@
              <tr>
                <td>
                  <%= self_string_or_other_link(connection.subject_id) %>
+                 <br />
+		 <span class="link-set">
+		   <% if connection.id
+			generate_connection_links(connection,
+			  item_by_name_path(@item.name) )
+		      elsif connection.obj_id
+			generate_inverse_link(@inverses_map[connection])
+		      end %>
+		 </span>
                </td><td class="connectioncolumn">
                  <%= self_string_or_other_link(connection.predicate_id) %>
                </td><td>
@@ -267,13 +275,6 @@
                  <% else %>
                    <%= h connection.scalar_obj %>
                  <% end %>
-               </td><td style="font-size: 80%">
-                 <% if connection.id
-                      generate_connection_links(connection,
-                        item_by_name_path(@item.name) )
-                    else
-                      generate_inverse_link(@inverses_map[connection])
-                    end %>
                </td>
              </tr>
            <% end %>
